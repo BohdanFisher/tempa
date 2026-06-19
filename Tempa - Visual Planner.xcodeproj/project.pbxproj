@@ -1,0 +1,638 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		EA9861052FC7B6A300B8AD2B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EA9860EB2FC7B6A000B8AD2B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EA9860F22FC7B6A000B8AD2B;
+			remoteInfo = "Tempa - Visual Planner";
+		};
+		EA98610F2FC7B6A300B8AD2B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EA9860EB2FC7B6A000B8AD2B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EA9860F22FC7B6A000B8AD2B;
+			remoteInfo = "Tempa - Visual Planner";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EA9860F32FC7B6A000B8AD2B /* Tempa - Visual Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tempa - Visual Planner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA9861042FC7B6A300B8AD2B /* Tempa - Visual PlannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tempa - Visual PlannerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA98610E2FC7B6A300B8AD2B /* Tempa - Visual PlannerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tempa - Visual PlannerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		EA7959582FC921D900ADA695 /* Exceptions for "Tempa - Visual PlannerUITests" folder in "Tempa - Visual Planner" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				confirm_success.mp3,
+				focus_finish.mp3,
+				"universfield-new-notification-013-363676.mp3",
+			);
+			target = EA9860F22FC7B6A000B8AD2B /* Tempa - Visual Planner */;
+		};
+		EA7959592FC921D900ADA695 /* Exceptions for "Tempa - Visual PlannerUITests" folder in "Tempa - Visual PlannerTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				focus_finish.mp3,
+			);
+			target = EA9861032FC7B6A300B8AD2B /* Tempa - Visual PlannerTests */;
+		};
+		EA9861162FC7B6A300B8AD2B /* Exceptions for "Tempa - Visual Planner" folder in "Tempa - Visual Planner" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = EA9860F22FC7B6A000B8AD2B /* Tempa - Visual Planner */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		EA9860F52FC7B6A000B8AD2B /* Tempa - Visual Planner */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EA9861162FC7B6A300B8AD2B /* Exceptions for "Tempa - Visual Planner" folder in "Tempa - Visual Planner" target */,
+			);
+			path = "Tempa - Visual Planner";
+			sourceTree = "<group>";
+		};
+		EA9861072FC7B6A300B8AD2B /* Tempa - Visual PlannerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Tempa - Visual PlannerTests";
+			sourceTree = "<group>";
+		};
+		EA9861112FC7B6A300B8AD2B /* Tempa - Visual PlannerUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EA7959582FC921D900ADA695 /* Exceptions for "Tempa - Visual PlannerUITests" folder in "Tempa - Visual Planner" target */,
+				EA7959592FC921D900ADA695 /* Exceptions for "Tempa - Visual PlannerUITests" folder in "Tempa - Visual PlannerTests" target */,
+			);
+			path = "Tempa - Visual PlannerUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EA9860F02FC7B6A000B8AD2B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA9861012FC7B6A300B8AD2B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA98610B2FC7B6A300B8AD2B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EA9860EA2FC7B6A000B8AD2B = {
+			isa = PBXGroup;
+			children = (
+				EA9860F52FC7B6A000B8AD2B /* Tempa - Visual Planner */,
+				EA9861072FC7B6A300B8AD2B /* Tempa - Visual PlannerTests */,
+				EA9861112FC7B6A300B8AD2B /* Tempa - Visual PlannerUITests */,
+				EA9860F42FC7B6A000B8AD2B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EA9860F42FC7B6A000B8AD2B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EA9860F32FC7B6A000B8AD2B /* Tempa - Visual Planner.app */,
+				EA9861042FC7B6A300B8AD2B /* Tempa - Visual PlannerTests.xctest */,
+				EA98610E2FC7B6A300B8AD2B /* Tempa - Visual PlannerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EA9860F22FC7B6A000B8AD2B /* Tempa - Visual Planner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA9861172FC7B6A300B8AD2B /* Build configuration list for PBXNativeTarget "Tempa - Visual Planner" */;
+			buildPhases = (
+				EA9860EF2FC7B6A000B8AD2B /* Sources */,
+				EA9860F02FC7B6A000B8AD2B /* Frameworks */,
+				EA9860F12FC7B6A000B8AD2B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				EA9860F52FC7B6A000B8AD2B /* Tempa - Visual Planner */,
+			);
+			name = "Tempa - Visual Planner";
+			packageProductDependencies = (
+			);
+			productName = "Tempa - Visual Planner";
+			productReference = EA9860F32FC7B6A000B8AD2B /* Tempa - Visual Planner.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EA9861032FC7B6A300B8AD2B /* Tempa - Visual PlannerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA98611C2FC7B6A300B8AD2B /* Build configuration list for PBXNativeTarget "Tempa - Visual PlannerTests" */;
+			buildPhases = (
+				EA9861002FC7B6A300B8AD2B /* Sources */,
+				EA9861012FC7B6A300B8AD2B /* Frameworks */,
+				EA9861022FC7B6A300B8AD2B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EA9861062FC7B6A300B8AD2B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EA9861072FC7B6A300B8AD2B /* Tempa - Visual PlannerTests */,
+			);
+			name = "Tempa - Visual PlannerTests";
+			packageProductDependencies = (
+			);
+			productName = "Tempa - Visual PlannerTests";
+			productReference = EA9861042FC7B6A300B8AD2B /* Tempa - Visual PlannerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EA98610D2FC7B6A300B8AD2B /* Tempa - Visual PlannerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA98611F2FC7B6A300B8AD2B /* Build configuration list for PBXNativeTarget "Tempa - Visual PlannerUITests" */;
+			buildPhases = (
+				EA98610A2FC7B6A300B8AD2B /* Sources */,
+				EA98610B2FC7B6A300B8AD2B /* Frameworks */,
+				EA98610C2FC7B6A300B8AD2B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EA9861102FC7B6A300B8AD2B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EA9861112FC7B6A300B8AD2B /* Tempa - Visual PlannerUITests */,
+			);
+			name = "Tempa - Visual PlannerUITests";
+			packageProductDependencies = (
+			);
+			productName = "Tempa - Visual PlannerUITests";
+			productReference = EA98610E2FC7B6A300B8AD2B /* Tempa - Visual PlannerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EA9860EB2FC7B6A000B8AD2B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2640;
+				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					EA9860F22FC7B6A000B8AD2B = {
+						CreatedOnToolsVersion = 26.4;
+					};
+					EA9861032FC7B6A300B8AD2B = {
+						CreatedOnToolsVersion = 26.4;
+						TestTargetID = EA9860F22FC7B6A000B8AD2B;
+					};
+					EA98610D2FC7B6A300B8AD2B = {
+						CreatedOnToolsVersion = 26.4;
+						TestTargetID = EA9860F22FC7B6A000B8AD2B;
+					};
+				};
+			};
+			buildConfigurationList = EA9860EE2FC7B6A000B8AD2B /* Build configuration list for PBXProject "Tempa - Visual Planner" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EA9860EA2FC7B6A000B8AD2B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EA9860F42FC7B6A000B8AD2B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EA9860F22FC7B6A000B8AD2B /* Tempa - Visual Planner */,
+				EA9861032FC7B6A300B8AD2B /* Tempa - Visual PlannerTests */,
+				EA98610D2FC7B6A300B8AD2B /* Tempa - Visual PlannerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EA9860F12FC7B6A000B8AD2B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA9861022FC7B6A300B8AD2B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA98610C2FC7B6A300B8AD2B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EA9860EF2FC7B6A000B8AD2B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA9861002FC7B6A300B8AD2B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA98610A2FC7B6A300B8AD2B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EA9861062FC7B6A300B8AD2B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EA9860F22FC7B6A000B8AD2B /* Tempa - Visual Planner */;
+			targetProxy = EA9861052FC7B6A300B8AD2B /* PBXContainerItemProxy */;
+		};
+		EA9861102FC7B6A300B8AD2B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EA9860F22FC7B6A000B8AD2B /* Tempa - Visual Planner */;
+			targetProxy = EA98610F2FC7B6A300B8AD2B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		EA9861182FC7B6A300B8AD2B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Tempa - Visual Planner/Tempa___Visual_Planner.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 55Z7829Q3J;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Tempa - Visual Planner/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Tempa;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Tempa needs your microphone to listen when you speak a task.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Tempa uses speech recognition to turn your voice into tasks.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Bohdan-Rybak.Tempa---Visual-Planner";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		EA9861192FC7B6A300B8AD2B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Tempa - Visual Planner/Tempa___Visual_Planner.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 55Z7829Q3J;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Tempa - Visual Planner/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Tempa;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Tempa needs your microphone to listen when you speak a task.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Tempa uses speech recognition to turn your voice into tasks.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Bohdan-Rybak.Tempa---Visual-Planner";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		EA98611A2FC7B6A300B8AD2B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 55Z7829Q3J;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EA98611B2FC7B6A300B8AD2B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 55Z7829Q3J;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EA98611D2FC7B6A300B8AD2B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 55Z7829Q3J;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Bohdan-Rybak.Tempa---Visual-PlannerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tempa - Visual Planner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tempa - Visual Planner";
+			};
+			name = Debug;
+		};
+		EA98611E2FC7B6A300B8AD2B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 55Z7829Q3J;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Bohdan-Rybak.Tempa---Visual-PlannerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tempa - Visual Planner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tempa - Visual Planner";
+			};
+			name = Release;
+		};
+		EA9861202FC7B6A300B8AD2B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 55Z7829Q3J;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Bohdan-Rybak.Tempa---Visual-PlannerUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Tempa - Visual Planner";
+			};
+			name = Debug;
+		};
+		EA9861212FC7B6A300B8AD2B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 55Z7829Q3J;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Bohdan-Rybak.Tempa---Visual-PlannerUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Tempa - Visual Planner";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EA9860EE2FC7B6A000B8AD2B /* Build configuration list for PBXProject "Tempa - Visual Planner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA98611A2FC7B6A300B8AD2B /* Debug */,
+				EA98611B2FC7B6A300B8AD2B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EA9861172FC7B6A300B8AD2B /* Build configuration list for PBXNativeTarget "Tempa - Visual Planner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA9861182FC7B6A300B8AD2B /* Debug */,
+				EA9861192FC7B6A300B8AD2B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EA98611C2FC7B6A300B8AD2B /* Build configuration list for PBXNativeTarget "Tempa - Visual PlannerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA98611D2FC7B6A300B8AD2B /* Debug */,
+				EA98611E2FC7B6A300B8AD2B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EA98611F2FC7B6A300B8AD2B /* Build configuration list for PBXNativeTarget "Tempa - Visual PlannerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA9861202FC7B6A300B8AD2B /* Debug */,
+				EA9861212FC7B6A300B8AD2B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EA9860EB2FC7B6A000B8AD2B /* Project object */;
+}

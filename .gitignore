@@ -1,0 +1,23 @@
+# Secrets — never commit
+DevSecrets.swift
+
+# Xcode / macOS
+.DS_Store
+*.xcuserstate
+xcuserdata/
+**/xcuserdata/
+build/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# CocoaPods / Carthage (unused, kept for safety)
+Pods/
+Carthage/Build/
