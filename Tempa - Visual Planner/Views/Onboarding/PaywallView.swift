@@ -12,382 +12,248 @@ struct PaywallView: View {
     @State private var isPurchasing = false
     @State private var showError = false
     @State private var errorMessage = ""
+    @State private var showTermsDoc = false
+    @State private var showPrivacyDoc = false
+
+    // Bright coral in light mode; a deeper, calmer coral in dark mode (the bright
+    // one glares on a dark screen). White cards/button read well on both.
+    private let coral = Color(lightHex: "#FF7A59", darkHex: "#B5503A")
+    private let cardInk = Color(hex: "#2E2A26")   // dark text on the selected white card
+    private let cardSub = Color(hex: "#8A837C")   // muted subtitle on the white card
+    private let teal = Color(hex: "#3FC09A")      // BEST VALUE badge
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [Color(lightHex: "#FFE9E1", darkHex: "#2C1F18"), T.bg],
-                startPoint: .top, endPoint: .init(x: 0.5, y: 0.38)
-            )
+            coral.ignoresSafeArea()
+
+            // One faint, perfectly round circle whose centre orbits along a lightly
+            // flattened (oblate) path — the oval orbit makes the motion clearly visible.
+            GeometryReader { geo in
+                TimelineView(.animation(minimumInterval: 0.05)) { timeline in
+                    let t = timeline.date.timeIntervalSinceReferenceDate * 0.6   // ≈10s per orbit
+                    let a = 55.0, b = 38.0                                        // lightly flattened orbit
+                    Circle()
+                        .fill(Color.white.opacity(0.07))
+                        .frame(width: 380)
+                        .position(x: geo.size.width - 40 + a * cos(t),
+                                  y: geo.size.height - 70 + b * sin(t))
+                }
+            }
             .ignoresSafeArea()
+            .allowsHitTesting(false)
 
             VStack(spacing: 0) {
-                HStack {
-                    if allowDismiss {
-                        Button { dismiss() } label: {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(T.text)
-                                .frame(width: 34, height: 34)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 11, style: .continuous)
-                                        .fill(T.surface.opacity(0.7))
-                                )
-                        }
-                    }
-                    Spacer()
-                    Button {
-                        Task {
-                            try? await subs.restorePurchases()
-                            if subs.isPro { onPurchaseComplete(); dismiss() }
-                        }
-                    } label: {
-                        Text("Restore")
-                            .font(.custom(T.fontHeader, size: 13).weight(.bold))
-                            .foregroundColor(T.text)
-                    }
-                }
-                .padding(.horizontal, 22)
-                .padding(.top, 12)
+                topBar
+                    .padding(.top, 10)
 
-                ScrollView {
-                    VStack(spacing: 0) {
-                        heroSection
-                        valueBullets
-                        planCards
-                        trialTimeline
-                        Spacer().frame(height: 12)
-                    }
-                    .padding(.horizontal, 22)
-                }
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("TEMPA PRO")
+                        .font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
+                        .tracking(3)
+                        .foregroundColor(.white.opacity(0.72))
+                        .padding(.bottom, 14)
 
-                ctaSection
+                    Text("Less noise.\nMore you.")
+                        .font(.custom("Nunito-ExtraBold", size: 40).weight(.heavy))
+                        .tracking(-0.8)
+                        .foregroundColor(.white)
+                        .lineSpacing(0)
+                        .fixedSize(horizontal: false, vertical: true)
+
+                    Text("Unlock all of Tempa free for 3 days. Keep it for less than a coffee a month.")
+                        .font(.custom("Inter-Medium", size: 16).weight(.medium))
+                        .foregroundColor(.white.opacity(0.85))
+                        .lineSpacing(4)
+                        .padding(.top, 16)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 24)
+                .padding(.top, 18)
+
+                Spacer(minLength: 24)
+
+                planCards
+                    .padding(.horizontal, 18)
+
+                ctaButton
+                    .padding(.horizontal, 18)
+                    .padding(.top, 16)
+
+                footer
             }
         }
         .alert("Error", isPresented: $showError) { Button("OK") {} } message: { Text(errorMessage) }
+        .task {
+            // Retry StoreKit when the paywall appears — recovers from a failed
+            // cold-start load and swaps simulated plans for real products.
+            await subs.ensureProductsLoaded()
+        }
     }
 
-    // MARK: - Hero
+    // MARK: - Top bar
 
-    private var heroSection: some View {
-        VStack(spacing: 0) {
-            SonarPulse(coreSize: 28, ringSize: 46, maxScale: 2.0, coreShadow: T.primary.opacity(0.5))
-                .padding(.top, 18)
-                .padding(.bottom, 18)
-
-            Text("Your tempo\nstarts now.")
-                .font(.custom(T.fontHeader, size: 38).weight(.heavy))
-                .tracking(-0.8)
-                .foregroundColor(T.text)
-                .multilineTextAlignment(.center)
-                .lineSpacing(-2)
-
-            if hasIntroOffer {
-                Text("3 days free. Then \(selectedPrice)/year. Cancel anytime.")
-                    .font(.custom(T.fontBody, size: 15).weight(.medium))
-                    .foregroundColor(T.textSec)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 12)
+    private var topBar: some View {
+        HStack {
+            if allowDismiss {
+                Button { dismiss() } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(.white)
+                        .frame(width: 36, height: 36)
+                        .background(RoundedRectangle(cornerRadius: 11, style: .continuous).fill(Color.white.opacity(0.18)))
+                }
+            }
+            Spacer()
+            Button { restore() } label: {
+                Text("Restore")
+                    .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
+                    .foregroundColor(.white.opacity(0.9))
             }
         }
-        .padding(.bottom, 22)
+        .padding(.horizontal, 22)
     }
 
-    // MARK: - Value Bullets
-
-    private var valueBullets: some View {
-        VStack(spacing: 14) {
-            valueBullet(icon: "sparkles", cat: Cat.personal, text: "Start anything in one tap — AI breaks it down for you")
-            valueBullet(icon: "clock", cat: Cat.work, text: "Never lose track of time — Now/Next keeps you oriented")
-            valueBullet(icon: "heart", cat: Cat.health, text: "A plan that forgives you — no streaks, no shame")
-        }
-        .padding(18)
-        .background(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(T.surface.opacity(0.6))
-        )
-        .padding(.bottom, 20)
-    }
-
-    private func valueBullet(icon: String, cat: CatColors, text: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 18, weight: .medium))
-                .foregroundColor(cat.ink)
-                .frame(width: 36, height: 36)
-                .background(
-                    RoundedRectangle(cornerRadius: 11, style: .continuous)
-                        .fill(cat.bg)
-                )
-            Text(text)
-                .font(.custom(T.fontHeader, size: 14).weight(.semibold))
-                .foregroundColor(T.text)
-                .lineSpacing(2)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 8)
-        }
-    }
-
-    // MARK: - Plan Cards
+    // MARK: - Plan cards
 
     private var planCards: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 12) {
             if subs.isSimulating {
-                ForEach(subs.simPlans) { plan in
-                    simPlanRow(plan)
+                ForEach(subs.simPlans.filter { $0.id != "tempa_weekly" }) { plan in
+                    planCard(
+                        id: plan.id,
+                        title: plan.name,
+                        isYearly: plan.id == "tempa_yearly",
+                        price: plan.price,
+                        sub: plan.monthlyPrice.map { "\($0)/mo" } ?? "per \(plan.periodLabel)",
+                        detail: plan.id == "tempa_yearly" ? "3 days free, then billed yearly" : nil
+                    )
                 }
             } else {
-                ForEach(subs.products) { product in
-                    planRow(product)
+                ForEach(subs.products.filter { $0.id != "tempa_weekly" }) { product in
+                    let yearly = product.id == "tempa_yearly"
+                    planCard(
+                        id: product.id,
+                        title: product.displayName,
+                        isYearly: yearly,
+                        price: product.displayPrice,
+                        sub: yearly ? (monthlyEquivalent(product).map { "\($0)/mo" } ?? "per year") : "per \(periodLabel(product))",
+                        detail: yearly ? "3 days free, then billed yearly" : nil
+                    )
                 }
             }
         }
-        .padding(.bottom, 18)
     }
 
-    private func planRow(_ product: Product) -> some View {
-        let picked = selectedProductID == product.id
-        let isYearly = product.id == "tempa_yearly"
-
+    private func planCard(id: String, title: String, isYearly: Bool, price: String, sub: String, detail: String?) -> some View {
+        let picked = selectedProductID == id
         return Button {
-            selectedProductID = product.id
+            #if os(iOS)
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            #endif
+            selectedProductID = id
         } label: {
             HStack(spacing: 14) {
-                radioCircle(picked: picked)
+                ZStack {
+                    Circle().fill(picked ? coral : .clear).frame(width: 26, height: 26)
+                    Circle().stroke(picked ? .clear : Color.white.opacity(0.65), lineWidth: 2).frame(width: 26, height: 26)
+                    if picked { Circle().fill(.white).frame(width: 10, height: 10) }
+                }
 
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 8) {
-                        Text(product.displayName)
-                            .font(.custom(T.fontHeader, size: 16).weight(.heavy))
-                            .foregroundColor(T.text)
-                        if isYearly {
-                            bestValueBadge
-                        }
+                        Text(title)
+                            .font(.custom("Nunito-ExtraBold", size: 17).weight(.heavy))
+                            .foregroundColor(picked ? cardInk : .white)
+                        if isYearly { bestValueBadge }
                     }
-                    if isYearly {
-                        Text("3 days free, then billed yearly")
-                            .font(.custom(T.fontBody, size: 12).weight(.medium))
-                            .foregroundColor(T.textSec)
+                    if let detail {
+                        Text(detail)
+                            .font(.custom("Inter-Medium", size: 12).weight(.medium))
+                            .foregroundColor(picked ? cardSub : .white.opacity(0.8))
                     }
                 }
 
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: 1) {
-                    Text(product.displayPrice)
-                        .font(.custom(T.fontHeader, size: 17).weight(.heavy))
-                        .foregroundColor(T.text)
-                    if isYearly, let mo = monthlyEquivalent(product) {
-                        Text("\(mo)/mo")
-                            .font(.custom(T.fontBody, size: 11).weight(.semibold))
-                            .foregroundColor(T.textSec)
-                    } else {
-                        Text("per \(periodLabel(product))")
-                            .font(.custom(T.fontBody, size: 11).weight(.semibold))
-                            .foregroundColor(T.textSec)
-                    }
+                    Text(price)
+                        .font(.custom("Nunito-ExtraBold", size: 17).weight(.heavy))
+                        .foregroundColor(picked ? cardInk : .white)
+                    Text(sub)
+                        .font(.custom("Inter-Medium", size: 11).weight(.semibold))
+                        .foregroundColor(picked ? cardSub : .white.opacity(0.8))
                 }
             }
-            .padding(.horizontal, 18)
-            .padding(.vertical, 16)
+            .padding(18)
+            .frame(maxWidth: .infinity)
             .background(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(picked ? T.surface : T.surface.opacity(0.55))
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    .fill(picked ? Color.white : Color.white.opacity(0.16))
             )
-            .overlay(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .stroke(picked ? T.primary : .clear, lineWidth: 2)
-            )
-            .shadow(
-                color: picked ? Color(hex: "#FF7A59").opacity(0.18) : .clear,
-                radius: 14, x: 0, y: 12
-            )
+            .shadow(color: .black.opacity(picked ? 0.12 : 0), radius: 14, x: 0, y: 8)
         }
         .buttonStyle(.plain)
-    }
-
-    private func simPlanRow(_ plan: SubscriptionManager.SimPlan) -> some View {
-        let picked = selectedProductID == plan.id
-        let isYearly = plan.id == "tempa_yearly"
-
-        return Button {
-            selectedProductID = plan.id
-        } label: {
-            HStack(spacing: 14) {
-                radioCircle(picked: picked)
-
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 8) {
-                        Text(plan.name)
-                            .font(.custom(T.fontHeader, size: 16).weight(.heavy))
-                            .foregroundColor(T.text)
-                        if isYearly {
-                            bestValueBadge
-                        }
-                    }
-                    if isYearly {
-                        Text("3 days free, then billed yearly")
-                            .font(.custom(T.fontBody, size: 12).weight(.medium))
-                            .foregroundColor(T.textSec)
-                    }
-                }
-
-                Spacer()
-
-                VStack(alignment: .trailing, spacing: 1) {
-                    Text(plan.price)
-                        .font(.custom(T.fontHeader, size: 17).weight(.heavy))
-                        .foregroundColor(T.text)
-                    if let mo = plan.monthlyPrice {
-                        Text("\(mo)/mo")
-                            .font(.custom(T.fontBody, size: 11).weight(.semibold))
-                            .foregroundColor(T.textSec)
-                    } else {
-                        Text("per \(plan.periodLabel)")
-                            .font(.custom(T.fontBody, size: 11).weight(.semibold))
-                            .foregroundColor(T.textSec)
-                    }
-                }
-            }
-            .padding(.horizontal, 18)
-            .padding(.vertical, 16)
-            .background(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(picked ? T.surface : T.surface.opacity(0.55))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .stroke(picked ? T.primary : .clear, lineWidth: 2)
-            )
-            .shadow(
-                color: picked ? Color(hex: "#FF7A59").opacity(0.18) : .clear,
-                radius: 14, x: 0, y: 12
-            )
-        }
-        .buttonStyle(.plain)
-    }
-
-    private func radioCircle(picked: Bool) -> some View {
-        ZStack {
-            Circle()
-                .fill(picked ? T.primary : .clear)
-                .frame(width: 24, height: 24)
-            if !picked {
-                Circle()
-                    .stroke(T.textTer, lineWidth: 2)
-                    .frame(width: 24, height: 24)
-            }
-            if picked {
-                Circle()
-                    .fill(.white)
-                    .frame(width: 10, height: 10)
-            }
-        }
     }
 
     private var bestValueBadge: some View {
         Text("BEST VALUE")
-            .font(.custom(T.fontHeader, size: 10).weight(.heavy))
+            .font(.custom("Nunito-ExtraBold", size: 10).weight(.heavy))
             .tracking(0.6)
             .foregroundColor(.white)
             .padding(.horizontal, 8)
             .padding(.vertical, 3)
-            .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(T.secondary)
-            )
+            .background(RoundedRectangle(cornerRadius: 8, style: .continuous).fill(teal))
     }
 
-    // MARK: - Trial Timeline
+    // MARK: - CTA
 
-    private var trialTimeline: some View {
-        HStack(alignment: .top, spacing: 12) {
-            VStack(spacing: 4) {
-                Circle().fill(T.secondary).frame(width: 12, height: 12)
-                Rectangle().fill(T.secondary.opacity(0.4)).frame(width: 2, height: 20)
-                Circle().fill(T.warning).frame(width: 12, height: 12)
-                Rectangle().fill(T.textTer.opacity(0.4)).frame(width: 2, height: 20)
-                Circle().stroke(T.textTer, lineWidth: 2).frame(width: 12, height: 12)
-            }
-            .frame(width: 24)
-
-            VStack(alignment: .leading, spacing: 12) {
-                trialStep(day: "Today", text: "Full access to Tempa.")
-                trialStep(day: "Day 2", text: "We email a reminder so you don't forget.")
-                trialStep(day: "Day 3", text: "Trial ends. Cancel anytime before.")
-            }
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(T.surface.opacity(0.55))
-        )
-    }
-
-    private func trialStep(day: String, text: String) -> some View {
-        VStack(alignment: .leading, spacing: 1) {
-            Text(day)
-                .font(.custom(T.fontHeader, size: 13).weight(.heavy))
-                .foregroundColor(T.text)
-            Text(text)
-                .font(.custom(T.fontBody, size: 12).weight(.medium))
-                .foregroundColor(T.textSec)
-        }
-    }
-
-    // MARK: - Sticky CTA
-
-    private var ctaSection: some View {
-        VStack(spacing: 12) {
-            Button {
-                Task { await purchaseSelected() }
-            } label: {
-                Group {
-                    if isPurchasing {
-                        ProgressView().tint(.white)
-                    } else {
-                        Text(hasIntroOffer ? "Start 3-Day Free Trial" : "Continue")
-                            .font(.custom(T.fontHeader, size: 18).weight(.heavy))
-                    }
+    private var ctaButton: some View {
+        Button {
+            Task { await purchaseSelected() }
+        } label: {
+            Group {
+                if isPurchasing {
+                    ProgressView().tint(coral)
+                } else {
+                    Text(hasIntroOffer ? "Start 3-day free trial" : "Continue")
+                        .font(.custom("Nunito-ExtraBold", size: 17).weight(.heavy))
                 }
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 60)
-                .background(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(T.primary)
-                )
-                .shadow(color: Color(hex: "#FF7A59").opacity(0.4), radius: 15, x: 0, y: 14)
             }
-            .disabled(isPurchasing)
-
-            HStack(spacing: 14) {
-                Button("Restore") {
-                    Task {
-                        try? await subs.restorePurchases()
-                        if subs.isPro { onPurchaseComplete(); dismiss() }
-                    }
-                }
-                Text("·").foregroundColor(T.textSec)
-                Link("Terms", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
-                Text("·").foregroundColor(T.textSec)
-                Link("Privacy", destination: URL(string: "https://www.apple.com/privacy/")!)
-            }
-            .font(.custom(T.fontBody, size: 11).weight(.semibold))
-            .foregroundColor(T.textSec)
+            .foregroundColor(coral)
+            .frame(maxWidth: .infinity)
+            .frame(height: 58)
+            .background(Capsule().fill(.white))
+            .shadow(color: .black.opacity(0.14), radius: 16, x: 0, y: 8)
         }
-        .padding(.horizontal, 22)
+        .buttonStyle(.plain)
+        .disabled(isPurchasing)
+    }
+
+    private var footer: some View {
+        HStack(spacing: 12) {
+            Button("Restore") { restore() }
+            Text("·")
+            Button("Terms") { showTermsDoc = true }
+            Text("·")
+            Button("Privacy") { showPrivacyDoc = true }
+        }
+        .font(.custom("Inter-Medium", size: 12).weight(.semibold))
+        .foregroundColor(.white.opacity(0.6))
         .padding(.top, 14)
-        .padding(.bottom, 50)
-        .background(
-            LinearGradient(
-                colors: [T.bg.opacity(0), T.bg.opacity(0.95)],
-                startPoint: .top, endPoint: .init(x: 0.5, y: 0.3)
-            )
-        )
+        .padding(.bottom, 30)
+        .sheet(isPresented: $showTermsDoc) { TermsSheet() }
+        .sheet(isPresented: $showPrivacyDoc) { PrivacyPolicySheet() }
     }
 
-    // MARK: - Helpers
+    // MARK: - Logic
+
+    private func restore() {
+        Task {
+            try? await subs.restorePurchases()
+            if subs.isPro { onPurchaseComplete(); dismiss() }
+        }
+    }
 
     private var selectedProduct: Product? {
         subs.products.first { $0.id == selectedProductID }
@@ -395,13 +261,6 @@ struct PaywallView: View {
 
     private var hasIntroOffer: Bool {
         subs.hasIntroOfferEligibility[selectedProductID] ?? false
-    }
-
-    private var selectedPrice: String {
-        if subs.isSimulating {
-            return subs.simPlans.first { $0.id == selectedProductID }?.price ?? "€29.99"
-        }
-        return selectedProduct?.displayPrice ?? ""
     }
 
     private func periodLabel(_ product: Product) -> String {
@@ -437,6 +296,9 @@ struct PaywallView: View {
         }
 
         guard let product = selectedProduct else {
+            // Don't die silently — say why no sheet appeared.
+            errorMessage = "The store isn't reachable yet. Give it a second and try again."
+            showError = true
             isPurchasing = false
             return
         }

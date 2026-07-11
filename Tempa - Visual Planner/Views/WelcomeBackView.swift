@@ -3,11 +3,40 @@ import CoreData
 
 struct WelcomeBackView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    /// Primary CTA — close and open the add-task flow.
+    let onPlan: () -> Void
+    /// Skip — just close.
     let onDismiss: () -> Void
 
-    private let weekData: [(String, Double)] = [
-        ("M", 0.7), ("T", 0.4), ("W", 0.9), ("T", 0.2), ("F", 0), ("S", 0), ("S", 0),
-    ]
+    /// Real completions over the last 7 days (oldest first) — no placeholder numbers.
+    @State private var week: StatsEngine.PeriodStats?
+
+    private static let dayLetterFmt: DateFormatter = {
+        let f = DateFormatter(); f.dateFormat = "EEEEE"; return f   // narrow weekday: M, T, W…
+    }()
+    private static let rangeFmt: DateFormatter = {
+        let f = DateFormatter(); f.dateFormat = "MMM d"; return f
+    }()
+
+    /// Squares for the recap strip: weekday letter + intensity relative to the best day.
+    private var weekData: [(String, Double)] {
+        guard let week else { return [] }
+        let maxDone = week.days.map(\.done).max() ?? 0
+        return week.days.map { d in
+            (Self.dayLetterFmt.string(from: d.date),
+             maxDone > 0 ? Double(d.done) / Double(maxDone) : 0)
+        }
+    }
+
+    /// e.g. "Jun 16–22" or "Jun 28 – Jul 4" across a month boundary.
+    private var rangeLabel: String {
+        guard let days = week?.days, let f = days.first?.date, let l = days.last?.date else { return "" }
+        let cal = Calendar.current
+        if cal.isDate(f, equalTo: l, toGranularity: .month) {
+            return "\(Self.rangeFmt.string(from: f))–\(cal.component(.day, from: l))"
+        }
+        return "\(Self.rangeFmt.string(from: f)) – \(Self.rangeFmt.string(from: l))"
+    }
 
     var body: some View {
         ZStack {
@@ -46,7 +75,7 @@ struct WelcomeBackView: View {
 
                 VStack(spacing: 14) {
                     TempaButton(label: "Plan something small", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
-                        onDismiss()
+                        onPlan()
                     }
 
                     Button {
@@ -65,6 +94,9 @@ struct WelcomeBackView: View {
                 .padding(.horizontal, 22)
                 .padding(.bottom, 40)
             }
+        }
+        .onAppear {
+            week = StatsEngine.periodStats(daysBack: 7, context: viewContext)
         }
     }
 
@@ -100,7 +132,7 @@ struct WelcomeBackView: View {
                     .font(.custom(T.fontHeader, size: 15).weight(.heavy))
                     .foregroundColor(T.text)
                 Spacer()
-                Text("May 18–24")
+                Text(rangeLabel)
                     .font(.custom(T.fontBody, size: 12).weight(.semibold))
                     .foregroundColor(T.textSec)
             }
@@ -131,12 +163,22 @@ struct WelcomeBackView: View {
                     .foregroundColor(Cat.health.ink)
 
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("You started 14 things")
-                        .font(.custom(T.fontHeader, size: 14).weight(.bold))
-                        .foregroundColor(T.text)
-                    Text("Starting is the hard part. You did it 14 times.")
-                        .font(.custom(T.fontBody, size: 12).weight(.medium))
-                        .foregroundColor(T.textSec)
+                    let n = week?.doneCount ?? 0
+                    if n > 0 {
+                        Text(n == 1 ? "You got 1 thing done" : "You got \(n) things done")
+                            .font(.custom(T.fontHeader, size: 14).weight(.bold))
+                            .foregroundColor(T.text)
+                        Text("Starting is the hard part — you did it \(n == 1 ? "once" : "\(n) times").")
+                            .font(.custom(T.fontBody, size: 12).weight(.medium))
+                            .foregroundColor(T.textSec)
+                    } else {
+                        Text("Last week was quiet")
+                            .font(.custom(T.fontHeader, size: 14).weight(.bold))
+                            .foregroundColor(T.text)
+                        Text("That's okay. One small thing today is plenty.")
+                            .font(.custom(T.fontBody, size: 12).weight(.medium))
+                            .foregroundColor(T.textSec)
+                    }
                 }
             }
             .padding(.horizontal, 14)

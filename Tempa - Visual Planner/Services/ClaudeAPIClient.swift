@@ -39,6 +39,8 @@ struct PlannedTask: Codable, Sendable {
     let precise: Bool?
     let date: String?      // "yyyy-MM-dd"
     let time: String?      // "HH:mm" 24h
+    let times: [String]?   // several "HH:mm" per day, for things repeated daily (e.g. meds)
+    let repeatDays: Int?   // repeat over N consecutive days from `date`
 }
 
 struct DayPlan: Codable, Sendable {
@@ -164,8 +166,21 @@ final class ClaudeAPIClient: Sendable {
     опівдні/в обід 12:00, після обіду/вдень 14:00, після роботи 18:00, ввечері 19:00, перед сном 22:00.
     - "precise": true only when an exact clock time was said ("о 15:00", "о пів на десяту", "о 9 ранку").
     If a task has no time hint, set hasTime=false and date/time null — the app places it in order.
+
+    RECURRENCE — for things that repeat (very common for meds/habits):
+    - SEVERAL TIMES A DAY ("3 рази на день", "тричі на добу", "зранку, в обід і ввечері", \
+    "twice a day"): set "times" to the list of 24h "HH:mm" — e.g. ["08:00","13:00","19:00"]. \
+    Use the same contextual mapping (зранку 08:00, обід 13:00, ввечері 19:00, перед сном 22:00). \
+    Set hasTime=true and "time" to the first of them. If they only say a count ("3 рази") with \
+    no parts of day, spread them across waking hours (e.g. 3× → 08:00, 14:00, 20:00).
+    - OVER SEVERAL DAYS ("10 днів підряд", "протягом тижня", "10 days in a row", "курс 7 днів"): \
+    set "repeatDays" to that number of consecutive days (e.g. 10). "цей тиждень"/"this week" = 7. \
+    "date" = the first day (today unless another start is given). Default repeatDays=1 (no repeat).
+    - Output ONE task object with "times" and/or "repeatDays" — do NOT emit a separate object \
+    per occurrence. Keep "title" clean of the count/frequency words ("Випити антибіотик").
+
     Keep the user's spoken order. Output STRICT JSON only, no markdown fences:
-    { "tasks": [ { "title": "...", "category": "work", "durationMinutes": 30, "icon": "briefcase", "hasTime": true, "precise": false, "date": "2026-06-09", "time": "14:00" } ] }
+    { "tasks": [ { "title": "Випити вітамін D", "category": "health", "durationMinutes": 5, "icon": "pills", "hasTime": true, "precise": false, "date": "2026-06-09", "time": "08:00", "times": ["08:00","14:00","20:00"], "repeatDays": 10 } ] }
     """
 
     /// Split a spoken brain-dump into several scheduled tasks ("plan my day").

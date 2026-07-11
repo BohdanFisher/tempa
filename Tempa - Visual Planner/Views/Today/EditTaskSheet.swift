@@ -63,6 +63,10 @@ struct EditTaskSheet: View {
 
     private func save() {
         task.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Refresh the icon to match the category only if it's still a default/placeholder.
+        if Cat.defaultIcons.contains(task.iconName ?? "circle") {
+            task.iconName = Cat.icon(for: category)
+        }
         task.category = category
         task.startTime = startTime
         task.durationMinutes = Int32(durationMinutes)

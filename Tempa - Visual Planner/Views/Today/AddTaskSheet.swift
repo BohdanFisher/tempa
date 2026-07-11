@@ -75,8 +75,16 @@ struct AddTaskSheet: View {
             DayPlanReviewSheet(dump: dumpText) { dismiss() }
         }
         .fullScreenCover(isPresented: $showAskAI) {
+            // Ask Tempa's confirmed task → same plan flow as voice, so it actually schedules.
             AddTaskAskAIView { text in
-                title = text
+                dumpText = text
+                pendingPlan = true
+            }
+        }
+        .onChange(of: showAskAI) { _, shown in
+            if !shown && pendingPlan {
+                pendingPlan = false
+                showDayPlan = true
             }
         }
         .onChange(of: selectedCategory) { _, new in
@@ -419,7 +427,7 @@ struct AddTaskSheet: View {
         let task = TaskBlock(context: viewContext)
         task.id = UUID()
         task.title = trimmed
-        task.iconName = "circle"
+        task.iconName = Cat.icon(for: selectedCategory)
         task.category = selectedCategory
         task.startTime = startTime
         task.durationMinutes = Int32(durationMinutes)

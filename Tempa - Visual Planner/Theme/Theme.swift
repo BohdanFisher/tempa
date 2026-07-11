@@ -70,6 +70,27 @@ enum Cat {
         default: return work
         }
     }
+
+    /// Default icon for a category, chosen from the app's existing task icon
+    /// vocabulary (ClaudeAPIClient.iconVocabulary) — used when a task is created
+    /// by hand, where there's no AI to pick a fitting icon.
+    static func icon(for category: String) -> String {
+        switch category {
+        case "work": return "laptopcomputer"
+        case "personal": return "bag"
+        case "health": return "figure.walk"
+        case "routine": return "alarm"
+        case "social": return "phone"
+        case "rest": return "bed.double"
+        default: return "doc.text"
+        }
+    }
+
+    /// Icons safe to refresh when the category changes (i.e. a category default
+    /// or the old placeholder) — a custom / AI-chosen icon is left untouched.
+    static let defaultIcons: Set<String> = [
+        "laptopcomputer", "bag", "figure.walk", "alarm", "phone", "bed.double", "circle"
+    ]
 }
 
 // MARK: - Shadows
@@ -289,6 +310,36 @@ private struct ButtonShadow: ViewModifier {
             content.shadow(color: Color(hex: "#2A2A33").opacity(0.18), radius: 8, x: 0, y: 6)
         default:
             content
+        }
+    }
+}
+
+// MARK: - TempaWaveform
+
+/// The signature "tempo" equalizer — a bell-shaped row of bars that gently
+/// breathe. Driven by TimelineView so it animates smoothly AND keeps running
+/// even when Reduce Motion is on (it's a soft equalizer, not vestibular motion).
+struct TempaWaveform: View {
+    var color: Color = T.primary
+    var bars: Int = 15
+    var maxHeight: CGFloat = 110
+    var barWidth: CGFloat = 7
+    var spacing: CGFloat = 7
+
+    var body: some View {
+        TimelineView(.animation(minimumInterval: 0.04)) { timeline in
+            let t = timeline.date.timeIntervalSinceReferenceDate
+            HStack(spacing: spacing) {
+                ForEach(0..<bars, id: \.self) { i in
+                    let env = sin(Double.pi * Double(i) / Double(max(bars - 1, 1)))   // bell
+                    let wave = (sin(t * 2.2 + Double(i) * 0.55) + 1) / 2               // travelling
+                    let h = 0.13 * maxHeight + env * (0.30 * maxHeight + wave * 0.57 * maxHeight)
+                    Capsule()
+                        .fill(color.opacity(0.25 + env * 0.40))
+                        .frame(width: barWidth, height: h)
+                }
+            }
+            .frame(maxWidth: .infinity)
         }
     }
 }

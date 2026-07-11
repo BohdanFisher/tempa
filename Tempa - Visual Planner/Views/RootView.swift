@@ -4,6 +4,7 @@ import CoreData
 struct RootView: View {
     @Environment(SettingsStore.self) private var settings
     @State private var showWelcomeBack = false
+    @State private var planAfterWelcome = false
 
     var body: some View {
         ZStack {
@@ -13,11 +14,26 @@ struct RootView: View {
                 OnboardingFlow()
             }
         }
-        .fullScreenCover(isPresented: $showWelcomeBack) {
-            WelcomeBackView {
-                WelcomeBackView.markShown()
-                showWelcomeBack = false
+        .fullScreenCover(isPresented: $showWelcomeBack, onDismiss: {
+            // Fire after the cover fully dismisses, so the add-task sheet
+            // doesn't fight the closing animation for the presentation slot.
+            if planAfterWelcome {
+                planAfterWelcome = false
+                AppRouter.shared.selectedTab = .today
+                AppRouter.shared.addTaskRequest = UUID()
             }
+        }) {
+            WelcomeBackView(
+                onPlan: {
+                    WelcomeBackView.markShown()
+                    planAfterWelcome = true
+                    showWelcomeBack = false
+                },
+                onDismiss: {
+                    WelcomeBackView.markShown()
+                    showWelcomeBack = false
+                }
+            )
         }
         .onAppear {
             if settings.onboardingCompleted && WelcomeBackView.shouldShow() {

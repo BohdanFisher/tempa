@@ -14,6 +14,8 @@ struct MeView: View {
     @State private var stats: StatsEngine.PeriodStats?
     @State private var cats: [StatsEngine.CategoryStat] = []
     @State private var streak: StatsEngine.StreakInfo?
+    @State private var hourly: StatsEngine.HourlyActivity?
+    @State private var focusDays: [StatsEngine.FocusDay] = []
 
     private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     // Did-save notifications post on the SAVING context's thread (CloudKit imports
@@ -60,6 +62,12 @@ struct MeView: View {
                         }
                     }
 
+                    if let hourly {
+                        heatmapCard(hourly)
+                    }
+
+                    focusCard
+
                     if !cats.isEmpty {
                         categoryCard
                     }
@@ -84,6 +92,8 @@ struct MeView: View {
         stats = StatsEngine.periodStats(daysBack: period.daysBack, context: viewContext)
         cats = StatsEngine.categoryStats(daysBack: period.daysBack, context: viewContext)
         streak = StatsEngine.streak(context: viewContext)
+        hourly = StatsEngine.hourlyActivity(weeksBack: 4, context: viewContext)
+        focusDays = StatsEngine.focusPerDay(daysBack: period.daysBack, context: viewContext)
     }
 
     // MARK: - Day battery
@@ -193,7 +203,7 @@ struct MeView: View {
     private func statTiles(_ s: StatsEngine.PeriodStats) -> some View {
         HStack(spacing: 10) {
             statTile(value: "\(s.doneCount)", label: "done", sub: "of \(s.plannedCount) planned")
-            statTile(value: hm(s.doneMinutes), label: "focused doing", sub: period == .today ? "today" : "this \(period == .week ? "week" : "month")")
+            statTile(value: hm(s.doneMinutes), label: "task time", sub: period == .today ? "today" : "this \(period == .week ? "week" : "month")")
             statTile(value: s.plannedCount > 0 ? "\(Int((Double(s.doneCount) / Double(s.plannedCount) * 100).rounded()))%" : "—",
                      label: "follow-through", sub: "done vs planned")
         }
@@ -222,16 +232,21 @@ struct MeView: View {
     // MARK: - Completion chart (week / month)
 
     private func chartCard(_ s: StatsEngine.PeriodStats) -> some View {
-        let maxDone = max(s.days.map(\.done).max() ?? 0, 1)
+        let maxVal = max(s.days.map { max($0.done, $0.planned) }.max() ?? 0, 1)
         let isWeek = period == .week
         return VStack(alignment: .leading, spacing: 12) {
-            Text("TASKS DONE PER DAY")
-                .font(.custom(T.fontHeader, size: 12).weight(.heavy))
-                .tracking(1.2)
-                .foregroundColor(T.textSec)
+            HStack {
+                Text("PLANNED VS DONE")
+                    .font(.custom(T.fontHeader, size: 12).weight(.heavy))
+                    .tracking(1.2)
+                    .foregroundColor(T.textSec)
+                Spacer()
+                legendDot(color: T.secondary, text: "done")
+                legendDot(color: T.secondary.opacity(0.22), text: "planned")
+            }
 
-            if s.doneCount == 0 {
-                Text("Nothing completed yet in this period — your wins will show up here.")
+            if s.doneCount == 0 && s.plannedCount == 0 {
+                Text("Nothing here yet for this period — your days will show up here.")
                     .font(.custom(T.fontBody, size: 13).weight(.medium))
                     .foregroundColor(T.textTer)
                     .padding(.vertical, 16)
@@ -240,10 +255,17 @@ struct MeView: View {
                     ForEach(s.days) { day in
                         let isToday = Calendar.current.isDateInToday(day.date)
                         VStack(spacing: 5) {
-                            RoundedRectangle(cornerRadius: 3)
-                                .fill(isToday ? T.primary : T.secondary.opacity(day.done > 0 ? 1 : 0.18))
-                                .frame(height: day.done > 0 ? max(10, 80 * CGFloat(day.done) / CGFloat(maxDone)) : 4)
-                                .frame(maxHeight: 80, alignment: .bottom)
+                            ZStack(alignment: .bottom) {
+                                if day.planned > 0 {
+                                    RoundedRectangle(cornerRadius: 3)
+                                        .fill(T.secondary.opacity(0.22))
+                                        .frame(height: max(6, 80 * CGFloat(day.planned) / CGFloat(maxVal)))
+                                }
+                                RoundedRectangle(cornerRadius: 3)
+                                    .fill(isToday ? T.primary : T.secondary.opacity(day.done > 0 ? 1 : 0.18))
+                                    .frame(height: day.done > 0 ? max(10, 80 * CGFloat(day.done) / CGFloat(maxVal)) : 4)
+                            }
+                            .frame(maxHeight: 80, alignment: .bottom)
                             if isWeek {
                                 Text(weekdayLetter(day.date))
                                     .font(.custom(T.fontHeader, size: 10).weight(.bold))
@@ -254,6 +276,146 @@ struct MeView: View {
                     }
                 }
                 .frame(height: isWeek ? 100 : 88, alignment: .bottom)
+            }
+        }
+        .padding(18)
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(T.surface))
+        .tempaShadowSm()
+    }
+
+    // MARK: - Golden hours (weekday × hour heatmap)
+
+    private func heatmapCard(_ h: StatsEngine.HourlyActivity) -> some View {
+        // Visible rows: the 8:00–22:00 core, stretched to any bucket that has data.
+        var lo = 4, hi = 10
+        if h.maxCount > 0 {
+            for d in 0..<7 {
+                for b in 0..<12 where h.grid[d][b] > 0 {
+                    lo = min(lo, b)
+                    hi = max(hi, b)
+                }
+            }
+        }
+        let buckets = Array(lo...hi)
+
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("YOUR GOLDEN HOURS")
+                    .font(.custom(T.fontHeader, size: 12).weight(.heavy))
+                    .tracking(1.2)
+                    .foregroundColor(T.textSec)
+                Spacer()
+                Text("LAST 4 WEEKS")
+                    .font(.custom(T.fontHeader, size: 10).weight(.bold))
+                    .tracking(1)
+                    .foregroundColor(T.textTer)
+            }
+
+            if h.maxCount == 0 {
+                Text("As you complete tasks, you'll see when in the week you shine.")
+                    .font(.custom(T.fontBody, size: 13).weight(.medium))
+                    .foregroundColor(T.textTer)
+                    .padding(.vertical, 16)
+            } else {
+                VStack(spacing: 4) {
+                    HStack(spacing: 4) {
+                        Color.clear.frame(width: 24, height: 1)
+                        ForEach(0..<7, id: \.self) { d in
+                            Text(h.weekdayLetters[d])
+                                .font(.custom(T.fontHeader, size: 10).weight(.bold))
+                                .foregroundColor(T.textTer)
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
+                    ForEach(buckets, id: \.self) { b in
+                        HStack(spacing: 4) {
+                            Text("\(b * 2)")
+                                .font(.custom(T.fontBody, size: 10).weight(.semibold))
+                                .foregroundColor(T.textTer)
+                                .frame(width: 24, alignment: .trailing)
+                            ForEach(0..<7, id: \.self) { d in
+                                let count = h.grid[d][b]
+                                let isPeak = d == h.peakDay && b == h.peakBucket
+                                RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                    .fill(cellColor(count: count, max: h.maxCount, isPeak: isPeak))
+                                    .frame(height: 16)
+                                    .frame(maxWidth: .infinity)
+                            }
+                        }
+                    }
+                }
+
+                if let pd = h.peakDay, let pb = h.peakBucket {
+                    Text("You're at your best on \(h.weekdayNames[pd])s around \(pb * 2):00–\(pb * 2 + 2):00.")
+                        .font(.custom(T.fontBody, size: 13).weight(.medium))
+                        .foregroundColor(T.textSec)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+        .padding(18)
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(T.surface))
+        .tempaShadowSm()
+    }
+
+    private func cellColor(count: Int, max maxCount: Int, isPeak: Bool) -> Color {
+        guard count > 0 else { return T.bgWarm }
+        if isPeak { return T.primary }
+        return T.secondary.opacity(0.22 + 0.78 * Double(count) / Double(maxCount))
+    }
+
+    // MARK: - Focus time
+
+    private var focusCard: some View {
+        let total = focusDays.reduce(0) { $0 + $1.minutes }
+        let maxMin = max(focusDays.map(\.minutes).max() ?? 0, 1)
+        let isWeek = period == .week
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("FOCUS TIME")
+                    .font(.custom(T.fontHeader, size: 12).weight(.heavy))
+                    .tracking(1.2)
+                    .foregroundColor(T.textSec)
+                Spacer()
+                Image(systemName: "timer")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(T.primary)
+            }
+
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Text(hm(total))
+                    .font(.custom(T.fontHeader, size: 30).weight(.heavy))
+                    .tracking(-0.5)
+                    .foregroundColor(T.text)
+                Text(period == .today ? "focused today" : "focused this \(period == .week ? "week" : "month")")
+                    .font(.custom(T.fontBody, size: 14).weight(.medium))
+                    .foregroundColor(T.textSec)
+            }
+
+            if total == 0 {
+                Text("No focus sessions in this period — the timer's there whenever you're ready.")
+                    .font(.custom(T.fontBody, size: 13).weight(.medium))
+                    .foregroundColor(T.textTer)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else if period != .today {
+                HStack(alignment: .bottom, spacing: isWeek ? 8 : 3) {
+                    ForEach(focusDays) { day in
+                        let isToday = Calendar.current.isDateInToday(day.date)
+                        VStack(spacing: 5) {
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(isToday ? T.primary : T.primary.opacity(day.minutes > 0 ? 0.55 : 0.14))
+                                .frame(height: day.minutes > 0 ? max(8, 56 * CGFloat(day.minutes) / CGFloat(maxMin)) : 4)
+                                .frame(maxHeight: 56, alignment: .bottom)
+                            if isWeek {
+                                Text(weekdayLetter(day.date))
+                                    .font(.custom(T.fontHeader, size: 10).weight(.bold))
+                                    .foregroundColor(isToday ? T.primary : T.textTer)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+                .frame(height: isWeek ? 76 : 62, alignment: .bottom)
             }
         }
         .padding(18)

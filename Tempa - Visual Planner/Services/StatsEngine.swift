@@ -64,6 +64,7 @@ enum StatsEngine {
         var id: Date { date }
         let date: Date
         let done: Int
+        let planned: Int
     }
 
     struct PeriodStats {
@@ -94,9 +95,14 @@ enum StatsEngine {
             guard let c = t.completedAt else { continue }
             perDay[cal.startOfDay(for: c), default: 0] += 1
         }
+        var perDayPlanned: [Date: Int] = [:]
+        for t in planned {
+            guard let s = t.startTime else { continue }
+            perDayPlanned[cal.startOfDay(for: s), default: 0] += 1
+        }
         let days: [StatDay] = (0..<daysBack).compactMap { i in
             guard let d = cal.date(byAdding: .day, value: i, to: from) else { return nil }
-            return StatDay(date: d, done: perDay[d] ?? 0)
+            return StatDay(date: d, done: perDay[d] ?? 0, planned: perDayPlanned[d] ?? 0)
         }
 
         return PeriodStats(
@@ -144,6 +150,82 @@ enum StatsEngine {
             return CategoryStat(category: name, doneMin: d, plannedMin: p)
         }
         .sorted { max($0.doneMin, $0.plannedMin) > max($1.doneMin, $1.plannedMin) }
+    }
+
+    // MARK: - Golden hours (weekday × hour-of-day completion heatmap)
+
+    struct HourlyActivity {
+        let grid: [[Int]]            // [weekday col 0..6, calendar's first weekday first][2h bucket 0..11]
+        let weekdayLetters: [String] // column captions, matching grid order
+        let weekdayNames: [String]   // full names for the insight line
+        let maxCount: Int
+        let peakDay: Int?            // grid column of the strongest cell
+        let peakBucket: Int?         // 2h bucket of the strongest cell
+    }
+
+    /// When in the week tasks actually get finished — completions from the last
+    /// `weeksBack` weeks bucketed into weekday × 2-hour cells.
+    static func hourlyActivity(weeksBack: Int, context: NSManagedObjectContext, now: Date = Date()) -> HourlyActivity {
+        let cal = Calendar.current
+        let from = cal.date(byAdding: .day, value: -(weeksBack * 7), to: cal.startOfDay(for: now)) ?? now
+
+        let req = NSFetchRequest<TaskBlock>(entityName: "TaskBlock")
+        req.predicate = NSPredicate(format: "completedAt >= %@", from as NSDate)
+        let done = (try? context.fetch(req)) ?? []
+
+        var grid = Array(repeating: Array(repeating: 0, count: 12), count: 7)
+        for t in done {
+            guard let c = t.completedAt else { continue }
+            let weekday = cal.component(.weekday, from: c)          // 1 = Sunday
+            let col = (weekday - cal.firstWeekday + 7) % 7
+            let bucket = min(11, max(0, cal.component(.hour, from: c) / 2))
+            grid[col][bucket] += 1
+        }
+
+        let letters = (0..<7).map { cal.veryShortWeekdaySymbols[(cal.firstWeekday - 1 + $0) % 7] }
+        let names = (0..<7).map { cal.weekdaySymbols[(cal.firstWeekday - 1 + $0) % 7] }
+
+        var maxCount = 0
+        var peakDay: Int?
+        var peakBucket: Int?
+        for d in 0..<7 {
+            for b in 0..<12 where grid[d][b] > maxCount {
+                maxCount = grid[d][b]
+                peakDay = d
+                peakBucket = b
+            }
+        }
+
+        return HourlyActivity(grid: grid, weekdayLetters: letters, weekdayNames: names,
+                              maxCount: maxCount, peakDay: peakDay, peakBucket: peakBucket)
+    }
+
+    // MARK: - Focus minutes per day (from the Focus timer)
+
+    struct FocusDay: Identifiable {
+        var id: Date { date }
+        let date: Date
+        let minutes: Int
+    }
+
+    static func focusPerDay(daysBack: Int, context: NSManagedObjectContext, now: Date = Date()) -> [FocusDay] {
+        let cal = Calendar.current
+        let todayStart = cal.startOfDay(for: now)
+        let from = cal.date(byAdding: .day, value: -(daysBack - 1), to: todayStart) ?? todayStart
+
+        let req = NSFetchRequest<CompletionStreak>(entityName: "CompletionStreak")
+        req.predicate = NSPredicate(format: "date >= %@", from as NSDate)
+        let rows = (try? context.fetch(req)) ?? []
+
+        var perDay: [Date: Int] = [:]
+        for r in rows {
+            guard let d = r.date else { continue }
+            perDay[cal.startOfDay(for: d), default: 0] += Int(r.focusMinutesTotal)
+        }
+        return (0..<daysBack).compactMap { i in
+            guard let d = cal.date(byAdding: .day, value: i, to: from) else { return nil }
+            return FocusDay(date: d, minutes: perDay[d] ?? 0)
+        }
     }
 
     // MARK: - Streak & records

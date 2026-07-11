@@ -30,7 +30,10 @@ struct OnboardingFlow: View {
             T.bg.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                OnbProgressBar(step: state.currentStep, total: state.totalSteps)
+                // Screen 1 is a full-bleed coral hero with its own white progress bar.
+                if state.currentStep != 0 {
+                    OnbProgressBar(step: state.currentStep, total: state.totalSteps)
+                }
 
                 screenForStep(state.currentStep)
                     .transition(reduceMotion ? .opacity : .asymmetric(

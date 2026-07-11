@@ -7,7 +7,6 @@ import Combine
 /// spotlight (current task + what's next) is surfaced right here — no separate tab.
 struct CalendarView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     // Personal planner → small dataset, so we fetch everything and filter per day in memory.
     @FetchRequest(
@@ -18,7 +17,6 @@ struct CalendarView: View {
     @State private var selectedDate = Calendar.current.startOfDay(for: Date())
     @State private var weekOffset = 0          // 0 == current week
     @State private var now = Date()
-    @State private var breatheScale: CGFloat = 1.0
     @State private var flatList = false        // false = grouped (morning/day/evening), true = one flat list
     @State private var showDoneDay = false     // collapsible "Done" section for completed tasks
 
@@ -34,9 +32,6 @@ struct CalendarView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     header
                     weekStrip
-                    if cal.isDateInToday(selectedDate), let current = currentTask {
-                        nowHero(current)
-                    }
                     dayTasksSection
                 }
                 .padding(.bottom, 140)
@@ -52,12 +47,6 @@ struct CalendarView: View {
             guard !visible.contains(where: { cal.isDate($0, inSameDayAs: selectedDate) }) else { return }
             if let shifted = cal.date(byAdding: .weekOfYear, value: new - old, to: selectedDate) {
                 withAnimation(.easeInOut(duration: 0.15)) { selectedDate = cal.startOfDay(for: shifted) }
-            }
-        }
-        .onAppear {
-            guard !reduceMotion else { return }
-            withAnimation(.easeInOut(duration: 4).repeatForever(autoreverses: true)) {
-                breatheScale = 1.08
             }
         }
     }
@@ -155,114 +144,6 @@ struct CalendarView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-    }
-
-    // MARK: - "Now" spotlight (today only)
-
-    private func nowHero(_ task: TaskBlock) -> some View {
-        let start = task.startTime ?? now
-        let total = TimeInterval(task.durationMinutes) * 60
-        let elapsed = now.timeIntervalSince(start)
-        let pct = min(max(elapsed / total, 0), 1)
-        let remaining = max(0, Int((total - elapsed) / 60))
-        let cc = Cat.named(task.category ?? "work")
-        let endTime = start.addingTimeInterval(total)
-
-        return VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                PulseDot(size: 8, color: cc.ink, rings: 2, speed: 3)
-                Text("RIGHT NOW")
-                    .font(.custom(T.fontHeader, size: 11).weight(.heavy))
-                    .tracking(2)
-                    .foregroundColor(cc.ink)
-            }
-            .padding(.top, 18)
-
-            ZStack(alignment: .topTrailing) {
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 10) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(T.surface)
-                                .frame(width: 50, height: 50)
-                            Image(systemName: task.iconName ?? "circle")
-                                .font(.system(size: 23, weight: .medium))
-                                .foregroundColor(cc.ink)
-                        }
-                        .tempaShadowSm()
-
-                        Text((task.category ?? "Task").capitalized)
-                            .font(.custom(T.fontHeader, size: 12).weight(.bold))
-                            .tracking(1)
-                            .foregroundColor(cc.ink)
-                            .textCase(.uppercase)
-                    }
-
-                    Text(task.title ?? "Current task")
-                        .font(.custom(T.fontHeader, size: 26).weight(.heavy))
-                        .tracking(-0.5)
-                        .foregroundColor(T.text)
-                        .lineSpacing(2)
-                        .padding(.top, 20)
-
-                    HStack(spacing: 14) {
-                        ZStack {
-                            Circle()
-                                .stroke(Color.white.opacity(0.5), lineWidth: 5)
-                            Circle()
-                                .trim(from: 0, to: pct)
-                                .stroke(cc.ink, style: StrokeStyle(lineWidth: 5, lineCap: .round))
-                                .rotationEffect(.degrees(-90))
-                            Text("\(Int(pct * 100))%")
-                                .font(.custom(T.fontHeader, size: 13).weight(.heavy))
-                                .foregroundColor(cc.ink)
-                        }
-                        .frame(width: 50, height: 50)
-
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(remaining > 60 ? "\(remaining/60) hour\(remaining/60 > 1 ? "s" : "") left" : "\(remaining) min left")
-                                .font(.custom(T.fontHeader, size: 13).weight(.bold))
-                                .foregroundColor(cc.ink.opacity(0.7))
-                            Text("Ends at \(endTime.formatted(.dateTime.hour().minute()))")
-                                .font(.custom(T.fontHeader, size: 18).weight(.heavy))
-                                .tracking(-0.2)
-                                .foregroundColor(T.text)
-                        }
-                    }
-                    .padding(.top, 18)
-                }
-                .padding(20)
-
-                Circle()
-                    .stroke(cc.solid.opacity(0.4), lineWidth: 2)
-                    .frame(width: 200, height: 200)
-                    .scaleEffect(reduceMotion ? 1 : breatheScale)
-                    .offset(x: 60, y: -60)
-
-                Circle()
-                    .fill(cc.solid.opacity(0.18))
-                    .frame(width: 150, height: 150)
-                    .offset(x: 34, y: -30)
-            }
-            .frame(minHeight: 230)
-            .background(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(cc.bg)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-
-            HStack(spacing: 10) {
-                TempaButton(label: "Focus mode", variant: .primary, size: .md) {
-                    AppRouter.shared.selectedTab = .focus
-                }
-                .frame(maxWidth: .infinity)
-                TempaButton(label: "Done", variant: .ghost, size: .md) {
-                    toggleCompletion(task)
-                }
-                .frame(maxWidth: .infinity)
-            }
-        }
-        .padding(.horizontal, 20)
     }
 
     // MARK: - Day tasks
@@ -480,14 +361,6 @@ struct CalendarView: View {
     }
 
     // MARK: - Data helpers
-
-    private var currentTask: TaskBlock? {
-        allTasks.first { t in
-            guard !t.isCompleted, let s = t.startTime else { return false }
-            let e = s.addingTimeInterval(TimeInterval(t.durationMinutes) * 60)
-            return now >= s && now < e
-        }
-    }
 
     private var dayTasks: [TaskBlock] {
         allTasks.filter { t in

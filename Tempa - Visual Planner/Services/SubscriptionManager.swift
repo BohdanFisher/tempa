@@ -29,13 +29,8 @@ final class SubscriptionManager {
     init() {
         transactionListener = startTransactionListener()
         Task { [self] in
-            do {
-                try await loadProducts()
-            } catch {
-                activateSimulation()
-            }
+            await ensureProductsLoaded()
             await updatePurchasedProducts()
-            await checkIntroEligibility()
         }
     }
 
@@ -43,24 +38,47 @@ final class SubscriptionManager {
         transactionListener?.cancel()
     }
 
-    func loadProducts() async throws {
-        let loaded = try await Product.products(for: productIDs)
-        if loaded.isEmpty {
-            activateSimulation()
-            return
+    /// Reach StoreKit, retrying a few times — a cold-start race can make the first
+    /// call return nothing. Simulation is only a fallback while no real products are
+    /// reachable, and it self-heals: call again (e.g. when the paywall appears) and
+    /// real products replace the fake ones.
+    func ensureProductsLoaded() async {
+        guard products.isEmpty else { return }
+        for attempt in 1...3 {
+            do {
+                let loaded = try await Product.products(for: productIDs)
+                if !loaded.isEmpty {
+                    products = loaded.sorted { p1, p2 in
+                        let order = ["tempa_yearly": 0, "tempa_monthly": 1, "tempa_weekly": 2]
+                        return (order[p1.id] ?? 3) < (order[p2.id] ?? 3)
+                    }
+                    isSimulating = false
+                    simPlans = []
+                    print("[Tempa] StoreKit: loaded \(loaded.count) product(s) — store is live: \(loaded.map(\.id).joined(separator: ", "))")
+                    await checkIntroEligibility()
+                    return
+                }
+                print("[Tempa] StoreKit attempt \(attempt): 0 products. Launched from Xcode with the StoreKit configuration selected in the scheme?")
+            } catch {
+                print("[Tempa] StoreKit attempt \(attempt) failed: \(error.localizedDescription)")
+            }
+            try? await Task.sleep(for: .milliseconds(600))
         }
-        products = loaded.sorted { p1, p2 in
-            let order = ["tempa_yearly": 0, "tempa_monthly": 1, "tempa_weekly": 2]
-            return (order[p1.id] ?? 3) < (order[p2.id] ?? 3)
+        if products.isEmpty && !isSimulating {
+            print("[Tempa] StoreKit unreachable → simulation fallback: taps fake-complete the purchase, no payment sheet will appear")
+            activateSimulation()
         }
     }
 
     private func activateSimulation() {
         isSimulating = true
+        // Dev-only fallback when no StoreKit products are available (no App Store
+        // Connect products and no .storekit config selected in the scheme). Real
+        // builds show Product.displayPrice — already in the buyer's own currency.
         simPlans = [
-            SimPlan(id: "tempa_yearly", name: "Yearly", price: "€29.99", monthlyPrice: "€2.50", periodLabel: "year", hasTrial: true),
-            SimPlan(id: "tempa_monthly", name: "Monthly", price: "€4.49", monthlyPrice: nil, periodLabel: "month", hasTrial: false),
-            SimPlan(id: "tempa_weekly", name: "Weekly", price: "€1.99", monthlyPrice: nil, periodLabel: "week", hasTrial: false),
+            SimPlan(id: "tempa_yearly", name: "Yearly", price: "$29.99", monthlyPrice: "$2.50", periodLabel: "year", hasTrial: true),
+            SimPlan(id: "tempa_monthly", name: "Monthly", price: "$4.49", monthlyPrice: nil, periodLabel: "month", hasTrial: false),
+            SimPlan(id: "tempa_weekly", name: "Weekly", price: "$1.99", monthlyPrice: nil, periodLabel: "week", hasTrial: false),
         ]
         hasIntroOfferEligibility = ["tempa_yearly": true]
     }

@@ -46,6 +46,8 @@ final class AppRouter {
     var selectedTab: AppTab = .today
     /// Set to ask the Focus tab to start a session for a specific task.
     var focusRequest: FocusRequest?
+    /// Set to ask the Today tab to open the add-task sheet (e.g. from Welcome Back).
+    var addTaskRequest: UUID?
     private init() {}
 }
 

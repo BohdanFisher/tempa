@@ -22,6 +22,7 @@ private struct SandParticle: Identifiable {
 struct FocusView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.scenePhase) private var scenePhase
     @State private var router = AppRouter.shared
 
     // Timer state
@@ -38,16 +39,20 @@ struct FocusView: View {
     // Drag-to-complete
     @State private var isDragging = false
     @State private var dragProgress: Double = 0
-
-    // UI toggles
-    @State private var isMusicOn = false
+    @State private var dragAnchor: Double? = nil      // last fraction this drag — gives the dial end-stops
+    @State private var lastActiveStep: Int = -1       // last haptic step on the finish dial
+    @State private var lastRawFraction: Double = 0    // finish dial: previous raw angle, for delta tracking
+    @State private var dragCompleted = false          // swallow the rest of a drag that just finished a session
+    @State private var lastLeft: Date?                // when the app left the foreground; ticks freeze while set
+    #if os(iOS)
+    @State private var dialHaptic = UIImpactFeedbackGenerator(style: .rigid)
+    #endif
 
     // Particles
     @State private var particles: [SandParticle] = []
     @State private var particleID: UInt32 = 0
 
     // Audio
-    @State private var musicPlayer: AVAudioPlayer?
     @State private var completionPlayer: AVAudioPlayer?
 
     // Timers
@@ -122,9 +127,6 @@ struct FocusView: View {
             darkBg.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                topPills
-                    .padding(.top, 8)
-
                 // Title
                 VStack(spacing: 4) {
                     Text(focusTitle)
@@ -184,28 +186,12 @@ struct FocusView: View {
             selectedMinutes = max(5, min(60, req.minutes))
             startSession()
         }
-    }
-
-    // MARK: - Top Pills
-
-    private var topPills: some View {
-        HStack {
-            Button {
-                #if os(iOS)
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                #endif
-                isMusicOn.toggle()
-                if isMusicOn && isActive { startMusic() } else { stopMusic() }
-            } label: {
-                ActionPill(icon: "speaker.wave.2.fill", label: "Café", isOn: isMusicOn)
-            }
-            .buttonStyle(.plain)
-
-            Spacer()
-
-            ActionPill(icon: "viewfinder", label: "Doubling")
+        .onChange(of: scenePhase) { _, phase in
+            handleScenePhase(phase)
         }
-        .padding(.horizontal, 18)
+        .onAppear {
+            restoreSessionIfNeeded()
+        }
     }
 
     // MARK: - Ring View (Canvas-based, matching design spec)
@@ -385,6 +371,7 @@ struct FocusView: View {
     private var ringDrag: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { value in
+                guard !dragCompleted else { return }
                 let dx = value.location.x - SIZE / 2
                 let dy = value.location.y - SIZE / 2
                 let dist = sqrt(dx * dx + dy * dy)
@@ -406,18 +393,37 @@ struct FocusView: View {
             }
             .onEnded { _ in
                 isDragging = false
+                dragAnchor = nil
+                lastActiveStep = -1
+                dragCompleted = false
             }
     }
 
     private func handleSettingDrag(fraction: Double) {
-        // 1-minute increments
-        var mins = Int(round(fraction * 60))
-        mins = max(1, min(60, mins))
-        if mins != selectedMinutes {
+        if dragAnchor == nil {
             #if os(iOS)
-            UISelectionFeedbackGenerator().selectionChanged()
+            dialHaptic.prepare()
             #endif
+        }
+        // End-stop: never wrap across the 12 o'clock dead zone (the 1↔60 boundary).
+        var mins: Int
+        var effFraction = fraction
+        if let anchor = dragAnchor {
+            if anchor >= 0.75 && fraction <= 0.25 {        // pushed past 60 → hold at 60
+                mins = 60; effFraction = 1
+            } else if anchor <= 0.25 && fraction >= 0.75 { // pushed below 1 → hold at 1
+                mins = 1; effFraction = 0
+            } else {
+                mins = Int(round(fraction * 60))
+            }
+        } else {
+            mins = Int(round(fraction * 60))               // first touch — set directly
+        }
+        mins = max(1, min(60, mins))
+        dragAnchor = effFraction
+        if mins != selectedMinutes {
             selectedMinutes = mins
+            dialTick()
         }
     }
 
@@ -430,28 +436,53 @@ struct FocusView: View {
             )
             guard kd < 55 else { return }
             isDragging = true
+            dragProgress = activeProgress
+            lastRawFraction = fraction              // baseline for delta tracking
+            lastActiveStep = Int(activeProgress * 60)
+            #if os(iOS)
+            dialHaptic.prepare()
+            #endif
+            return
         }
 
-        // Forward only
-        let isAhead: Bool
-        if activeProgress > 0.85 && fraction < 0.15 {
-            isAhead = true
-        } else {
-            isAhead = fraction >= activeProgress - 0.02
-        }
-        guard isAhead else { return }
+        // Accumulate the *shortest-path* angular delta between samples, so the
+        // rotation is tracked continuously even across the 12 o'clock seam — no
+        // jumping onto a new lap, even on a fast flick.
+        var delta = fraction - lastRawFraction
+        if delta > 0.5 { delta -= 1 } else if delta < -0.5 { delta += 1 }
+        lastRawFraction = fraction
 
-        // Completion check
-        if fraction > 0.97 || (activeProgress > 0.85 && fraction < 0.1) {
+        // Hard end-stop: progress can never leave [current, 1.0]. At 1.0 the knob
+        // sits exactly on 12 o'clock and the session finishes.
+        let newProgress = min(1.0, max(activeProgress, dragProgress + delta))
+
+        if newProgress >= 0.999 {
+            dragProgress = 1.0
+            dragCompleted = true        // ignore the rest of this drag — don't bleed into the time dial
             completeSession()
             return
         }
 
-        dragProgress = fraction
+        // Haptic tick once per ring-minute as you scrub toward the finish.
+        let step = Int(newProgress * 60)
+        if step != lastActiveStep {
+            lastActiveStep = step
+            dialTick()
+        }
+
+        dragProgress = newProgress
 
         // Sand particles at knob
-        let pos = knobPoint(for: fraction)
-        spawnParticles(at: pos, count: 3)
+        spawnParticles(at: knobPoint(for: newProgress), count: 3)
+    }
+
+    /// One crisp dial tick — shared by the time dial and the finish dial. A prepared,
+    /// reused `.rigid` generator, so it's firmer and more consistent than the old
+    /// fire-a-fresh-generator-each-tick selection feedback.
+    private func dialTick() {
+        #if os(iOS)
+        dialHaptic.impactOccurred(intensity: 0.7)
+        #endif
     }
 
     // MARK: - Session Logic
@@ -466,7 +497,81 @@ struct FocusView: View {
         elapsed = 0
         pauseAccum = 0
         pauseStart = nil
-        if isMusicOn { startMusic() }
+        lastLeft = nil
+        persistSession()
+    }
+
+    /// Bring back a session that was nailed down before the app got killed.
+    /// The same grace rule applies: a longer absence comes back paused, frozen
+    /// at the moment the user left — nothing is lost, nothing kept running.
+    private func restoreSessionIfNeeded() {
+        guard !isActive, var snap = FocusSessionStore.load() else { return }
+
+        if !snap.isPaused, let left = snap.backgroundedAt,
+           Date().timeIntervalSince(left) > FocusNudge.delay {
+            snap.isPaused = true
+            snap.pauseStart = left
+        }
+
+        sessionStart = snap.sessionStart
+        selectedMinutes = max(1, min(60, snap.selectedMinutes))
+        pauseAccum = snap.pauseAccum
+        isPaused = snap.isPaused
+        pauseStart = snap.pauseStart
+        sessionCategory = snap.category
+        // Paused → frozen at the pause moment; running → caught up to now.
+        let anchor = snap.isPaused ? (snap.pauseStart ?? Date()) : Date()
+        elapsed = max(0, anchor.timeIntervalSince(snap.sessionStart) - snap.pauseAccum)
+        lastLeft = nil
+        withAnimation(.easeInOut(duration: 0.4)) { isActive = true }
+        persistSession()   // re-save with backgroundedAt cleared
+    }
+
+    /// Nail the running session down so an app kill can't lose it.
+    private func persistSession(leftAt: Date? = nil) {
+        guard isActive, let start = sessionStart else {
+            FocusSessionStore.clear()
+            return
+        }
+        FocusSessionStore.save(FocusSessionSnapshot(
+            sessionStart: start,
+            selectedMinutes: selectedMinutes,
+            pauseAccum: pauseAccum,
+            isPaused: isPaused,
+            pauseStart: pauseStart,
+            category: sessionCategory,
+            backgroundedAt: leftAt
+        ))
+    }
+
+    /// Leaving mid-session: nail the session to disk and set one gentle reminder.
+    /// Returning: short hops (≤ the 3-min grace window) count as focus and the
+    /// timer just carries on; longer absences retroactively become pause time,
+    /// frozen at the moment the user left. Paused sessions don't nudge —
+    /// stepping away on purpose isn't a distraction.
+    private func handleScenePhase(_ phase: ScenePhase) {
+        switch phase {
+        case .background, .inactive:
+            guard isActive else { return }
+            if lastLeft == nil { lastLeft = Date() }
+            persistSession(leftAt: lastLeft)
+            if phase == .background && !isPaused { FocusNudge.schedule() }
+        case .active:
+            FocusNudge.cancel()
+            if isActive, let left = lastLeft, !isPaused,
+               Date().timeIntervalSince(left) > FocusNudge.delay {
+                // Away past the grace window → the absence was a pause, not focus.
+                isPaused = true
+                pauseStart = left
+                if let start = sessionStart {
+                    elapsed = max(0, left.timeIntervalSince(start) - pauseAccum)
+                }
+            }
+            lastLeft = nil
+            if isActive { persistSession() }
+        default:
+            break
+        }
     }
 
     private func togglePause() {
@@ -477,12 +582,11 @@ struct FocusView: View {
             if let ps = pauseStart { pauseAccum += Date().timeIntervalSince(ps) }
             pauseStart = nil
             isPaused = false
-            if isMusicOn { musicPlayer?.play() }
         } else {
             pauseStart = Date()
             isPaused = true
-            musicPlayer?.pause()
         }
+        persistSession()
     }
 
     private func addOneMinute() {
@@ -490,11 +594,14 @@ struct FocusView: View {
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
         #endif
         selectedMinutes += 1
+        persistSession()
     }
 
     private func completeSession() {
-        let focusMin = Int32(elapsed / 60)
-        stopMusic()
+        // Clamp to the dialed length — a short background hop can overshoot slightly.
+        let focusMin = Int32(min(elapsed, totalSec) / 60)
+        FocusNudge.cancel()
+        FocusSessionStore.clear()
         playCompletionSound()
 
         #if os(iOS)
@@ -506,6 +613,8 @@ struct FocusView: View {
         withAnimation(.easeInOut(duration: 0.4)) { isActive = false }
         isPaused = false
         isDragging = false
+        dragAnchor = nil
+        lastActiveStep = -1
         elapsed = 0
         sessionStart = nil
         pauseAccum = 0
@@ -535,7 +644,9 @@ struct FocusView: View {
     // MARK: - Clock
 
     private func tickClock() {
-        guard isActive, !isPaused, let start = sessionStart else { return }
+        // lastLeft != nil → we're mid-transition from background; don't recompute
+        // elapsed until the scene handler decides whether the absence was a pause.
+        guard isActive, !isPaused, lastLeft == nil, let start = sessionStart else { return }
         elapsed = max(0, Date().timeIntervalSince(start) - pauseAccum)
         if elapsed >= totalSec { completeSession() }
     }
@@ -576,23 +687,6 @@ struct FocusView: View {
 
     // MARK: - Audio
 
-    private func startMusic() {
-        guard let url = Bundle.main.url(forResource: "focus_music", withExtension: "mp3") else { return }
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
-            try AVAudioSession.sharedInstance().setActive(true)
-            musicPlayer = try AVAudioPlayer(contentsOf: url)
-            musicPlayer?.numberOfLoops = -1
-            musicPlayer?.volume = 0.3
-            musicPlayer?.play()
-        } catch { print("Music error: \(error)") }
-    }
-
-    private func stopMusic() {
-        musicPlayer?.stop()
-        musicPlayer = nil
-    }
-
     private func playCompletionSound() {
         if let url = Bundle.main.url(forResource: "universfield-new-notification-013-363676", withExtension: "mp3") {
             do {
@@ -607,32 +701,6 @@ struct FocusView: View {
             AudioServicesPlaySystemSound(1007)
             #endif
         }
-    }
-}
-
-// MARK: - Action Pill
-
-private struct ActionPill: View {
-    let icon: String
-    let label: String
-    var isOn: Bool = false
-
-    var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: icon)
-                .font(.system(size: 13, weight: .medium))
-            Text(label)
-                .font(.custom(T.fontHeader, size: 14).weight(.bold))
-        }
-        .foregroundColor(T.text.opacity(isOn ? 0.95 : 0.85))
-        .frame(height: 38)
-        .padding(.horizontal, 16)
-        .background(
-            Capsule().fill(T.text.opacity(isOn ? 0.12 : 0.06))
-        )
-        .overlay(
-            Capsule().stroke(T.text.opacity(0.1), lineWidth: 1)
-        )
     }
 }
 

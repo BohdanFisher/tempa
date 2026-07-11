@@ -7,38 +7,96 @@ import CoreData
 struct Onb1HookView: View {
     let state: OnboardingState
 
+    // Bright coral in light mode; a deeper, calmer coral in dark mode (the bright
+    // one glares on a dark screen). White text/buttons read well on both.
+    private let coral = Color(lightHex: "#FF7A59", darkHex: "#B5503A")
+
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
+        ZStack {
+            coral.ignoresSafeArea()
 
-            SonarPulse(coreSize: 46, ringSize: 92, maxScale: 2.0)
-                .padding(.bottom, 36)
+            VStack(spacing: 0) {
+                // Own progress bar — white on coral.
+                HStack(spacing: 4) {
+                    ForEach(0..<state.totalSteps, id: \.self) { i in
+                        Capsule()
+                            .fill(Color.white.opacity(i == 0 ? 1 : 0.28))
+                            .frame(height: 4)
+                    }
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 8)
 
-            Text("Your brain isn't broken.\nYou just lost your tempo.")
-                .font(.custom("Nunito-ExtraBold", size: 36).weight(.heavy))
-                .tracking(-0.9)
-                .foregroundColor(T.text)
-                .multilineTextAlignment(.center)
-                .lineSpacing(-2)
+                Spacer(minLength: 12)
 
-            Text("Tempa shows you one thing at a time — so you can find your rhythm again.")
-                .font(.custom("Inter-Medium", size: 16).weight(.medium))
-                .foregroundColor(T.textSec)
-                .multilineTextAlignment(.center)
-                .lineSpacing(4)
-                .padding(.top, 18)
-                .padding(.horizontal, 14)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("TEMPA")
+                        .font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
+                        .tracking(3)
+                        .foregroundColor(.white.opacity(0.72))
+                        .padding(.bottom, 16)
 
-            Spacer()
+                    (
+                        Text("Your brain isn't broken. You just lost your ")
+                            .font(.custom("Nunito-ExtraBold", size: 38).weight(.heavy))
+                            .foregroundColor(.white)
+                        + Text("tempo.")
+                            .font(.system(size: 38, weight: .semibold, design: .serif))
+                            .italic()
+                            .foregroundColor(.white.opacity(0.9))
+                    )
+                    .tracking(-0.6)
+                    .lineSpacing(3)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
 
-            TempaButton(label: "Find my tempo", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
-                state.next()
+                    Text("Tempa shows you one thing at a time — so you can find your rhythm again.")
+                        .font(.custom("Inter-Medium", size: 16).weight(.medium))
+                        .foregroundColor(.white.opacity(0.85))
+                        .lineSpacing(4)
+                        .padding(.top, 16)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 26)
+
+                TempaWaveform(color: .white, maxHeight: 118)
+                    .frame(height: 150)
+                    .padding(.top, 26)
+                    .padding(.horizontal, 26)
+
+                Spacer(minLength: 12)
+
+                Button {
+                    #if os(iOS)
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    #endif
+                    state.next()
+                } label: {
+                    HStack(spacing: 10) {
+                        Text("Find my tempo")
+                            .font(.custom("Nunito-ExtraBold", size: 17).weight(.heavy))
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 16, weight: .bold))
+                    }
+                    .foregroundColor(coral)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 19)
+                    .background(Capsule().fill(.white))
+                    .shadow(color: .black.opacity(0.12), radius: 16, x: 0, y: 8)
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 22)
+
+                Text("Takes 60 seconds · free to try")
+                    .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                    .foregroundColor(.white.opacity(0.55))
+                    .padding(.top, 14)
+                    .padding(.bottom, 28)
             }
-            .padding(.horizontal, 22)
-            .padding(.bottom, 50)
         }
-        .padding(.top, 40)
     }
+
 }
 
 // MARK: - Screen 2: Self-Identification
@@ -95,8 +153,6 @@ struct Onb2SelfIdView: View {
             }
             .padding(.horizontal, 22)
             .padding(.bottom, 50)
-            .opacity(state.selfIdPicks.isEmpty ? 0.5 : 1)
-            .disabled(state.selfIdPicks.isEmpty)
         }
     }
 }
@@ -155,8 +211,6 @@ struct Onb3PainView: View {
             }
             .padding(.horizontal, 22)
             .padding(.bottom, 50)
-            .opacity(state.painPicks.isEmpty ? 0.5 : 1)
-            .disabled(state.painPicks.isEmpty)
         }
     }
 }
@@ -193,7 +247,7 @@ struct QuizRow: View {
                 }
 
                 Text(label)
-                    .font(.custom("Nunito-ExtraBold", size: 16).weight(.bold))
+                    .font(.custom("Inter-Medium", size: 16))
                     .foregroundColor(T.text)
 
                 Spacer()
@@ -245,6 +299,21 @@ struct Onb4DemoView: View {
                     resultCard
                 } else {
                     inputCard
+
+                    Button {
+                        #if os(iOS)
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        #endif
+                        focused = false
+                        state.next()
+                    } label: {
+                        Text("Skip")
+                            .font(.custom("Inter-Medium", size: 14))
+                            .foregroundColor(T.textSec)
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 18)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             .padding(.horizontal, 22)
@@ -274,9 +343,10 @@ struct Onb4DemoView: View {
             .padding(.top, 22)
 
             if isLoading {
-                HStack {
+                HStack(spacing: 12) {
                     Spacer()
-                    PulseDot(size: 16, color: T.primary, rings: 3, speed: 2)
+                    TempaWaveform(color: T.primary, bars: 9, maxHeight: 26, barWidth: 4, spacing: 4)
+                        .frame(width: 60, height: 30)
                     Text("Breaking it down...")
                         .font(.custom("Nunito-ExtraBold", size: 14).weight(.semibold))
                         .foregroundColor(T.textSec)
@@ -644,13 +714,6 @@ struct Onb5PersonalView: View {
 struct Onb6SocialView: View {
     let state: OnboardingState
 
-    private let avatarColors: [Color] = [
-        Color(hex: "#FFB298"),
-        Color(hex: "#7BCFB6"),
-        Color(hex: "#7FA7E6"),
-        Color(hex: "#E8C067"),
-    ]
-
     private let testimonials = [
         (quote: "For the first time, I finish things. I just see the tiny next step and go.", name: "Maya, 32"),
         (quote: "No streaks to lose was the unlock for me. I'm three months in.", name: "Jordan, 27"),
@@ -673,10 +736,12 @@ struct Onb6SocialView: View {
                 // Count card with gradient
                 HStack(spacing: 14) {
                     HStack(spacing: 0) {
-                        ForEach(avatarColors.indices, id: \.self) { i in
-                            Circle()
-                                .fill(avatarColors[i])
+                        ForEach(0..<4, id: \.self) { i in
+                            Image("avatar_review_\(i + 1)")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
                                 .frame(width: 36, height: 36)
+                                .clipShape(Circle())
                                 .overlay(
                                     Circle().stroke(T.bg, lineWidth: 2.5)
                                 )
@@ -687,7 +752,7 @@ struct Onb6SocialView: View {
                     .frame(width: 36 + 3 * (36 - 10))
 
                     VStack(alignment: .leading, spacing: 1) {
-                        Text("Top 10 ADHD app · App Store '25")
+                        Text("Top 10 ADHD app · App Store 2026")
                             .font(.custom("Nunito-ExtraBold", size: 16).weight(.heavy))
                             .foregroundColor(T.text)
                         Text("4.8 ★ from 12,400+ reviews")
@@ -868,14 +933,11 @@ struct Onb8NotifsView: View {
 
             // Preview notification
             HStack(spacing: 12) {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(T.primary)
+                Image("tempa_icon_onbording")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: 38, height: 38)
-                    .overlay(
-                        Text("T")
-                            .font(.custom("Nunito-ExtraBold", size: 18).weight(.heavy))
-                            .foregroundColor(.white)
-                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack {
@@ -954,7 +1016,6 @@ struct Onb9BuildingView: View {
     let state: OnboardingState
     let settings: SettingsStore
 
-    @State private var animate = false
     @State private var currentIdx = 0
     @State private var checkItems: [(String, Bool)] = [
         ("Setting your wake time", false),
@@ -967,25 +1028,10 @@ struct Onb9BuildingView: View {
         VStack(spacing: 0) {
             Spacer()
 
-            // Pulse rings (NOT PulseDot)
-            ZStack {
-                ForEach([140, 100, 70], id: \.self) { size in
-                    Circle()
-                        .stroke(T.primary.opacity(0.2 + Double(140 - size) / 140 * 0.24), lineWidth: 1.5)
-                        .frame(width: CGFloat(size), height: CGFloat(size))
-                        .scaleEffect(animate ? 1.04 : 0.96)
-                        .animation(
-                            .easeInOut(duration: 3).repeatForever(autoreverses: true)
-                            .delay(Double(140 - size) * 0.002),
-                            value: animate
-                        )
-                }
-                Circle()
-                    .fill(T.primary)
-                    .frame(width: 36, height: 36)
-                    .shadow(color: Color(hex: "#FF7A59").opacity(0.4), radius: 10, x: 0, y: 8)
-            }
-            .padding(.bottom, 32)
+            TempaWaveform(color: T.primary, maxHeight: 86)
+                .frame(height: 110)
+                .padding(.horizontal, 50)
+                .padding(.bottom, 32)
 
             Text("Creating your calm day…")
                 .font(.custom("Nunito-ExtraBold", size: 26).weight(.heavy))
@@ -1038,7 +1084,6 @@ struct Onb9BuildingView: View {
                 .padding(.bottom, 30)
         }
         .padding(.top, 40)
-        .onAppear { animate = true }
         .task { await buildPlan() }
     }
 

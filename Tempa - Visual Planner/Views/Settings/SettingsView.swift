@@ -45,6 +45,7 @@ struct ProfileView: View {
     @State private var showPaywall = false
     @State private var editingTime: TimeField?
     @State private var showPrivacy = false
+    @State private var showTerms = false
     @AppStorage("themePreference") private var theme: ThemePreference = .system
     @AppStorage("nudgesEnabled") private var nudges = true
 
@@ -67,6 +68,7 @@ struct ProfileView: View {
                     theDaySection
                     appearanceSection
                     aiSection
+                    legalSection
 
                     Text("Tempa 1.2 · find your tempo")
                         .font(.custom(T.fontBody, size: 12).weight(.medium))
@@ -86,7 +88,10 @@ struct ProfileView: View {
             timeSheet(field)
         }
         .sheet(isPresented: $showPrivacy) {
-            privacySheet
+            PrivacyPolicySheet()
+        }
+        .sheet(isPresented: $showTerms) {
+            TermsSheet()
         }
     }
 
@@ -258,9 +263,20 @@ struct ProfileView: View {
         settingsGroup("AI") {
             SettingRow(icon: "sparkles", iconBg: Color(lightHex: "#FFE9E1", darkHex: "#2C1F18"), iconColor: T.primary,
                        title: "AI requests this month", value: "\(AIUsage.thisMonth)")
+        }
+    }
+
+    // MARK: - Legal
+
+    private var legalSection: some View {
+        settingsGroup("Legal") {
             SettingRow(icon: "lock.fill", iconBg: T.bgWarm, iconColor: T.textSec,
-                       title: "Privacy", detail: "What we send to AI") {
+                       title: "Privacy Policy", detail: "What stays on-device, what goes to AI") {
                 showPrivacy = true
+            }
+            SettingRow(icon: "doc.text", iconBg: T.bgWarm, iconColor: T.textSec,
+                       title: "Terms of Service", detail: "The ground rules") {
+                showTerms = true
             }
         }
     }
@@ -324,47 +340,6 @@ struct ProfileView: View {
             get: { settings.energyDipTime ?? fallback },
             set: { settings.energyDipTime = $0; settings.save() }
         )
-    }
-
-    private var privacySheet: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                HStack {
-                    Text("Privacy")
-                        .font(.custom(T.fontHeader, size: 24).weight(.heavy))
-                        .foregroundColor(T.text)
-                    Spacer()
-                    Button { showPrivacy = false } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(T.text)
-                            .frame(width: 34, height: 34)
-                            .background(Circle().fill(T.surface))
-                    }
-                }
-
-                privacyLine("sparkles", "Only the task text you type or speak is sent to AI — to break it down or plan your day.")
-                privacyLine("lock.fill", "Your schedule, completions and stats stay on-device and in your private iCloud. They're never sent to AI.")
-                privacyLine("hand.raised.fill", "No accounts, no tracking profiles. Requests go to Anthropic's API and aren't used to train models.")
-            }
-            .padding(24)
-        }
-        .presentationDetents([.medium])
-        .presentationDragIndicator(.visible)
-        .presentationBackground(T.bg)
-    }
-
-    private func privacyLine(_ icon: String, _ text: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 15, weight: .medium))
-                .foregroundColor(T.primary)
-                .frame(width: 24)
-            Text(text)
-                .font(.custom(T.fontBody, size: 14).weight(.medium))
-                .foregroundColor(T.textSec)
-                .fixedSize(horizontal: false, vertical: true)
-        }
     }
 
     // MARK: - Settings Group

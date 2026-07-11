@@ -5,10 +5,15 @@ import CoreData
 struct PlanRow: Identifiable {
     let id = UUID()
     var title: String
-    var start: Date
+    var start: Date                    // first occurrence (day + first time)
     var durationMinutes: Int
     var category: String
     var icon: String
+    var dailyTimes: [DateComponents]   // hour/minute for each per-day occurrence (≥1)
+    var repeatDays: Int                // 1 = single day; N = repeats N consecutive days
+
+    var isRecurring: Bool { dailyTimes.count > 1 || repeatDays > 1 }
+    var instanceCount: Int { max(dailyTimes.count, 1) * max(repeatDays, 1) }
 }
 
 /// Takes a spoken brain-dump, asks the AI to split it into separate scheduled
@@ -167,11 +172,16 @@ struct DayPlanReviewSheet: View {
             }
 
             HStack(spacing: 10) {
-                DatePicker("", selection: row.start, displayedComponents: [.date, .hourAndMinute])
+                DatePicker("", selection: row.start,
+                           displayedComponents: row.wrappedValue.isRecurring ? [.date] : [.date, .hourAndMinute])
                     .labelsHidden()
                     .datePickerStyle(.compact)
                     .tint(T.primary)
                     .fixedSize()
+
+                if row.wrappedValue.isRecurring {
+                    recurrenceBadge(row.wrappedValue.dailyTimes.count, row.wrappedValue.repeatDays)
+                }
 
                 Spacer()
 
@@ -211,7 +221,7 @@ struct DayPlanReviewSheet: View {
     private var addBar: some View {
         VStack(spacing: 0) {
             if !rows.isEmpty {
-                TempaButton(label: "Add \(rows.count) task\(rows.count == 1 ? "" : "s") to my day",
+                TempaButton(label: "Add \(totalInstances) task\(totalInstances == 1 ? "" : "s")",
                             variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
                     addAll()
                 }
@@ -256,37 +266,80 @@ struct DayPlanReviewSheet: View {
     }
 
     private func buildRows(from plan: DayPlan) -> [PlanRow] {
+        let cal = Calendar.current
         var cursor = nextHalfHour()
         var result: [PlanRow] = []
         for t in plan.tasks {
             let dur = min(max(t.durationMinutes ?? 30, 5), 240)
+            let cat = validCategory(t.category)
+            let icon = validIcon(t.icon, cat)
+            let days = max(1, min(t.repeatDays ?? 1, 30))          // cap at 30 days
+            let baseDay = parseDay(t.date)
+
+            // Resolve the per-day times.
+            var times: [DateComponents] = (t.times ?? []).compactMap(parseHM)
             let start: Date
-            if t.hasTime == true, let concrete = ScheduleResolver.concreteStart(date: t.date, time: t.time) {
+            if let first = times.first,
+               let s = cal.date(bySettingHour: first.hour ?? 9, minute: first.minute ?? 0, second: 0, of: baseDay) {
+                start = s
+            } else if t.hasTime == true, let concrete = ScheduleResolver.concreteStart(date: t.date, time: t.time) {
                 start = concrete
+                times = [cal.dateComponents([.hour, .minute], from: concrete)]
                 cursor = max(cursor, concrete.addingTimeInterval(TimeInterval(dur) * 60))
             } else {
                 start = cursor
+                times = [cal.dateComponents([.hour, .minute], from: cursor)]
                 cursor = cursor.addingTimeInterval(TimeInterval(dur) * 60)
             }
-            let cat = validCategory(t.category)
-            result.append(PlanRow(title: t.title, start: start, durationMinutes: dur, category: cat, icon: validIcon(t.icon)))
+            result.append(PlanRow(title: t.title, start: start, durationMinutes: dur,
+                                  category: cat, icon: icon, dailyTimes: times.sorted { ($0.hour ?? 0) * 60 + ($0.minute ?? 0) < ($1.hour ?? 0) * 60 + ($1.minute ?? 0) }, repeatDays: days))
         }
         return result.sorted { $0.start < $1.start }
     }
 
+    private func parseDay(_ s: String?) -> Date {
+        let cal = Calendar.current
+        if let s, !s.isEmpty, s.lowercased() != "null" {
+            let f = DateFormatter()
+            f.locale = Locale(identifier: "en_US_POSIX")
+            f.dateFormat = "yyyy-MM-dd"
+            if let d = f.date(from: s) { return cal.startOfDay(for: d) }
+        }
+        return cal.startOfDay(for: Date())
+    }
+
+    private func parseHM(_ s: String) -> DateComponents? {
+        let parts = s.split(separator: ":")
+        guard parts.count == 2, let h = Int(parts[0]), let m = Int(parts[1]),
+              (0...23).contains(h), (0...59).contains(m) else { return nil }
+        return DateComponents(hour: h, minute: m)
+    }
+
     private func addAll() {
+        let cal = Calendar.current
         for row in rows {
             let trimmed = row.title.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty else { continue }
-            let task = TaskBlock(context: viewContext)
-            task.id = UUID()
-            task.title = trimmed
-            task.iconName = row.icon
-            task.category = row.category
-            task.startTime = row.start
-            task.durationMinutes = Int32(row.durationMinutes)
-            task.priority = 0
-            task.createdAt = Date()
+            // Expand a recurring row into one TaskBlock per (day × daily time).
+            let groupId = UUID()
+            let times = row.dailyTimes.isEmpty ? [cal.dateComponents([.hour, .minute], from: row.start)] : row.dailyTimes
+            let baseDay = cal.startOfDay(for: row.start)
+            for d in 0..<max(row.repeatDays, 1) {
+                guard let day = cal.date(byAdding: .day, value: d, to: baseDay) else { continue }
+                for comp in times {
+                    guard let when = cal.date(bySettingHour: comp.hour ?? 9, minute: comp.minute ?? 0, second: 0, of: day) else { continue }
+                    let task = TaskBlock(context: viewContext)
+                    task.id = UUID()
+                    task.title = trimmed
+                    task.iconName = row.icon
+                    task.category = row.category
+                    task.startTime = when
+                    task.durationMinutes = Int32(row.durationMinutes)
+                    task.priority = 0
+                    task.createdAt = Date()
+                    if row.isRecurring { task.parentTaskId = groupId }   // group the course together
+                }
+            }
         }
         try? viewContext.save()
         #if os(iOS)
@@ -296,16 +349,32 @@ struct DayPlanReviewSheet: View {
         onAdded()
     }
 
+    private var totalInstances: Int {
+        rows.reduce(0) { $0 + $1.instanceCount }
+    }
+
+    private func recurrenceBadge(_ timesPerDay: Int, _ days: Int) -> some View {
+        HStack(spacing: 4) {
+            Image(systemName: "repeat").font(.system(size: 10, weight: .bold))
+            Text(timesPerDay > 1 ? "\(timesPerDay)×/day · \(days)d" : "\(days) days")
+                .font(.custom(T.fontHeader, size: 12).weight(.bold))
+        }
+        .foregroundColor(T.primary)
+        .padding(.horizontal, 9)
+        .padding(.vertical, 5)
+        .background(RoundedRectangle(cornerRadius: 9, style: .continuous).fill(Color(lightHex: "#FFE9E1", darkHex: "#2C1F18")))
+    }
+
     private func validCategory(_ c: String?) -> String {
         let lc = (c ?? "personal").lowercased()
         return categories.contains(lc) ? lc : "personal"
     }
 
-    private func validIcon(_ icon: String?) -> String {
+    private func validIcon(_ icon: String?, _ category: String) -> String {
         if let icon, !icon.trimmingCharacters(in: .whitespaces).isEmpty, icon.lowercased() != "null" {
             return icon
         }
-        return "circle"   // same fallback as a manually-created task
+        return Cat.icon(for: category)   // same category fallback as a manually-created task
     }
 
     private func durationText(_ m: Int) -> String {
