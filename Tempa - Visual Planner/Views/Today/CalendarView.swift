@@ -17,7 +17,9 @@ struct CalendarView: View {
     @State private var selectedDate = Calendar.current.startOfDay(for: Date())
     @State private var weekOffset = 0          // 0 == current week
     @State private var now = Date()
-    @State private var flatList = false        // false = grouped (morning/day/evening), true = one flat list
+    @State private var flatList = false
+    @State private var slideEdge: Edge = .trailing   // day-switch slide direction
+    @Namespace private var dayNS        // false = grouped (morning/day/evening), true = one flat list
     @State private var showDoneDay = false     // collapsible "Done" section for completed tasks
 
     private let timer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
@@ -32,7 +34,10 @@ struct CalendarView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     header
                     weekStrip
+                    // The day's list slides in from the direction you navigated.
                     dayTasksSection
+                        .id(selectedDate)
+                        .transition(.push(from: slideEdge))
                 }
                 .padding(.bottom, 140)
             }
@@ -46,7 +51,8 @@ struct CalendarView: View {
             let visible = weekDays(offset: new)
             guard !visible.contains(where: { cal.isDate($0, inSameDayAs: selectedDate) }) else { return }
             if let shifted = cal.date(byAdding: .weekOfYear, value: new - old, to: selectedDate) {
-                withAnimation(.easeInOut(duration: 0.15)) { selectedDate = cal.startOfDay(for: shifted) }
+                slideEdge = new > old ? .trailing : .leading
+                withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) { selectedDate = cal.startOfDay(for: shifted) }
             }
         }
     }
@@ -119,7 +125,8 @@ struct CalendarView: View {
         let hasTasks = marked.contains(day)
 
         return Button {
-            withAnimation(.easeInOut(duration: 0.15)) { selectedDate = day }
+            slideEdge = day >= selectedDate ? .trailing : .leading
+            withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) { selectedDate = day }
             #if os(iOS)
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
             #endif
@@ -137,10 +144,17 @@ struct CalendarView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 9)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(isSelected ? T.primary : (isToday ? T.primary.opacity(0.10) : Color.clear))
-            )
+            .background {
+                // The coral fill glides from day to day instead of teleporting.
+                if isSelected {
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(T.primary)
+                        .matchedGeometryEffect(id: "daySel", in: dayNS)
+                } else if isToday {
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(T.primary.opacity(0.10))
+                }
+            }
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)

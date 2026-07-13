@@ -16,6 +16,9 @@ struct MeView: View {
     @State private var streak: StatsEngine.StreakInfo?
     @State private var hourly: StatsEngine.HourlyActivity?
     @State private var focusDays: [StatsEngine.FocusDay] = []
+    @State private var chartsShown = false     // bars grow in with a stagger
+    @State private var shownPercent = 0        // battery % counts up
+    @Namespace private var pickerNS
 
     private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     // Did-save notifications post on the SAVING context's thread (CloudKit imports
@@ -81,8 +84,21 @@ struct MeView: View {
                 .padding(.horizontal, 20)
             }
         }
-        .onAppear(perform: recompute)
-        .onChange(of: period) { _, _ in recompute() }
+        .onAppear {
+            recompute()
+            chartsShown = true
+        }
+        .onChange(of: period) { _, _ in
+            // Re-run the grow-in when the period flips.
+            chartsShown = false
+            recompute()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) { chartsShown = true }
+        }
+        .onChange(of: battery?.percent, initial: true) { _, newValue in
+            withAnimation(.spring(response: 0.9, dampingFraction: 0.9)) {
+                shownPercent = newValue ?? 0
+            }
+        }
         .onReceive(timer) { _ in recompute() }
         .onReceive(saveNotif) { _ in recompute() }
     }
@@ -113,10 +129,11 @@ struct MeView: View {
             }
 
             HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Text("\(b.percent)%")
+                Text("\(shownPercent)%")
                     .font(.custom(T.fontHeader, size: 44).weight(.heavy))
                     .tracking(-1)
                     .foregroundColor(T.text)
+                    .contentTransition(.numericText(value: Double(shownPercent)))
                 Text("of your day left")
                     .font(.custom(T.fontBody, size: 14).weight(.medium))
                     .foregroundColor(T.textSec)
@@ -176,7 +193,7 @@ struct MeView: View {
         HStack(spacing: 6) {
             ForEach(StatsPeriod.allCases, id: \.self) { p in
                 Button {
-                    withAnimation(.easeInOut(duration: 0.2)) { period = p }
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) { period = p }
                     #if os(iOS)
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     #endif
@@ -186,10 +203,14 @@ struct MeView: View {
                         .foregroundColor(period == p ? T.text : T.textSec)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 9)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(period == p ? T.surface : .clear)
-                        )
+                        .background {
+                            // The pill glides between options instead of jumping.
+                            if period == p {
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .fill(T.surface)
+                                    .matchedGeometryEffect(id: "periodSel", in: pickerNS)
+                            }
+                        }
                 }
                 .buttonStyle(.plain)
             }
@@ -252,7 +273,7 @@ struct MeView: View {
                     .padding(.vertical, 16)
             } else {
                 HStack(alignment: .bottom, spacing: isWeek ? 8 : 3) {
-                    ForEach(s.days) { day in
+                    ForEach(Array(s.days.enumerated()), id: \.element.id) { i, day in
                         let isToday = Calendar.current.isDateInToday(day.date)
                         VStack(spacing: 5) {
                             ZStack(alignment: .bottom) {
@@ -266,6 +287,8 @@ struct MeView: View {
                                     .frame(height: day.done > 0 ? max(10, 80 * CGFloat(day.done) / CGFloat(maxVal)) : 4)
                             }
                             .frame(maxHeight: 80, alignment: .bottom)
+                            .scaleEffect(y: chartsShown ? 1 : 0.02, anchor: .bottom)
+                            .animation(.spring(response: 0.5, dampingFraction: 0.8).delay(Double(i) * 0.035), value: chartsShown)
                             if isWeek {
                                 Text(weekdayLetter(day.date))
                                     .font(.custom(T.fontHeader, size: 10).weight(.bold))
@@ -399,13 +422,15 @@ struct MeView: View {
                     .fixedSize(horizontal: false, vertical: true)
             } else if period != .today {
                 HStack(alignment: .bottom, spacing: isWeek ? 8 : 3) {
-                    ForEach(focusDays) { day in
+                    ForEach(Array(focusDays.enumerated()), id: \.element.id) { i, day in
                         let isToday = Calendar.current.isDateInToday(day.date)
                         VStack(spacing: 5) {
                             RoundedRectangle(cornerRadius: 3)
                                 .fill(isToday ? T.primary : T.primary.opacity(day.minutes > 0 ? 0.55 : 0.14))
                                 .frame(height: day.minutes > 0 ? max(8, 56 * CGFloat(day.minutes) / CGFloat(maxMin)) : 4)
                                 .frame(maxHeight: 56, alignment: .bottom)
+                                .scaleEffect(y: chartsShown ? 1 : 0.02, anchor: .bottom)
+                                .animation(.spring(response: 0.5, dampingFraction: 0.8).delay(Double(i) * 0.035), value: chartsShown)
                             if isWeek {
                                 Text(weekdayLetter(day.date))
                                     .font(.custom(T.fontHeader, size: 10).weight(.bold))

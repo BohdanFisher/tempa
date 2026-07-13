@@ -55,10 +55,12 @@ struct TodayView: View {
                     if let current = currentTask {
                         nowHero(current)
                             .padding(.bottom, 8)
+                            .transition(.scale(scale: 0.96, anchor: .top).combined(with: .opacity))
                     }
                     timelineSection
                 }
                 .padding(.bottom, 140)
+                .animation(.spring(response: 0.5, dampingFraction: 0.85), value: currentTask?.objectID)
             }
 
             fab
@@ -307,6 +309,7 @@ struct TodayView: View {
                 }
             }
         }
+        .animation(.spring(response: 0.5, dampingFraction: 0.85), value: activeTasks.count)
         .padding(.top, 4)
     }
 
@@ -318,6 +321,7 @@ struct TodayView: View {
                 TimelineRow(task: task, now: now, isLast: task == list.last) {
                     toggleCompletion(task)
                 }
+                .transition(rowTransition)
             }
         } else {
             ForEach(groupedActive()) { group in
@@ -326,9 +330,18 @@ struct TodayView: View {
                     TimelineRow(task: task, now: now, isLast: task == group.tasks.last) {
                         toggleCompletion(task)
                     }
+                    .transition(rowTransition)
                 }
             }
         }
+    }
+
+    /// New rows glide up from below; leaving rows melt away in place.
+    private var rowTransition: AnyTransition {
+        .asymmetric(
+            insertion: .move(edge: .bottom).combined(with: .opacity),
+            removal: .scale(scale: 0.97).combined(with: .opacity)
+        )
     }
 
     private func groupHeader(_ title: String, _ count: Int) -> some View {
@@ -446,6 +459,9 @@ struct TodayView: View {
             Image(systemName: "plus")
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.white)
+                // Quarter-turn into a "×" while the add sheet is up.
+                .rotationEffect(.degrees(showingAddTask ? 45 : 0))
+                .animation(.spring(response: 0.35, dampingFraction: 0.6), value: showingAddTask)
                 .frame(width: 60, height: 60)
                 .background(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -453,6 +469,7 @@ struct TodayView: View {
                 )
                 .shadow(color: Color(hex: "#FF7A59").opacity(0.45), radius: 12, x: 0, y: 10)
         }
+        .buttonStyle(SpringPressStyle(scale: 0.88))
         .padding(.trailing, 22)
         .padding(.bottom, 20)
     }
@@ -531,7 +548,7 @@ struct TodayView: View {
     }
 
     private func toggleCompletion(_ task: TaskBlock) {
-        withAnimation(.easeInOut(duration: 0.3)) {
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
             task.isCompleted.toggle()
             task.completedAt = task.isCompleted ? Date() : nil
         }
@@ -647,13 +664,16 @@ struct TimelineRow: View {
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 13, weight: .heavy))
                                     .foregroundColor(.white)
+                                    .transition(.scale(scale: 0.3).combined(with: .opacity))
                             }
                         }
+                        .scaleEffect(isDone ? 1.06 : 1.0)
+                        .animation(.spring(response: 0.35, dampingFraction: 0.55), value: isDone)
                         .frame(width: 26, height: 26)
                         .frame(width: 44, height: 44)   // generous tap target
                         .contentShape(Rectangle())
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(SpringPressStyle(scale: 0.85))
                     .accessibilityLabel(isDone ? "Mark not done" : "Mark done")
                 }
                 .padding(.vertical, 14)

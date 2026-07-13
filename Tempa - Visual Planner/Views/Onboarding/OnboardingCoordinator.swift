@@ -22,7 +22,6 @@ final class OnboardingState {
 
 struct OnboardingFlow: View {
     @Environment(SettingsStore.self) private var settings
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var state = OnboardingState()
 
     var body: some View {
@@ -35,13 +34,15 @@ struct OnboardingFlow: View {
                     OnbProgressBar(step: state.currentStep, total: state.totalSteps)
                 }
 
+                // Springy push — the next step glides in from the right. Not gated
+                // behind Reduce Motion: it's core feedback, and gentle by design.
                 screenForStep(state.currentStep)
-                    .transition(reduceMotion ? .opacity : .asymmetric(
+                    .transition(.asymmetric(
                         insertion: .move(edge: .trailing).combined(with: .opacity),
                         removal: .move(edge: .leading).combined(with: .opacity)
                     ))
                     .id(state.currentStep)
-                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: state.currentStep)
+                    .animation(.spring(response: 0.5, dampingFraction: 0.86), value: state.currentStep)
             }
         }
         .fullScreenCover(isPresented: $state.showPaywall) {
@@ -82,6 +83,7 @@ struct OnbProgressBar: View {
                     .frame(height: 4)
             }
         }
+        .animation(.spring(response: 0.45, dampingFraction: 0.8), value: step)
         .padding(.horizontal, 24)
         .padding(.top, 8)
     }

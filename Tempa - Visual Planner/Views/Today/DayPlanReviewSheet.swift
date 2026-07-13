@@ -119,6 +119,8 @@ struct DayPlanReviewSheet: View {
 
                     ForEach($rows) { $row in
                         planRow($row)
+                            // The plan "assembles" row by row — the AI-magic moment.
+                            .staggerIn(rows.firstIndex { $0.id == row.id } ?? 0, baseDelay: 0.06)
                     }
                 }
                 .padding(20)

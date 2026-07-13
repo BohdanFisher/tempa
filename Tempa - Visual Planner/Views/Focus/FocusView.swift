@@ -44,6 +44,7 @@ struct FocusView: View {
     @State private var lastRawFraction: Double = 0    // finish dial: previous raw angle, for delta tracking
     @State private var dragCompleted = false          // swallow the rest of a drag that just finished a session
     @State private var lastLeft: Date?                // when the app left the foreground; ticks freeze while set
+    @State private var showFinishCheck = false        // checkmark pop in the dial centre on completion
     #if os(iOS)
     @State private var dialHaptic = UIImpactFeedbackGenerator(style: .rigid)
     #endif
@@ -299,8 +300,26 @@ struct FocusView: View {
                 .foregroundColor(.black.opacity(0.55))
                 .rotationEffect(.degrees(arrowDeg))
                 .position(kp)
+
+            // Session finished — a checkmark pops in the dial centre.
+            if showFinishCheck {
+                Image(systemName: "checkmark")
+                    .font(.system(size: 46, weight: .heavy))
+                    .foregroundColor(T.primary)
+                    .transition(.scale(scale: 0.3).combined(with: .opacity))
+            }
         }
         .frame(width: SIZE, height: SIZE)
+        // The whole dial "gives" slightly while grabbed — feels physical.
+        .scaleEffect(isDragging ? 1.015 : 1.0)
+        .animation(.spring(response: 0.35, dampingFraction: 0.6), value: isDragging)
+        // Paused → the dial breathes softly so time visibly "sleeps".
+        .opacity(isPaused ? 0.6 : 1)
+        .animation(
+            isPaused ? .easeInOut(duration: 1.2).repeatForever(autoreverses: true)
+                     : .easeInOut(duration: 0.3),
+            value: isPaused
+        )
         .contentShape(Circle().size(width: SIZE, height: SIZE))
         .gesture(ringDrag)
     }
@@ -603,6 +622,14 @@ struct FocusView: View {
         FocusNudge.cancel()
         FocusSessionStore.clear()
         playCompletionSound()
+
+        // Finish flourish: checkmark pops in the dial + a burst of sand.
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.55)) { showFinishCheck = true }
+        spawnParticles(at: CGPoint(x: SIZE / 2, y: SIZE / 2 - rRing), count: 36)
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(1200))
+            withAnimation(.easeOut(duration: 0.4)) { showFinishCheck = false }
+        }
 
         #if os(iOS)
         UINotificationFeedbackGenerator().notificationOccurred(.success)

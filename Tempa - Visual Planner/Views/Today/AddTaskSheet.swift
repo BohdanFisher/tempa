@@ -17,6 +17,7 @@ struct AddTaskSheet: View {
     @State private var dumpText = ""
     @State private var showDayPlan = false
     @State private var pendingPlan = false
+    @State private var titleShake: CGFloat = 0   // gentle "needs a title" nudge
     @FocusState private var titleFocused: Bool
 
     var body: some View {
@@ -171,6 +172,7 @@ struct AddTaskSheet: View {
                 .focused($titleFocused)
                 .submitLabel(.done)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .modifier(GentleShake(animatableData: titleShake))
 
             Divider()
                 .padding(.top, 8)
@@ -218,12 +220,16 @@ struct AddTaskSheet: View {
 
             if !title.trimmingCharacters(in: .whitespaces).isEmpty && breakdownSteps.isEmpty && !isThinking {
                 breakIntoStepsButton
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
 
             if isThinking || !breakdownSteps.isEmpty {
                 aiBreakdownSection
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
         }
+        .animation(.spring(response: 0.45, dampingFraction: 0.85), value: isThinking)
+        .animation(.spring(response: 0.45, dampingFraction: 0.85), value: breakdownSteps.count)
     }
 
     // The AI alternative to a quick add — a clearly secondary card so it reads as
@@ -423,7 +429,15 @@ struct AddTaskSheet: View {
 
     private func saveSingleTask() {
         let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
+        guard !trimmed.isEmpty else {
+            // No title yet — a soft shake instead of silence, never a scold.
+            withAnimation(.easeInOut(duration: 0.4)) { titleShake += 1 }
+            #if os(iOS)
+            UINotificationFeedbackGenerator().notificationOccurred(.warning)
+            #endif
+            titleFocused = true
+            return
+        }
         let task = TaskBlock(context: viewContext)
         task.id = UUID()
         task.title = trimmed

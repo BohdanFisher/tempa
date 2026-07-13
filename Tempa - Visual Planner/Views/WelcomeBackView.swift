@@ -10,6 +10,7 @@ struct WelcomeBackView: View {
 
     /// Real completions over the last 7 days (oldest first) — no placeholder numbers.
     @State private var week: StatsEngine.PeriodStats?
+    @State private var heartPulse = false
 
     private static let dayLetterFmt: DateFormatter = {
         let f = DateFormatter(); f.dateFormat = "EEEEE"; return f   // narrow weekday: M, T, W…
@@ -120,6 +121,14 @@ struct WelcomeBackView: View {
             RoundedRectangle(cornerRadius: 30, style: .continuous)
                 .stroke(Color(hex: "#FF7A59").opacity(0.25), lineWidth: 1)
                 .frame(width: 80, height: 80)
+                // A soft heartbeat — welcoming, not demanding.
+                .scaleEffect(heartPulse ? 1.12 : 0.98)
+                .opacity(heartPulse ? 0.35 : 0.9)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 1.4).repeatForever(autoreverses: true)) {
+                        heartPulse = true
+                    }
+                }
         }
     }
 
@@ -138,7 +147,7 @@ struct WelcomeBackView: View {
             }
 
             HStack(spacing: 8) {
-                ForEach(Array(weekData.enumerated()), id: \.offset) { _, day in
+                ForEach(Array(weekData.enumerated()), id: \.offset) { i, day in
                     VStack(spacing: 6) {
                         RoundedRectangle(cornerRadius: 10, style: .continuous)
                             .fill(day.1 == 0 ? T.bgWarm : Color(hex: "#4EC8B0").opacity(0.2 + day.1 * 0.6))
@@ -154,6 +163,7 @@ struct WelcomeBackView: View {
                             .font(.custom(T.fontBody, size: 11).weight(.semibold))
                             .foregroundColor(T.textSec)
                     }
+                    .staggerIn(i, baseDelay: 0.05)
                 }
             }
 

@@ -35,6 +35,7 @@ struct Onb1HookView: View {
                         .tracking(3)
                         .foregroundColor(.white.opacity(0.72))
                         .padding(.bottom, 16)
+                        .staggerIn(0)
 
                     (
                         Text("Your brain isn't broken. You just lost your ")
@@ -49,6 +50,7 @@ struct Onb1HookView: View {
                     .lineSpacing(3)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
+                    .staggerIn(1)
 
                     Text("Tempa shows you one thing at a time — so you can find your rhythm again.")
                         .font(.custom("Inter-Medium", size: 16).weight(.medium))
@@ -56,6 +58,7 @@ struct Onb1HookView: View {
                         .lineSpacing(4)
                         .padding(.top, 16)
                         .fixedSize(horizontal: false, vertical: true)
+                        .staggerIn(2)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 26)
@@ -64,6 +67,7 @@ struct Onb1HookView: View {
                     .frame(height: 150)
                     .padding(.top, 26)
                     .padding(.horizontal, 26)
+                    .staggerIn(3)
 
                 Spacer(minLength: 12)
 
@@ -85,14 +89,16 @@ struct Onb1HookView: View {
                     .background(Capsule().fill(.white))
                     .shadow(color: .black.opacity(0.12), radius: 16, x: 0, y: 8)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(SpringPressStyle())
                 .padding(.horizontal, 22)
+                .staggerIn(4)
 
                 Text("Takes 60 seconds · free to try")
                     .font(.custom("Inter-Medium", size: 13).weight(.medium))
                     .foregroundColor(.white.opacity(0.55))
                     .padding(.top, 14)
                     .padding(.bottom, 28)
+                    .staggerIn(5)
             }
         }
     }
@@ -243,8 +249,10 @@ struct QuizRow: View {
                         Image(systemName: "checkmark")
                             .font(.system(size: 14, weight: .bold))
                             .foregroundColor(.white)
+                            .transition(.scale(scale: 0.4).combined(with: .opacity))
                     }
                 }
+                .animation(.spring(response: 0.32, dampingFraction: 0.6), value: picked)
 
                 Text(label)
                     .font(.custom("Inter-Medium", size: 16))
@@ -262,8 +270,9 @@ struct QuizRow: View {
                     .stroke(picked ? T.primary : .clear, lineWidth: 1.5)
             )
             .tempaShadowSm()
+            .animation(.spring(response: 0.35, dampingFraction: 0.7), value: picked)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(SpringPressStyle())
     }
 }
 
@@ -746,6 +755,7 @@ struct Onb6SocialView: View {
                                     Circle().stroke(T.bg, lineWidth: 2.5)
                                 )
                                 .offset(x: CGFloat(i) * -10)
+                                .staggerIn(i, baseDelay: 0.09)
                         }
                     }
                     .padding(.leading, 6)
@@ -793,6 +803,7 @@ struct Onb6SocialView: View {
                                 .fill(T.surface)
                         )
                         .tempaShadowSm()
+                        .staggerIn(i + 4, baseDelay: 0.09)
                     }
                 }
                 .padding(.top, 14)
@@ -908,6 +919,7 @@ struct Onb7ForgiveView: View {
 
 struct Onb8NotifsView: View {
     let state: OnboardingState
+    @State private var bannerShown = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -977,6 +989,14 @@ struct Onb8NotifsView: View {
             .shadow(color: Color(red: 40/255, green: 30/255, blue: 20/255).opacity(0.08), radius: 14, x: 0, y: 12)
             .padding(.horizontal, 22)
             .padding(.top, 36)
+            // Drops in from the top like a real push notification.
+            .opacity(bannerShown ? 1 : 0)
+            .offset(y: bannerShown ? 0 : -70)
+            .onAppear {
+                withAnimation(.spring(response: 0.55, dampingFraction: 0.72).delay(0.3)) {
+                    bannerShown = true
+                }
+            }
 
             Spacer()
 

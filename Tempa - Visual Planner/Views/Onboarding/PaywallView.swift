@@ -10,6 +10,9 @@ struct PaywallView: View {
 
     @State private var selectedProductID = "tempa_yearly"
     @State private var isPurchasing = false
+    /// CTA morph: text → spinner → checkmark (button shape stays, content flows).
+    private enum PurchasePhase { case idle, working, success }
+    @State private var purchasePhase: PurchasePhase = .idle
     @State private var showError = false
     @State private var errorMessage = ""
     @State private var showTermsDoc = false
@@ -79,6 +82,7 @@ struct PaywallView: View {
                 ctaButton
                     .padding(.horizontal, 18)
                     .padding(.top, 16)
+                    .staggerIn(2, baseDelay: 0.1)
 
                 footer
             }
@@ -119,7 +123,7 @@ struct PaywallView: View {
     private var planCards: some View {
         VStack(spacing: 12) {
             if subs.isSimulating {
-                ForEach(subs.simPlans.filter { $0.id != "tempa_weekly" }) { plan in
+                ForEach(Array(subs.simPlans.filter { $0.id != "tempa_weekly" }.enumerated()), id: \.element.id) { i, plan in
                     planCard(
                         id: plan.id,
                         title: plan.name,
@@ -128,9 +132,10 @@ struct PaywallView: View {
                         sub: plan.monthlyPrice.map { "\($0)/mo" } ?? "per \(plan.periodLabel)",
                         detail: plan.id == "tempa_yearly" ? "3 days free, then billed yearly" : nil
                     )
+                    .staggerIn(i, baseDelay: 0.1)
                 }
             } else {
-                ForEach(subs.products.filter { $0.id != "tempa_weekly" }) { product in
+                ForEach(Array(subs.products.filter { $0.id != "tempa_weekly" }.enumerated()), id: \.element.id) { i, product in
                     let yearly = product.id == "tempa_yearly"
                     planCard(
                         id: product.id,
@@ -140,6 +145,7 @@ struct PaywallView: View {
                         sub: yearly ? (monthlyEquivalent(product).map { "\($0)/mo" } ?? "per year") : "per \(periodLabel(product))",
                         detail: yearly ? "3 days free, then billed yearly" : nil
                     )
+                    .staggerIn(i, baseDelay: 0.1)
                 }
             }
         }
@@ -157,8 +163,12 @@ struct PaywallView: View {
                 ZStack {
                     Circle().fill(picked ? coral : .clear).frame(width: 26, height: 26)
                     Circle().stroke(picked ? .clear : Color.white.opacity(0.65), lineWidth: 2).frame(width: 26, height: 26)
-                    if picked { Circle().fill(.white).frame(width: 10, height: 10) }
+                    if picked {
+                        Circle().fill(.white).frame(width: 10, height: 10)
+                            .transition(.scale(scale: 0.2).combined(with: .opacity))
+                    }
                 }
+                .animation(.spring(response: 0.32, dampingFraction: 0.6), value: picked)
 
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 8) {
@@ -192,8 +202,10 @@ struct PaywallView: View {
                     .fill(picked ? Color.white : Color.white.opacity(0.16))
             )
             .shadow(color: .black.opacity(picked ? 0.12 : 0), radius: 14, x: 0, y: 8)
+            .scaleEffect(picked ? 1.02 : 1.0)
+            .animation(.spring(response: 0.35, dampingFraction: 0.7), value: picked)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(SpringPressStyle(scale: 0.98))
     }
 
     private var bestValueBadge: some View {
@@ -213,20 +225,28 @@ struct PaywallView: View {
             Task { await purchaseSelected() }
         } label: {
             Group {
-                if isPurchasing {
+                switch purchasePhase {
+                case .success:
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 22, weight: .heavy))
+                        .transition(.scale(scale: 0.3).combined(with: .opacity))
+                case .working:
                     ProgressView().tint(coral)
-                } else {
+                        .transition(.opacity)
+                case .idle:
                     Text(hasIntroOffer ? "Start 3-day free trial" : "Continue")
                         .font(.custom("Nunito-ExtraBold", size: 17).weight(.heavy))
+                        .transition(.opacity)
                 }
             }
+            .animation(.spring(response: 0.4, dampingFraction: 0.7), value: purchasePhase)
             .foregroundColor(coral)
             .frame(maxWidth: .infinity)
             .frame(height: 58)
             .background(Capsule().fill(.white))
             .shadow(color: .black.opacity(0.14), radius: 16, x: 0, y: 8)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(SpringPressStyle(scale: 0.97))
         .disabled(isPurchasing)
     }
 
@@ -285,13 +305,12 @@ struct PaywallView: View {
 
     private func purchaseSelected() async {
         isPurchasing = true
+        withAnimation { purchasePhase = .working }
 
         if subs.isSimulating {
             try? await Task.sleep(for: .seconds(1))
             subs.simulatePurchase()
-            onPurchaseComplete()
-            dismiss()
-            isPurchasing = false
+            await finishPurchaseCelebration()
             return
         }
 
@@ -299,16 +318,38 @@ struct PaywallView: View {
             // Don't die silently — say why no sheet appeared.
             errorMessage = "The store isn't reachable yet. Give it a second and try again."
             showError = true
-            isPurchasing = false
+            resetPurchaseUI()
             return
         }
         do {
             let tx = try await subs.purchase(product)
-            if tx != nil { onPurchaseComplete(); dismiss() }
+            if tx != nil {
+                await finishPurchaseCelebration()
+                return
+            }
+            resetPurchaseUI()   // user cancelled the sheet
         } catch {
             errorMessage = error.localizedDescription
             showError = true
+            resetPurchaseUI()
         }
+    }
+
+    /// Morph the CTA into a checkmark with a success haptic, then close.
+    private func finishPurchaseCelebration() async {
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) { purchasePhase = .success }
+        #if os(iOS)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        #endif
+        try? await Task.sleep(for: .milliseconds(750))
+        onPurchaseComplete()
+        dismiss()
+        isPurchasing = false
+        purchasePhase = .idle
+    }
+
+    private func resetPurchaseUI() {
+        withAnimation { purchasePhase = .idle }
         isPurchasing = false
     }
 }

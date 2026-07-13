@@ -232,7 +232,7 @@ struct AddTaskVoiceView: View {
                     .contentTransition(.symbolEffect(.replace))
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(SpringPressStyle(scale: 0.92))
         .frame(maxWidth: .infinity)
     }
 

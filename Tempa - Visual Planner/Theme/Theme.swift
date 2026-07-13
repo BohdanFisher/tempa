@@ -391,3 +391,55 @@ struct TempaScreen<Content: View>: View {
         }
     }
 }
+
+// MARK: - Premium motion helpers
+
+/// Staggered entrance: fades in and rises with a gentle spring, delayed by index.
+/// Used for lists/cards that should "assemble" rather than pop in all at once.
+struct StaggerIn: ViewModifier {
+    let index: Int
+    var baseDelay: Double = 0.07
+    @State private var shown = false
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(shown ? 1 : 0)
+            .offset(y: shown ? 0 : 14)
+            .onAppear {
+                withAnimation(.spring(response: 0.55, dampingFraction: 0.8).delay(Double(index) * baseDelay)) {
+                    shown = true
+                }
+            }
+    }
+}
+
+extension View {
+    func staggerIn(_ index: Int, baseDelay: Double = 0.07) -> some View {
+        modifier(StaggerIn(index: index, baseDelay: baseDelay))
+    }
+}
+
+/// Press-down spring for buttons and cards — a subtle squeeze with a bouncy release.
+struct SpringPressStyle: ButtonStyle {
+    var scale: CGFloat = 0.965
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? scale : 1)
+            .animation(.spring(response: 0.3, dampingFraction: 0.55), value: configuration.isPressed)
+    }
+}
+
+/// Gentle horizontal shake — "that didn't work" feedback without any shaming energy.
+/// Drive by incrementing a CGFloat trigger inside withAnimation.
+struct GentleShake: GeometryEffect {
+    var travel: CGFloat = 5
+    var shakes: CGFloat = 2
+    var animatableData: CGFloat
+
+    func effectValue(size: CGSize) -> ProjectionTransform {
+        ProjectionTransform(CGAffineTransform(
+            translationX: travel * sin(animatableData * .pi * shakes * 2), y: 0
+        ))
+    }
+}
