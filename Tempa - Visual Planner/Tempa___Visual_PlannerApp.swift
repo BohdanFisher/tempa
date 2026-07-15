@@ -14,6 +14,7 @@ struct TempaApp: App {
         _settingsStore = State(initialValue: SettingsStore(context: context))
 
         TaskNotifications.startObserving(context)
+        AppLanguage.current.apply()   // keep the AppleLanguages override in sync
 
         #if DEBUG
         ClaudeAPIClient().setupDevKey()

@@ -47,6 +47,8 @@ struct ProfileView: View {
     @State private var showPrivacy = false
     @State private var showTerms = false
     @AppStorage("themePreference") private var theme: ThemePreference = .system
+    @AppStorage("appLanguage") private var appLanguage = "system"
+    @State private var showLanguageAlert = false
     @AppStorage("nudgesEnabled") private var nudges = true
 
     var body: some View {
@@ -67,6 +69,7 @@ struct ProfileView: View {
 
                     theDaySection
                     appearanceSection
+                    languageSection
                     aiSection
                     legalSection
 
@@ -257,6 +260,41 @@ struct ProfileView: View {
         }
     }
 
+    // MARK: - Language
+
+    private var languageSection: some View {
+        settingsGroup("Language") {
+            Menu {
+                ForEach(AppLanguage.allCases) { lang in
+                    Button {
+                        lang.apply()
+                        appLanguage = lang.rawValue
+                        showLanguageAlert = true
+                        #if os(iOS)
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        #endif
+                    } label: {
+                        if lang.rawValue == appLanguage {
+                            Label(lang.displayName, systemImage: "checkmark")
+                        } else {
+                            Text(lang.displayName)
+                        }
+                    }
+                }
+            } label: {
+                SettingRow(icon: "globe", iconBg: Color(lightHex: "#E3F0FB", darkHex: "#16283A"), iconColor: Color(hex: "#4A90D9"),
+                           title: "App language",
+                           value: (AppLanguage(rawValue: appLanguage) ?? .system).displayName)
+            }
+            .buttonStyle(.plain)
+        }
+        .alert("Language updated", isPresented: $showLanguageAlert) {
+            Button("OK") {}
+        } message: {
+            Text("Close and reopen Tempa to switch the language.")
+        }
+    }
+
     // MARK: - AI (real usage)
 
     private var aiSection: some View {
@@ -344,9 +382,10 @@ struct ProfileView: View {
 
     // MARK: - Settings Group
 
-    private func settingsGroup<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
+    private func settingsGroup<Content: View>(_ title: LocalizedStringKey, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(title.uppercased())
+            Text(title)
+                .textCase(.uppercase)
                 .font(.custom(T.fontHeader, size: 11).weight(.heavy))
                 .tracking(1.5)
                 .foregroundColor(T.textSec)

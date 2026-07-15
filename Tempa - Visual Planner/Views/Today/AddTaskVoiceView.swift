@@ -3,43 +3,12 @@ import Speech
 import AVFoundation
 import Observation
 
-// MARK: - Supported voice languages
-
-struct VoiceLanguage: Identifiable, Hashable {
-    let id: String      // BCP-47 locale identifier for SFSpeechRecognizer
-    let name: String    // native display name
-    let flag: String
-
-    static let all: [VoiceLanguage] = [
-        VoiceLanguage(id: "en-US", name: "English",    flag: "🇬🇧"),
-        VoiceLanguage(id: "de-DE", name: "Deutsch",    flag: "🇩🇪"),
-        VoiceLanguage(id: "uk-UA", name: "Українська", flag: "🇺🇦"),
-        VoiceLanguage(id: "es-ES", name: "Español",    flag: "🇪🇸"),
-        VoiceLanguage(id: "fr-FR", name: "Français",   flag: "🇫🇷"),
-        VoiceLanguage(id: "pt-PT", name: "Português",  flag: "🇵🇹"),
-        VoiceLanguage(id: "fi-FI", name: "Suomi",      flag: "🇫🇮"),
-        VoiceLanguage(id: "nb-NO", name: "Norsk",      flag: "🇳🇴"),
-        VoiceLanguage(id: "nl-NL", name: "Nederlands", flag: "🇳🇱"),
-    ]
-
-    static func named(_ id: String) -> VoiceLanguage {
-        all.first { $0.id == id } ?? all[0]
-    }
-
-    /// Device language if it's one we support, otherwise English.
-    static var defaultIdentifier: String {
-        let code = Locale.current.language.languageCode?.identifier ?? "en"
-        return all.first { $0.id.hasPrefix(code + "-") }?.id ?? "en-US"
-    }
-}
-
 struct AddTaskVoiceView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var transcribedText = ""
     @State private var isListening = false
     @State private var errorMessage: String?
     @State private var breatheScale: CGFloat = 1.0
-    @AppStorage("voiceLocaleIdentifier") private var voiceLocale = VoiceLanguage.defaultIdentifier
     @State private var recognizer = SpeechRecognizer()
     var onConfirm: (String) -> Void = { _ in }
 
@@ -106,7 +75,7 @@ struct AddTaskVoiceView: View {
             }
         }
         .onAppear {
-            recognizer.setLocale(voiceLocale)
+            recognizer.setLocale(AppLanguage.current.speechLocale)
             startBreathing()
             startListening()
         }
@@ -147,34 +116,6 @@ struct AddTaskVoiceView: View {
 
             Spacer()
 
-            Menu {
-                ForEach(VoiceLanguage.all) { lang in
-                    Button {
-                        voiceLocale = lang.id
-                        recognizer.setLocale(lang.id)
-                    } label: {
-                        if lang.id == voiceLocale {
-                            Label("\(lang.flag)  \(lang.name)", systemImage: "checkmark")
-                        } else {
-                            Text("\(lang.flag)  \(lang.name)")
-                        }
-                    }
-                }
-            } label: {
-                HStack(spacing: 3) {
-                    Text(VoiceLanguage.named(voiceLocale).flag)
-                        .font(.system(size: 18))
-                    Image(systemName: "chevron.down")
-                        .font(.system(size: 9, weight: .bold))
-                        .foregroundColor(T.textSec)
-                }
-                .frame(height: 38)
-                .padding(.horizontal, 11)
-                .background(
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(T.surface.opacity(0.7))
-                )
-            }
         }
         .padding(.horizontal, 20)
     }
@@ -291,7 +232,7 @@ final class SpeechRecognizer {
     private var recognitionTask: SFSpeechRecognitionTask?
     private var audioEngine: AVAudioEngine?
 
-    init(localeIdentifier: String = VoiceLanguage.defaultIdentifier) {
+    init(localeIdentifier: String = AppLanguage.current.speechLocale) {
         self.localeIdentifier = localeIdentifier
         speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: localeIdentifier))
     }
