@@ -245,8 +245,8 @@ struct AddTaskVoiceView: View {
     }
 
     private var helperText: String {
-        if !transcribedText.isEmpty { return "Tap ✓ — we'll sort it into your day" }
-        return isListening ? "Say everything you need to do…" : "Tap the mic to speak"
+        if !transcribedText.isEmpty { return String(localized: "Tap ✓ — we'll sort it into your day") }
+        return isListening ? String(localized: "Say everything you need to do…") : String(localized: "Tap the mic to speak")
     }
 
     private func primaryAction() {

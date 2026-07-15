@@ -219,7 +219,7 @@ struct SonarPulse: View {
 // MARK: - TempaButton
 
 struct TempaButton: View {
-    let label: String
+    let label: LocalizedStringKey
     var variant: Variant = .primary
     var size: Size = .lg
     var fullWidth: Bool = false
@@ -389,6 +389,19 @@ struct TempaScreen<Content: View>: View {
             bg.ignoresSafeArea()
             content()
         }
+    }
+}
+
+/// Localized display name for a raw category value ("work" → "Work"/"Робота"/…).
+func catDisplayName(_ raw: String) -> String {
+    switch raw {
+    case "work": String(localized: "Work")
+    case "personal": String(localized: "Personal")
+    case "health": String(localized: "Health")
+    case "routine": String(localized: "Routine")
+    case "social": String(localized: "Social")
+    case "rest": String(localized: "Rest")
+    default: raw.capitalized
     }
 }
 

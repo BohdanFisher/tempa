@@ -49,8 +49,8 @@ enum TaskNotifications {
                     guard fire > Date() else { continue }
 
                     let content = UNMutableNotificationContent()
-                    content.title = task.title ?? "Upcoming task"
-                    content.body = "Starts in 10 minutes."
+                    content.title = task.title ?? String(localized: "Upcoming task")
+                    content.body = String(localized: "Starts in 10 minutes.")
                     content.sound = .default
 
                     let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: fire)

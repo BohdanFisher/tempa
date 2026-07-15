@@ -139,9 +139,9 @@ struct DayPlanReviewSheet: View {
                     ForEach(categories, id: \.self) { c in
                         Button { row.wrappedValue.category = c } label: {
                             if c == row.wrappedValue.category {
-                                Label(c.capitalized, systemImage: "checkmark")
+                                Label(catDisplayName(c), systemImage: "checkmark")
                             } else {
-                                Text(c.capitalized)
+                                Text(catDisplayName(c))
                             }
                         }
                     }

@@ -6,8 +6,8 @@ import SwiftUI
 
 /// Small uppercase section header, e.g. "CATEGORY".
 struct TaskFieldLabel: View {
-    let text: String
-    init(_ text: String) { self.text = text }
+    let text: LocalizedStringKey
+    init(_ text: LocalizedStringKey) { self.text = text }
     var body: some View {
         Text(text)
             .font(.custom(T.fontBody, size: 12).weight(.semibold))
@@ -43,7 +43,7 @@ struct CategorySection: View {
         } label: {
             HStack(spacing: 6) {
                 Circle().fill(colors.solid).frame(width: 10, height: 10)
-                Text(name.capitalized)
+                Text(catDisplayName(name))
                     .font(.custom(T.fontHeader, size: 13).weight(.bold))
                     .foregroundColor(picked ? colors.ink : T.text)
             }

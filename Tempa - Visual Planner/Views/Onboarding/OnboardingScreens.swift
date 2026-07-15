@@ -110,7 +110,7 @@ struct Onb1HookView: View {
 struct Onb2SelfIdView: View {
     let state: OnboardingState
 
-    private let rows = [
+    private let rows: [LocalizedStringKey] = [
         "I have ADHD / I'm neurodivergent",
         "I get overwhelmed by my to-do list",
         "I lose track of time",
@@ -168,7 +168,7 @@ struct Onb2SelfIdView: View {
 struct Onb3PainView: View {
     let state: OnboardingState
 
-    private let rows = [
+    private let rows: [LocalizedStringKey] = [
         "Starting tasks",
         "Time blindness — losing hours",
         "Remembering routines",
@@ -224,7 +224,7 @@ struct Onb3PainView: View {
 // MARK: - QuizRow
 
 struct QuizRow: View {
-    let label: String
+    let label: LocalizedStringKey
     let picked: Bool
     let onTap: () -> Void
 

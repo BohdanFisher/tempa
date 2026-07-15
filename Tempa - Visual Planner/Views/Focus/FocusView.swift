@@ -97,9 +97,9 @@ struct FocusView: View {
     /// "{Category} Time" when a session was started from a task, otherwise "Focus".
     private var focusTitle: String {
         if isActive, let cat = sessionCategory {
-            return "\(cat.capitalized) Time"
+            return String(localized: "\(catDisplayName(cat)) Time")
         }
-        return "Focus"
+        return String(localized: "Focus")
     }
 
     private var timeRange: String {
@@ -339,7 +339,7 @@ struct FocusView: View {
                 Button {
                     addOneMinute()
                 } label: {
-                    Text("+ 1 хв")
+                    Text("+ 1 min")
                         .font(.custom(T.fontHeader, size: 14).weight(.bold))
                         .foregroundColor(T.text.opacity(0.55))
                 }

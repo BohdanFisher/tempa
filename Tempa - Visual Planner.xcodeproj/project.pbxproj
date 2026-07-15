@@ -225,6 +225,14 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				uk,
+				es,
+				fr,
+				pt,
+				nb,
+				fi,
+				nl,
 			);
 			mainGroup = EA9860EA2FC7B6A000B8AD2B;
 			minimizedProjectReferenceProxies = 1;
@@ -305,6 +313,7 @@
 		EA9861182FC7B6A300B8AD2B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Tempa - Visual Planner/Tempa___Visual_Planner.entitlements";
@@ -349,6 +358,7 @@
 		EA9861192FC7B6A300B8AD2B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Tempa - Visual Planner/Tempa___Visual_Planner.entitlements";

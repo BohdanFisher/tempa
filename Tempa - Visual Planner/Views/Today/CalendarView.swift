@@ -333,9 +333,9 @@ struct CalendarView: View {
 
         var label: String {
             switch self {
-            case .morning: return "MORNING"
-            case .afternoon: return "AFTERNOON"
-            case .evening: return "EVENING"
+            case .morning: return String(localized: "MORNING")
+            case .afternoon: return String(localized: "AFTERNOON")
+            case .evening: return String(localized: "EVENING")
             }
         }
 

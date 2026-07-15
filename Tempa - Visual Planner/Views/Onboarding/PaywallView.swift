@@ -129,7 +129,7 @@ struct PaywallView: View {
                         title: plan.name,
                         isYearly: plan.id == "tempa_yearly",
                         price: plan.price,
-                        sub: plan.monthlyPrice.map { "\($0)/mo" } ?? "per \(plan.periodLabel)",
+                        sub: plan.monthlyPrice.map { String(localized: "\($0)/mo") } ?? String(localized: "per \(plan.periodLabel)"),
                         detail: plan.id == "tempa_yearly" ? "3 days free, then billed yearly" : nil
                     )
                     .staggerIn(i, baseDelay: 0.1)
@@ -142,7 +142,7 @@ struct PaywallView: View {
                         title: product.displayName,
                         isYearly: yearly,
                         price: product.displayPrice,
-                        sub: yearly ? (monthlyEquivalent(product).map { "\($0)/mo" } ?? "per year") : "per \(periodLabel(product))",
+                        sub: yearly ? (monthlyEquivalent(product).map { String(localized: "\($0)/mo") } ?? String(localized: "per year")) : String(localized: "per \(periodLabel(product))"),
                         detail: yearly ? "3 days free, then billed yearly" : nil
                     )
                     .staggerIn(i, baseDelay: 0.1)
@@ -286,10 +286,10 @@ struct PaywallView: View {
     private func periodLabel(_ product: Product) -> String {
         guard let p = product.subscription?.subscriptionPeriod else { return "" }
         switch p.unit {
-        case .year: return "year"
-        case .month: return "month"
-        case .week: return "week"
-        case .day: return "day"
+        case .year: return String(localized: "year")
+        case .month: return String(localized: "month")
+        case .week: return String(localized: "week")
+        case .day: return String(localized: "day")
         @unknown default: return ""
         }
     }

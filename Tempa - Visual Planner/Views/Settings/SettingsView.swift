@@ -10,9 +10,9 @@ enum ThemePreference: String, CaseIterable {
 
     var label: String {
         switch self {
-        case .system: "Auto"
-        case .light: "Light"
-        case .dark: "Dark"
+        case .system: String(localized: "Auto")
+        case .light: String(localized: "Light")
+        case .dark: String(localized: "Dark")
         }
     }
     var icon: String {
@@ -373,7 +373,7 @@ struct SettingRow: View {
     let icon: String
     let iconBg: Color
     let iconColor: Color
-    let title: String
+    let title: LocalizedStringKey
     var detail: String? = nil
     var value: String? = nil
     var isOn: Binding<Bool>? = nil

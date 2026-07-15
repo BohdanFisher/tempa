@@ -30,6 +30,13 @@ struct MeView: View {
 
     enum StatsPeriod: String, CaseIterable {
         case today = "Today", week = "Week", month = "Month"
+        var label: String {
+            switch self {
+            case .today: String(localized: "Today")
+            case .week: String(localized: "Week")
+            case .month: String(localized: "Month")
+            }
+        }
         var daysBack: Int {
             switch self {
             case .today: 1
@@ -158,8 +165,8 @@ struct MeView: View {
             .frame(height: 18)
 
             HStack(spacing: 14) {
-                legendDot(color: T.secondary, text: "\(hm(max(0, b.freeMin))) free")
-                legendDot(color: T.warning, text: "\(hm(b.reservedMin)) planned")
+                legendDot(color: T.secondary, text: String(localized: "\(hm(max(0, b.freeMin))) free"))
+                legendDot(color: T.warning, text: String(localized: "\(hm(b.reservedMin)) planned"))
                 Spacer()
                 Text("\(hm(b.remainingMin)) left")
                     .font(.custom(T.fontHeader, size: 12).weight(.bold))
@@ -198,7 +205,7 @@ struct MeView: View {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                     #endif
                 } label: {
-                    Text(p.rawValue)
+                    Text(p.label)
                         .font(.custom(T.fontHeader, size: 14).weight(.bold))
                         .foregroundColor(period == p ? T.text : T.textSec)
                         .frame(maxWidth: .infinity)
@@ -223,10 +230,10 @@ struct MeView: View {
 
     private func statTiles(_ s: StatsEngine.PeriodStats) -> some View {
         HStack(spacing: 10) {
-            statTile(value: "\(s.doneCount)", label: "done", sub: "of \(s.plannedCount) planned")
-            statTile(value: hm(s.doneMinutes), label: "task time", sub: period == .today ? "today" : "this \(period == .week ? "week" : "month")")
+            statTile(value: "\(s.doneCount)", label: String(localized: "done"), sub: String(localized: "of \(s.plannedCount) planned"))
+            statTile(value: hm(s.doneMinutes), label: String(localized: "task time"), sub: period == .today ? String(localized: "today") : (period == .week ? String(localized: "this week") : String(localized: "this month")))
             statTile(value: s.plannedCount > 0 ? "\(Int((Double(s.doneCount) / Double(s.plannedCount) * 100).rounded()))%" : "—",
-                     label: "follow-through", sub: "done vs planned")
+                     label: String(localized: "follow-through"), sub: String(localized: "done vs planned"))
         }
     }
 
@@ -262,8 +269,8 @@ struct MeView: View {
                     .tracking(1.2)
                     .foregroundColor(T.textSec)
                 Spacer()
-                legendDot(color: T.secondary, text: "done")
-                legendDot(color: T.secondary.opacity(0.22), text: "planned")
+                legendDot(color: T.secondary, text: String(localized: "done"))
+                legendDot(color: T.secondary.opacity(0.22), text: String(localized: "planned"))
             }
 
             if s.doneCount == 0 && s.plannedCount == 0 {
@@ -470,7 +477,7 @@ struct MeView: View {
                     HStack {
                         HStack(spacing: 6) {
                             Circle().fill(cc.solid).frame(width: 9, height: 9)
-                            Text(c.category.capitalized)
+                            Text(catDisplayName(c.category))
                                 .font(.custom(T.fontHeader, size: 13).weight(.bold))
                                 .foregroundColor(T.text)
                         }

@@ -118,14 +118,14 @@ struct TodayView: View {
                         }
                         .tempaShadowSm()
 
-                        Text((task.category ?? "Task").capitalized)
+                        Text(catDisplayName(task.category ?? "work"))
                             .font(.custom(T.fontHeader, size: 12).weight(.bold))
                             .tracking(1)
                             .foregroundColor(cc.ink)
                             .textCase(.uppercase)
                     }
 
-                    Text(task.title ?? "Current task")
+                    Text(task.title ?? String(localized: "Current task"))
                         .font(.custom(T.fontHeader, size: 26).weight(.heavy))
                         .tracking(-0.5)
                         .foregroundColor(T.text)
@@ -621,7 +621,7 @@ struct TimelineRow: View {
                             }
 
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(task.title ?? "Untitled")
+                                Text(task.title ?? String(localized: "Untitled"))
                                     .font(.custom(T.fontHeader, size: 15).weight(.bold))
                                     .foregroundColor(isDone ? T.textTer : T.text)
                                     .strikethrough(isDone, color: T.textTer)
@@ -839,10 +839,10 @@ enum TodayGrouping: String, CaseIterable {
 
     var label: String {
         switch self {
-        case .none: return "No grouping"
-        case .priority: return "By priority"
-        case .duration: return "By duration"
-        case .eisenhower: return "Eisenhower matrix"
+        case .none: return String(localized: "No grouping")
+        case .priority: return String(localized: "By priority")
+        case .duration: return String(localized: "By duration")
+        case .eisenhower: return String(localized: "Eisenhower matrix")
         }
     }
     var icon: String {
@@ -860,9 +860,9 @@ enum TodaySorting: String, CaseIterable {
 
     var label: String {
         switch self {
-        case .time: return "By time"
-        case .alphabetical: return "Alphabetical"
-        case .duration: return "By duration"
+        case .time: return String(localized: "By time")
+        case .alphabetical: return String(localized: "Alphabetical")
+        case .duration: return String(localized: "By duration")
         }
     }
     var icon: String {

@@ -13,18 +13,18 @@ enum FocusNudge {
     /// Warm, shame-free copy. Picked at random so it stays human, never robotic.
     /// Tone rule: supportive friend, zero guilt, zero "what are you doing" energy.
     private static let lines: [(title: String, body: String)] = [
-        ("Your tempo's still going",
-         "No rush, no guilt — your focus is holding your spot for whenever you're ready."),
-        ("Still here for you",
-         "Got pulled away? Happens to all of us. Come back whenever — your timer kept your place."),
-        ("Whenever you're ready",
-         "Your focus is paused on the world, not on you. Drop back in, no pressure."),
-        ("One breath, then back?",
-         "You stepped away, and that's okay. Your tempo's still flowing when you want it."),
-        ("Your focus saved you a seat",
-         "No nagging here, just a gentle wave. Your session's quietly waiting."),
-        ("Easy does it",
-         "Lost the thread for a sec? Totally normal. Your focus is right where you left it."),
+        (String(localized: "Your tempo's still going"),
+         String(localized: "No rush, no guilt — your focus is holding your spot for whenever you're ready.")),
+        (String(localized: "Still here for you"),
+         String(localized: "Got pulled away? Happens to all of us. Come back whenever — your timer kept your place.")),
+        (String(localized: "Whenever you're ready"),
+         String(localized: "Your focus is paused on the world, not on you. Drop back in, no pressure.")),
+        (String(localized: "One breath, then back?"),
+         String(localized: "You stepped away, and that's okay. Your tempo's still flowing when you want it.")),
+        (String(localized: "Your focus saved you a seat"),
+         String(localized: "No nagging here, just a gentle wave. Your session's quietly waiting.")),
+        (String(localized: "Easy does it"),
+         String(localized: "Lost the thread for a sec? Totally normal. Your focus is right where you left it.")),
     ]
 
     /// Schedule the one-shot nudge. Call when the app backgrounds mid-session.

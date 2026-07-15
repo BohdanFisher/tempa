@@ -92,9 +92,10 @@ struct OnbProgressBar: View {
 // MARK: - Section Label
 
 struct OnbLabel: View {
-    let text: String
+    let text: LocalizedStringKey
     var body: some View {
-        Text(text.uppercased())
+        Text(text)
+            .textCase(.uppercase)
             .font(.custom(T.fontHeader, size: 12).weight(.heavy))
             .tracking(2.2)
             .foregroundColor(T.primary)
