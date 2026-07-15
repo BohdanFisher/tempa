@@ -135,6 +135,7 @@
 				EA9860EF2FC7B6A000B8AD2B /* Sources */,
 				EA9860F02FC7B6A000B8AD2B /* Frameworks */,
 				EA9860F12FC7B6A000B8AD2B /* Resources */,
+				EA99AB01FEED4C0DE95B0001 /* Embed StoreKitTest (Debug) */,
 			);
 			buildRules = (
 			);
@@ -264,6 +265,29 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		EA99AB01FEED4C0DE95B0001 /* Embed StoreKitTest (Debug) */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Embed StoreKitTest (Debug)";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(FRAMEWORKS_FOLDER_PATH)/StoreKitTest.framework/StoreKitTest",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Debug-only: embed the developer StoreKitTest.framework so the app can boot\n# a local StoreKit test store on real devices. Skipped entirely in Release.\nif [ \"$CONFIGURATION\" != \"Debug\" ]; then exit 0; fi\nFW_SRC=\"$PLATFORM_DIR/Developer/Library/Frameworks/StoreKitTest.framework\"\nFW_DST=\"$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\"\nif [ ! -d \"$FW_SRC\" ]; then echo \"StoreKitTest.framework not found for platform — skipping\"; exit 0; fi\nmkdir -p \"$FW_DST\"\nrm -rf \"$FW_DST/StoreKitTest.framework\"\nditto \"$FW_SRC\" \"$FW_DST/StoreKitTest.framework\"\n# Retarget the weak link from the legacy /Developer path (gone on modern\n# devices) to the embedded copy.\ninstall_name_tool -id \"@rpath/StoreKitTest.framework/StoreKitTest\" \"$FW_DST/StoreKitTest.framework/StoreKitTest\" 2>/dev/null || true\nfor BIN in \"$TARGET_BUILD_DIR/$EXECUTABLE_PATH\" \"$TARGET_BUILD_DIR/$EXECUTABLE_FOLDER_PATH/$EXECUTABLE_NAME.debug.dylib\"; do\n  [ -f \"$BIN\" ] || continue\n  install_name_tool -change \"/Developer/Library/Frameworks/StoreKitTest.framework/StoreKitTest\" \"@rpath/StoreKitTest.framework/StoreKitTest\" \"$BIN\" 2>/dev/null || true\ndone\nif [ \"$CODE_SIGNING_ALLOWED\" = \"YES\" ] && [ -n \"$EXPANDED_CODE_SIGN_IDENTITY\" ]; then\n  codesign --force --sign \"$EXPANDED_CODE_SIGN_IDENTITY\" --preserve-metadata=identifier,entitlements \"$FW_DST/StoreKitTest.framework/StoreKitTest\" || true\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		EA9860EF2FC7B6A000B8AD2B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -312,6 +336,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 55Z7829Q3J;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
