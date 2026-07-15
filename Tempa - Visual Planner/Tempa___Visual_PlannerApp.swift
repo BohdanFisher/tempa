@@ -3,10 +3,6 @@ import CoreData
 
 @main
 struct TempaApp: App {
-    // Stored properties initialize in declaration order — this boots the debug
-    // StoreKit test store BEFORE SubscriptionManager below asks for products.
-    private let debugStoreKit: Void = DebugStoreKit.activate()
-
     let persistenceController = PersistenceController.shared
     let subscriptionManager = SubscriptionManager.shared
 
@@ -21,6 +17,13 @@ struct TempaApp: App {
 
         #if DEBUG
         ClaudeAPIClient().setupDevKey()
+        // Boot the debug StoreKit test store OFF the main thread — SKTestSession
+        // init can block on a storekitd handshake, and blocking here would hold
+        // the first frame hostage (white screen). SubscriptionManager retries,
+        // and the paywall retries again on appear, so late activation is fine.
+        Task.detached(priority: .userInitiated) {
+            DebugStoreKit.activate()
+        }
         #endif
     }
 

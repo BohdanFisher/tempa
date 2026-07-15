@@ -20,6 +20,7 @@ enum DebugStoreKit {
             print("[Tempa] Debug StoreKit: bundled TempaStoreKit.storekit not found")
             return
         }
+        print("[Tempa] Debug StoreKit: starting test session… (if no follow-up line appears, session init is hanging)")
         do {
             let session = try SKTestSession(contentsOf: url)
             SessionHolder.session = session
