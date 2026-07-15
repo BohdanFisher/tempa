@@ -257,17 +257,21 @@ final class SpeechRecognizer {
         SFSpeechRecognizer.requestAuthorization { [weak self] status in
             Task { @MainActor [weak self] in
                 guard let self else { return }
-                switch status {
-                case .authorized:
-                    self.beginRecording()
-                case .denied:
-                    self.error = "Speech recognition denied. Enable in Settings → Privacy."
-                case .restricted:
-                    self.error = "Speech recognition is restricted on this device."
-                case .notDetermined:
-                    self.error = "Speech recognition permission not determined."
-                @unknown default:
-                    self.error = "Unknown speech recognition status."
+                guard status == .authorized else {
+                    self.error = String(localized: "Tempa needs speech recognition to hear your tasks — you can allow it in Settings.")
+                    return
+                }
+                // Microphone permission is separate from speech — ask explicitly
+                // so the system prompt reliably appears before recording starts.
+                AVAudioApplication.requestRecordPermission { [weak self] granted in
+                    Task { @MainActor [weak self] in
+                        guard let self else { return }
+                        if granted {
+                            self.beginRecording()
+                        } else {
+                            self.error = String(localized: "Tempa needs the microphone to hear you — you can allow it in Settings.")
+                        }
+                    }
                 }
             }
         }

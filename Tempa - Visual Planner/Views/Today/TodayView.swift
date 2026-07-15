@@ -40,7 +40,7 @@ struct TodayView: View {
     }
     private var dateString: String {
         let f = DateFormatter()
-        f.dateFormat = "EEEE, MMM d"
+        f.setLocalizedDateFormatFromTemplate("EEEEMMMd")
         return f.string(from: now)
     }
 

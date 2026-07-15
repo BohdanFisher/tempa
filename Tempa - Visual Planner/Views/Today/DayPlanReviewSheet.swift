@@ -304,6 +304,7 @@ struct DayPlanReviewSheet: View {
         if let s, !s.isEmpty, s.lowercased() != "null" {
             let f = DateFormatter()
             f.locale = Locale(identifier: "en_US_POSIX")
+            f.locale = Locale(identifier: "en_US_POSIX")
             f.dateFormat = "yyyy-MM-dd"
             if let d = f.date(from: s) { return cal.startOfDay(for: d) }
         }

@@ -56,6 +56,7 @@ enum AIUsage {
     private static var currentMonth: String {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
+        f.locale = Locale(identifier: "en_US_POSIX")
         f.dateFormat = "yyyy-MM"
         return f.string(from: Date())
     }
@@ -396,8 +397,10 @@ final class ClaudeAPIClient: Sendable {
         let now = Date()
         let stamp = DateFormatter()
         stamp.locale = Locale(identifier: "en_US_POSIX")
+        stamp.locale = Locale(identifier: "en_US_POSIX")
         stamp.dateFormat = "yyyy-MM-dd HH:mm"
         let weekday = DateFormatter()
+        weekday.locale = Locale(identifier: "en_US_POSIX")
         weekday.locale = Locale(identifier: "en_US_POSIX")
         weekday.dateFormat = "EEEE"
         return "Current local datetime: \(stamp.string(from: now)) (\(weekday.string(from: now))), timezone \(TimeZone.current.identifier). Resolve any relative day/time against this."

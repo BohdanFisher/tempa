@@ -404,7 +404,7 @@ struct CalendarView: View {
 
     private var monthTitle: String {
         let f = DateFormatter()
-        f.dateFormat = "LLLL yyyy"
+        f.setLocalizedDateFormatFromTemplate("yMMMM")
         return f.string(from: selectedDate)
     }
 
@@ -413,13 +413,13 @@ struct CalendarView: View {
         if cal.isDateInTomorrow(selectedDate) { return "Tomorrow" }
         if cal.isDateInYesterday(selectedDate) { return "Yesterday" }
         let f = DateFormatter()
-        f.dateFormat = "EEEE, MMM d"
+        f.setLocalizedDateFormatFromTemplate("EEEEMMMd")
         return f.string(from: selectedDate)
     }
 
     private var dayHeading: String {
         let f = DateFormatter()
-        f.dateFormat = "EEEE, MMMM d"
+        f.setLocalizedDateFormatFromTemplate("EEEEMMMMd")
         return f.string(from: selectedDate).uppercased()
     }
 

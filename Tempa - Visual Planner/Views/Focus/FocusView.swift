@@ -104,9 +104,10 @@ struct FocusView: View {
 
     private var timeRange: String {
         guard let s = sessionStart else { return "" }
-        let f = DateFormatter()
-        f.dateFormat = "HH:mm"
-        return "\(f.string(from: s)) → \(f.string(from: s.addingTimeInterval(totalSec)))"
+        let end = s.addingTimeInterval(totalSec)
+        // Locale-aware: 24h in Europe, AM/PM in the US/Canada, and it honours
+        // the user's own 24-Hour Time toggle.
+        return "\(s.formatted(date: .omitted, time: .shortened)) → \(end.formatted(date: .omitted, time: .shortened))"
     }
 
     private func knobAngle(for frac: Double) -> Double {

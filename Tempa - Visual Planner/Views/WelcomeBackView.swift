@@ -16,7 +16,7 @@ struct WelcomeBackView: View {
         let f = DateFormatter(); f.dateFormat = "EEEEE"; return f   // narrow weekday: M, T, W…
     }()
     private static let rangeFmt: DateFormatter = {
-        let f = DateFormatter(); f.dateFormat = "MMM d"; return f
+        let f = DateFormatter(); f.setLocalizedDateFormatFromTemplate("MMMd"); return f
     }()
 
     /// Squares for the recap strip: weekday letter + intensity relative to the best day.
