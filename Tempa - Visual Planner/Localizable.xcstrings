@@ -955,6 +955,58 @@
     "12:00": {
       "shouldTranslate": false
     },
+    "3 days free, then billed yearly": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 Tage gratis, dann jährliche Abrechnung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 días gratis, luego pago anual"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 päivää ilmaiseksi, sitten vuosilaskutus"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 jours gratuits, puis facturation annuelle"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 dager gratis, deretter årlig betaling"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 dagen gratis, daarna jaarlijks gefactureerd"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 dias grátis, depois cobrança anual"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 дні безплатно, далі оплата щороку"
+          }
+        }
+      }
+    },
     "4.8 ★ from 12,400+ reviews": {
       "localizations": {
         "de": {
@@ -4191,6 +4243,58 @@
         }
       }
     },
+    "For the first time, I finish things. I just see the tiny next step and go.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum ersten Mal bringe ich Dinge zu Ende. Ich sehe nur den kleinen nächsten Schritt und lege los."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por primera vez termino las cosas. Solo veo el pequeño paso siguiente y voy."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ensimmäistä kertaa saan asiat valmiiksi. Näen vain pienen seuraavan askeleen ja menen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour la première fois, je finis ce que je commence. Je vois juste le petit pas suivant et j'y vais."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For første gang fullfører jeg ting. Jeg ser bare det lille neste steget og går."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voor het eerst maak ik dingen af. Ik zie gewoon het kleine volgende stapje en ga."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pela primeira vez eu termino as coisas. Só vejo o próximo passinho e vou."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Уперше я доводжу справи до кінця. Просто бачу крихітний наступний крок — і роблю."
+          }
+        }
+      }
+    },
     "Free plan": {
       "localizations": {
         "de": {
@@ -4967,6 +5071,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "За 5 хв: "
+          }
+        }
+      }
+    },
+    "It's the only planner that doesn't yell at me.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der einzige Planer, der mich nicht anschreit."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es el único planificador que no me grita."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ainoa suunnittelija, joka ei huuda minulle."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C'est le seul planificateur qui ne me crie pas dessus."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Den eneste planleggeren som ikke kjefter på meg."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De enige planner die niet tegen me schreeuwt."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "É o único planner que não grita comigo."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Єдиний планувальник, який на мене не кричить."
           }
         }
       }
@@ -6582,6 +6738,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Без поспіху й провини — фокус тримає твоє місце, коли б ти не повернувся."
+          }
+        }
+      }
+    },
+    "No streaks to lose was the unlock for me. I'm three months in.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Serien, die man verlieren kann — das war für mich der Schlüssel. Drei Monate dabei."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Que no haya rachas que perder fue la clave para mí. Llevo tres meses."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ei menetettäviä putkia — se oli minulle ratkaisu. Kolme kuukautta takana."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas de série à perdre, c'est ça qui a tout changé. Trois mois déjà."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ingen rekker å miste var nøkkelen for meg. Tre måneder nå."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geen reeksen om te verliezen was voor mij de sleutel. Ik ben drie maanden bezig."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não ter sequências para perder foi o que destravou para mim. Já são três meses."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Те, що нема стріків, які можна втратити, — це мене й розблокувало. Уже три місяці."
           }
         }
       }
@@ -9977,6 +10185,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "День"
+          }
+        }
+      }
+    },
+    "The store isn't reachable yet. Give it a second and try again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Store ist noch nicht erreichbar. Warte kurz und versuch es nochmal."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La tienda aún no responde. Espera un momento e inténtalo de nuevo."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kauppa ei vastaa vielä. Odota hetki ja yritä uudelleen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La boutique ne répond pas encore. Attends un instant et réessaie."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Butikken svarer ikke ennå. Vent litt og prøv igjen."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De winkel is nog niet bereikbaar. Wacht even en probeer opnieuw."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A loja ainda não respondeu. Aguarde um instante e tente de novo."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Магазин поки недоступний. Зачекай секунду і спробуй ще раз."
           }
         }
       }

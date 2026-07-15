@@ -130,7 +130,7 @@ struct PaywallView: View {
                         isYearly: plan.id == "tempa_yearly",
                         price: plan.price,
                         sub: plan.monthlyPrice.map { String(localized: "\($0)/mo") } ?? String(localized: "per \(plan.periodLabel)"),
-                        detail: plan.id == "tempa_yearly" ? "3 days free, then billed yearly" : nil
+                        detail: plan.id == "tempa_yearly" ? String(localized: "3 days free, then billed yearly") : nil
                     )
                     .staggerIn(i, baseDelay: 0.1)
                 }
@@ -143,7 +143,7 @@ struct PaywallView: View {
                         isYearly: yearly,
                         price: product.displayPrice,
                         sub: yearly ? (monthlyEquivalent(product).map { String(localized: "\($0)/mo") } ?? String(localized: "per year")) : String(localized: "per \(periodLabel(product))"),
-                        detail: yearly ? "3 days free, then billed yearly" : nil
+                        detail: yearly ? String(localized: "3 days free, then billed yearly") : nil
                     )
                     .staggerIn(i, baseDelay: 0.1)
                 }
@@ -316,7 +316,7 @@ struct PaywallView: View {
 
         guard let product = selectedProduct else {
             // Don't die silently — say why no sheet appeared.
-            errorMessage = "The store isn't reachable yet. Give it a second and try again."
+            errorMessage = String(localized: "The store isn't reachable yet. Give it a second and try again.")
             showError = true
             resetPurchaseUI()
             return
