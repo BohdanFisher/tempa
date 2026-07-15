@@ -312,6 +312,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 55Z7829Q3J;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Tempa - Visual Planner/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Tempa;
@@ -330,6 +334,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-weak_framework",
+					StoreKitTest,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Bohdan-Rybak.Tempa---Visual-Planner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

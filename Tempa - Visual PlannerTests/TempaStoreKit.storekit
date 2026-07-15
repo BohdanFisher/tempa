@@ -1,65 +1,192 @@
 {
-  "identifier": "A7C4E210",
-  "nonRenewingSubscriptions": [],
-  "products": [],
-  "settings": {},
-  "subscriptionGroups": [
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "A7C4E210",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : true,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : {
+          "index" : 1,
+          "type" : "purchase"
+        },
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : {
+          "index" : 0,
+          "type" : "verification"
+        },
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : {
+          "index" : 3,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : {
+          "index" : 3,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : {
+          "index" : 0,
+          "type" : "refund request"
+        },
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : {
+          "index" : 4,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
     {
-      "id": "3A7F2C51",
-      "localizations": [],
-      "name": "Tempa Pro",
-      "subscriptions": [
+      "id" : "3A7F2C51",
+      "localizations" : [
+
+      ],
+      "name" : "Tempa Pro",
+      "subscriptions" : [
         {
-          "adHocOffers": [],
-          "codeOffers": [],
-          "displayPrice": "29.99",
-          "familyShareable": false,
-          "groupNumber": 1,
-          "internalID": "1B7D4E19",
-          "introductoryOffer": {
-            "internalID": "4F8A2C36",
-            "paymentMode": "free",
-            "subscriptionPeriod": "P3D"
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "29.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "1B7D4E19",
+          "introductoryOffer" : {
+            "billingPlanType" : "BILLED_UPFRONT",
+            "internalID" : "4F8A2C36",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
           },
-          "localizations": [
+          "introductoryOffers" : [
             {
-              "description": "All of Tempa. 3 days free, then yearly.",
-              "displayName": "Yearly",
-              "locale": "en_US"
+              "billingPlanType" : "BILLED_UPFRONT",
+              "internalID" : "4F8A2C36",
+              "numberOfPeriods" : 1,
+              "paymentMode" : "free",
+              "subscriptionPeriod" : "P3D"
             }
           ],
-          "productID": "tempa_yearly",
-          "recurringSubscriptionPeriod": "P1Y",
-          "referenceName": "Tempa Pro Yearly",
-          "subscriptionGroupID": "3A7F2C51",
-          "type": "RecurringSubscription"
+          "localizations" : [
+            {
+              "description" : "All of Tempa. 3 days free, then yearly.",
+              "displayName" : "Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "tempa_yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Tempa Pro Yearly",
+          "subscriptionGroupID" : "3A7F2C51",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         },
         {
-          "adHocOffers": [],
-          "codeOffers": [],
-          "displayPrice": "4.49",
-          "familyShareable": false,
-          "groupNumber": 2,
-          "internalID": "7E5C3A28",
-          "introductoryOffer": null,
-          "localizations": [
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.49",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "7E5C3A28",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
             {
-              "description": "All of Tempa, billed monthly.",
-              "displayName": "Monthly",
-              "locale": "en_US"
+              "description" : "All of Tempa, billed monthly.",
+              "displayName" : "Monthly",
+              "locale" : "en_US"
             }
           ],
-          "productID": "tempa_monthly",
-          "recurringSubscriptionPeriod": "P1M",
-          "referenceName": "Tempa Pro Monthly",
-          "subscriptionGroupID": "3A7F2C51",
-          "type": "RecurringSubscription"
+          "productID" : "tempa_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Tempa Pro Monthly",
+          "subscriptionGroupID" : "3A7F2C51",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         }
       ]
     }
   ],
-  "version": {
-    "major": 2,
-    "minor": 0
+  "version" : {
+    "major" : 5,
+    "minor" : 0
   }
 }

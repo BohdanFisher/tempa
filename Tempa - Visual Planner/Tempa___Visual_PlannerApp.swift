@@ -3,6 +3,10 @@ import CoreData
 
 @main
 struct TempaApp: App {
+    // Stored properties initialize in declaration order — this boots the debug
+    // StoreKit test store BEFORE SubscriptionManager below asks for products.
+    private let debugStoreKit: Void = DebugStoreKit.activate()
+
     let persistenceController = PersistenceController.shared
     let subscriptionManager = SubscriptionManager.shared
 
