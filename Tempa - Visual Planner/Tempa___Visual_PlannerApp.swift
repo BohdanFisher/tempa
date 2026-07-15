@@ -17,13 +17,6 @@ struct TempaApp: App {
 
         #if DEBUG
         ClaudeAPIClient().setupDevKey()
-        // Boot the debug StoreKit test store OFF the main thread — SKTestSession
-        // init can block on a storekitd handshake, and blocking here would hold
-        // the first frame hostage (white screen). SubscriptionManager retries,
-        // and the paywall retries again on appear, so late activation is fine.
-        Task.detached(priority: .userInitiated) {
-            DebugStoreKit.activate()
-        }
         #endif
     }
 
