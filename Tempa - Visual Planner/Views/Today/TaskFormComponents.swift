@@ -90,8 +90,8 @@ struct WhenSection: View {
     private var label: String {
         let cal = Calendar.current
         let timeStr = startTime.formatted(date: .omitted, time: .shortened)
-        if cal.isDateInToday(startTime) { return "Today, \(timeStr)" }
-        if cal.isDateInTomorrow(startTime) { return "Tomorrow, \(timeStr)" }
+        if cal.isDateInToday(startTime) { return String(localized: "Today, \(timeStr)") }
+        if cal.isDateInTomorrow(startTime) { return String(localized: "Tomorrow, \(timeStr)") }
         return startTime.formatted(date: .abbreviated, time: .shortened)
     }
 }
@@ -107,7 +107,7 @@ struct QuickTimeSheet: View {
         let tonight = cal.date(bySettingHour: 18, minute: 0, second: 0, of: now) ?? now
         let tomorrowBase = cal.date(byAdding: .day, value: 1, to: now) ?? now
         let tomorrow9 = cal.date(bySettingHour: 9, minute: 0, second: 0, of: tomorrowBase) ?? now
-        return [("In 1 hour", inHour), ("Tonight 6 PM", tonight), ("Tomorrow 9 AM", tomorrow9)]
+        return [(String(localized: "In 1 hour"), inHour), (String(localized: "Tonight 6 PM"), tonight), (String(localized: "Tomorrow 9 AM"), tomorrow9)]
     }
 
     var body: some View {
@@ -226,6 +226,8 @@ struct PrioritySection: View {
         .buttonStyle(.plain)
     }
 
-    static func name(_ p: Int) -> String { ["None", "Low", "Med", "High"][safe: p] ?? "None" }
+    static func name(_ p: Int) -> String {
+        [String(localized: "None"), String(localized: "Low"), String(localized: "Med"), String(localized: "High")][safe: p] ?? String(localized: "None")
+    }
     static func color(_ p: Int) -> Color { [T.textSec, T.secondary, T.warning, T.primary][safe: p] ?? T.textSec }
 }

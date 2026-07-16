@@ -157,7 +157,7 @@ struct ProfileView: View {
 
     private var planSubtitle: String {
         guard let id = subs.purchasedProductIDs.first else {
-            return "Unlock AI planning & breakdowns"
+            return String(localized: "Unlock AI planning & breakdowns")
         }
         let name = planName(id)
         if let price = price(for: id) { return "\(name) · \(price)" }
@@ -184,17 +184,17 @@ struct ProfileView: View {
     private var theDaySection: some View {
         settingsGroup("The day") {
             SettingRow(icon: "sun.max.fill", iconBg: Cat.routine.bg, iconColor: Cat.routine.ink,
-                       title: "Wake time", detail: "Anchors your day battery",
+                       title: "Wake time", detail: String(localized: "Anchors your day battery"),
                        value: settings.wakeTime.formatted(.dateTime.hour().minute())) {
                 editingTime = .wake
             }
             SettingRow(icon: "flame.fill", iconBg: Cat.personal.bg, iconColor: Cat.personal.ink,
-                       title: "Energy dip", detail: "When your focus usually drops",
-                       value: settings.energyDipTime?.formatted(.dateTime.hour().minute()) ?? "Off") {
+                       title: "Energy dip", detail: String(localized: "When your focus usually drops"),
+                       value: settings.energyDipTime?.formatted(.dateTime.hour().minute()) ?? String(localized: "Off")) {
                 editingTime = .dip
             }
             SettingRow(icon: "bell.fill", iconBg: Cat.work.bg, iconColor: Cat.work.ink,
-                       title: "Gentle nudges", detail: "Reminder 10 min before each task",
+                       title: "Gentle nudges", detail: String(localized: "Reminder 10 min before each task"),
                        isOn: Binding(get: { nudges }, set: { setNudges($0) }))
         }
     }
@@ -309,11 +309,11 @@ struct ProfileView: View {
     private var legalSection: some View {
         settingsGroup("Legal") {
             SettingRow(icon: "lock.fill", iconBg: T.bgWarm, iconColor: T.textSec,
-                       title: "Privacy Policy", detail: "What stays on-device, what goes to AI") {
+                       title: "Privacy Policy", detail: String(localized: "What stays on-device, what goes to AI")) {
                 showPrivacy = true
             }
             SettingRow(icon: "doc.text", iconBg: T.bgWarm, iconColor: T.textSec,
-                       title: "Terms of Service", detail: "The ground rules") {
+                       title: "Terms of Service", detail: String(localized: "The ground rules")) {
                 showTerms = true
             }
         }

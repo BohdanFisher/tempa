@@ -409,9 +409,9 @@ struct CalendarView: View {
     }
 
     private var selectedTitle: String {
-        if cal.isDateInToday(selectedDate) { return "Today" }
-        if cal.isDateInTomorrow(selectedDate) { return "Tomorrow" }
-        if cal.isDateInYesterday(selectedDate) { return "Yesterday" }
+        if cal.isDateInToday(selectedDate) { return String(localized: "Today") }
+        if cal.isDateInTomorrow(selectedDate) { return String(localized: "Tomorrow") }
+        if cal.isDateInYesterday(selectedDate) { return String(localized: "Yesterday") }
         let f = DateFormatter()
         f.setLocalizedDateFormatFromTemplate("EEEEMMMd")
         return f.string(from: selectedDate)

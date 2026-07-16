@@ -191,7 +191,7 @@ struct AddTaskSheet: View {
         .tempaShadowSm()
     }
 
-    private func aiInputButton(icon: String, label: String, action: @escaping () -> Void) -> some View {
+    private func aiInputButton(icon: String, label: LocalizedStringKey, action: @escaping () -> Void) -> some View {
         Button {
             #if os(iOS)
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
