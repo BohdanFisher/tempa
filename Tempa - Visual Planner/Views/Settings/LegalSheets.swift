@@ -18,6 +18,8 @@ private struct LegalSheet: View {
     let title: String
     let updated: String
     let sections: [LegalSection]
+    /// Footer contact line; nil when the document carries its own contact section.
+    var contact: String? = nil
 
     var body: some View {
         ScrollView {
@@ -42,9 +44,11 @@ private struct LegalSheet: View {
 
                 ForEach(sections) { s in
                     VStack(alignment: .leading, spacing: 6) {
-                        Text(s.heading)
-                            .font(.custom(T.fontHeader, size: 15).weight(.heavy))
-                            .foregroundColor(T.text)
+                        if !s.heading.isEmpty {
+                            Text(s.heading)
+                                .font(.custom(T.fontHeader, size: 15).weight(.heavy))
+                                .foregroundColor(T.text)
+                        }
                         Text(s.body)
                             .font(.custom(T.fontBody, size: 14).weight(.medium))
                             .foregroundColor(T.textSec)
@@ -53,11 +57,13 @@ private struct LegalSheet: View {
                     }
                 }
 
-                Text("Questions? rybakbohdan@gmail.com")
-                    .font(.custom(T.fontBody, size: 13).weight(.medium))
-                    .foregroundColor(T.textSec)
-                    .padding(.top, 6)
-                    .padding(.bottom, 24)
+                if let contact {
+                    Text(contact)
+                        .font(.custom(T.fontBody, size: 13).weight(.medium))
+                        .foregroundColor(T.textSec)
+                        .padding(.top, 6)
+                        .padding(.bottom, 24)
+                }
             }
             .padding(24)
         }
@@ -108,7 +114,7 @@ struct PrivacyPolicySheet: View {
                 heading: "Changes",
                 body: "If this policy changes in a meaningful way, the app will say so. Continued use after changes means you accept the updated policy."
             ),
-        ])
+        ], contact: "Questions? support@tempa-planner.app")
     }
 }
 
@@ -116,54 +122,54 @@ struct PrivacyPolicySheet: View {
 
 struct TermsSheet: View {
     var body: some View {
-        LegalSheet(title: "Terms of Service", updated: "July 5, 2026", sections: [
+        LegalSheet(title: "Terms of Service", updated: "July 15, 2026", sections: [
             LegalSection(
-                heading: "1. Agreement",
-                body: "By downloading or using Tempa you agree to these terms. If you don't agree, please don't use the app."
+                heading: "",
+                body: "These Terms of Service (\"Terms\") govern your use of the Tempa mobile application (the \"App\"). By downloading or using the App, you agree to these Terms. If you do not agree, do not use the App."
             ),
             LegalSection(
-                heading: "2. What Tempa is (and isn't)",
-                body: "Tempa is a personal planning tool. It is not a medical device and does not provide medical, psychological or professional advice, diagnosis or treatment. It is not a substitute for care from a qualified professional. Always consult a professional about health decisions, including ADHD and medication."
+                heading: "1. The service",
+                body: "Tempa is a personal day-planning application offering task capture (including by voice), AI-assisted scheduling, color-coded time blocks, and focus sessions. We may add, change, or remove features as the App evolves."
             ),
             LegalSection(
-                heading: "3. Reminders are best-effort",
-                body: "Notifications and reminders can be delayed, altered or missed entirely — because of device settings, Focus modes, system behavior, battery optimization or software failures. You agree not to rely on Tempa as your only reminder for anything important, including medication, appointments or deadlines, and you accept full responsibility for the outcomes of missed or late reminders."
+                heading: "2. Your account and acceptable use",
+                body: "• You are responsible for the content you add to the App and for keeping your device secure.\n• You agree not to misuse the App — including attempting to disrupt the service, reverse-engineer it except where permitted by law, or use it for unlawful purposes.\n• You must be at least 13 years old (or the minimum age in your jurisdiction) to use the App."
+            ),
+            LegalSection(
+                heading: "3. Subscriptions and billing",
+                body: "• Some features require a paid subscription (\"Tempa Plus\"), billed through your Apple App Store account.\n• Where a free trial is offered, your subscription begins automatically at the end of the trial unless cancelled at least 24 hours before it ends.\n• Subscriptions renew automatically until cancelled in your App Store settings. Cancellation takes effect at the end of the current billing period.\n• Refunds are handled by Apple under App Store policies."
             ),
             LegalSection(
                 heading: "4. AI-generated content",
-                body: "AI features produce automated suggestions that may be inaccurate, incomplete or inappropriate for your situation. They are suggestions, not advice. You are solely responsible for reviewing them and for any action you take based on them."
+                body: "The App uses AI to suggest plans and schedules. Suggestions are generated automatically and may be inaccurate or unsuitable for your situation. They are provided for convenience only and are not professional, medical, or psychological advice. You remain responsible for the decisions you make."
             ),
             LegalSection(
-                heading: "5. No warranties",
-                body: "To the maximum extent permitted by applicable law, Tempa is provided \"as is\" and \"as available\", without warranties of any kind, express or implied — including merchantability, fitness for a particular purpose, accuracy, availability and non-infringement. We do not warrant that the app will be uninterrupted, error-free or that data will never be lost. Back up anything you can't afford to lose."
+                heading: "5. Your content",
+                body: "You retain all rights to the content you create in the App. You grant us a limited license to process that content solely to provide the App's features (for example, transcribing voice input or generating a schedule). We do not claim ownership of your content."
             ),
             LegalSection(
-                heading: "6. Limitation of liability",
-                body: "To the maximum extent permitted by applicable law, the developer shall not be liable for any indirect, incidental, special, consequential, exemplary or punitive damages, or for any loss of data, profits, goodwill, health outcomes, missed events, missed medication or missed obligations, arising out of or related to your use of (or inability to use) the app — even if advised of the possibility. The developer's total aggregate liability for all claims shall not exceed the amount you paid for the app in the 12 months before the claim, or USD 10, whichever is greater. Some jurisdictions don't allow certain exclusions; there, liability is limited to the maximum extent the law allows."
+                heading: "6. Intellectual property",
+                body: "The App, including its design, branding, and software, is owned by us and protected by intellectual-property laws. These Terms do not grant you any right to use the Tempa name, logo, or branding."
             ),
             LegalSection(
-                heading: "7. Your responsibility",
-                body: "You agree to use the app lawfully and at your own risk, and — to the extent permitted by law — to indemnify and hold the developer harmless from claims arising out of your use of the app or your breach of these terms."
+                heading: "7. Disclaimer of warranties",
+                body: "The App is provided \"as is\" and \"as available\", without warranties of any kind, express or implied, including fitness for a particular purpose and non-infringement. We do not warrant that the App will be uninterrupted or error-free."
             ),
             LegalSection(
-                heading: "8. Subscriptions",
-                body: "Tempa Pro is billed through your Apple account and renews automatically until cancelled at least 24 hours before the end of the period (manage in App Store → Subscriptions). Free-trial time, where offered, is forfeited on purchase. Refunds are handled exclusively by Apple under their policies."
+                heading: "8. Limitation of liability",
+                body: "To the maximum extent permitted by law, we are not liable for any indirect, incidental, special, or consequential damages, or for loss of data, arising from your use of the App. Our total liability for any claim relating to the App will not exceed the amount you paid us in the 12 months before the claim arose."
             ),
             LegalSection(
-                heading: "9. Intellectual property",
-                body: "The app, its design, name and content belong to the developer. You get a personal, non-transferable, revocable licence to use the app on your Apple devices; you may not copy, modify, resell or reverse-engineer it except where the law expressly permits."
+                heading: "9. Termination",
+                body: "You may stop using the App at any time. We may suspend or terminate access if you materially breach these Terms. Sections that by their nature should survive termination (including 5–8) will survive."
             ),
             LegalSection(
-                heading: "10. App Store",
-                body: "These terms are between you and the developer, not Apple. Apple has no obligation to provide maintenance or support and is not responsible for the app or any claims relating to it. Apple and its subsidiaries are third-party beneficiaries of these terms and may enforce them."
+                heading: "10. Changes to these Terms",
+                body: "We may update these Terms from time to time. If we make material changes, we will notify you within the App or by other reasonable means. Continuing to use the App after changes take effect constitutes acceptance of the revised Terms."
             ),
             LegalSection(
-                heading: "11. Changes and termination",
-                body: "We may update the app or these terms, or discontinue the app, at any time. Material changes will be signposted in the app; continued use means acceptance. We may suspend access for breach of these terms."
-            ),
-            LegalSection(
-                heading: "12. Governing law",
-                body: "These terms are governed by the laws of Ukraine, without affecting any mandatory consumer-protection rights of the country you live in. If any provision is found unenforceable, the rest remain in force."
+                heading: "11. Contact",
+                body: "Questions about these Terms? Email us at support@tempa-planner.app."
             ),
         ])
     }
