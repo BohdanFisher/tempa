@@ -77,7 +77,7 @@ private struct LegalSheet: View {
 
 struct PrivacyPolicySheet: View {
     var body: some View {
-        LegalSheet(title: "Privacy Policy", updated: "July 5, 2026", sections: [
+        LegalSheet(title: "Privacy Policy", updated: "July 29, 2026", sections: [
             LegalSection(
                 heading: "1. The short version",
                 body: "Your plans stay yours. Tempa has no accounts, no ads, no analytics and no servers of its own. Almost everything lives on your device."
@@ -126,7 +126,7 @@ struct PrivacyPolicySheet: View {
 
 struct TermsSheet: View {
     var body: some View {
-        LegalSheet(title: "Terms of Service", updated: "July 15, 2026", sections: [
+        LegalSheet(title: "Terms of Service", updated: "July 29, 2026", sections: [
             LegalSection(
                 heading: "",
                 body: "These Terms of Service (\"Terms\") govern your use of the Tempa mobile application (the \"App\"). By downloading or using the App, you agree to these Terms. If you do not agree, do not use the App."
