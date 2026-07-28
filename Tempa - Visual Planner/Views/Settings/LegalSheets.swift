@@ -79,42 +79,46 @@ struct PrivacyPolicySheet: View {
     var body: some View {
         LegalSheet(title: "Privacy Policy", updated: "July 5, 2026", sections: [
             LegalSection(
-                heading: "The short version",
+                heading: "1. The short version",
                 body: "Your plans stay yours. Tempa has no accounts, no ads, no analytics and no servers of its own. Almost everything lives on your device."
             ),
             LegalSection(
-                heading: "What stays on your device",
+                heading: "2. What stays on your device",
                 body: "Your tasks, schedule, completions, focus history and stats are stored on your device and synced through your private iCloud (CloudKit). They are encrypted in your Apple account — we cannot read them."
             ),
             LegalSection(
-                heading: "What is sent to AI",
+                heading: "3. What is sent to AI",
                 body: "Only the task text you type or speak is sent to Anthropic's API when you use an AI feature (break into steps, plan my day, Ask Tempa) — so it can be turned into a plan. Per Anthropic's API terms, it isn't used to train models. Your schedule, stats and everything else are never sent."
             ),
             LegalSection(
-                heading: "Voice input",
+                heading: "4. Voice input",
                 body: "Speech is transcribed by Apple's speech services on your device where available; Tempa only receives the resulting text. Audio is handled under Apple's privacy policy."
             ),
             LegalSection(
-                heading: "Notifications",
+                heading: "5. Notifications",
                 body: "Reminders and nudges are scheduled locally on your device. They never leave it."
             ),
             LegalSection(
-                heading: "Purchases",
+                heading: "6. Purchases",
                 body: "Subscriptions are processed entirely by Apple. We never see your payment details — only an anonymous receipt that says Pro is active."
             ),
             LegalSection(
-                heading: "No tracking",
+                heading: "7. No tracking",
                 body: "No ad networks, no tracking SDKs, no fingerprinting, no data brokers. We don't build profiles of you."
             ),
             LegalSection(
-                heading: "Your control",
+                heading: "8. Your control",
                 body: "Delete a task and it's gone from your devices and your iCloud. Delete the app and its data goes with it (iCloud data can also be removed in iOS Settings → iCloud). There's no account to close because there's no account."
             ),
             LegalSection(
-                heading: "Changes",
+                heading: "9. Changes",
                 body: "If this policy changes in a meaningful way, the app will say so. Continued use after changes means you accept the updated policy."
             ),
-        ], contact: "Questions? support@tempa-planner.app")
+            LegalSection(
+                heading: "10. Contact",
+                body: "Questions about this policy? Email us at support@tempa-planner.app."
+            ),
+        ])
     }
 }
 
