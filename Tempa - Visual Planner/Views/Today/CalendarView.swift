@@ -333,9 +333,9 @@ struct CalendarView: View {
 
         var label: String {
             switch self {
-            case .morning: return String(localized: "MORNING")
-            case .afternoon: return String(localized: "AFTERNOON")
-            case .evening: return String(localized: "EVENING")
+            case .morning: return String(localized: "MORNING", bundle: .appLanguage)
+            case .afternoon: return String(localized: "AFTERNOON", bundle: .appLanguage)
+            case .evening: return String(localized: "EVENING", bundle: .appLanguage)
             }
         }
 
@@ -411,9 +411,9 @@ struct CalendarView: View {
     }
 
     private var selectedTitle: String {
-        if cal.isDateInToday(selectedDate) { return String(localized: "Today") }
-        if cal.isDateInTomorrow(selectedDate) { return String(localized: "Tomorrow") }
-        if cal.isDateInYesterday(selectedDate) { return String(localized: "Yesterday") }
+        if cal.isDateInToday(selectedDate) { return String(localized: "Today", bundle: .appLanguage) }
+        if cal.isDateInTomorrow(selectedDate) { return String(localized: "Tomorrow", bundle: .appLanguage) }
+        if cal.isDateInYesterday(selectedDate) { return String(localized: "Yesterday", bundle: .appLanguage) }
         let f = DateFormatter()
         f.locale = AppLanguage.current.locale
         f.setLocalizedDateFormatFromTemplate("EEEEMMMd")

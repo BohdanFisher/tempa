@@ -32,9 +32,9 @@ struct MeView: View {
         case today = "Today", week = "Week", month = "Month"
         var label: String {
             switch self {
-            case .today: String(localized: "Today")
-            case .week: String(localized: "Week")
-            case .month: String(localized: "Month")
+            case .today: String(localized: "Today", bundle: .appLanguage)
+            case .week: String(localized: "Week", bundle: .appLanguage)
+            case .month: String(localized: "Month", bundle: .appLanguage)
             }
         }
         var daysBack: Int {
@@ -165,8 +165,8 @@ struct MeView: View {
             .frame(height: 18)
 
             HStack(spacing: 14) {
-                legendDot(color: T.secondary, text: String(localized: "\(hm(max(0, b.freeMin))) free"))
-                legendDot(color: T.warning, text: String(localized: "\(hm(b.reservedMin)) planned"))
+                legendDot(color: T.secondary, text: String(localized: "\(hm(max(0, b.freeMin))) free", bundle: .appLanguage))
+                legendDot(color: T.warning, text: String(localized: "\(hm(b.reservedMin)) planned", bundle: .appLanguage))
                 Spacer()
                 Text("\(hm(b.remainingMin)) left")
                     .font(.custom(T.fontHeader, size: 12).weight(.bold))
@@ -230,10 +230,10 @@ struct MeView: View {
 
     private func statTiles(_ s: StatsEngine.PeriodStats) -> some View {
         HStack(spacing: 10) {
-            statTile(value: "\(s.doneCount)", label: String(localized: "done"), sub: String(localized: "of \(s.plannedCount) planned"))
-            statTile(value: hm(s.doneMinutes), label: String(localized: "task time"), sub: period == .today ? String(localized: "today") : (period == .week ? String(localized: "this week") : String(localized: "this month")))
+            statTile(value: "\(s.doneCount)", label: String(localized: "done", bundle: .appLanguage), sub: String(localized: "of \(s.plannedCount) planned", bundle: .appLanguage))
+            statTile(value: hm(s.doneMinutes), label: String(localized: "task time", bundle: .appLanguage), sub: period == .today ? String(localized: "today", bundle: .appLanguage) : (period == .week ? String(localized: "this week", bundle: .appLanguage) : String(localized: "this month", bundle: .appLanguage)))
             statTile(value: s.plannedCount > 0 ? "\(Int((Double(s.doneCount) / Double(s.plannedCount) * 100).rounded()))%" : "—",
-                     label: String(localized: "follow-through"), sub: String(localized: "done vs planned"))
+                     label: String(localized: "follow-through", bundle: .appLanguage), sub: String(localized: "done vs planned", bundle: .appLanguage))
         }
     }
 
@@ -269,8 +269,8 @@ struct MeView: View {
                     .tracking(1.2)
                     .foregroundColor(T.textSec)
                 Spacer()
-                legendDot(color: T.secondary, text: String(localized: "done"))
-                legendDot(color: T.secondary.opacity(0.22), text: String(localized: "planned"))
+                legendDot(color: T.secondary, text: String(localized: "done", bundle: .appLanguage))
+                legendDot(color: T.secondary.opacity(0.22), text: String(localized: "planned", bundle: .appLanguage))
             }
 
             if s.doneCount == 0 && s.plannedCount == 0 {

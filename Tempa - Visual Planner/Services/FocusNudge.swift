@@ -12,20 +12,20 @@ enum FocusNudge {
 
     /// Warm, shame-free copy. Picked at random so it stays human, never robotic.
     /// Tone rule: supportive friend, zero guilt, zero "what are you doing" energy.
-    private static let lines: [(title: String, body: String)] = [
-        (String(localized: "Your tempo's still going"),
-         String(localized: "No rush, no guilt — your focus is holding your spot for whenever you're ready.")),
-        (String(localized: "Still here for you"),
-         String(localized: "Got pulled away? Happens to all of us. Come back whenever — your timer kept your place.")),
-        (String(localized: "Whenever you're ready"),
-         String(localized: "Your focus is paused on the world, not on you. Drop back in, no pressure.")),
-        (String(localized: "One breath, then back?"),
-         String(localized: "You stepped away, and that's okay. Your tempo's still flowing when you want it.")),
-        (String(localized: "Your focus saved you a seat"),
-         String(localized: "No nagging here, just a gentle wave. Your session's quietly waiting.")),
-        (String(localized: "Easy does it"),
-         String(localized: "Lost the thread for a sec? Totally normal. Your focus is right where you left it.")),
-    ]
+    private static var lines: [(title: String, body: String)] { [
+        (String(localized: "Your tempo's still going", bundle: .appLanguage),
+         String(localized: "No rush, no guilt — your focus is holding your spot for whenever you're ready.", bundle: .appLanguage)),
+        (String(localized: "Still here for you", bundle: .appLanguage),
+         String(localized: "Got pulled away? Happens to all of us. Come back whenever — your timer kept your place.", bundle: .appLanguage)),
+        (String(localized: "Whenever you're ready", bundle: .appLanguage),
+         String(localized: "Your focus is paused on the world, not on you. Drop back in, no pressure.", bundle: .appLanguage)),
+        (String(localized: "One breath, then back?", bundle: .appLanguage),
+         String(localized: "You stepped away, and that's okay. Your tempo's still flowing when you want it.", bundle: .appLanguage)),
+        (String(localized: "Your focus saved you a seat", bundle: .appLanguage),
+         String(localized: "No nagging here, just a gentle wave. Your session's quietly waiting.", bundle: .appLanguage)),
+        (String(localized: "Easy does it", bundle: .appLanguage),
+         String(localized: "Lost the thread for a sec? Totally normal. Your focus is right where you left it.", bundle: .appLanguage)),
+    ] }
 
     /// Schedule the one-shot nudge. Call when the app backgrounds mid-session.
     static func schedule() {

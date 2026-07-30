@@ -10,9 +10,9 @@ enum ThemePreference: String, CaseIterable {
 
     var label: String {
         switch self {
-        case .system: String(localized: "Auto")
-        case .light: String(localized: "Light")
-        case .dark: String(localized: "Dark")
+        case .system: String(localized: "Auto", bundle: .appLanguage)
+        case .light: String(localized: "Light", bundle: .appLanguage)
+        case .dark: String(localized: "Dark", bundle: .appLanguage)
         }
     }
     var icon: String {
@@ -156,7 +156,7 @@ struct ProfileView: View {
 
     private var planSubtitle: String {
         guard let id = subs.purchasedProductIDs.first else {
-            return String(localized: "Unlock AI planning & breakdowns")
+            return String(localized: "Unlock AI planning & breakdowns", bundle: .appLanguage)
         }
         let name = planName(id)
         if let price = price(for: id) { return "\(name) · \(price)" }
@@ -183,17 +183,17 @@ struct ProfileView: View {
     private var theDaySection: some View {
         settingsGroup("The day") {
             SettingRow(icon: "sun.max.fill", iconBg: Cat.routine.bg, iconColor: Cat.routine.ink,
-                       title: "Wake time", detail: String(localized: "Anchors your day battery"),
+                       title: "Wake time", detail: String(localized: "Anchors your day battery", bundle: .appLanguage),
                        value: settings.wakeTime.formatted(.dateTime.hour().minute())) {
                 editingTime = .wake
             }
             SettingRow(icon: "flame.fill", iconBg: Cat.personal.bg, iconColor: Cat.personal.ink,
-                       title: "Energy dip", detail: String(localized: "When your focus usually drops"),
-                       value: settings.energyDipTime?.formatted(.dateTime.hour().minute()) ?? String(localized: "Off")) {
+                       title: "Energy dip", detail: String(localized: "When your focus usually drops", bundle: .appLanguage),
+                       value: settings.energyDipTime?.formatted(.dateTime.hour().minute()) ?? String(localized: "Off", bundle: .appLanguage)) {
                 editingTime = .dip
             }
             SettingRow(icon: "bell.fill", iconBg: Cat.work.bg, iconColor: Cat.work.ink,
-                       title: "Gentle nudges", detail: String(localized: "Reminder 10 min before each task"),
+                       title: "Gentle nudges", detail: String(localized: "Reminder 10 min before each task", bundle: .appLanguage),
                        isOn: Binding(get: { nudges }, set: { setNudges($0) }))
         }
     }
@@ -302,11 +302,11 @@ struct ProfileView: View {
     private var legalSection: some View {
         settingsGroup("Legal") {
             SettingRow(icon: "lock.fill", iconBg: T.bgWarm, iconColor: T.textSec,
-                       title: "Privacy Policy", detail: String(localized: "What stays on-device, what goes to AI")) {
+                       title: "Privacy Policy", detail: String(localized: "What stays on-device, what goes to AI", bundle: .appLanguage)) {
                 showPrivacy = true
             }
             SettingRow(icon: "doc.text", iconBg: T.bgWarm, iconColor: T.textSec,
-                       title: "Terms of Service", detail: String(localized: "The ground rules")) {
+                       title: "Terms of Service", detail: String(localized: "The ground rules", bundle: .appLanguage)) {
                 showTerms = true
             }
         }

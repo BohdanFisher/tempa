@@ -129,8 +129,8 @@ struct PaywallView: View {
                         title: plan.name,
                         isYearly: plan.id == "tempa_yearly",
                         price: plan.price,
-                        sub: plan.monthlyPrice.map { String(localized: "\($0)/mo") } ?? String(localized: "per \(plan.periodLabel)"),
-                        detail: plan.id == "tempa_yearly" ? String(localized: "3 days free, then billed yearly") : nil
+                        sub: plan.monthlyPrice.map { String(localized: "\($0)/mo", bundle: .appLanguage) } ?? String(localized: "per \(plan.periodLabel)", bundle: .appLanguage),
+                        detail: plan.id == "tempa_yearly" ? String(localized: "3 days free, then billed yearly", bundle: .appLanguage) : nil
                     )
                     .staggerIn(i, baseDelay: 0.1)
                 }
@@ -142,8 +142,8 @@ struct PaywallView: View {
                         title: product.displayName,
                         isYearly: yearly,
                         price: product.displayPrice,
-                        sub: yearly ? (monthlyEquivalent(product).map { String(localized: "\($0)/mo") } ?? String(localized: "per year")) : String(localized: "per \(periodLabel(product))"),
-                        detail: yearly ? String(localized: "3 days free, then billed yearly") : nil
+                        sub: yearly ? (monthlyEquivalent(product).map { String(localized: "\($0)/mo", bundle: .appLanguage) } ?? String(localized: "per year", bundle: .appLanguage)) : String(localized: "per \(periodLabel(product))", bundle: .appLanguage),
+                        detail: yearly ? String(localized: "3 days free, then billed yearly", bundle: .appLanguage) : nil
                     )
                     .staggerIn(i, baseDelay: 0.1)
                 }
@@ -286,10 +286,10 @@ struct PaywallView: View {
     private func periodLabel(_ product: Product) -> String {
         guard let p = product.subscription?.subscriptionPeriod else { return "" }
         switch p.unit {
-        case .year: return String(localized: "year")
-        case .month: return String(localized: "month")
-        case .week: return String(localized: "week")
-        case .day: return String(localized: "day")
+        case .year: return String(localized: "year", bundle: .appLanguage)
+        case .month: return String(localized: "month", bundle: .appLanguage)
+        case .week: return String(localized: "week", bundle: .appLanguage)
+        case .day: return String(localized: "day", bundle: .appLanguage)
         @unknown default: return ""
         }
     }
@@ -316,7 +316,7 @@ struct PaywallView: View {
 
         guard let product = selectedProduct else {
             // Don't die silently — say why no sheet appeared.
-            errorMessage = String(localized: "The store isn't reachable yet. Give it a second and try again.")
+            errorMessage = String(localized: "The store isn't reachable yet. Give it a second and try again.", bundle: .appLanguage)
             showError = true
             resetPurchaseUI()
             return

@@ -126,7 +126,7 @@ struct TodayView: View {
                             .textCase(.uppercase)
                     }
 
-                    Text(task.title ?? String(localized: "Current task"))
+                    Text(task.title ?? String(localized: "Current task", bundle: .appLanguage))
                         .font(.custom(T.fontHeader, size: 26).weight(.heavy))
                         .tracking(-0.5)
                         .foregroundColor(T.text)
@@ -622,7 +622,7 @@ struct TimelineRow: View {
                             }
 
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(task.title ?? String(localized: "Untitled"))
+                                Text(task.title ?? String(localized: "Untitled", bundle: .appLanguage))
                                     .font(.custom(T.fontHeader, size: 15).weight(.bold))
                                     .foregroundColor(isDone ? T.textTer : T.text)
                                     .strikethrough(isDone, color: T.textTer)
@@ -840,10 +840,10 @@ enum TodayGrouping: String, CaseIterable {
 
     var label: String {
         switch self {
-        case .none: return String(localized: "No grouping")
-        case .priority: return String(localized: "By priority")
-        case .duration: return String(localized: "By duration")
-        case .eisenhower: return String(localized: "Eisenhower matrix")
+        case .none: return String(localized: "No grouping", bundle: .appLanguage)
+        case .priority: return String(localized: "By priority", bundle: .appLanguage)
+        case .duration: return String(localized: "By duration", bundle: .appLanguage)
+        case .eisenhower: return String(localized: "Eisenhower matrix", bundle: .appLanguage)
         }
     }
     var icon: String {
@@ -861,9 +861,9 @@ enum TodaySorting: String, CaseIterable {
 
     var label: String {
         switch self {
-        case .time: return String(localized: "By time")
-        case .alphabetical: return String(localized: "Alphabetical")
-        case .duration: return String(localized: "By duration")
+        case .time: return String(localized: "By time", bundle: .appLanguage)
+        case .alphabetical: return String(localized: "Alphabetical", bundle: .appLanguage)
+        case .duration: return String(localized: "By duration", bundle: .appLanguage)
         }
     }
     var icon: String {

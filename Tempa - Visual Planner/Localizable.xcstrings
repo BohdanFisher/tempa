@@ -2952,6 +2952,7 @@
       }
     },
     "Close and reopen Tempa to switch the language." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -5869,6 +5870,7 @@
       }
     },
     "Language updated" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

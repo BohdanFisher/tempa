@@ -11,7 +11,7 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     /// Native names on purpose — every user should recognise their own language.
     var displayName: String {
         switch self {
-        case .system: String(localized: "System")
+        case .system: String(localized: "System", bundle: .appLanguage)
         case .en: "English"
         case .de: "Deutsch"
         case .uk: "Українська"
@@ -81,6 +81,17 @@ private final class LanguageOverrideBundle: Bundle, @unchecked Sendable {
 }
 
 extension Bundle {
+    /// The bundle serving the currently selected app language — pass this to
+    /// String(localized:bundle:) so strings switch instantly on language change.
+    /// (On modern iOS, String(localized:) bypasses the swizzled lookup.)
+    static var appLanguage: Bundle {
+        if let path = objc_getAssociatedObject(Bundle.main, &overridePathKey) as? String,
+           let bundle = Bundle(path: path) {
+            return bundle
+        }
+        return .main
+    }
+
     static func applyLanguageOverride(_ code: String?) {
         if object_getClass(Bundle.main) != LanguageOverrideBundle.self {
             object_setClass(Bundle.main, LanguageOverrideBundle.self)

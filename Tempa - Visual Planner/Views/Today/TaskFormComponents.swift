@@ -90,8 +90,8 @@ struct WhenSection: View {
     private var label: String {
         let cal = Calendar.current
         let timeStr = startTime.formatted(date: .omitted, time: .shortened)
-        if cal.isDateInToday(startTime) { return String(localized: "Today, \(timeStr)") }
-        if cal.isDateInTomorrow(startTime) { return String(localized: "Tomorrow, \(timeStr)") }
+        if cal.isDateInToday(startTime) { return String(localized: "Today, \(timeStr)", bundle: .appLanguage) }
+        if cal.isDateInTomorrow(startTime) { return String(localized: "Tomorrow, \(timeStr)", bundle: .appLanguage) }
         return startTime.formatted(date: .abbreviated, time: .shortened)
     }
 }
@@ -107,7 +107,7 @@ struct QuickTimeSheet: View {
         let tonight = cal.date(bySettingHour: 18, minute: 0, second: 0, of: now) ?? now
         let tomorrowBase = cal.date(byAdding: .day, value: 1, to: now) ?? now
         let tomorrow9 = cal.date(bySettingHour: 9, minute: 0, second: 0, of: tomorrowBase) ?? now
-        return [(String(localized: "In 1 hour"), inHour), (String(localized: "Tonight 6 PM"), tonight), (String(localized: "Tomorrow 9 AM"), tomorrow9)]
+        return [(String(localized: "In 1 hour", bundle: .appLanguage), inHour), (String(localized: "Tonight 6 PM", bundle: .appLanguage), tonight), (String(localized: "Tomorrow 9 AM", bundle: .appLanguage), tomorrow9)]
     }
 
     var body: some View {
@@ -227,7 +227,7 @@ struct PrioritySection: View {
     }
 
     static func name(_ p: Int) -> String {
-        [String(localized: "None"), String(localized: "Low"), String(localized: "Med"), String(localized: "High")][safe: p] ?? String(localized: "None")
+        [String(localized: "None", bundle: .appLanguage), String(localized: "Low", bundle: .appLanguage), String(localized: "Med", bundle: .appLanguage), String(localized: "High", bundle: .appLanguage)][safe: p] ?? String(localized: "None", bundle: .appLanguage)
     }
     static func color(_ p: Int) -> Color { [T.textSec, T.secondary, T.warning, T.primary][safe: p] ?? T.textSec }
 }

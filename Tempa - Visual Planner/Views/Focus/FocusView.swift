@@ -97,9 +97,9 @@ struct FocusView: View {
     /// "{Category} Time" when a session was started from a task, otherwise "Focus".
     private var focusTitle: String {
         if isActive, let cat = sessionCategory {
-            return String(localized: "\(catDisplayName(cat)) Time")
+            return String(localized: "\(catDisplayName(cat)) Time", bundle: .appLanguage)
         }
-        return String(localized: "Focus")
+        return String(localized: "Focus", bundle: .appLanguage)
     }
 
     private var timeRange: String {

@@ -724,9 +724,9 @@ struct Onb6SocialView: View {
     let state: OnboardingState
 
     private let testimonials = [
-        (quote: String(localized: "For the first time, I finish things. I just see the tiny next step and go."), name: "Maya, 32"),
-        (quote: String(localized: "No streaks to lose was the unlock for me. I'm three months in."), name: "Jordan, 27"),
-        (quote: String(localized: "It's the only planner that doesn't yell at me."), name: "Sam, 41"),
+        (quote: String(localized: "For the first time, I finish things. I just see the tiny next step and go.", bundle: .appLanguage), name: "Maya, 32"),
+        (quote: String(localized: "No streaks to lose was the unlock for me. I'm three months in.", bundle: .appLanguage), name: "Jordan, 27"),
+        (quote: String(localized: "It's the only planner that doesn't yell at me.", bundle: .appLanguage), name: "Sam, 41"),
     ]
 
     var body: some View {

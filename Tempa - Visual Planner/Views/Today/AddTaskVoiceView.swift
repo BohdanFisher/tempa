@@ -186,8 +186,8 @@ struct AddTaskVoiceView: View {
     }
 
     private var helperText: String {
-        if !transcribedText.isEmpty { return String(localized: "Tap ✓ — we'll sort it into your day") }
-        return isListening ? String(localized: "Say everything you need to do…") : String(localized: "Tap the mic to speak")
+        if !transcribedText.isEmpty { return String(localized: "Tap ✓ — we'll sort it into your day", bundle: .appLanguage) }
+        return isListening ? String(localized: "Say everything you need to do…", bundle: .appLanguage) : String(localized: "Tap the mic to speak", bundle: .appLanguage)
     }
 
     private func primaryAction() {
@@ -258,7 +258,7 @@ final class SpeechRecognizer {
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 guard status == .authorized else {
-                    self.error = String(localized: "Tempa needs speech recognition to hear your tasks — you can allow it in Settings.")
+                    self.error = String(localized: "Tempa needs speech recognition to hear your tasks — you can allow it in Settings.", bundle: .appLanguage)
                     return
                 }
                 // Microphone permission is separate from speech — ask explicitly
@@ -269,7 +269,7 @@ final class SpeechRecognizer {
                         if granted {
                             self.beginRecording()
                         } else {
-                            self.error = String(localized: "Tempa needs the microphone to hear you — you can allow it in Settings.")
+                            self.error = String(localized: "Tempa needs the microphone to hear you — you can allow it in Settings.", bundle: .appLanguage)
                         }
                     }
                 }

@@ -18,7 +18,6 @@ struct AddTaskSheet: View {
     @State private var showDayPlan = false
     @State private var pendingPlan = false
     @State private var titleShake: CGFloat = 0   // gentle "needs a title" nudge
-    @State private var speakGlow = false         // breathing coral glow on the voice hero
     @FocusState private var titleFocused: Bool
 
     var body: some View {
@@ -192,9 +191,7 @@ struct AddTaskSheet: View {
         .tempaShadowSm()
     }
 
-    /// The voice hero — Tempa's signature input, dressed like it. Coral gradient,
-    /// the brand waveform breathing inside, and a soft pulsing glow that quietly
-    /// says "talk to me" without ever nagging.
+    /// Voice input — coral, simple, unmistakable. Same geometry as Ask Tempa.
     private var speakItHero: some View {
         Button {
             #if os(iOS)
@@ -202,30 +199,13 @@ struct AddTaskSheet: View {
             #endif
             showVoice = true
         } label: {
-            HStack(spacing: 10) {
-                ZStack {
-                    Circle()
-                        .fill(Color.white.opacity(0.22))
-                        .frame(width: 30, height: 30)
-                    Image(systemName: "mic.fill")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(.white)
-                }
-                Text("Speak it")
-                    .font(.custom(T.fontHeader, size: 15).weight(.heavy))
-                    .foregroundColor(.white)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-
-                Spacer(minLength: 6)
-
-                TempaWaveform(color: .white.opacity(0.9), bars: 9, maxHeight: 18, barWidth: 3.5, spacing: 3)
-                    .frame(width: 58, height: 26)
-                    .allowsHitTesting(false)
+            HStack(spacing: 8) {
+                Image(systemName: "mic.fill").font(.system(size: 13, weight: .semibold))
+                Text("Speak it").font(.custom(T.fontHeader, size: 13).weight(.bold))
             }
-            .padding(.horizontal, 14)
-            .frame(height: 50)
+            .foregroundColor(.white)
             .frame(maxWidth: .infinity)
+            .frame(height: 50)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(
@@ -236,15 +216,8 @@ struct AddTaskSheet: View {
                         )
                     )
             )
-            .shadow(color: Color(hex: "#FF7A59").opacity(speakGlow ? 0.5 : 0.25),
-                    radius: speakGlow ? 15 : 8, x: 0, y: speakGlow ? 8 : 4)
         }
         .buttonStyle(SpringPressStyle(scale: 0.96))
-        .onAppear {
-            withAnimation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true)) {
-                speakGlow = true
-            }
-        }
     }
 
     private func aiInputButton(icon: String, label: LocalizedStringKey, action: @escaping () -> Void) -> some View {
@@ -259,7 +232,7 @@ struct AddTaskSheet: View {
                 Text(label).font(.custom(T.fontHeader, size: 13).weight(.bold))
             }
             .foregroundColor(T.text)
-            .padding(.horizontal, 14)
+            .frame(maxWidth: .infinity)
             .frame(height: 50)
             .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(T.bgWarm))
         }

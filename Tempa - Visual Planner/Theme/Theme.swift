@@ -395,12 +395,12 @@ struct TempaScreen<Content: View>: View {
 /// Localized display name for a raw category value ("work" → "Work"/"Робота"/…).
 func catDisplayName(_ raw: String) -> String {
     switch raw {
-    case "work": String(localized: "Work")
-    case "personal": String(localized: "Personal")
-    case "health": String(localized: "Health")
-    case "routine": String(localized: "Routine")
-    case "social": String(localized: "Social")
-    case "rest": String(localized: "Rest")
+    case "work": String(localized: "Work", bundle: .appLanguage)
+    case "personal": String(localized: "Personal", bundle: .appLanguage)
+    case "health": String(localized: "Health", bundle: .appLanguage)
+    case "routine": String(localized: "Routine", bundle: .appLanguage)
+    case "social": String(localized: "Social", bundle: .appLanguage)
+    case "rest": String(localized: "Rest", bundle: .appLanguage)
     default: raw.capitalized
     }
 }

@@ -9,11 +9,11 @@ enum AppTab: Int, CaseIterable {
 
     var title: String {
         switch self {
-        case .today: String(localized: "Home")
-        case .calendar: String(localized: "Calendar")
-        case .focus: String(localized: "Focus")
-        case .me: String(localized: "Me")
-        case .settings: String(localized: "Settings")
+        case .today: String(localized: "Home", bundle: .appLanguage)
+        case .calendar: String(localized: "Calendar", bundle: .appLanguage)
+        case .focus: String(localized: "Focus", bundle: .appLanguage)
+        case .me: String(localized: "Me", bundle: .appLanguage)
+        case .settings: String(localized: "Settings", bundle: .appLanguage)
         }
     }
 

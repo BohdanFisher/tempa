@@ -178,7 +178,7 @@ struct WelcomeBackView: View {
                         Text(n == 1 ? "You got 1 thing done" : "You got \(n) things done")
                             .font(.custom(T.fontHeader, size: 14).weight(.bold))
                             .foregroundColor(T.text)
-                        Text("Starting is the hard part — you did it \(n == 1 ? String(localized: "once") : String(localized: "\(n) times")).")
+                        Text("Starting is the hard part — you did it \(n == 1 ? String(localized: "once", bundle: .appLanguage) : String(localized: "\(n) times", bundle: .appLanguage)).")
                             .font(.custom(T.fontBody, size: 12).weight(.medium))
                             .foregroundColor(T.textSec)
                     } else {
