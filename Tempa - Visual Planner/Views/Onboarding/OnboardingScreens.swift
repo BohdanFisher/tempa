@@ -113,6 +113,7 @@ struct Onb2SelfIdView: View {
     private let rows: [LocalizedStringKey] = [
         "I have ADHD / I'm neurodivergent",
         "I get overwhelmed by my to-do list",
+        "I procrastinate on important things",
         "I lose track of time",
         "I just want a calmer day",
     ]
@@ -172,6 +173,7 @@ struct Onb3PainView: View {
         "Starting tasks",
         "Time blindness — losing hours",
         "Remembering routines",
+        "Too many apps that didn't stick",
         "Feeling guilty when I fall behind",
     ]
 
@@ -273,6 +275,59 @@ struct QuizRow: View {
             .animation(.spring(response: 0.35, dampingFraction: 0.7), value: picked)
         }
         .buttonStyle(SpringPressStyle())
+    }
+}
+
+// MARK: - Screen: Micro-commitment (one small "yes" right before the demo)
+
+struct OnbMicroYesView: View {
+    let state: OnboardingState
+
+    private let options: [LocalizedStringKey] = ["Yes, completely", "Probably", "I want to find out"]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            OnbLabel(text: "Quick question")
+                .padding(.top, 32)
+
+            Text("If you finished one important thing a day — would your week feel different?")
+                .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                .tracking(-0.56)
+                .foregroundColor(T.text)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 10)
+
+            VStack(spacing: 10) {
+                ForEach(Array(options.enumerated()), id: \.offset) { i, label in
+                    Button {
+                        #if os(iOS)
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        #endif
+                        state.next()
+                    } label: {
+                        HStack {
+                            Text(label)
+                                .font(.custom("Nunito-ExtraBold", size: 16).weight(.bold))
+                                .foregroundColor(T.text)
+                            Spacer()
+                            Image(systemName: "arrow.right")
+                                .font(.system(size: 13, weight: .bold))
+                                .foregroundColor(T.primary)
+                        }
+                        .padding(18)
+                        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(T.surface))
+                        .tempaShadowSm()
+                    }
+                    .buttonStyle(SpringPressStyle())
+                    .staggerIn(i)
+                }
+            }
+            .padding(.top, 26)
+
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 22)
     }
 }
 
@@ -718,6 +773,83 @@ struct Onb5PersonalView: View {
     }
 }
 
+// MARK: - Screen: Your day, visualised (value preview)
+
+struct OnbPlanPreviewView: View {
+    let state: OnboardingState
+
+    private var wakePlus30: Date { state.wakeTime.addingTimeInterval(30 * 60) }
+    private var midMorning: Date { state.wakeTime.addingTimeInterval(3 * 3600) }
+    private var evening: Date {
+        Calendar.current.date(bySettingHour: 21, minute: 0, second: 0, of: state.wakeTime) ?? state.wakeTime
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            OnbLabel(text: "Your rhythm")
+                .padding(.top, 32)
+
+            Text("Here's a day that works with your brain")
+                .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                .tracking(-0.56)
+                .foregroundColor(T.text)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 10)
+
+            Text("Starts at your pace — \(state.wakeTime.formatted(date: .omitted, time: .shortened)). One small thing at a time.")
+                .font(.custom("Inter-Medium", size: 15).weight(.medium))
+                .foregroundColor(T.textSec)
+                .lineSpacing(4)
+                .padding(.top, 12)
+
+            VStack(spacing: 10) {
+                previewRow(time: wakePlus30, title: "One small win to start", icon: "sparkles", category: "personal", index: 0)
+                previewRow(time: midMorning, title: "One deep focus block", icon: "laptopcomputer", category: "work", index: 1)
+                previewRow(time: evening, title: "Wind down, guilt-free", icon: "bed.double", category: "rest", index: 2)
+            }
+            .padding(.top, 24)
+
+            Spacer()
+
+            TempaButton(label: "Continue", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.next()
+            }
+            .padding(.bottom, 34)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 22)
+    }
+
+    private func previewRow(time: Date, title: LocalizedStringKey, icon: String, category: String, index: Int) -> some View {
+        let cc = Cat.named(category)
+        return HStack(spacing: 12) {
+            Text(time.formatted(date: .omitted, time: .shortened))
+                .font(.custom("Nunito-ExtraBold", size: 12).weight(.bold))
+                .foregroundColor(T.textSec)
+                .frame(width: 54, alignment: .leading)
+
+            HStack(spacing: 10) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(cc.bg)
+                        .frame(width: 34, height: 34)
+                    Image(systemName: icon)
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundColor(cc.ink)
+                }
+                Text(title)
+                    .font(.custom("Nunito-ExtraBold", size: 15).weight(.bold))
+                    .foregroundColor(T.text)
+                Spacer(minLength: 0)
+            }
+            .padding(12)
+            .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(T.surface))
+            .tempaShadowSm()
+        }
+        .staggerIn(index)
+    }
+}
+
 // MARK: - Screen 6: Social Proof
 
 struct Onb6SocialView: View {
@@ -938,6 +1070,11 @@ struct Onb8NotifsView: View {
                     .foregroundColor(T.textSec)
                     .lineSpacing(4)
                     .padding(.top, 12)
+
+                Text("We'll also nudge you before your free trial ends.")
+                    .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                    .foregroundColor(T.textTer)
+                    .padding(.top, 8)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 22)

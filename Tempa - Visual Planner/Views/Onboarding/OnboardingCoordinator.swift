@@ -10,7 +10,7 @@ final class OnboardingState {
     var notificationsGranted = false
     var showPaywall = false
 
-    let totalSteps = 9
+    let totalSteps = 11
 
     func next() {
         if currentStep < totalSteps - 1 { currentStep += 1 }
@@ -58,12 +58,14 @@ struct OnboardingFlow: View {
         case 0: Onb1HookView(state: state)
         case 1: Onb2SelfIdView(state: state)
         case 2: Onb3PainView(state: state)
-        case 3: Onb4DemoView(state: state)
-        case 4: Onb5PersonalView(state: state)
-        case 5: Onb6SocialView(state: state)
-        case 6: Onb7ForgiveView(state: state)
-        case 7: Onb8NotifsView(state: state)
-        case 8: Onb9BuildingView(state: state, settings: settings)
+        case 3: OnbMicroYesView(state: state)
+        case 4: Onb4DemoView(state: state)
+        case 5: Onb5PersonalView(state: state)
+        case 6: OnbPlanPreviewView(state: state)
+        case 7: Onb6SocialView(state: state)
+        case 8: Onb7ForgiveView(state: state)
+        case 9: Onb8NotifsView(state: state)
+        case 10: Onb9BuildingView(state: state, settings: settings)
         default: EmptyView()
         }
     }

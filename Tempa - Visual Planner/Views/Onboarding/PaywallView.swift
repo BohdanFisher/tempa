@@ -63,18 +63,25 @@ struct PaywallView: View {
                         .lineSpacing(0)
                         .fixedSize(horizontal: false, vertical: true)
 
-                    Text("Unlock all of Tempa free for 3 days. Keep it for less than a coffee a month.")
-                        .font(.custom("Inter-Medium", size: 16).weight(.medium))
-                        .foregroundColor(.white.opacity(0.85))
-                        .lineSpacing(4)
-                        .padding(.top, 16)
-                        .fixedSize(horizontal: false, vertical: true)
+                    VStack(alignment: .leading, spacing: 9) {
+                        benefitRow("Speak your day — AI turns it into a plan")
+                        benefitRow("One thing at a time, never a wall of tasks")
+                        benefitRow("Focus sessions with gentle comeback nudges")
+                    }
+                    .padding(.top, 16)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 24)
                 .padding(.top, 18)
 
-                Spacer(minLength: 24)
+                Spacer(minLength: 16)
+
+                if hasIntroOffer {
+                    trialTimeline
+                        .padding(.horizontal, 24)
+                        .padding(.bottom, 14)
+                        .staggerIn(0, baseDelay: 0.08)
+                }
 
                 planCards
                     .padding(.horizontal, 18)
@@ -84,6 +91,13 @@ struct PaywallView: View {
                     .padding(.top, 16)
                     .staggerIn(2, baseDelay: 0.1)
 
+                if hasIntroOffer {
+                    Text("No payment today · cancel anytime")
+                        .font(.custom("Inter-Medium", size: 12).weight(.medium))
+                        .foregroundColor(.white.opacity(0.7))
+                        .padding(.top, 10)
+                }
+
                 footer
             }
         }
@@ -92,6 +106,44 @@ struct PaywallView: View {
             // Retry StoreKit when the paywall appears — recovers from a failed
             // cold-start load and swaps simulated plans for real products.
             await subs.ensureProductsLoaded()
+        }
+    }
+
+    private func benefitRow(_ text: LocalizedStringKey) -> some View {
+        HStack(spacing: 9) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(.white.opacity(0.9))
+            Text(text)
+                .font(.custom("Inter-Medium", size: 14).weight(.medium))
+                .foregroundColor(.white.opacity(0.92))
+        }
+    }
+
+    /// How the free trial unfolds — the single highest-trust element on a
+    /// trial paywall. Only shown while the user is intro-offer eligible.
+    private var trialTimeline: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            timelineRow(icon: "lock.open.fill", day: "Today", text: "Full access to everything")
+            timelineRow(icon: "bell.fill", day: "Day 2", text: "A reminder before anything is charged")
+            timelineRow(icon: "checkmark.seal.fill", day: "Day 3", text: "Yearly starts — cancel anytime before")
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.white.opacity(0.12)))
+    }
+
+    private func timelineRow(icon: String, day: LocalizedStringKey, text: LocalizedStringKey) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: icon)
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundColor(coral)
+                .frame(width: 24, height: 24)
+                .background(Circle().fill(.white))
+            (Text(day).font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
+             + Text(" — ").font(.custom("Inter-Medium", size: 13).weight(.medium))
+             + Text(text).font(.custom("Inter-Medium", size: 13).weight(.medium)))
+                .foregroundColor(.white)
         }
     }
 
