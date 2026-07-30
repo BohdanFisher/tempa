@@ -48,7 +48,6 @@ struct ProfileView: View {
     @State private var showTerms = false
     @AppStorage("themePreference") private var theme: ThemePreference = .system
     @AppStorage("appLanguage") private var appLanguage = "system"
-    @State private var showLanguageAlert = false
     @AppStorage("nudgesEnabled") private var nudges = true
 
     var body: some View {
@@ -269,7 +268,6 @@ struct ProfileView: View {
                     Button {
                         lang.apply()
                         appLanguage = lang.rawValue
-                        showLanguageAlert = true
                         #if os(iOS)
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         #endif
@@ -287,11 +285,6 @@ struct ProfileView: View {
                            value: (AppLanguage(rawValue: appLanguage) ?? .system).displayName)
             }
             .buttonStyle(.plain)
-        }
-        .alert("Language updated", isPresented: $showLanguageAlert) {
-            Button("OK") {}
-        } message: {
-            Text("Close and reopen Tempa to switch the language.")
         }
     }
 

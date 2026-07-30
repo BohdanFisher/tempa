@@ -1,4 +1,5 @@
 import Foundation
+import ObjectiveC
 
 /// In-app language override. `.system` follows the device language; any other
 /// case forces the app (and voice input) into that language on the next launch
@@ -41,11 +42,17 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         }
     }
 
+    /// Locale matching the selection — lets date formatters switch live too.
+    var locale: Locale {
+        self == .system ? .autoupdatingCurrent : Locale(identifier: rawValue)
+    }
+
     static var current: AppLanguage {
         AppLanguage(rawValue: UserDefaults.standard.string(forKey: "appLanguage") ?? "system") ?? .system
     }
 
-    /// Persist the choice and set/clear the launch-time language override.
+    /// Persist the choice, keep the launch-time override in sync, and swap the
+    /// live string bundle — the change is visible immediately, no relaunch.
     func apply() {
         UserDefaults.standard.set(rawValue, forKey: "appLanguage")
         if self == .system {
@@ -53,5 +60,32 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         } else {
             UserDefaults.standard.set([rawValue], forKey: "AppleLanguages")
         }
+        Bundle.applyLanguageOverride(self == .system ? nil : rawValue)
+    }
+}
+
+// MARK: - Live bundle override
+
+private var overridePathKey: UInt8 = 0
+
+/// Routes Bundle.main string lookups into the selected language's .lproj so a
+/// language change takes effect immediately — no relaunch required.
+private final class LanguageOverrideBundle: Bundle, @unchecked Sendable {
+    override func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
+        if let path = objc_getAssociatedObject(self, &overridePathKey) as? String,
+           let bundle = Bundle(path: path) {
+            return bundle.localizedString(forKey: key, value: value, table: tableName)
+        }
+        return super.localizedString(forKey: key, value: value, table: tableName)
+    }
+}
+
+extension Bundle {
+    static func applyLanguageOverride(_ code: String?) {
+        if object_getClass(Bundle.main) != LanguageOverrideBundle.self {
+            object_setClass(Bundle.main, LanguageOverrideBundle.self)
+        }
+        let path = code.flatMap { Bundle.main.path(forResource: $0, ofType: "lproj") }
+        objc_setAssociatedObject(Bundle.main, &overridePathKey, path, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 }

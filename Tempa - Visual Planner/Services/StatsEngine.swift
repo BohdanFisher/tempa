@@ -166,7 +166,8 @@ enum StatsEngine {
     /// When in the week tasks actually get finished — completions from the last
     /// `weeksBack` weeks bucketed into weekday × 2-hour cells.
     static func hourlyActivity(weeksBack: Int, context: NSManagedObjectContext, now: Date = Date()) -> HourlyActivity {
-        let cal = Calendar.current
+        var cal = Calendar.current
+        cal.locale = AppLanguage.current.locale   // weekday captions follow the app language
         let from = cal.date(byAdding: .day, value: -(weeksBack * 7), to: cal.startOfDay(for: now)) ?? now
 
         let req = NSFetchRequest<TaskBlock>(entityName: "TaskBlock")

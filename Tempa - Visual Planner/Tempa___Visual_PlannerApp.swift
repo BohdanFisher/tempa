@@ -8,6 +8,7 @@ struct TempaApp: App {
 
     @State private var settingsStore: SettingsStore
     @AppStorage("themePreference") private var themePreference: ThemePreference = .system
+    @AppStorage("appLanguage") private var appLanguageRaw = "system"
 
     init() {
         let context = PersistenceController.shared.container.viewContext
@@ -28,6 +29,9 @@ struct TempaApp: App {
                 .environment(settingsStore)
                 .environment(subscriptionManager)
                 .preferredColorScheme(themePreference.colorScheme)   // manual Light/Dark override; .system = follow device
+                .environment(\.locale, AppLanguage.current.locale)
+                // Language switch → rebuild the whole tree so every string re-resolves live.
+                .id(appLanguageRaw)
         }
     }
 }

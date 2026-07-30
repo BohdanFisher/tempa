@@ -12,19 +12,19 @@ struct WelcomeBackView: View {
     @State private var week: StatsEngine.PeriodStats?
     @State private var heartPulse = false
 
-    private static let dayLetterFmt: DateFormatter = {
-        let f = DateFormatter(); f.dateFormat = "EEEEE"; return f   // narrow weekday: M, T, W…
-    }()
-    private static let rangeFmt: DateFormatter = {
-        let f = DateFormatter(); f.setLocalizedDateFormatFromTemplate("MMMd"); return f
-    }()
+    private static func dayLetterFmt() -> DateFormatter {   // narrow weekday: M, T, W…
+        let f = DateFormatter(); f.locale = AppLanguage.current.locale; f.dateFormat = "EEEEE"; return f
+    }
+    private static func rangeFmt() -> DateFormatter {
+        let f = DateFormatter(); f.locale = AppLanguage.current.locale; f.setLocalizedDateFormatFromTemplate("MMMd"); return f
+    }
 
     /// Squares for the recap strip: weekday letter + intensity relative to the best day.
     private var weekData: [(String, Double)] {
         guard let week else { return [] }
         let maxDone = week.days.map(\.done).max() ?? 0
         return week.days.map { d in
-            (Self.dayLetterFmt.string(from: d.date),
+            (Self.dayLetterFmt().string(from: d.date),
              maxDone > 0 ? Double(d.done) / Double(maxDone) : 0)
         }
     }
@@ -34,9 +34,9 @@ struct WelcomeBackView: View {
         guard let days = week?.days, let f = days.first?.date, let l = days.last?.date else { return "" }
         let cal = Calendar.current
         if cal.isDate(f, equalTo: l, toGranularity: .month) {
-            return "\(Self.rangeFmt.string(from: f))–\(cal.component(.day, from: l))"
+            return "\(Self.rangeFmt().string(from: f))–\(cal.component(.day, from: l))"
         }
-        return "\(Self.rangeFmt.string(from: f)) – \(Self.rangeFmt.string(from: l))"
+        return "\(Self.rangeFmt().string(from: f)) – \(Self.rangeFmt().string(from: l))"
     }
 
     var body: some View {

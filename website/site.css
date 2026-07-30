@@ -1,0 +1,65 @@
+/* Tempa marketing site — shared styles */
+:root {
+  --coral: #FF7A59;
+  --coral-lite: #FF9A7C;
+  --coral-deep: #E5613F;
+  --teal: #36C7A8;
+  --ink: #2A2A33;
+  --ink-sec: #6B6560;
+  --ink-ter: #9A938C;
+  --cream: #FBF8F3;
+  --cream-warm: #FFF1EA;
+  --line: #EDE5D9;
+  --font-head: "Nunito", "SF Pro Rounded", -apple-system, sans-serif;
+  --font-body: -apple-system, "SF Pro Text", "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--cream); color: var(--ink); font-family: var(--font-body); }
+a { color: var(--coral-deep); text-decoration: none; }
+a:hover { color: var(--coral); text-decoration: underline; }
+
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 32px; }
+
+/* nav */
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+.nav-brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-head); font-weight: 900; font-size: 21px; color: var(--ink); letter-spacing: -0.02em; }
+.nav-brand:hover { text-decoration: none; color: var(--ink); }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a:not(.btn) { font-size: 14.5px; font-weight: 600; color: var(--ink-sec); }
+.nav-links a:not(.btn):hover { color: var(--coral-deep); text-decoration: none; }
+.nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: #fff; }
+
+/* app icon (Now · Coral) */
+.app-icon { position: relative; background: linear-gradient(155deg, #FF9A7C 0%, #FF7A59 50%, #E85C39 100%); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; overflow: hidden; box-shadow: 0 8px 22px rgba(50,30,20,0.22); }
+.app-icon::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.3), rgba(255,255,255,0) 40%); pointer-events: none; }
+.app-icon .bar { border-radius: 99px; background: rgba(255,255,255,0.45); }
+.app-icon .bar.on { background: #fff; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-head); font-weight: 800; border-radius: 99px; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.btn:hover { text-decoration: none; transform: translateY(-1px); }
+.btn-primary { background: linear-gradient(155deg, #FF8E6B, #FF7A59 55%, #E5613F); color: #fff; padding: 16px 32px; font-size: 17px; box-shadow: 0 10px 24px rgba(255,122,89,0.4); }
+.btn-primary:hover { color: #fff; box-shadow: 0 14px 30px rgba(255,122,89,0.5); }
+
+/* footer */
+.footer { border-top: 1px solid var(--line); margin-top: 96px; padding: 36px 0 48px; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; }
+.footer .muted { font-size: 13.5px; color: var(--ink-ter); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 13.5px; font-weight: 600; color: var(--ink-sec); }
+
+/* policy pages */
+.policy { max-width: 720px; margin: 0 auto; padding: 24px 32px 0; }
+.policy h1 { font-family: var(--font-head); font-weight: 900; font-size: 38px; letter-spacing: -0.03em; margin: 40px 0 8px; }
+.policy .updated { font-size: 14px; color: var(--ink-ter); font-weight: 500; margin-bottom: 36px; }
+.policy h2 { font-family: var(--font-head); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; margin: 40px 0 12px; }
+.policy p, .policy li { font-size: 15.5px; line-height: 1.7; color: #4A453F; }
+.policy ul { padding-left: 22px; }
+.policy li { margin-bottom: 8px; }
+.policy strong { color: var(--ink); }
+
+@media (max-width: 560px) {
+  .policy { padding: 12px 20px 0; }
+  .policy h1 { font-size: 30px; margin-top: 24px; }
+  .policy h2 { font-size: 19px; }
+}

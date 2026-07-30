@@ -457,6 +457,7 @@ struct MeView: View {
 
     private func weekdayLetter(_ d: Date) -> String {
         let f = DateFormatter()
+        f.locale = AppLanguage.current.locale
         f.dateFormat = "EEEEE"
         return f.string(from: d)
     }

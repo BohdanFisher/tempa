@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Tempa — ADHD-Friendly Day Planner & Focus App for iPhone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Tempa is a visual day planner for iPhone with voice input, AI scheduling and a focus timer. Built for ADHD brains — plan one thing at a time. Free to start." />
+  <link rel="canonical" href="https://tempa-planner.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Tempa" />
+  <meta property="og:title" content="Tempa — ADHD-Friendly Day Planner & Focus App for iPhone" />
+  <meta property="og:description" content="A visual day planner with voice input, AI scheduling and a focus timer. Plan one thing at a time. Free to start." />
+  <meta property="og:url" content="https://tempa-planner.app/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Tempa — ADHD-Friendly Day Planner & Focus App for iPhone" />
+  <meta name="twitter:description" content="A visual day planner with voice input, AI scheduling and a focus timer. Plan one thing at a time. Free to start." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
+  <style>
+    /* hero */
+    .hero { padding: 72px 0 40px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
+    .hero h1 { font-family: var(--font-head); font-weight: 900; font-size: 54px; line-height: 1.06; letter-spacing: -0.035em; margin: 0 0 20px; }
+    .hero h1 em { font-style: normal; color: var(--coral); }
+    .hero p { font-size: 19px; line-height: 1.6; color: var(--ink-sec); margin: 0 0 34px; max-width: 460px; }
+    .hero-cta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .hero-note { font-size: 13.5px; color: var(--ink-ter); font-weight: 500; }
+
+    /* hero visual: floating day-plan composition */
+    .hero-visual { display: flex; align-items: center; justify-content: center; position: relative; min-height: 420px; }
+    .pulse-ring { position: absolute; border-radius: 50%; border: 2px solid rgba(255,122,89,0.22); }
+    .day-card { position: relative; width: 320px; background: #fff; border-radius: 28px; padding: 26px 24px; box-shadow: 0 24px 60px rgba(50,30,20,0.14); border: 1px solid rgba(0,0,0,0.04); }
+    .day-card .dc-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; }
+    .day-card .dc-title { font-family: var(--font-head); font-weight: 900; font-size: 18px; letter-spacing: -0.02em; }
+    .day-card .dc-date { font-size: 12.5px; font-weight: 600; color: var(--ink-ter); }
+    .task-row { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 14px; }
+    .task-row .t-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .task-row .t-label { font-size: 14px; font-weight: 600; color: var(--ink-sec); }
+    .task-row .t-time { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--ink-ter); }
+    .task-row.now { background: linear-gradient(155deg, #FF8E6B, #FF7A59 55%, #E5613F); box-shadow: 0 10px 24px rgba(255,122,89,0.4); }
+    .task-row.now .t-label { color: #fff; font-weight: 800; }
+    .task-row.now .t-time { color: rgba(255,255,255,0.85); }
+    .task-row.now .t-dot { background: #fff; }
+    .now-chip { position: absolute; top: -14px; right: 22px; background: var(--ink); color: #fff; font-family: var(--font-head); font-weight: 800; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 14px; border-radius: 99px; box-shadow: 0 8px 18px rgba(42,42,51,0.3); }
+    .voice-chip { position: absolute; bottom: -26px; left: -44px; display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 99px; padding: 12px 18px 12px 12px; box-shadow: 0 14px 34px rgba(50,30,20,0.16); border: 1px solid rgba(0,0,0,0.04); }
+    .voice-chip .v-orb { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(155deg, #FF9A7C, #E5613F); display: flex; align-items: center; justify-content: center; gap: 2.5px; }
+    .voice-chip .v-orb i { display: block; width: 3px; border-radius: 99px; background: #fff; }
+    .voice-chip span { font-size: 13px; font-weight: 600; color: var(--ink-sec); font-style: italic; }
+    .focus-chip { position: absolute; top: -48px; left: -44px; display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 18px; padding: 12px 16px; box-shadow: 0 14px 34px rgba(50,30,20,0.16); border: 1px solid rgba(0,0,0,0.04); }
+    .focus-chip .f-num { font-family: var(--font-head); font-weight: 900; font-size: 17px; color: var(--ink); }
+    .focus-chip .f-lbl { font-size: 11px; font-weight: 700; color: var(--ink-ter); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* features */
+    .features { margin-top: 72px; }
+    .kicker { font-family: var(--font-head); font-weight: 800; font-size: 13px; color: var(--coral); letter-spacing: 0.16em; text-transform: uppercase; }
+    .features h2, .faq h2 { font-family: var(--font-head); font-weight: 900; font-size: 36px; letter-spacing: -0.03em; margin: 12px 0 40px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .feature { background: #fff; border: 1px solid rgba(0,0,0,0.04); border-radius: 24px; padding: 32px; box-shadow: 0 4px 16px rgba(40,30,20,0.05); }
+    .feature .glyph { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .feature h3 { font-family: var(--font-head); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; margin: 0 0 10px; }
+    .feature p { font-size: 15px; line-height: 1.65; color: var(--ink-sec); margin: 0; }
+
+    /* faq */
+    .faq { margin-top: 88px; max-width: 720px; margin-left: auto; margin-right: auto; }
+    .faq h2 { text-align: center; }
+    .faq details { border-bottom: 1px solid var(--line); padding: 4px 0; }
+    .faq summary { font-family: var(--font-head); font-weight: 800; font-size: 17px; padding: 18px 0; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font-size: 22px; color: var(--coral); font-weight: 700; flex-shrink: 0; }
+    .faq details[open] summary::after { content: "–"; }
+    .faq details p { font-size: 15px; line-height: 1.7; color: var(--ink-sec); margin: 0 0 20px; }
+
+    /* bottom cta */
+    .bottom-cta { margin-top: 96px; background: linear-gradient(155deg, #FF8E6B, #FF7A59 55%, #E5613F); border-radius: 32px; padding: 64px 48px; text-align: center; color: #fff; box-shadow: 0 20px 48px rgba(255,122,89,0.35); }
+    .bottom-cta h2 { font-family: var(--font-head); font-weight: 900; font-size: 34px; letter-spacing: -0.03em; margin: 0 0 12px; }
+    .bottom-cta p { font-size: 17px; opacity: 0.92; margin: 0 0 30px; }
+    .btn-white { background: #fff; color: var(--coral-deep); padding: 16px 32px; font-size: 17px; box-shadow: 0 10px 24px rgba(120,30,10,0.25); }
+    .btn-white:hover { color: var(--coral-deep); }
+
+    @media (max-width: 820px) {
+      .hero { grid-template-columns: 1fr; gap: 48px; padding-top: 32px; }
+      .hero h1 { font-size: 38px; }
+      .hero p { font-size: 17px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .hero-visual { min-height: 0; padding: 40px 0 36px; }
+      .pulse-ring { display: none; }
+      .day-card { width: 100%; max-width: 320px; }
+      .voice-chip { left: -8px; bottom: -30px; }
+      .focus-chip { left: -8px; top: -50px; }
+      .features h2, .faq h2 { font-size: 29px; }
+      .bottom-cta { padding: 48px 24px; border-radius: 26px; }
+      .bottom-cta h2 { font-size: 27px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 560px) {
+      .wrap { padding: 0 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.btn) { display: none; }
+      .hero h1 { font-size: 33px; }
+      .hero-cta { gap: 14px; }
+      .btn-primary { width: 100%; justify-content: center; }
+      .bottom-cta .btn-white { width: 100%; justify-content: center; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Tempa",
+    "operatingSystem": "iOS",
+    "applicationCategory": "ProductivityApplication",
+    "description": "Tempa is a visual day planner for iPhone with voice input, AI scheduling and a built-in focus timer. Designed ADHD-first: plan one thing at a time.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "url": "https://tempa-planner.app/"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is Tempa a free planner app?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes — Tempa is free to download and use for core planning. Tempa Plus unlocks unlimited AI planning, focus sessions, and more — with a free trial before anything is charged." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Tempa a good planner for ADHD?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Tempa is designed ADHD-first — one thing at a time, voice capture, gentle nudges. But it works for anyone whose day never fits a rigid planner: restless minds, busy parents, creatives, students." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Tempa work as a Pomodoro / focus timer?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Focus mode has a built-in timer: set the dial, start a session, and Tempa keeps just one task in front of you until the timer ends." }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens to my voice recordings?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Voice input is transcribed to create your tasks and is not stored longer than needed for that. See our Privacy Policy for details." }
+      },
+      {
+        "@type": "Question",
+        "name": "Which devices are supported?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Tempa is available for iPhone (iOS 17 and later). iPad and Android are on the roadmap." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I cancel my subscription?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Subscriptions are managed by the App Store. Open Settings → your name → Subscriptions on your iPhone, choose Tempa, and tap Cancel. You keep access until the end of the paid period." }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a class="nav-brand" href="/">
+        <span class="app-icon" style="width: 40px; height: 40px; border-radius: 10px; padding: 9px 0 9px 8px; gap: 3px;">
+          <span class="bar" style="width: 16px; height: 3.5px;"></span>
+          <span class="bar on" style="width: 23px; height: 3.5px;"></span>
+          <span class="bar" style="width: 13px; height: 3.5px;"></span>
+        </span>
+        Tempa
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
+        <a class="btn btn-primary" style="padding: 10px 22px; font-size: 14.5px;" href="#download">Download</a>
+      </div>
+    </nav>
+
+    <header class="hero" id="download">
+      <div>
+        <h1>The ADHD-friendly <em>day planner</em> that moves at your tempo.</h1>
+        <p>Tempa is a voice-first daily planner for iPhone with AI scheduling and a built-in focus timer — one task at a time, at your rhythm.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#download">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            Download for iPhone
+          </a>
+          <span class="hero-note">Free to start · iOS 17+</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="day-card">
+          <span class="now-chip">Now</span>
+          <div class="dc-head">
+            <span class="dc-title">Today</span>
+            <span class="dc-date">Tue, Jul 15</span>
+          </div>
+          <div class="task-row">
+            <span class="t-dot" style="background: #7FA7E6;"></span>
+            <span class="t-label">Morning walk</span>
+            <span class="t-time">8:00</span>
+          </div>
+          <div class="task-row now">
+            <span class="t-dot"></span>
+            <span class="t-label">Write project brief</span>
+            <span class="t-time">9:30</span>
+          </div>
+          <div class="task-row">
+            <span class="t-dot" style="background: #36C7A8;"></span>
+            <span class="t-label">Lunch with Sam</span>
+            <span class="t-time">13:00</span>
+          </div>
+          <div class="task-row">
+            <span class="t-dot" style="background: #8E63E0;"></span>
+            <span class="t-label">Gym</span>
+            <span class="t-time">18:00</span>
+          </div>
+          <div class="voice-chip">
+            <span class="v-orb"><i style="height: 8px;"></i><i style="height: 14px;"></i><i style="height: 10px;"></i><i style="height: 16px;"></i><i style="height: 7px;"></i></span>
+            <span>“remind me to call mom…”</span>
+          </div>
+          <div class="focus-chip">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#FF7A59" stroke-width="3" stroke-dasharray="36 21" stroke-linecap="round" transform="rotate(-90 12 12)"></circle></svg>
+            <span><span class="f-num">25:00</span><br /><span class="f-lbl">Focus</span></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="features" id="features">
+      <div class="kicker">Why Tempa</div>
+      <h2>A visual daily planner at your speed</h2>
+      <div class="feature-grid">
+        <div class="feature">
+          <div class="glyph" style="background: var(--cream-warm);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4" stroke="#FF7A59" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Add tasks by voice</h3>
+          <p>Capture your to-dos by voice the moment they cross your mind. No forms, no typing — speak, and the task lands in today's schedule.</p>
+        </div>
+        <div class="feature">
+          <div class="glyph" style="background: #E9F7F1;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3c.6 3.4 2.4 4.6 5.6 5.2-3.2.6-5 1.8-5.6 5.2-.6-3.4-2.4-4.6-5.6-5.2C9.6 7.6 11.4 6.4 12 3z" fill="#36C7A8"/><path d="M18.5 13.5c.3 1.7 1.2 2.3 2.8 2.6-1.6.3-2.5.9-2.8 2.6-.3-1.7-1.2-2.3-2.8-2.6 1.6-.3 2.5-.9 2.8-2.6z" fill="#36C7A8"/></svg>
+          </div>
+          <h3>AI plans your day</h3>
+          <p>Ask Tempa turns a messy brain-dump into a realistic daily schedule — sized to your energy, not someone else's ideal.</p>
+        </div>
+        <div class="feature">
+          <div class="glyph" style="background: var(--cream-warm);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="#FF7A59" stroke-width="2.4" stroke-dasharray="34 20" stroke-linecap="round" transform="rotate(-90 12 12)"/><circle cx="12" cy="12" r="2.6" fill="#FF7A59"/></svg>
+          </div>
+          <h3>Built-in focus timer</h3>
+          <p>Focus mode dims everything but what's now. Start the Pomodoro-style timer and let the rest of the day wait its turn.</p>
+        </div>
+        <div class="feature">
+          <div class="glyph" style="background: #F2ECFF;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="8" height="7" rx="2" fill="#FF7A59"/><rect x="13" y="4" width="8" height="7" rx="2" fill="#36C7A8"/><rect x="3" y="13" width="8" height="7" rx="2" fill="#8E63E0"/><rect x="13" y="13" width="8" height="7" rx="2" fill="#FFA53D"/></svg>
+          </div>
+          <h3>Visual time blocking</h3>
+          <p>Work, health, personal, rest — gentle color-coded time blocks turn your schedule into a picture you can read at a glance.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq">
+      <h2>Questions, answered</h2>
+      <details>
+        <summary>Is Tempa a free planner app?</summary>
+        <p>Yes — Tempa is free to download and use for core planning. Tempa Plus unlocks unlimited AI planning, focus sessions, and more — with a free trial before anything is charged.</p>
+      </details>
+      <details>
+        <summary>Is Tempa a good planner for ADHD?</summary>
+        <p>Yes. Tempa is designed ADHD-first — one thing at a time, voice capture, gentle nudges. But it works for anyone whose day never fits a rigid planner: restless minds, busy parents, creatives, students.</p>
+      </details>
+      <details>
+        <summary>Does Tempa work as a Pomodoro / focus timer?</summary>
+        <p>Yes. Focus mode has a built-in timer: set the dial, start a session, and Tempa keeps just one task in front of you until the timer ends.</p>
+      </details>
+      <details>
+        <summary>What happens to my voice recordings?</summary>
+        <p>Voice input is transcribed to create your tasks and is not stored longer than needed for that. See our <a href="privacy.html">Privacy Policy</a> for details.</p>
+      </details>
+      <details>
+        <summary>Which devices are supported?</summary>
+        <p>Tempa is available for iPhone (iOS 17 and later). iPad and Android are on the roadmap.</p>
+      </details>
+      <details>
+        <summary>How do I cancel my subscription?</summary>
+        <p>Subscriptions are managed by the App Store. Open Settings → your name → Subscriptions on your iPhone, choose Tempa, and tap Cancel. You keep access until the end of the paid period.</p>
+      </details>
+    </section>
+
+    <section class="bottom-cta">
+      <h2>Find my tempo</h2>
+      <p>One thing at a time. Starting now.</p>
+      <a class="btn btn-white" href="#download">Download Tempa</a>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <span class="muted">© 2026 Tempa. All rights reserved.</span>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+          <a href="mailto:support@tempa-planner.app">support@tempa-planner.app</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

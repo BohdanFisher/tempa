@@ -397,6 +397,7 @@ struct CalendarView: View {
 
     private func weekdayLetter(_ day: Date) -> String {
         let f = DateFormatter()
+        f.locale = AppLanguage.current.locale
         let symbols = f.veryShortWeekdaySymbols ?? ["S", "M", "T", "W", "T", "F", "S"]
         let idx = cal.component(.weekday, from: day) - 1
         return symbols[idx]
@@ -404,6 +405,7 @@ struct CalendarView: View {
 
     private var monthTitle: String {
         let f = DateFormatter()
+        f.locale = AppLanguage.current.locale
         f.setLocalizedDateFormatFromTemplate("yMMMM")
         return f.string(from: selectedDate)
     }
@@ -413,12 +415,14 @@ struct CalendarView: View {
         if cal.isDateInTomorrow(selectedDate) { return String(localized: "Tomorrow") }
         if cal.isDateInYesterday(selectedDate) { return String(localized: "Yesterday") }
         let f = DateFormatter()
+        f.locale = AppLanguage.current.locale
         f.setLocalizedDateFormatFromTemplate("EEEEMMMd")
         return f.string(from: selectedDate)
     }
 
     private var dayHeading: String {
         let f = DateFormatter()
+        f.locale = AppLanguage.current.locale
         f.setLocalizedDateFormatFromTemplate("EEEEMMMMd")
         return f.string(from: selectedDate).uppercased()
     }
