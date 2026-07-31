@@ -4,6 +4,7 @@ import CoreData
 struct AddTaskSheet: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(SubscriptionManager.self) private var subs
 
     @State private var title = ""
     @State private var selectedCategory = "personal"
@@ -18,6 +19,7 @@ struct AddTaskSheet: View {
     @State private var showDayPlan = false
     @State private var pendingPlan = false
     @State private var titleShake: CGFloat = 0   // gentle "needs a title" nudge
+    @State private var showProPaywall = false    // AI features are Pro
     @FocusState private var titleFocused: Bool
 
     var body: some View {
@@ -57,6 +59,9 @@ struct AddTaskSheet: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 titleFocused = true
             }
+        }
+        .fullScreenCover(isPresented: $showProPaywall) {
+            PaywallView(allowDismiss: true) {}
         }
         .fullScreenCover(isPresented: $showVoice) {
             // Voice is a brain-dump → split into several scheduled tasks ("plan my day").
@@ -179,7 +184,7 @@ struct AddTaskSheet: View {
 
             HStack(spacing: 8) {
                 speakItHero
-                aiInputButton(icon: "sparkles", label: "Ask Tempa") { showAskAI = true }
+                aiInputButton(icon: "sparkles", label: "Ask Tempa") { requirePro { showAskAI = true } }
             }
             .padding(.top, 6)
         }
@@ -197,7 +202,7 @@ struct AddTaskSheet: View {
             #if os(iOS)
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             #endif
-            showVoice = true
+            requirePro { showVoice = true }
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "mic.fill").font(.system(size: 13, weight: .semibold))
@@ -268,7 +273,7 @@ struct AddTaskSheet: View {
             #if os(iOS)
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             #endif
-            runBreakdown()
+            requirePro { runBreakdown() }
         } label: {
             HStack(spacing: 12) {
                 ZStack {
@@ -376,7 +381,7 @@ struct AddTaskSheet: View {
     private var footerActions: some View {
         HStack(spacing: 10) {
             TempaButton(label: "Re-do", variant: .ghost, size: .md, fullWidth: true) {
-                runBreakdown()
+                requirePro { runBreakdown() }
             }
             .frame(width: 110)
 
@@ -399,6 +404,11 @@ struct AddTaskSheet: View {
     // MARK: - Logic
 
     private let apiClient = ClaudeAPIClient()
+
+    /// AI features are the paid tier — route to the paywall when not subscribed.
+    private func requirePro(_ action: () -> Void) {
+        if subs.isPro { action() } else { showProPaywall = true }
+    }
 
     private func runBreakdown() {
         let raw = title.trimmingCharacters(in: .whitespaces)

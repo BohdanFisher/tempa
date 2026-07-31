@@ -1,6 +1,7 @@
 import StoreKit
 import Observation
 
+@MainActor
 @Observable
 final class SubscriptionManager {
     static let shared = SubscriptionManager()
@@ -24,6 +25,11 @@ final class SubscriptionManager {
 
     var isPro: Bool { !purchasedProductIDs.isEmpty }
 
+    /// True once ANY subscription transaction has ever existed for this Apple ID —
+    /// drives the no-trial resubscribe paywall for churned users (trial
+    /// eligibility itself is enforced by Apple regardless).
+    private(set) var hasEverSubscribed = false
+
     private let productIDs = ["tempa_yearly", "tempa_monthly", "tempa_weekly"]
 
     init() {
@@ -32,10 +38,6 @@ final class SubscriptionManager {
             await ensureProductsLoaded()
             await updatePurchasedProducts()
         }
-    }
-
-    deinit {
-        transactionListener?.cancel()
     }
 
     /// Reach StoreKit, retrying a few times — a cold-start race can make the first
@@ -85,6 +87,7 @@ final class SubscriptionManager {
 
     func simulatePurchase() {
         purchasedProductIDs.insert("tempa_yearly")
+        hasEverSubscribed = true
     }
 
     func checkIntroEligibility() async {
@@ -111,7 +114,9 @@ final class SubscriptionManager {
             return nil
 
         case .pending:
-            throw SubscriptionError.pending
+            // Ask-to-Buy: a parent still has to approve. Not an error — the
+            // Transaction.updates listener completes it whenever they do.
+            return nil
 
         @unknown default:
             throw SubscriptionError.unknown
@@ -121,13 +126,23 @@ final class SubscriptionManager {
     func updatePurchasedProducts() async {
         var purchased: Set<String> = []
         for await result in Transaction.currentEntitlements {
-            if let transaction = try? checkVerified(result) {
-                if transaction.revocationDate == nil {
-                    purchased.insert(transaction.productID)
+            guard let transaction = try? checkVerified(result) else { continue }
+            // Belt and braces: currentEntitlements should only yield active
+            // transactions, but check revocation AND expiry explicitly.
+            guard transaction.revocationDate == nil,
+                  (transaction.expirationDate ?? .distantFuture) > .now else { continue }
+            purchased.insert(transaction.productID)
+        }
+        purchasedProductIDs = purchased
+
+        if !hasEverSubscribed {
+            for id in productIDs {
+                if let latest = await Transaction.latest(for: id), case .verified = latest {
+                    hasEverSubscribed = true
+                    break
                 }
             }
         }
-        purchasedProductIDs = purchased
     }
 
     func restorePurchases() async throws {
@@ -146,7 +161,7 @@ final class SubscriptionManager {
         }
     }
 
-    private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
+    nonisolated private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
         switch result {
         case .unverified:
             throw SubscriptionError.failedVerification

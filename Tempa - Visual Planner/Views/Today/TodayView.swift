@@ -566,6 +566,8 @@ struct TodayView: View {
 // MARK: - Timeline Row
 
 struct TimelineRow: View {
+    @Environment(SubscriptionManager.self) private var subs
+    @State private var showProPaywall = false    // AI features are Pro
     @ObservedObject var task: TaskBlock
     @Environment(\.managedObjectContext) private var viewContext
     let now: Date
@@ -709,6 +711,9 @@ struct TimelineRow: View {
             .padding(.bottom, 12)
         }
         .padding(.horizontal, 20)
+        .fullScreenCover(isPresented: $showProPaywall) {
+            PaywallView(allowDismiss: true) {}
+        }
         .sheet(isPresented: $showEdit) {
             EditTaskSheet(task: task)
         }
@@ -722,7 +727,9 @@ struct TimelineRow: View {
     @ViewBuilder
     private var taskMenu: some View {
         Button { startTask() } label: { Label("Start task", systemImage: "play.circle") }
-        Button { generateSteps() } label: { Label("Generate steps", systemImage: "wand.and.stars") }
+        Button {
+            if subs.isPro { generateSteps() } else { showProPaywall = true }
+        } label: { Label("Generate steps", systemImage: "wand.and.stars") }
         Button { showEdit = true } label: { Label("Edit task", systemImage: "square.and.pencil") }
 
         Section {
