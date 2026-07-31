@@ -1008,6 +1008,58 @@
         }
       }
     },
+    "4.8 · 12,400+ reviews": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4,8 · über 12.400 Bewertungen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4,8 · más de 12.400 reseñas"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4,8 · yli 12 400 arvostelua"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4,8 · plus de 12 400 avis"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4,8 · 12 400+ vurderinger"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4,8 · 12.400+ beoordelingen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4,8 · 12.400+ avaliações"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4.8 · 12 400+ відгуків"
+          }
+        }
+      }
+    },
     "4.8 ★ from 12,400+ reviews": {
       "localizations": {
         "de": {
@@ -2887,6 +2939,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Календар"
+          }
+        }
+      }
+    },
+    "Calibrating your energy dip": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Energietief kalibrieren"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibrando tu bajón de energía"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalibroidaan energiakuoppaasi"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibrage de ton coup de mou"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalibrerer energiduppen din"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je energiedip kalibreren"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibrando sua queda de energia"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Калібруємо спад енергії"
           }
         }
       }
@@ -6125,6 +6229,58 @@
         }
       }
     },
+    "Lining up your first focus block": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deinen ersten Fokus-Block planen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparando tu primer bloque de enfoque"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Järjestetään ensimmäinen keskittymisjaksosi"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Préparation de ton premier bloc de focus"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setter opp din første fokusbolk"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je eerste focusblok klaarzetten"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparando seu primeiro bloco de foco"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ставимо перший фокус-блок"
+          }
+        }
+      }
+    },
     "Listening…": {
       "localizations": {
         "de": {
@@ -8416,6 +8572,58 @@
         }
       }
     },
+    "Picking gentle nudge sounds": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sanfte Stups-Töne auswählen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eligiendo sonidos suaves de aviso"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valitaan lempeät muistutusäänet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choix de sons de rappel doux"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Velger milde puff-lyder"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zachte duwtjes-geluiden kiezen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolhendo sons gentis de lembrete"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Обираємо лагідні звуки нагадувань"
+          }
+        }
+      }
+    },
     "Plan something small": {
       "localizations": {
         "de": {
@@ -9348,6 +9556,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Твій день · 3 з 3"
+          }
+        }
+      }
+    },
+    "Setting your wake time": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Aufstehzeit einstellen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustando tu hora de despertar"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asetetaan heräämisaikaasi"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglage de ton heure de réveil"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stiller inn våknetiden din"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je opstatijd instellen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustando sua hora de acordar"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Налаштовуємо час пробудження"
           }
         }
       }
@@ -12534,6 +12794,7 @@
       }
     },
     "Unlock all of Tempa free for 3 days. Keep it for less than a coffee a month.": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {

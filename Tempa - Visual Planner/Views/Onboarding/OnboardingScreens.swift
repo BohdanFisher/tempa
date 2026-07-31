@@ -110,12 +110,12 @@ struct Onb1HookView: View {
 struct Onb2SelfIdView: View {
     let state: OnboardingState
 
-    private let rows: [LocalizedStringKey] = [
-        "I have ADHD / I'm neurodivergent",
-        "I get overwhelmed by my to-do list",
-        "I procrastinate on important things",
-        "I lose track of time",
-        "I just want a calmer day",
+    private let rows: [(LocalizedStringKey, String, String)] = [
+        ("I have ADHD / I'm neurodivergent", "brain.head.profile", "health"),
+        ("I get overwhelmed by my to-do list", "tray.full", "work"),
+        ("I procrastinate on important things", "hourglass", "personal"),
+        ("I lose track of time", "clock", "routine"),
+        ("I just want a calmer day", "leaf", "rest"),
     ]
 
     var body: some View {
@@ -141,7 +141,7 @@ struct Onb2SelfIdView: View {
 
             VStack(spacing: 10) {
                 ForEach(rows.indices, id: \.self) { i in
-                    QuizRow(label: rows[i], picked: state.selfIdPicks.contains(i)) {
+                    QuizRow(label: rows[i].0, icon: rows[i].1, cat: rows[i].2, picked: state.selfIdPicks.contains(i)) {
                         if state.selfIdPicks.contains(i) {
                             state.selfIdPicks.remove(i)
                         } else {
@@ -169,12 +169,12 @@ struct Onb2SelfIdView: View {
 struct Onb3PainView: View {
     let state: OnboardingState
 
-    private let rows: [LocalizedStringKey] = [
-        "Starting tasks",
-        "Time blindness — losing hours",
-        "Remembering routines",
-        "Too many apps that didn't stick",
-        "Feeling guilty when I fall behind",
+    private let rows: [(LocalizedStringKey, String, String)] = [
+        ("Starting tasks", "play.circle", "work"),
+        ("Time blindness — losing hours", "hourglass", "routine"),
+        ("Remembering routines", "alarm", "personal"),
+        ("Too many apps that didn't stick", "square.stack.3d.up.slash", "social"),
+        ("Feeling guilty when I fall behind", "heart", "health"),
     ]
 
     var body: some View {
@@ -200,7 +200,7 @@ struct Onb3PainView: View {
 
             VStack(spacing: 10) {
                 ForEach(rows.indices, id: \.self) { i in
-                    QuizRow(label: rows[i], picked: state.painPicks.contains(i)) {
+                    QuizRow(label: rows[i].0, icon: rows[i].1, cat: rows[i].2, picked: state.painPicks.contains(i)) {
                         if state.painPicks.contains(i) {
                             state.painPicks.remove(i)
                         } else {
@@ -227,6 +227,8 @@ struct Onb3PainView: View {
 
 struct QuizRow: View {
     let label: LocalizedStringKey
+    var icon: String? = nil
+    var cat: String = "personal"
     let picked: Bool
     let onTap: () -> Void
 
@@ -237,7 +239,24 @@ struct QuizRow: View {
             #endif
             onTap()
         } label: {
-            HStack(spacing: 14) {
+            HStack(spacing: 12) {
+                if let icon {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 9, style: .continuous)
+                            .fill(Cat.named(cat).bg)
+                            .frame(width: 32, height: 32)
+                        Image(systemName: icon)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(Cat.named(cat).ink)
+                    }
+                }
+
+                Text(label)
+                    .font(.custom("Inter-Medium", size: 16))
+                    .foregroundColor(T.text)
+
+                Spacer()
+
                 ZStack {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .fill(picked ? T.primary : T.surface)
@@ -255,12 +274,6 @@ struct QuizRow: View {
                     }
                 }
                 .animation(.spring(response: 0.32, dampingFraction: 0.6), value: picked)
-
-                Text(label)
-                    .font(.custom("Inter-Medium", size: 16))
-                    .foregroundColor(T.text)
-
-                Spacer()
             }
             .padding(18)
             .background(
@@ -575,29 +588,39 @@ struct Onb5PersonalView: View {
 
             // Clock card
             VStack(spacing: 0) {
-                HStack {
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .fill(Cat.routine.bg)
-                        .frame(width: 60, height: 60)
-                        .overlay(
-                            Image(systemName: "sun.max.fill")
-                                .font(.system(size: 28))
-                                .foregroundColor(Cat.routine.ink)
-                        )
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text(formattedTime)
+                        .font(.custom("Nunito-ExtraBold", size: 44).weight(.heavy))
+                        .tracking(-0.88)
+                        .foregroundColor(T.text)
+                        .monospacedDigit()
+                    Text(formattedPeriod)
+                        .font(.custom("Nunito-ExtraBold", size: 22).weight(.heavy))
+                        .foregroundColor(T.textSec)
+                }
+                .frame(maxWidth: .infinity)
 
-                    Spacer()
-
-                    HStack(alignment: .firstTextBaseline, spacing: 4) {
-                        Text(formattedTime)
-                            .font(.custom("Nunito-ExtraBold", size: 44).weight(.heavy))
-                            .tracking(-0.88)
-                            .foregroundColor(T.text)
-                            .monospacedDigit()
-                        Text(formattedPeriod)
-                            .font(.custom("Nunito-ExtraBold", size: 22).weight(.heavy))
-                            .foregroundColor(T.textSec)
+                // The sun rides the arc as the wake time moves — you SEE the
+                // morning you're choosing.
+                GeometryReader { geo in
+                    let w = geo.size.width
+                    let t = CGFloat((wakeHour - 5) / 7)
+                    let p0 = CGPoint(x: 12, y: 62), p1 = CGPoint(x: w - 12, y: 62)
+                    let c = CGPoint(x: w / 2, y: -26)
+                    let sx = (1-t)*(1-t)*p0.x + 2*(1-t)*t*c.x + t*t*p1.x
+                    let sy = (1-t)*(1-t)*p0.y + 2*(1-t)*t*c.y + t*t*p1.y
+                    ZStack {
+                        SunArcShape()
+                            .stroke(style: StrokeStyle(lineWidth: 2, dash: [4, 5]))
+                            .foregroundColor(Color(lightHex: "#EAE5DA", darkHex: "#2E2722"))
+                        Image(systemName: "sun.max.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(Cat.routine.ink)
+                            .position(x: sx, y: sy)
                     }
                 }
+                .frame(height: 68)
+                .padding(.top, 10)
 
                 // Custom slider
                 GeometryReader { geo in
@@ -802,10 +825,10 @@ struct OnbPlanPreviewView: View {
                 .lineSpacing(4)
                 .padding(.top, 12)
 
-            VStack(spacing: 10) {
-                previewRow(time: wakePlus30, title: "One small win to start", icon: "sparkles", category: "personal", index: 0)
+            VStack(spacing: 0) {
+                previewRow(time: wakePlus30, title: "One small win to start", icon: "sparkles", category: "personal", index: 0, isFirst: true)
                 previewRow(time: midMorning, title: "One deep focus block", icon: "laptopcomputer", category: "work", index: 1)
-                previewRow(time: evening, title: "Wind down, guilt-free", icon: "bed.double", category: "rest", index: 2)
+                previewRow(time: evening, title: "Wind down, guilt-free", icon: "bed.double", category: "rest", index: 2, isLast: true)
             }
             .padding(.top, 24)
 
@@ -820,13 +843,29 @@ struct OnbPlanPreviewView: View {
         .padding(.horizontal, 22)
     }
 
-    private func previewRow(time: Date, title: LocalizedStringKey, icon: String, category: String, index: Int) -> some View {
+    private func previewRow(time: Date, title: LocalizedStringKey, icon: String, category: String, index: Int,
+                            isFirst: Bool = false, isLast: Bool = false) -> some View {
         let cc = Cat.named(category)
-        return HStack(spacing: 12) {
+        return HStack(spacing: 10) {
             Text(time.formatted(date: .omitted, time: .shortened))
                 .font(.custom("Nunito-ExtraBold", size: 12).weight(.bold))
                 .foregroundColor(T.textSec)
-                .frame(width: 54, alignment: .leading)
+                .frame(width: 50, alignment: .leading)
+
+            // Time rail — same visual language as the real timeline.
+            VStack(spacing: 0) {
+                Rectangle().fill(T.bgWarm).frame(width: 2)
+                    .opacity(isFirst ? 0 : 1)
+                if isFirst {
+                    PulseDot(size: 8, color: cc.solid, rings: 2, speed: 3)
+                        .frame(width: 12, height: 12)
+                } else {
+                    Circle().fill(cc.solid).frame(width: 8, height: 8)
+                }
+                Rectangle().fill(T.bgWarm).frame(width: 2)
+                    .opacity(isLast ? 0 : 1)
+            }
+            .frame(width: 14)
 
             HStack(spacing: 10) {
                 ZStack {
@@ -845,6 +884,7 @@ struct OnbPlanPreviewView: View {
             .padding(12)
             .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(T.surface))
             .tempaShadowSm()
+            .padding(.vertical, 5)
         }
         .staggerIn(index)
     }
@@ -893,13 +933,32 @@ struct Onb6SocialView: View {
                     .padding(.leading, 6)
                     .frame(width: 36 + 3 * (36 - 10))
 
-                    VStack(alignment: .leading, spacing: 1) {
-                        Text("Top 10 ADHD app · App Store 2026")
-                            .font(.custom("Nunito-ExtraBold", size: 16).weight(.heavy))
-                            .foregroundColor(T.text)
-                        Text("4.8 ★ from 12,400+ reviews")
-                            .font(.custom("Inter-Medium", size: 12).weight(.medium))
-                            .foregroundColor(T.textSec)
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "laurel.leading")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(T.textSec)
+                            Text("Top 10 ADHD app · App Store 2026")
+                                .font(.custom("Nunito-ExtraBold", size: 15).weight(.heavy))
+                                .foregroundColor(T.text)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.75)
+                            Image(systemName: "laurel.trailing")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(T.textSec)
+                        }
+                        HStack(spacing: 5) {
+                            HStack(spacing: 2) {
+                                ForEach(0..<5, id: \.self) { _ in
+                                    Image(systemName: "star.fill")
+                                        .font(.system(size: 10))
+                                        .foregroundColor(Cat.routine.ink)
+                                }
+                            }
+                            Text("4.8 · 12,400+ reviews")
+                                .font(.custom("Inter-Medium", size: 12).weight(.medium))
+                                .foregroundColor(T.textSec)
+                        }
                     }
                 }
                 .padding(18)
@@ -994,6 +1053,9 @@ struct Onb7ForgiveView: View {
                             .foregroundColor(T.textSec)
                     }
                     Spacer()
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundColor(T.textTer)
                 }
                 .padding(14)
                 .background(
@@ -1016,6 +1078,9 @@ struct Onb7ForgiveView: View {
                             .foregroundColor(T.textSec)
                     }
                     Spacer()
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundColor(Cat.health.solid)
                 }
                 .padding(14)
                 .background(
@@ -1175,10 +1240,10 @@ struct Onb9BuildingView: View {
 
     @State private var currentIdx = 0
     @State private var checkItems: [(String, Bool)] = [
-        ("Setting your wake time", false),
-        ("Calibrating your energy dip", false),
-        ("Lining up your first focus block", false),
-        ("Picking gentle nudge sounds", false),
+        (String(localized: "Setting your wake time", bundle: .appLanguage), false),
+        (String(localized: "Calibrating your energy dip", bundle: .appLanguage), false),
+        (String(localized: "Lining up your first focus block", bundle: .appLanguage), false),
+        (String(localized: "Picking gentle nudge sounds", bundle: .appLanguage), false),
     ]
 
     var body: some View {
@@ -1260,6 +1325,18 @@ struct Onb9BuildingView: View {
         settings.save()
 
         state.showPaywall = true
+    }
+}
+
+// MARK: - Sun Arc
+
+private struct SunArcShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        p.move(to: CGPoint(x: 12, y: 62))
+        p.addQuadCurve(to: CGPoint(x: rect.width - 12, y: 62),
+                       control: CGPoint(x: rect.width / 2, y: -26))
+        return p
     }
 }
 
