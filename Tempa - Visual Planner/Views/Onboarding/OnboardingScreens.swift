@@ -38,7 +38,7 @@ struct Onb1HookView: View {
                         .staggerIn(0)
 
                     (
-                        Text("Your brain isn't broken. You just lost your ")
+                        Text("The ADHD-friendly planner that moves at your ")
                             .font(.custom("Nunito-ExtraBold", size: 38).weight(.heavy))
                             .foregroundColor(.white)
                         + Text("tempo.")
@@ -52,7 +52,7 @@ struct Onb1HookView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .staggerIn(1)
 
-                    Text("Tempa shows you one thing at a time — so you can find your rhythm again.")
+                    Text("Voice-first planning with AI scheduling and a built-in focus timer — one task at a time.")
                         .font(.custom("Inter-Medium", size: 16).weight(.medium))
                         .foregroundColor(.white.opacity(0.85))
                         .lineSpacing(4)
