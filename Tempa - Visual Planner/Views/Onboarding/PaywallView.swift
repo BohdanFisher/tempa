@@ -144,6 +144,7 @@ struct PaywallView: View {
              + Text(" — ").font(.custom("Inter-Medium", size: 13).weight(.medium))
              + Text(text).font(.custom("Inter-Medium", size: 13).weight(.medium)))
                 .foregroundColor(.white)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -209,7 +210,9 @@ struct PaywallView: View {
             #if os(iOS)
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
             #endif
-            selectedProductID = id
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+                selectedProductID = id
+            }
         } label: {
             HStack(spacing: 14) {
                 ZStack {
