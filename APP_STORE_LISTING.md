@@ -15,8 +15,26 @@ Voice-first ADHD day planner
 
 ## Promotional text (170)
 
-Say your day out loud and Tempa turns it into a schedule that fits your energy —
-then shows you one thing at a time. No streaks, no guilt.
+Editable any time without a new app review — swap it for launches, seasons or
+campaigns. Sits above the description; the first ~78 characters are what people
+read before tapping "more".
+
+**In use (156):**
+
+Say your day out loud. Tempa turns it into a schedule that fits your energy,
+then shows you one thing at a time. No streaks to lose, nothing to catch up on.
+
+**Alternates:**
+
+- Pain-first (158): Your to-do list became a wall of guilt. Tempa turns it back
+  into a day: speak it out loud, get a real schedule, and see only the thing
+  you're doing right now.
+- Trial push (150): 3 days free. Speak your day, get a schedule built around
+  your energy, and do one thing at a time — a planner that never scolds you for
+  falling behind.
+- Feature-first (153): Plan by talking. Tempa turns what's in your head into a
+  day you can see — one task at a time, with a focus timer that nudges you back
+  gently, never nags.
 
 ## Keywords (100)
 
