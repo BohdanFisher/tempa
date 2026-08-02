@@ -912,6 +912,17 @@ struct OnbPlanPreviewView: View {
 struct Onb6SocialView: View {
     let state: OnboardingState
 
+    /// Numbers written the local way: "4.8" in the US, "4,8" across Europe,
+    /// "12 400" where the space is the grouping mark.
+    private static var ratingScore: String {
+        4.8.formatted(.number.precision(.fractionLength(1)).locale(AppLanguage.current.locale))
+    }
+
+    private static var reviewCount: String {
+        let n = 12_400.formatted(.number.locale(AppLanguage.current.locale))
+        return String(localized: "\(n)+ reviews", bundle: .appLanguage)
+    }
+
     private let testimonials = [
         (quote: String(localized: "For the first time, I finish things. I just see the tiny next step and go.", bundle: .appLanguage), name: "Maya, 32"),
         (quote: String(localized: "No streaks to lose was the unlock for me. I'm three months in.", bundle: .appLanguage), name: "Jordan, 27"),
@@ -950,33 +961,38 @@ struct Onb6SocialView: View {
                     .padding(.leading, 6)
                     .frame(width: 36 + 3 * (36 - 10))
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack(spacing: 5) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack(spacing: 6) {
                             Image(systemName: "laurel.leading")
-                                .font(.system(size: 14, weight: .semibold))
+                                .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(T.textSec)
-                            Text("Top 10 ADHD app · App Store 2026")
-                                .font(.custom("Nunito-ExtraBold", size: 15).weight(.heavy))
+                            Text("Top 10 ADHD app")
+                                .font(.custom("Nunito-ExtraBold", size: 16).weight(.heavy))
                                 .foregroundColor(T.text)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.75)
                             Image(systemName: "laurel.trailing")
-                                .font(.system(size: 14, weight: .semibold))
+                                .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(T.textSec)
                         }
-                        HStack(spacing: 5) {
+
+                        HStack(spacing: 6) {
                             HStack(spacing: 2) {
                                 ForEach(0..<5, id: \.self) { _ in
                                     Image(systemName: "star.fill")
-                                        .font(.system(size: 10))
+                                        .font(.system(size: 9))
                                         .foregroundColor(Cat.routine.ink)
                                 }
                             }
-                            Text("4.8 · 12,400+ reviews")
+                            // Score carries the weight; the count stays quiet behind it.
+                            Text(Self.ratingScore)
+                                .font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
+                                .foregroundColor(T.text)
+                            Text(Self.reviewCount)
                                 .font(.custom("Inter-Medium", size: 12).weight(.medium))
                                 .foregroundColor(T.textSec)
                         }
                     }
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)   // long languages shrink, never truncate
                 }
                 .padding(18)
                 .frame(maxWidth: .infinity, alignment: .leading)

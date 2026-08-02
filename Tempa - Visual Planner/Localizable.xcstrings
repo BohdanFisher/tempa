@@ -323,6 +323,58 @@
     "%@ · %d min": {
       "shouldTranslate": false
     },
+    "%@+ reviews": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@+ Bewertungen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@+ reseñas"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@+ arvostelua"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@+ avis"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@+ vurderinger"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@+ beoordelingen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@+ avaliações"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@+ відгуків"
+          }
+        }
+      }
+    },
     "%@/mo": {
       "localizations": {
         "de": {
@@ -1004,58 +1056,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "3 дні безплатно, далі оплата щороку"
-          }
-        }
-      }
-    },
-    "4.8 · 12,400+ reviews": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "4,8 · über 12.400 Bewertungen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "4,8 · más de 12.400 reseñas"
-          }
-        },
-        "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "4,8 · yli 12 400 arvostelua"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "4,8 · plus de 12 400 avis"
-          }
-        },
-        "nb": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "4,8 · 12 400+ vurderinger"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "4,8 · 12.400+ beoordelingen"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "4,8 · 12.400+ avaliações"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "4.8 · 12 400+ відгуків"
           }
         }
       }
@@ -12587,54 +12587,54 @@
         }
       }
     },
-    "Top 10 ADHD app · App Store 2026": {
+    "Top 10 ADHD app": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Top-10-ADHS-App · App Store 2026"
+            "value": "Top-10-ADHS-App"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Top 10 apps para TDAH · App Store 2026"
+            "value": "Top 10 apps TDAH"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Top 10 ADHD-sovellus · App Store 2026"
+            "value": "Top 10 ADHD-appi"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Top 10 des apps TDAH · App Store 2026"
+            "value": "Top 10 apps TDAH"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Topp 10 ADHD-apper · App Store 2026"
+            "value": "Topp 10 ADHD-app"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Top 10 ADHD-apps · App Store 2026"
+            "value": "Top 10 ADHD-app"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Top 10 apps de TDAH · App Store 2026"
+            "value": "Top 10 apps TDAH"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Топ-10 застосунків для СДУГ · App Store 2026"
+            "value": "Топ-10 для СДУГ"
           }
         }
       }
