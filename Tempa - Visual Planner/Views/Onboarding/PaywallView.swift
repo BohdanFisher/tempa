@@ -178,7 +178,7 @@ struct PaywallView: View {
                 ForEach(Array(subs.simPlans.filter { $0.id != "tempa_weekly" }.enumerated()), id: \.element.id) { i, plan in
                     planCard(
                         id: plan.id,
-                        title: plan.name,
+                        title: planTitle(id: plan.id, fallback: plan.name),
                         isYearly: plan.id == "tempa_yearly",
                         price: plan.price,
                         sub: plan.monthlyPrice.map { String(localized: "\($0)/mo", bundle: .appLanguage) } ?? String(localized: "per \(plan.periodLabel)", bundle: .appLanguage),
@@ -191,7 +191,7 @@ struct PaywallView: View {
                     let yearly = product.id == "tempa_yearly"
                     planCard(
                         id: product.id,
-                        title: product.displayName,
+                        title: planTitle(id: product.id, fallback: product.displayName),
                         isYearly: yearly,
                         price: product.displayPrice,
                         sub: yearly ? (monthlyEquivalent(product).map { String(localized: "\($0)/mo", bundle: .appLanguage) } ?? String(localized: "per year", bundle: .appLanguage)) : String(localized: "per \(periodLabel(product))", bundle: .appLanguage),
@@ -333,6 +333,17 @@ struct PaywallView: View {
 
     private var hasIntroOffer: Bool {
         subs.hasIntroOfferEligibility[selectedProductID] ?? false
+    }
+
+    /// Short card titles — the ASC display names ("Tempa Pro Yearly") are too
+    /// wordy for the paywall, the whole screen already says it's Tempa Pro.
+    private func planTitle(id: String, fallback: String) -> String {
+        switch id {
+        case "tempa_yearly": return String(localized: "Yearly", bundle: .appLanguage)
+        case "tempa_monthly": return String(localized: "Monthly", bundle: .appLanguage)
+        case "tempa_weekly": return String(localized: "Weekly", bundle: .appLanguage)
+        default: return fallback
+        }
     }
 
     private func periodLabel(_ product: Product) -> String {
