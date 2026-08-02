@@ -97,7 +97,10 @@ final class SubscriptionManager {
                 // isEligibleForIntroOffer is GROUP-level: it says "this user never
                 // used an intro in this group", true even for plans that have no
                 // intro offer at all. Require the plan to actually carry one.
-                let eligible = sub.introductoryOffer != nil && (await sub.isEligibleForIntroOffer)
+                var eligible = false
+                if sub.introductoryOffer != nil {
+                    eligible = await sub.isEligibleForIntroOffer
+                }
                 hasIntroOfferEligibility[product.id] = eligible
             }
         }
