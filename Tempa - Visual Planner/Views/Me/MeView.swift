@@ -349,7 +349,7 @@ struct MeView: View {
             } else {
                 VStack(spacing: 4) {
                     HStack(spacing: 4) {
-                        Color.clear.frame(width: 24, height: 1)
+                        Color.clear.frame(width: 30, height: 1)
                         ForEach(0..<7, id: \.self) { d in
                             Text(h.weekdayLetters[d])
                                 .font(.custom(T.fontHeader, size: 10).weight(.bold))
@@ -359,10 +359,10 @@ struct MeView: View {
                     }
                     ForEach(buckets, id: \.self) { b in
                         HStack(spacing: 4) {
-                            Text("\(b * 2)")
+                            Text(Self.hourAxisLabel(b * 2))
                                 .font(.custom(T.fontBody, size: 10).weight(.semibold))
                                 .foregroundColor(T.textTer)
-                                .frame(width: 24, alignment: .trailing)
+                                .frame(width: 30, alignment: .trailing)
                             ForEach(0..<7, id: \.self) { d in
                                 let count = h.grid[d][b]
                                 let isPeak = d == h.peakDay && b == h.peakBucket
@@ -376,7 +376,7 @@ struct MeView: View {
                 }
 
                 if let pd = h.peakDay, let pb = h.peakBucket {
-                    Text("You're at your best on \(h.weekdayNames[pd])s around \(pb * 2):00–\(pb * 2 + 2):00.")
+                    Text("You're at your best on \(h.weekdayNames[pd])s around \(Self.hourString(pb * 2))–\(Self.hourString(pb * 2 + 2)).")
                         .font(.custom(T.fontBody, size: 13).weight(.medium))
                         .foregroundColor(T.textSec)
                         .fixedSize(horizontal: false, vertical: true)
@@ -392,6 +392,19 @@ struct MeView: View {
         guard count > 0 else { return T.bgWarm }
         if isPeak { return T.primary }
         return T.secondary.opacity(0.22 + 0.78 * Double(count) / Double(maxCount))
+    }
+
+    /// Hour of day rendered the way the user's region says a clock should look:
+    /// "14:00" in 24-hour regions, "2:00 PM" in the US/Canada.
+    static func hourString(_ hour: Int) -> String {
+        let date = Calendar.current.date(bySettingHour: hour % 24, minute: 0, second: 0, of: .now) ?? .now
+        return date.formatted(Date.FormatStyle(locale: AppLanguage.current.locale).hour().minute())
+    }
+
+    /// Compact heatmap axis label: "14" in 24-hour regions, "2 p" in 12-hour ones.
+    static func hourAxisLabel(_ hour: Int) -> String {
+        let date = Calendar.current.date(bySettingHour: hour % 24, minute: 0, second: 0, of: .now) ?? .now
+        return date.formatted(Date.FormatStyle(locale: AppLanguage.current.locale).hour(.defaultDigits(amPM: .narrow)))
     }
 
     // MARK: - Focus time
@@ -542,7 +555,7 @@ struct MeView: View {
                 HStack(spacing: 14) {
                     Text("Best streak: \(s.best) \(s.best == 1 ? "day" : "days")")
                     if s.bestDayCount > 0, let d = s.bestDayDate {
-                        Text("Best day: \(s.bestDayCount) tasks · \(d.formatted(.dateTime.month(.abbreviated).day()))")
+                        Text("Best day: \(s.bestDayCount) tasks · \(d.formatted(.dateTime.month(.abbreviated).day().locale(AppLanguage.current.locale)))")
                     }
                 }
                 .font(.custom(T.fontBody, size: 12).weight(.semibold))

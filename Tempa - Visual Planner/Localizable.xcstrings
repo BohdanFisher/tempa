@@ -11495,6 +11495,7 @@
       }
     },
     "Tempa shows you one thing at a time — so you can find your rhythm again.": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -12326,54 +12327,54 @@
         }
       }
     },
-    "Tomorrow 9 AM": {
+    "Tomorrow %@": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Morgen 9:00"
+            "value": "Morgen %@"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mañana 9:00"
+            "value": "Mañana %@"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Huomenna klo 9"
+            "value": "Huomenna %@"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Demain 9 h"
+            "value": "Demain %@"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "I morgen 09:00"
+            "value": "I morgen %@"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Morgen 9:00"
+            "value": "Morgen %@"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Amanhã às 9:00"
+            "value": "Amanhã %@"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Завтра о 9:00"
+            "value": "Завтра о %@"
           }
         }
       }
@@ -12430,54 +12431,54 @@
         }
       }
     },
-    "Tonight 6 PM": {
+    "Tonight %@": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Heute Abend 18:00"
+            "value": "Heute Abend %@"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esta tarde 18:00"
+            "value": "Esta noche %@"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tänä iltana klo 18"
+            "value": "Tänä iltana %@"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ce soir 18 h"
+            "value": "Ce soir %@"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "I kveld 18:00"
+            "value": "I kveld %@"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vanavond 18:00"
+            "value": "Vanavond %@"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hoje às 18:00"
+            "value": "Hoje à noite %@"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Сьогодні о 18:00"
+            "value": "Сьогодні о %@"
           }
         }
       }
@@ -14878,54 +14879,54 @@
         }
       }
     },
-    "You're at your best on %@s around %lld:00–%lld:00.": {
+    "You're at your best on %@s around %@–%@.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Am stärksten bist du %@s gegen %lld:00–%lld:00."
+            "value": "Am stärksten bist du %@s gegen %@–%@."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estás en tu mejor momento los %@ hacia las %lld:00–%lld:00."
+            "value": "Estás en tu mejor momento los %@ hacia las %@–%@."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Olet parhaimmillasi %@sin noin klo %lld–%lld."
+            "value": "Olet parhaimmillasi %@sin noin klo %@–%@."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tu es au top le %@ vers %lld:00–%lld:00."
+            "value": "Tu es au top le %@ vers %@–%@."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du er på ditt beste på %@er rundt %lld:00–%lld:00."
+            "value": "Du er på ditt beste på %@er rundt %@–%@."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je bent op je best op %@ rond %lld:00–%lld:00."
+            "value": "Je bent op je best op %@ rond %@–%@."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Você rende mais às %@s por volta de %lld:00–%lld:00."
+            "value": "Você rende mais às %@s por volta de %@–%@."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ти на піку у %@ близько %lld:00–%lld:00."
+            "value": "Ти на піку у %@ близько %@–%@."
           }
         }
       }
@@ -14986,6 +14987,7 @@
       }
     },
     "Your brain isn't broken. You just lost your ": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {

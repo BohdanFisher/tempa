@@ -43,8 +43,15 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     }
 
     /// Locale matching the selection — lets date formatters switch live too.
+    /// The language comes from the pick, but region and hour cycle stay the
+    /// DEVICE's: Europe keeps its 24-hour clock even in English UI, the US
+    /// keeps AM/PM, and the user's own 24-Hour Time toggle is honoured.
     var locale: Locale {
-        self == .system ? .autoupdatingCurrent : Locale(identifier: rawValue)
+        guard self != .system else { return .autoupdatingCurrent }
+        var comps = Locale.Components(identifier: rawValue)
+        comps.region = Locale.current.region
+        comps.hourCycle = Locale.current.hourCycle
+        return Locale(components: comps)
     }
 
     static var current: AppLanguage {

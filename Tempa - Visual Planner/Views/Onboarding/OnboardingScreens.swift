@@ -594,9 +594,11 @@ struct Onb5PersonalView: View {
                         .tracking(-0.88)
                         .foregroundColor(T.text)
                         .monospacedDigit()
-                    Text(formattedPeriod)
-                        .font(.custom("Nunito-ExtraBold", size: 22).weight(.heavy))
-                        .foregroundColor(T.textSec)
+                    if !formattedPeriod.isEmpty {
+                        Text(formattedPeriod)
+                            .font(.custom("Nunito-ExtraBold", size: 22).weight(.heavy))
+                            .foregroundColor(T.textSec)
+                    }
                 }
                 .frame(maxWidth: .infinity)
 
@@ -765,26 +767,41 @@ struct Onb5PersonalView: View {
         .tempaShadowSm()
     }
 
+    /// AM/PM only where the user's region actually uses it (US/Canada);
+    /// everywhere else this is a clean 24-hour clock.
+    private var uses12h: Bool {
+        switch Locale.current.hourCycle {
+        case .oneToTwelve, .zeroToEleven: return true
+        default: return false
+        }
+    }
+
     private var formattedTime: String {
         let h = Int(wakeHour)
         let m = Int((wakeHour - Double(h)) * 60)
-        let displayH = h > 12 ? h - 12 : (h == 0 ? 12 : h)
-        return String(format: "%d:%02d", displayH, m)
+        if uses12h {
+            let displayH = h > 12 ? h - 12 : (h == 0 ? 12 : h)
+            return String(format: "%d:%02d", displayH, m)
+        }
+        return String(format: "%02d:%02d", h, m)
     }
 
     private var formattedPeriod: String {
-        wakeHour >= 12 ? "PM" : "AM"
+        uses12h ? (wakeHour >= 12 ? "PM" : "AM") : ""
     }
 
     private var energyDipLabel: String {
-        guard let dip = state.energyDipTime else { return "3 PM" }
+        guard let dip = state.energyDipTime else { return formatHour(15) }
         let h = Calendar.current.component(.hour, from: dip)
         return formatHour(h)
     }
 
     private func formatHour(_ h: Int) -> String {
-        let display = h > 12 ? h - 12 : h
-        return "\(display) \(h >= 12 ? "PM" : "AM")"
+        if uses12h {
+            let display = h > 12 ? h - 12 : h
+            return "\(display) \(h >= 12 ? "PM" : "AM")"
+        }
+        return String(format: "%02d:00", h)
     }
 
     private func syncWakeTime() {

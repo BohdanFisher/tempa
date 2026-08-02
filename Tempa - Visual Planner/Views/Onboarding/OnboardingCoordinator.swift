@@ -2,7 +2,12 @@ import SwiftUI
 
 @Observable
 final class OnboardingState {
+    #if DEBUG
+    // Dev shortcut: launch with "-onb-step N" to jump straight to a screen.
+    var currentStep = UserDefaults.standard.integer(forKey: "onb-step")
+    #else
     var currentStep = 0
+    #endif
     var selfIdPicks: Set<Int> = []
     var painPicks: Set<Int> = []
     var wakeTime = Calendar.current.date(bySettingHour: 7, minute: 30, second: 0, of: Date()) ?? Date()

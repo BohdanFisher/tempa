@@ -92,7 +92,7 @@ struct WhenSection: View {
         let timeStr = startTime.formatted(date: .omitted, time: .shortened)
         if cal.isDateInToday(startTime) { return String(localized: "Today, \(timeStr)", bundle: .appLanguage) }
         if cal.isDateInTomorrow(startTime) { return String(localized: "Tomorrow, \(timeStr)", bundle: .appLanguage) }
-        return startTime.formatted(date: .abbreviated, time: .shortened)
+        return startTime.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened, locale: AppLanguage.current.locale))
     }
 }
 
@@ -107,7 +107,10 @@ struct QuickTimeSheet: View {
         let tonight = cal.date(bySettingHour: 18, minute: 0, second: 0, of: now) ?? now
         let tomorrowBase = cal.date(byAdding: .day, value: 1, to: now) ?? now
         let tomorrow9 = cal.date(bySettingHour: 9, minute: 0, second: 0, of: tomorrowBase) ?? now
-        return [(String(localized: "In 1 hour", bundle: .appLanguage), inHour), (String(localized: "Tonight 6 PM", bundle: .appLanguage), tonight), (String(localized: "Tomorrow 9 AM", bundle: .appLanguage), tomorrow9)]
+        let t = { (d: Date) in d.formatted(date: .omitted, time: .shortened) }
+        return [(String(localized: "In 1 hour", bundle: .appLanguage), inHour),
+                (String(localized: "Tonight \(t(tonight))", bundle: .appLanguage), tonight),
+                (String(localized: "Tomorrow \(t(tomorrow9))", bundle: .appLanguage), tomorrow9)]
     }
 
     var body: some View {
