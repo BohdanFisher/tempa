@@ -113,29 +113,44 @@ final class ClaudeAPIClient: Sendable {
     - Each step needs an estimated duration in minutes (5-30 range).
     - Each step needs an SF Symbol icon name that fits the action.
     - Tone: encouraging but not patronizing. Adult-to-adult.
-    - Write each step "title" and "cleanTitle" in the SAME language the user wrote \
-    the task in (Ukrainian task → Ukrainian, German → German, etc.). Keep the JSON \
-    keys, the "icon" values and all schedule values exactly as specified — always English.
+    - LANGUAGE (most important): write "title" and "cleanTitle" in the SAME language as \
+    the user's task text. The phrase examples further down are multilingual on purpose — \
+    they exist so you can UNDERSTAND input in any language, and are NEVER a hint about \
+    which language to answer in. JSON keys, "icon" values and all schedule values stay \
+    exactly as specified — always English.
     - Output STRICT JSON only, no preamble, no markdown fences.
 
     SCHEDULE — figure out WHEN the user wants this, and always turn it into a concrete time.
     The user message begins with the current local datetime; resolve everything against it.
     Fill the "schedule" object:
-    - "cleanTitle": the task with the time/date words removed (e.g. "приготувати вечерю \
-    після роботи" → "приготувати вечерю"). If there were none, repeat the task as-is.
+    - "cleanTitle": the task with the time/date words removed (e.g. "cook dinner after \
+    work" → "cook dinner"). If there were none, repeat the task as-is.
     - "hasTime": true if the user mentioned ANY time or day — including vague or colloquial \
-    ones ("після роботи", "перед сном", "ввечері", "коли прокинусь"). false only if nothing.
+    ones ("after work", "before bed", "tonight", "when I wake up", and the equivalents in \
+    any other language). false only if nothing.
     - "date": the intended day as "yyyy-MM-dd". If a time is given with no day, use today.
     - "time": 24-hour "HH:mm" — your best concrete time for what they meant. ALWAYS set this \
     when hasTime is true. NEVER leave it null when there is any time hint.
-    - "precise": true ONLY when the user stated an exact clock time ("о 15:00", "at 3pm", \
-    "пів на десяту", "за 30 хвилин"); false for approximate or contextual phrases.
-    Map contextual phrases to concrete times (defaults — use judgement):
-    "перед роботою" 07:30 · "вранці"/"зранку"/"рано" 08:00 · "опівдні"/"в обід" 12:00 · \
-    "після обіду"/"вдень" 14:00 · "після роботи"/"after work" 18:00 · "ввечері"/"evening" \
-    19:00 · "перед сном"/"на ніч" 22:00 · "вночі"/"пізно" 22:00.
-    Days: "завтра" → tomorrow · "післязавтра" → +2 days · weekday names ("в середу") → \
-    that weekday's next date · "через N годин/хвилин" → from now, precise=true.
+    - "precise": true ONLY when the user stated an exact clock time ("at 3pm", "о 15:00", \
+    "um halb zehn", "in 30 minutes"); false for approximate or contextual phrases.
+    Map contextual phrases to concrete times. The user may write in ANY language; these \
+    are recognition aids, not output language (defaults — use judgement):
+    before work · перед роботою · vor der Arbeit · antes del trabajo · avant le travail → 07:30
+    morning · вранці · зранку · morgens · früh · por la mañana · le matin · de manhã · \
+    om morgenen · aamulla · 's ochtends → 08:00
+    noon, lunchtime · опівдні · в обід · mittags · al mediodía · à midi · ao meio-dia · \
+    lunsj · lounasaikaan · tussen de middag → 12:00
+    afternoon · після обіду · вдень · nachmittags · por la tarde · l'après-midi · à tarde · \
+    ettermiddag · iltapäivällä · 's middags → 14:00
+    after work · після роботи · nach der Arbeit · después del trabajo · après le travail · \
+    depois do trabalho · etter jobb · töiden jälkeen · na het werk → 18:00
+    evening, tonight · ввечері · abends · por la noche · le soir · à noite · om kvelden · \
+    illalla · 's avonds → 19:00
+    before bed, at night · перед сном · на ніч · vor dem Schlafengehen · antes de dormir · \
+    avant de dormir · før leggetid · ennen nukkumaanmenoa · voor het slapengaan → 22:00
+    Days: tomorrow · завтра · morgen · mañana · demain · amanhã · i morgen · huomenna → \
+    +1 day · the day after tomorrow · післязавтра · übermorgen → +2 days · a weekday name \
+    in any language → that weekday's next date · "in N hours/minutes" → from now, precise=true.
     If an exact time with no day already passed today, use tomorrow.
     If the user mentioned NO time at all: hasTime=false, precise=false, date and time null.
 
@@ -156,39 +171,46 @@ final class ClaudeAPIClient: Sendable {
     distinct thing. NEVER merge two activities into one; NEVER split one activity into sub-steps.
     The user message begins with the current local datetime; resolve all times against it.
     For EACH task output:
-    - "title": short, in the user's language, with the time words removed.
+    - "title": short, in the SAME language as the user's brain dump, with the time words \
+    removed. The multilingual phrase examples below are recognition aids only — they never \
+    decide the output language.
     - "category": exactly one of: work, personal, health, routine, social, rest.
     - "durationMinutes": a sensible estimate, 15–120.
     - "icon": one SF Symbol that fits the task, chosen ONLY from this list: \(ClaudeAPIClient.iconVocabulary).
     - "hasTime": true if a time or day was said for THIS task (including vague ones like \
-    "після обіду", "ввечері"). false if no time hint for it.
+    "after lunch", "tonight", in any language). false if no time hint for it.
     - "date": "yyyy-MM-dd" (today if a time but no day was given), else null.
-    - "time": 24-hour "HH:mm" — your concrete time. Contextual defaults: вранці/зранку 08:00, \
-    опівдні/в обід 12:00, після обіду/вдень 14:00, після роботи 18:00, ввечері 19:00, перед сном 22:00.
-    - "precise": true only when an exact clock time was said ("о 15:00", "о пів на десяту", "о 9 ранку").
+    - "time": 24-hour "HH:mm" — your concrete time. Contextual defaults, any language: \
+    morning/вранці/morgens/le matin 08:00, noon/в обід/mittags/à midi 12:00, afternoon/після \
+    обіду/nachmittags/l'après-midi 14:00, after work/після роботи/nach der Arbeit 18:00, \
+    evening/ввечері/abends/le soir 19:00, before bed/перед сном/vor dem Schlafengehen 22:00.
+    - "precise": true only when an exact clock time was said ("at 3pm", "о 15:00", "um 9 Uhr").
     If a task has no time hint, set hasTime=false and date/time null — the app places it in order.
 
     RECURRENCE — for things that repeat (very common for meds/habits):
-    - SEVERAL TIMES A DAY ("3 рази на день", "тричі на добу", "зранку, в обід і ввечері", \
-    "twice a day"): set "times" to the list of 24h "HH:mm" — e.g. ["08:00","13:00","19:00"]. \
+    - SEVERAL TIMES A DAY ("twice a day", "3 рази на день", "dreimal täglich", \
+    "morning, noon and evening"): set "times" to the list of 24h "HH:mm" — e.g. ["08:00","13:00","19:00"]. \
     Use the same contextual mapping (зранку 08:00, обід 13:00, ввечері 19:00, перед сном 22:00). \
     Set hasTime=true and "time" to the first of them. If they only say a count ("3 рази") with \
     no parts of day, spread them across waking hours (e.g. 3× → 08:00, 14:00, 20:00).
-    - OVER SEVERAL DAYS ("10 днів підряд", "протягом тижня", "10 days in a row", "курс 7 днів"): \
+    - OVER SEVERAL DAYS ("10 days in a row", "10 днів підряд", "eine Woche lang", "for a week"): \
     set "repeatDays" to that number of consecutive days (e.g. 10). "цей тиждень"/"this week" = 7. \
     "date" = the first day (today unless another start is given). Default repeatDays=1 (no repeat).
     - Output ONE task object with "times" and/or "repeatDays" — do NOT emit a separate object \
-    per occurrence. Keep "title" clean of the count/frequency words ("Випити антибіотик").
+    per occurrence. Keep "title" clean of the count/frequency words ("Take the antibiotic").
 
     Keep the user's spoken order. Output STRICT JSON only, no markdown fences:
-    { "tasks": [ { "title": "Випити вітамін D", "category": "health", "durationMinutes": 5, "icon": "pills", "hasTime": true, "precise": false, "date": "2026-06-09", "time": "08:00", "times": ["08:00","14:00","20:00"], "repeatDays": 10 } ] }
+    { "tasks": [ { "title": "Take vitamin D", "category": "health", "durationMinutes": 5, "icon": "pills", "hasTime": true, "precise": false, "date": "2026-06-09", "time": "08:00", "times": ["08:00","14:00","20:00"], "repeatDays": 10 } ] }
     """
 
     /// Split a spoken brain-dump into several scheduled tasks ("plan my day").
     func planTasks(from brainDump: String) async throws -> DayPlan {
         guard let apiKey = readAPIKey() else { throw ClaudeAPIError.noAPIKey }
 
-        let userContent = "\(Self.dateContextLine())\n\nBrain dump: \(brainDump)"
+        var userContent = "\(Self.dateContextLine())\n\nBrain dump: \(brainDump)"
+        if let directive = TaskLanguage.outputDirective(for: brainDump) {
+            userContent += "\n\n\(directive)"
+        }
         let body: [String: Any] = [
             "model": model,
             "max_tokens": 1500,
@@ -244,7 +266,10 @@ final class ClaudeAPIClient: Sendable {
             throw ClaudeAPIError.noAPIKey
         }
 
-        let userContent = "\(Self.dateContextLine())\n\nTask: \(task)"
+        var userContent = "\(Self.dateContextLine())\n\nTask: \(task)"
+        if let directive = TaskLanguage.outputDirective(for: task) {
+            userContent += "\n\n\(directive)"
+        }
 
         let body: [String: Any] = [
             "model": model,
