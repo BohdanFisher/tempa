@@ -12,6 +12,7 @@ struct TempaApp: App {
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
+        RevenueCatService.configure()
         let context = PersistenceController.shared.container.viewContext
         _settingsStore = State(initialValue: SettingsStore(context: context))
 

@@ -120,6 +120,8 @@ final class SubscriptionManager {
         switch result {
         case .success(let verification):
             let transaction = try checkVerified(verification)
+            // RevenueCat observer mode: must see the purchase before finish().
+            await RevenueCatService.record(result)
             await transaction.finish()
             await updatePurchasedProducts()
             return transaction
@@ -173,6 +175,12 @@ final class SubscriptionManager {
         Task.detached { [weak self] in
             for await result in Transaction.updates {
                 if let transaction = try? self?.checkVerified(result) {
+                    // Known analytics gap: transactions landing here (Ask-to-Buy
+                    // approvals, offer codes, interrupted purchases) can't be
+                    // recorded with RevenueCat client-side — recordPurchase needs
+                    // the Product.PurchaseResult, which never existed on this
+                    // path. App Store Server Notifications v2 → RevenueCat covers
+                    // them server-side. Entitlements are unaffected either way.
                     await transaction.finish()
                     await self?.updatePurchasedProducts()
                 }
