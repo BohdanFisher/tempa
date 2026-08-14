@@ -254,8 +254,13 @@ struct QuizRow: View {
                 Text(label)
                     .font(.custom("Inter-Medium", size: 16))
                     .foregroundColor(T.text)
+                    .multilineTextAlignment(.leading)
+                    // Without this the label keeps its ideal width and spills
+                    // out of the card in every language longer than English.
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-                Spacer()
+                Spacer(minLength: 8)
 
                 ZStack {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
@@ -318,11 +323,14 @@ struct OnbMicroYesView: View {
                         #endif
                         state.next()
                     } label: {
-                        HStack {
+                        HStack(spacing: 10) {
                             Text(label)
                                 .font(.custom("Nunito-ExtraBold", size: 16).weight(.bold))
                                 .foregroundColor(T.text)
-                            Spacer()
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Spacer(minLength: 0)
                             Image(systemName: "arrow.right")
                                 .font(.system(size: 13, weight: .bold))
                                 .foregroundColor(T.primary)

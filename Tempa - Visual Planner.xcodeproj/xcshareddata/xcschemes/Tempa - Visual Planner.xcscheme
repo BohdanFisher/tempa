@@ -71,16 +71,6 @@
             ReferencedContainer = "container:Tempa - Visual Planner.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "-force-onboarding"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "YES"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
       <StoreKitConfigurationFileReference
          identifier = "../../../Tempa - Visual Planner/TempaStoreKit.storekit">
       </StoreKitConfigurationFileReference>
