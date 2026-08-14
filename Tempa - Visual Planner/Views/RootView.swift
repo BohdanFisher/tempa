@@ -7,6 +7,9 @@ struct RootView: View {
     @State private var showWelcomeBack = false
     @Environment(\.scenePhase) private var scenePhase
     @State private var planAfterWelcome = false
+    /// A forced test run of the funnel ends when the funnel ends — otherwise
+    /// the flag would trap the tester on the last screen forever.
+    @State private var forcedFunnelDone = false
 
     /// Dev shortcut: launch with "-force-onboarding YES" to see onboarding even
     /// though iCloud has already restored a completed profile. On a reinstall
@@ -27,8 +30,8 @@ struct RootView: View {
             //   never paid            → onboarding (fresh experience)
             //   subscription active   → straight into the app
             //   paid before, lapsed   → paywall only (resubscribe)
-            if forceOnboarding {
-                OnboardingFlow()
+            if forceOnboarding && !forcedFunnelDone {
+                OnboardingFlow(onFinished: { forcedFunnelDone = true })
             } else if !subs.entitlementsChecked {
                 T.bg.ignoresSafeArea()   // sub-second, offline-safe
             } else if subs.isPro {

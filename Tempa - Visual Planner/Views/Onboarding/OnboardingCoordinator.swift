@@ -34,6 +34,9 @@ struct OnboardingFlow: View {
     @Environment(\.managedObjectContext) private var viewContext
     @State private var state = OnboardingState()
 
+    /// Fired once the funnel is done (paywall completed).
+    var onFinished: (() -> Void)? = nil
+
     var body: some View {
         ZStack {
             T.bg.ignoresSafeArea()
@@ -59,6 +62,7 @@ struct OnboardingFlow: View {
             PaywallView(allowDismiss: false) {
                 saveDemoSteps()
                 settings.completeOnboarding()
+                onFinished?()
             }
         }
     }
