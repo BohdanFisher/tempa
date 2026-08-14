@@ -166,7 +166,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ feito · %@ planejado"
+            "value": "%@ feitas · %@ planejadas"
           }
         },
         "uk": {
@@ -322,7 +322,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ planejado"
+            "value": "%@ planejadas"
           }
         },
         "uk": {
@@ -2186,7 +2186,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ativa"
+            "value": "Ativo"
           }
         },
         "uk": {
@@ -2852,7 +2852,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Permitir toques gentis"
+            "value": "Permitir lembretes suaves"
           }
         },
         "uk": {
@@ -3008,7 +3008,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Âncora da bateria do seu dia"
+            "value": "Define a base para a bateria do dia"
           }
         },
         "uk": {
@@ -3616,7 +3616,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dividindo..."
+            "value": "Dividindo em passos..."
           }
         },
         "uk": {
@@ -4606,7 +4606,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Criando seu dia calmo…"
+            "value": "Montando seu dia tranquilo…"
           }
         },
         "uk": {
@@ -5844,7 +5844,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sentir culpa quando atraso"
+            "value": "Sentir culpa quando fico para trás"
           }
         },
         "uk": {
@@ -6104,7 +6104,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sessões de foco com toques gentis para voltar"
+            "value": "Sessões de foco com lembretes suaves para voltar"
           }
         },
         "uk": {
@@ -6468,7 +6468,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Toques gentis"
+            "value": "Lembretes suaves"
           }
         },
         "uk": {
@@ -6520,7 +6520,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Foi puxado para outra coisa? Acontece com todos. Volte quando quiser — o timer guardou seu lugar."
+            "value": "Algo te distraiu? Acontece com todo mundo. Volte quando quiser — o timer guardou seu lugar."
           }
         },
         "uk": {
@@ -6728,7 +6728,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Um dia que trabalha com o seu cérebro"
+            "value": "Um dia que funciona a favor do seu cérebro"
           }
         },
         "uk": {
@@ -6936,7 +6936,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Casa / tarefas"
+            "value": "Casa / afazeres"
           }
         },
         "uk": {
@@ -7884,47 +7884,6 @@
         }
       }
     },
-    "Last updated: %@": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zuletzt aktualisiert: %@"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Última actualización: %@"
-          }
-        },
-        "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Viimeksi päivitetty: %@"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dernière mise à jour : %@"
-          }
-        },
-        "nb": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sist oppdatert: %@"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Оновлено: %@"
-          }
-        }
-      },
-      "shouldTranslate": false
-    },
     "Last week was quiet": {
       "localizations": {
         "de": {
@@ -8018,7 +7977,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Legal"
+            "value": "Jurídico"
           }
         },
         "uk": {
@@ -8850,7 +8809,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Perdeu um dia? O Tempa só diz: bem-vindo de volta. Escolhemos juntos a próxima coisinha."
+            "value": "Pulou um dia? O Tempa só diz: bem-vindo de volta. Vamos escolher juntos a próxima coisinha."
           }
         },
         "uk": {
@@ -9526,7 +9485,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aqui não há sequências de culpa."
+            "value": "Aqui, nada de culpa por sequência."
           }
         },
         "uk": {
@@ -9735,7 +9694,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Não ter sequências para perder foi o que destravou para mim. Já são três meses."
+            "value": "Não ter uma sequência para perder mudou tudo para mim. Já faz três meses."
           }
         },
         "uk": {
@@ -10966,7 +10925,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Escolhendo sons gentis de lembrete"
+            "value": "Escolhendo sons dos lembretes suaves"
           }
         },
         "uk": {
@@ -12786,7 +12745,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Som suave, sem vibração, sem badges. Prometemos não incomodar."
+            "value": "Som suave, sem vibração, sem selos. Prometemos não incomodar."
           }
         },
         "uk": {
@@ -13150,7 +13109,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Teste grátis de 3 dias"
+            "value": "Começar teste grátis de 3 dias"
           }
         },
         "uk": {
@@ -13514,7 +13473,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ainda aqui por você"
+            "value": "Continuo aqui com você"
           }
         },
         "uk": {
@@ -14968,7 +14927,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "O planner amigável ao TDAH que segue o seu "
+            "value": "O planner para TDAH que acompanha seu "
           }
         },
         "uk": {
@@ -15696,7 +15655,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muitos apps que não vingaram"
+            "value": "Apps demais que não deram certo"
           }
         },
         "uk": {
@@ -15748,7 +15707,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Top 10 apps TDAH"
+            "value": "Top 10 apps para TDAH"
           }
         },
         "uk": {
@@ -16737,7 +16696,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quer um toque gentil para seu próximo bloco?"
+            "value": "Quer um lembrete suave para o próximo bloco?"
           }
         },
         "uk": {
@@ -17049,7 +17008,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bem-vindo de volta. Vamos começar pequeno."
+            "value": "Que bom ter você de volta. Vamos aos poucos."
           }
         },
         "uk": {
@@ -17621,7 +17580,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quando você estiver pronto"
+            "value": "Quando você quiser"
           }
         },
         "uk": {
@@ -18478,7 +18437,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Você rende mais às %@s por volta de %@–%@."
+            "value": "Você rende mais em %@, por volta de %@–%@."
           }
         },
         "uk": {
@@ -18624,7 +18583,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seu cérebro não está quebrado. Você só perdeu seu "
+            "value": "Não há nada de errado com seu cérebro. Você só perdeu seu "
           }
         },
         "uk": {
@@ -18780,7 +18739,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seu foco guardou seu lugar"
+            "value": "Seu foco guardou um lugar para você"
           }
         },
         "uk": {
@@ -19508,7 +19467,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "focado hoje"
+            "value": "de foco hoje"
           }
         },
         "uk": {
@@ -19976,7 +19935,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "planejado"
+            "value": "planejadas"
           }
         },
         "uk": {

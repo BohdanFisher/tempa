@@ -38,7 +38,9 @@ private struct LegalSheet: View {
                     }
                 }
 
-                Text("Last updated: \(updated)")
+                // Legal documents stay English end to end — verbatim keeps this
+                // line out of the localization system with the body text.
+                Text(verbatim: "Last updated: \(updated)")
                     .font(.custom(T.fontBody, size: 12).weight(.medium))
                     .foregroundColor(T.textTer)
 
