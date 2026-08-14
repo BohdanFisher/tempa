@@ -63,6 +63,12 @@
             "state": "translated",
             "value": "\"%@\""
           }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"%@\""
+          }
         }
       },
       "shouldTranslate": false
@@ -352,6 +358,12 @@
             "state": "translated",
             "value": "%@ · %d min"
           }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %d min"
+          }
         }
       },
       "shouldTranslate": false
@@ -463,6 +475,12 @@
     "%lld": {
       "localizations": {
         "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "nb": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld"
@@ -1198,6 +1216,12 @@
             "state": "translated",
             "value": "%lld%%"
           }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld%%"
+          }
         }
       },
       "shouldTranslate": false
@@ -1413,6 +1437,12 @@
     "12:00": {
       "localizations": {
         "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "12:00"
+          }
+        },
+        "nb": {
           "stringUnit": {
             "state": "translated",
             "value": "12:00"
@@ -1637,6 +1667,12 @@
             "state": "translated",
             "value": "5:00"
           }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5:00"
+          }
         }
       },
       "shouldTranslate": false
@@ -1644,6 +1680,12 @@
     "9:00": {
       "localizations": {
         "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "9:00"
+          }
+        },
+        "nb": {
           "stringUnit": {
             "state": "translated",
             "value": "9:00"
@@ -1884,6 +1926,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "IA"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KI"
           }
         }
       },
@@ -4389,7 +4437,7 @@
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fikk ikke kontakt med AI-en — her er en enkel plan. Juster den gjerne."
+            "value": "Fikk ikke kontakt med KI-en — her er en enkel plan. Juster den gjerne."
           }
         },
         "nl": {
@@ -5634,6 +5682,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Profite du moment, ou touche + pour ajouter quelque chose."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nyt øyeblikket, eller trykk + for å legge til noe."
           }
         },
         "uk": {
@@ -7856,6 +7910,12 @@
             "value": "Dernière mise à jour : %@"
           }
         },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sist oppdatert: %@"
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -10071,6 +10131,12 @@
           }
         },
         "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "nb": {
           "stringUnit": {
             "state": "translated",
             "value": "OK"
@@ -13747,6 +13813,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ENSUITE · DANS %@"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DERETTER · OM %@"
           }
         },
         "uk": {
@@ -17794,6 +17866,12 @@
             "value": "Travail · Focus profond"
           }
         },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jobb · Dyp fokus"
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -18435,6 +18513,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tu es libre en ce moment"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du er ledig akkurat nå"
           }
         },
         "uk": {
