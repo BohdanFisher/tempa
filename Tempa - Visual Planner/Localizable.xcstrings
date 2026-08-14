@@ -1538,7 +1538,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "3 dagen gratis, daarna jaarlijks gefactureerd"
+            "value": "3 dagen gratis, daarna jaarlijks betalen"
           }
         },
         "pt": {
@@ -2846,7 +2846,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zachte duwtjes toestaan"
+            "value": "Zachte seintjes toestaan"
           }
         },
         "pt": {
@@ -3002,7 +3002,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verankert je dagbatterij"
+            "value": "Geeft je dagenergie houvast"
           }
         },
         "pt": {
@@ -3922,7 +3922,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je energiedip kalibreren"
+            "value": "Je energiedip bepalen"
           }
         },
         "pt": {
@@ -4704,7 +4704,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "DAGBATTERIJ"
+            "value": "DAGENERGIE"
           }
         },
         "pt": {
@@ -5017,7 +5017,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beslissen of je verder wilt"
+            "value": "Kijken of je verder wilt"
           }
         },
         "pt": {
@@ -5942,7 +5942,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vind mijn tempo"
+            "value": "Mijn tempo vinden"
           }
         },
         "pt": {
@@ -6098,7 +6098,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Focussessies met zachte terugkom-duwtjes"
+            "value": "Focussessies met zachte seintjes om terug te komen"
           }
         },
         "pt": {
@@ -6150,7 +6150,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Voor het eerst maak ik dingen af. Ik zie gewoon het kleine volgende stapje en ga."
+            "value": "Voor het eerst maak ik dingen af. Ik zie alleen het volgende kleine stapje en ga ervoor."
           }
         },
         "pt": {
@@ -6202,7 +6202,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gratis abonnement"
+            "value": "Gratis versie"
           }
         },
         "pt": {
@@ -6462,7 +6462,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zachte duwtjes"
+            "value": "Zachte seintjes"
           }
         },
         "pt": {
@@ -6514,7 +6514,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Even weggetrokken? Overkomt ons allemaal. Kom terug wanneer je wilt — je timer hield je plek vast."
+            "value": "Even afgeleid? Gebeurt ons allemaal. Kom terug wanneer je wilt — je timer heeft je plek bewaard."
           }
         },
         "pt": {
@@ -8584,7 +8584,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Markeer als klaar"
+            "value": "Als klaar markeren"
           }
         },
         "pt": {
@@ -8636,7 +8636,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Markeer als niet klaar"
+            "value": "Als niet klaar markeren"
           }
         },
         "pt": {
@@ -8792,7 +8792,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Middel"
+            "value": "Gemiddeld"
           }
         },
         "pt": {
@@ -8844,7 +8844,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Een dag gemist? Tempa zegt gewoon: welkom terug. We kiezen samen het volgende kleine ding."
+            "value": "Een dag gemist? Tempa zegt gewoon: welkom terug. We kiezen samen de volgende kleine stap."
           }
         },
         "pt": {
@@ -9000,7 +9000,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Meer gepland dan de dag nog heeft — wees lief voor jezelf, verplaats misschien iets naar morgen."
+            "value": "Je hebt meer gepland dan er vandaag nog past — wees mild voor jezelf. Misschien kan iets naar morgen."
           }
         },
         "pt": {
@@ -9520,7 +9520,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hier geen schuldreeksen."
+            "value": "Geen stress om reeksen."
           }
         },
         "pt": {
@@ -9572,7 +9572,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geen gezeur, gewoon een zacht zwaaien. Je sessie wacht rustig."
+            "value": "Geen gezeur, alleen een zacht seintje. Je sessie wacht rustig op je."
           }
         },
         "pt": {
@@ -9677,7 +9677,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geen haast, geen schuld — je focus houdt je plek vast tot je er klaar voor bent."
+            "value": "Geen haast, geen schuldgevoel — je plek blijft vrij tot jij er klaar voor bent."
           }
         },
         "pt": {
@@ -9729,7 +9729,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geen reeksen om te verliezen was voor mij de sleutel. Ik ben drie maanden bezig."
+            "value": "Geen reeksen die je kunt verliezen maakte voor mij het verschil. Ik gebruik Tempa nu drie maanden."
           }
         },
         "pt": {
@@ -10284,7 +10284,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eén diep focusblok"
+            "value": "Eén blok diepe focus"
           }
         },
         "pt": {
@@ -10388,7 +10388,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Een kleine overwinning om te beginnen"
+            "value": "Eén klein succesje om te beginnen"
           }
         },
         "pt": {
@@ -10440,7 +10440,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eén ding tegelijk, nooit een muur van taken"
+            "value": "Eén ding tegelijk, nooit een hele berg taken"
           }
         },
         "pt": {
@@ -10700,7 +10700,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Stoppen als de timer afgaat"
+            "value": "Pauzeren als de timer afloopt"
           }
         },
         "pt": {
@@ -10908,7 +10908,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kies alles wat klopt. We stemmen Tempa op jou af."
+            "value": "Kies alles wat herkenbaar voelt. We stemmen Tempa op jou af."
           }
         },
         "pt": {
@@ -10960,7 +10960,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zachte duwtjes-geluiden kiezen"
+            "value": "Geluiden voor zachte seintjes kiezen"
           }
         },
         "pt": {
@@ -12468,7 +12468,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je opstatijd instellen"
+            "value": "Je wektijd instellen"
           }
         },
         "pt": {
@@ -14229,7 +14229,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tik ✓ — wij zetten het in je dag"
+            "value": "Tik ✓ — we plannen het in je dag"
           }
         },
         "pt": {
@@ -14962,7 +14962,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "De ADHD-vriendelijke planner die beweegt op jouw "
+            "value": "De ADHD-vriendelijke planner die meegaat met jouw "
           }
         },
         "pt": {
@@ -15326,7 +15326,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tijdblindheid — uren verdwijnen"
+            "value": "Tijdblindheid — uren kwijt zijn"
           }
         },
         "pt": {
@@ -15690,7 +15690,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Te veel apps die niet bleven hangen"
+            "value": "Te veel apps die ik niet volhield"
           }
         },
         "pt": {
@@ -15846,7 +15846,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Probeer het. Typ iets wat je uitstelt."
+            "value": "Probeer maar. Typ iets dat je al een tijd uitstelt."
           }
         },
         "pt": {
@@ -16002,7 +16002,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ontgrendel AI-planning & opdeling"
+            "value": "Ontgrendel AI-planning en taakopdeling"
           }
         },
         "pt": {
@@ -16055,7 +16055,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ontgrendel heel Tempa 3 dagen gratis. Houd het voor minder dan een koffie per maand."
+            "value": "Ontgrendel heel Tempa 3 dagen gratis. Daarna kost het minder dan een koffie per maand."
           }
         },
         "pt": {
@@ -16367,7 +16367,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plannen met je stem, AI-agenda en ingebouwde focustimer — één taak tegelijk."
+            "value": "Plannen met je stem, AI-planning en ingebouwde focustimer — één taak tegelijk."
           }
         },
         "pt": {
@@ -16627,7 +16627,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Opstatijd"
+            "value": "Wektijd"
           }
         },
         "pt": {
@@ -16731,7 +16731,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wil je een zacht duwtje voor je volgende blok?"
+            "value": "Wil je een zacht seintje voor je volgende blok?"
           }
         },
         "pt": {
@@ -16783,7 +16783,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rustig warmlopen"
+            "value": "Rustig opwarmen"
           }
         },
         "pt": {
@@ -16887,7 +16887,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "We houden dat blok licht."
+            "value": "We houden dat blok rustig."
           }
         },
         "pt": {
@@ -17199,7 +17199,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wat op je toestel blijft, wat naar AI gaat"
+            "value": "Wat op je apparaat blijft en wat naar AI gaat"
           }
         },
         "pt": {
@@ -17407,7 +17407,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wanneer raakt je energie op?"
+            "value": "Wanneer is je energie meestal op?"
           }
         },
         "pt": {
@@ -17667,7 +17667,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ontspannen, zonder schuldgevoel"
+            "value": "Rustig afsluiten, zonder schuldgevoel"
           }
         },
         "pt": {
@@ -18072,7 +18072,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Jaarabonnement start — annuleer op elk moment ervoor"
+            "value": "Jaarabonnement start — tot die tijd kun je altijd opzeggen"
           }
         },
         "pt": {
@@ -18368,7 +18368,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je liep even weg, en dat is oké. Je tempo stroomt nog wanneer jij wilt."
+            "value": "Je was even weg, en dat is oké. Je tempo wacht op je wanneer jij wilt."
           }
         },
         "pt": {
@@ -18618,7 +18618,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je brein is niet kapot. Je bent alleen je "
+            "value": "Je brein is niet kapot. Je bent alleen even je gevoel voor "
           }
         },
         "pt": {
@@ -18774,7 +18774,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je focus heeft een plekje voor je vrijgehouden"
+            "value": "Je focus hield een plekje voor je vrij"
           }
         },
         "pt": {
@@ -18982,7 +18982,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je tempo loopt nog"
+            "value": "Je tempo is er nog"
           }
         },
         "pt": {
@@ -19294,7 +19294,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "bijv. het huis opruimen"
+            "value": "bijv. het appartement schoonmaken"
           }
         },
         "pt": {
@@ -19554,7 +19554,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "doorzetratio"
+            "value": "afmaakpercentage"
           }
         },
         "pt": {
