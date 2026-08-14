@@ -186,7 +186,7 @@ struct NowNextView: View {
                         .frame(width: 56, height: 56)
 
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(remaining > 60 ? "\(remaining/60) hour\(remaining/60 > 1 ? "s" : "") left" : "\(remaining) min left")
+                            Text(remaining > 60 ? "\(remaining/60) h left" : "\(remaining) min left")
                                 .font(.custom(T.fontHeader, size: 13).weight(.bold))
                                 .foregroundColor(cc.ink.opacity(0.7))
                             Text("Ends at \(endTime.formatted(.dateTime.hour().minute()))")

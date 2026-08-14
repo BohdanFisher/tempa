@@ -110,7 +110,11 @@ struct DayPlanReviewSheet: View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("\(rows.count) TASK\(rows.count == 1 ? "" : "S") · TAP TO TWEAK")
+                    // Two whole keys instead of an English "S" suffix: pasting a
+                    // Latin plural into every language produced "5 AUFGABES".
+                    Text(rows.count == 1
+                         ? "1 TASK · TAP TO TWEAK"
+                         : "\(rows.count) TASKS · TAP TO TWEAK")
                         .font(.custom(T.fontHeader, size: 12).weight(.heavy))
                         .tracking(1.2)
                         .foregroundColor(T.textSec)
@@ -223,7 +227,7 @@ struct DayPlanReviewSheet: View {
     private var addBar: some View {
         VStack(spacing: 0) {
             if totalInstances > 0 {
-                TempaButton(label: "Add \(totalInstances) task\(totalInstances == 1 ? "" : "s")",
+                TempaButton(label: totalInstances == 1 ? "Add 1 task" : "Add \(totalInstances) tasks",
                             variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
                     addAll()
                 }

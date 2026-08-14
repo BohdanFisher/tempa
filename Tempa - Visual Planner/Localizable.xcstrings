@@ -321,7 +321,26 @@
       }
     },
     "%@ · %d min": {
-      "localizations": {},
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %d Min."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %d min"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %d min"
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "%@+ reviews": {
@@ -432,54 +451,90 @@
       "localizations": {},
       "shouldTranslate": false
     },
-    "%lld TASK%@ · TAP TO TWEAK": {
+    "%lld TASKS · TAP TO TWEAK": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld AUFGABE%@ · ZUM ANPASSEN TIPPEN"
+            "value": "%lld AUFGABEN · ZUM ANPASSEN TIPPEN"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld TAREA%@ · TOCA PARA AJUSTAR"
+            "value": "%lld TAREAS · TOCA PARA AJUSTAR"
           }
         },
         "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld TEHTÄVÄÄ%@ · NAPAUTA MUOKATAKSESI"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld TEHTÄVÄ · MUOKKAA NAPAUTTAMALLA"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld TEHTÄVÄÄ · MUOKKAA NAPAUTTAMALLA"
+                }
+              }
+            }
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld TÂCHE%@ · TOUCHE POUR AJUSTER"
+            "value": "%lld TÂCHES · TOUCHE POUR AJUSTER"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld OPPGAVE%@ · TRYKK FOR Å JUSTERE"
+            "value": "%lld OPPGAVER · TRYKK FOR Å JUSTERE"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld TAAK%@ · TIK OM AAN TE PASSEN"
+            "value": "%lld TAKEN · TIK OM AAN TE PASSEN"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld TAREFA%@ · TOQUE PARA AJUSTAR"
+            "value": "%lld TAREFAS · TOQUE PARA AJUSTAR"
           }
         },
         "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ЗАВДАНЬ: %lld%@ · ТОРКНИСЬ, ЩОБ ЗМІНИТИ"
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ЗАВДАННЯ · ТОРКНИСЬ, ЩОБ ЗМІНИТИ"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ЗАВДАНЬ · ТОРКНИСЬ, ЩОБ ЗМІНИТИ"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ЗАВДАННЯ · ТОРКНИСЬ, ЩОБ ЗМІНИТИ"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ЗАВДАНЬ · ТОРКНИСЬ, ЩОБ ЗМІНИТИ"
+                }
+              }
+            }
           }
         }
       }
@@ -487,51 +542,159 @@
     "%lld days": {
       "localizations": {
         "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Tage"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Tag"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Tage"
+                }
+              }
+            }
           }
         },
         "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld días"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld día"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld días"
+                }
+              }
+            }
           }
         },
         "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld päivää"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld päivä"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld päivää"
+                }
+              }
+            }
           }
         },
         "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld jours"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld jour"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld jours"
+                }
+              }
+            }
           }
         },
         "nb": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld dager"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld dag"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld dager"
+                }
+              }
+            }
           }
         },
         "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld dagen"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld dag"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld dagen"
+                }
+              }
+            }
           }
         },
         "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld dias"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld dia"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld dias"
+                }
+              }
+            }
           }
         },
         "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld днів"
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld дні"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld днів"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld день"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld днів"
+                }
+              }
+            }
           }
         }
       }
@@ -640,64 +803,12 @@
         }
       }
     },
-    "%lld hour%@ left": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Noch %lld Std%@"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quedan %lld hora%@"
-          }
-        },
-        "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld tuntia%@ jäljellä"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld heure%@ restantes"
-          }
-        },
-        "nb": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld time%@ igjen"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nog %lld uur%@"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Faltam %lld hora%@"
-          }
-        },
-        "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Залишилося %lld год%@"
-          }
-        }
-      }
-    },
     "%lld min": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld Min"
+            "value": "%lld Min."
           }
         },
         "es": {
@@ -853,7 +964,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld kleine Schritte · %lld Min gesamt"
+            "value": "%lld kleine Schritte · %lld Min. gesamt"
           }
         },
         "es": {
@@ -903,51 +1014,159 @@
     "%lld times": {
       "localizations": {
         "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Mal"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Mal"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Mal"
+                }
+              }
+            }
           }
         },
         "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld veces"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld vez"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld veces"
+                }
+              }
+            }
           }
         },
         "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld kertaa"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld kerta"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld kertaa"
+                }
+              }
+            }
           }
         },
         "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld fois"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld fois"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld fois"
+                }
+              }
+            }
           }
         },
         "nb": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld ganger"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld gang"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ganger"
+                }
+              }
+            }
           }
         },
         "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld keer"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld keer"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld keer"
+                }
+              }
+            }
           }
         },
         "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld vezes"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld vez"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld vezes"
+                }
+              }
+            }
           }
         },
         "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld разів"
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld рази"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld разів"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld раз"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld разів"
+                }
+              }
+            }
           }
         }
       }
@@ -1013,7 +1232,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "+ 1 Min"
+            "value": "+ 1 Min."
           }
         },
         "es": {
@@ -1108,6 +1327,58 @@
           "stringUnit": {
             "state": "translated",
             "value": ". Підведися, коли захочеш."
+          }
+        }
+      }
+    },
+    "1 TASK · TAP TO TWEAK": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 AUFGABE · ZUM ANPASSEN TIPPEN"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 TAREA · TOCA PARA AJUSTAR"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 TEHTÄVÄ · MUOKKAA NAPAUTTAMALLA"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 TÂCHE · TOUCHE POUR AJUSTER"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 OPPGAVE · TRYKK FOR Å JUSTERE"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 TAAK · TIK OM AAN TE PASSEN"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 TAREFA · TOQUE PARA AJUSTAR"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 ЗАВДАННЯ · ТОРКНИСЬ, ЩОБ ЗМІНИТИ"
           }
         }
       }
@@ -1542,7 +1813,26 @@
       }
     },
     "AI": {
-      "localizations": {},
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KI"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IA"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TEKOÄLY"
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "AI requests this month": {
@@ -1808,103 +2098,299 @@
     "Add %lld steps": {
       "localizations": {
         "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld Schritte hinzufügen"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Schritt hinzufügen"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Schritte hinzufügen"
+                }
+              }
+            }
           }
         },
         "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Añadir %lld pasos"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Añadir %lld paso"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Añadir %lld pasos"
+                }
+              }
+            }
           }
         },
         "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lisää %lld askelta"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Lisää %lld askel"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Lisää %lld askelta"
+                }
+              }
+            }
           }
         },
         "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajouter %lld étapes"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Ajouter %lld étape"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Ajouter %lld étapes"
+                }
+              }
+            }
           }
         },
         "nb": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Legg til %lld steg"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Legg til %lld steg"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Legg til %lld steg"
+                }
+              }
+            }
           }
         },
         "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld stappen toevoegen"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld stap toevoegen"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld stappen toevoegen"
+                }
+              }
+            }
           }
         },
         "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adicionar %lld passos"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Adicionar %lld passo"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Adicionar %lld passos"
+                }
+              }
+            }
           }
         },
         "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Додати %lld кроків"
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Додати %lld кроки"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Додати %lld кроків"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Додати %lld крок"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Додати %lld кроків"
+                }
+              }
+            }
           }
         }
       }
     },
-    "Add %lld task%@": {
+    "Add %lld tasks": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld Aufgabe%@ hinzufügen"
+            "value": "%lld Aufgaben hinzufügen"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Añadir %lld tarea%@"
+            "value": "Añadir %lld tareas"
           }
         },
         "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lisää %lld tehtävää"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Lisää %lld tehtävä"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Lisää %lld tehtävää"
+                }
+              }
+            }
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ajouter %lld tâche%@"
+            "value": "Ajouter %lld tâches"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Legg til %lld oppgave%@"
+            "value": "Legg til %lld oppgaver"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld taak%@ toevoegen"
+            "value": "%lld taken toevoegen"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Adicionar %lld tarefa%@"
+            "value": "Adicionar %lld tarefas"
+          }
+        },
+        "uk": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Додати %lld завдання"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Додати %lld завдань"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Додати %lld завдання"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Додати %lld завдань"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Add 1 task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Aufgabe hinzufügen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir 1 tarea"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisää 1 tehtävä"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter 1 tâche"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legg til 1 oppgave"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 taak toevoegen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar 1 tarefa"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Додати %lld завдання%@"
+            "value": "Додати 1 завдання"
           }
         }
       }
@@ -2758,9 +3244,21 @@
           }
         },
         "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paras putki: %lld päivää"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Paras putki: %lld päivä"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Paras putki: %lld päivää"
+                }
+              }
+            }
           }
         },
         "fr": {
@@ -2788,9 +3286,33 @@
           }
         },
         "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Найдовша серія: %lld дн."
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Найдовша серія: %lld дні"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Найдовша серія: %lld днів"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Найдовша серія: %lld день"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Найдовша серія: %lld днів"
+                }
+              }
+            }
           }
         }
       }
@@ -5036,6 +5558,24 @@
     },
     "Enjoy the moment, or tap + to add something.": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genieße den Moment oder tippe auf +, um etwas hinzuzufügen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disfruta el momento, o toca + para añadir algo."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nauti hetkestä tai napauta + lisätäksesi jotain."
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -5270,7 +5810,7 @@
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Löydä tempoi"
+            "value": "Löydä temposi"
           }
         },
         "fr": {
@@ -7232,6 +7772,24 @@
     },
     "Last updated: %@": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuletzt aktualisiert: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última actualización: %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Viimeksi päivitetty: %@"
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -9427,7 +9985,26 @@
       }
     },
     "OK": {
-      "localizations": {},
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "Off": {
@@ -9545,7 +10122,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un bloque de concentración profunda"
+            "value": "Un bloque de enfoque profundo"
           }
         },
         "fi": {
@@ -13076,6 +13653,24 @@
     },
     "THEN · IN %@": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DANN · IN %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LUEGO · EN %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SITTEN · %@"
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -17097,6 +17692,24 @@
     },
     "Work · Deep focus": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arbeit · Tiefer Fokus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabajo · Enfoque profundo"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Työ · Syvä keskittyminen"
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -17433,9 +18046,21 @@
           }
         },
         "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sait valmiiksi %lld asiaa"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Sait valmiiksi %lld asian"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Sait valmiiksi %lld asiaa"
+                }
+              }
+            }
           }
         },
         "fr": {
@@ -17463,9 +18088,33 @@
           }
         },
         "uk": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Закрито завдань: %lld"
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Закрито %lld завдання"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Закрито %lld завдань"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Закрито %lld завдання"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Закрито %lld завдань"
+                }
+              }
+            }
           }
         }
       }
@@ -17680,6 +18329,24 @@
     },
     "You're free right now": {
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du hast gerade frei"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estás libre ahora mismo"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olet vapaana juuri nyt"
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
