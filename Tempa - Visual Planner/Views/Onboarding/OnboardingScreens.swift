@@ -1244,6 +1244,9 @@ struct Onb8NotifsView: View {
                 #if os(iOS)
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 #endif
+                // No permission was asked → no nudges can arrive; the Settings
+                // toggle starts off and turning it on will ask properly.
+                UserDefaults.standard.set(false, forKey: "nudgesEnabled")
                 state.next()
             } label: {
                 Text("Maybe later")
@@ -1259,6 +1262,9 @@ struct Onb8NotifsView: View {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             Task { @MainActor in
                 state.notificationsGranted = granted
+                // Keep the Settings toggle honest: nudges are on only if iOS
+                // actually lets us deliver them.
+                UserDefaults.standard.set(granted, forKey: "nudgesEnabled")
                 state.next()
             }
         }

@@ -1171,6 +1171,58 @@
     "9:00": {
       "shouldTranslate": false
     },
+    "A focus session is already running": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Fokus-Session läuft bereits"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya hay una sesión de enfoque en curso"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keskittymissessio on jo käynnissä"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une session de concentration est déjà en cours"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En fokusøkt pågår allerede"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Er loopt al een focussessie"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma sessão de foco já está em andamento"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фокус-сесія вже триває"
+          }
+        }
+      }
+    },
     "A promise": {
       "localizations": {
         "de": {
@@ -3100,6 +3152,58 @@
         }
       }
     },
+    "Check your connection and try again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prüfe deine Verbindung und versuch es noch mal."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprueba tu conexión e inténtalo de nuevo."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarkista yhteys ja yritä uudelleen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifie ta connexion et réessaie."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sjekk tilkoblingen og prøv igjen."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controleer je verbinding en probeer het opnieuw."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verifique sua conexão e tente de novo."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перевір з'єднання і спробуй ще раз."
+          }
+        }
+      }
+    },
     "Close and reopen Tempa to switch the language.": {
       "extractionState": "stale",
       "localizations": {
@@ -3357,6 +3461,110 @@
           "stringUnit": {
             "state": "translated",
             "value": "Заминка і розтяжка"
+          }
+        }
+      }
+    },
+    "Couldn't reach the AI — here's a generic plan. Edit as needed.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KI gerade nicht erreichbar — hier ist ein einfacher Plan. Pass ihn gern an."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo conectar con la IA — aquí tienes un plan genérico. Ajústalo."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tekoälyyn ei saatu yhteyttä — tässä yleinen suunnitelma. Muokkaa vapaasti."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IA injoignable pour l'instant — voici un plan générique. Adapte-le."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fikk ikke kontakt med AI-en — her er en enkel plan. Juster den gjerne."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kon de AI niet bereiken — hier is een algemeen plan. Pas het gerust aan."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível acessar a IA — aqui está um plano genérico. Ajuste como quiser."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI зараз недоступний — ось універсальний план. Підправ під себе."
+          }
+        }
+      }
+    },
+    "Couldn't reach the App Store": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store ist nicht erreichbar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo conectar con el App Store"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Storeen ei saatu yhteyttä"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de joindre l'App Store"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fikk ikke kontakt med App Store"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kan de App Store niet bereiken"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível acessar a App Store"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не вдалося з'єднатися з App Store"
           }
         }
       }
@@ -6278,6 +6486,58 @@
         }
       }
     },
+    "Keep my session": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Session behalten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantener mi sesión"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jatka nykyistä sessiota"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garder ma session"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behold økten min"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mijn sessie behouden"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manter minha sessão"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Залишити мою сесію"
+          }
+        }
+      }
+    },
     "LAST 4 WEEKS": {
       "localizations": {
         "de": {
@@ -8462,6 +8722,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Нічого не заплановано"
+          }
+        }
+      }
+    },
+    "Nothing to restore — no purchases found on this Apple ID.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts wiederherzustellen — keine Käufe mit dieser Apple-ID gefunden."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada que restaurar — no hay compras en este Apple ID."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ei palautettavaa — tältä Apple ID:ltä ei löytynyt ostoksia."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rien à restaurer — aucun achat trouvé sur cet identifiant Apple."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ingenting å gjenopprette — fant ingen kjøp på denne Apple-ID-en."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niets te herstellen — geen aankopen gevonden voor deze Apple ID."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada para restaurar — nenhuma compra encontrada neste Apple ID."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нема чого відновлювати — покупок на цьому Apple ID не знайдено."
           }
         }
       }
@@ -11693,6 +12005,58 @@
         }
       }
     },
+    "Switch to the new task": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zur neuen Aufgabe wechseln"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar a la nueva tarea"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaihda uuteen tehtävään"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer à la nouvelle tâche"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bytt til den nye oppgaven"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naar de nieuwe taak wisselen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mudar para a nova tarefa"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перейти до нової задачі"
+          }
+        }
+      }
+    },
     "System": {
       "localizations": {
         "de": {
@@ -13788,7 +14152,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nochmal versuchen"
+            "value": "Noch mal versuchen"
           }
         },
         "es": {
@@ -13824,7 +14188,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tentar de novo"
+            "value": "Tentar novamente"
           }
         },
         "uk": {

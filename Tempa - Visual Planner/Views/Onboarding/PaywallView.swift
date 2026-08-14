@@ -187,6 +187,10 @@ struct PaywallView: View {
                     )
                     .staggerIn(i, baseDelay: 0.1)
                 }
+            } else if subs.products.isEmpty {
+                // Store unreachable in Release (simulation is DEBUG-only): an
+                // honest state with a retry — never a silent dead end.
+                storeUnreachableCard
             } else {
                 ForEach(Array(subs.products.filter { $0.id != "tempa_weekly" }.enumerated()), id: \.element.id) { i, product in
                     let yearly = product.id == "tempa_yearly"
@@ -196,12 +200,37 @@ struct PaywallView: View {
                         isYearly: yearly,
                         price: product.displayPrice,
                         sub: yearly ? (monthlyEquivalent(product).map { String(localized: "\($0)/mo", bundle: .appLanguage) } ?? String(localized: "per year", bundle: .appLanguage)) : String(localized: "per \(periodLabel(product))", bundle: .appLanguage),
-                        detail: yearly ? String(localized: "3 days free, then billed yearly", bundle: .appLanguage) : nil
+                        detail: yearly && (subs.hasIntroOfferEligibility["tempa_yearly"] ?? false)
+                            ? String(localized: "3 days free, then billed yearly", bundle: .appLanguage) : nil
                     )
                     .staggerIn(i, baseDelay: 0.1)
                 }
             }
         }
+    }
+
+    private var storeUnreachableCard: some View {
+        VStack(spacing: 10) {
+            Text("Couldn't reach the App Store")
+                .font(.custom("Nunito-ExtraBold", size: 15).weight(.heavy))
+                .foregroundColor(.white)
+            Text("Check your connection and try again.")
+                .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                .foregroundColor(.white.opacity(0.8))
+            Button {
+                Task { await subs.ensureProductsLoaded() }
+            } label: {
+                Text("Try again")
+                    .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
+                    .foregroundColor(coral)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 9)
+                    .background(Capsule().fill(.white))
+            }
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity)
+        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.white.opacity(0.12)))
     }
 
     private func planCard(id: String, title: String, isYearly: Bool, price: String, sub: String, detail: String?) -> some View {
@@ -325,8 +354,19 @@ struct PaywallView: View {
 
     private func restore() {
         Task {
-            try? await subs.restorePurchases()
-            if subs.isPro { onPurchaseComplete(); dismiss() }
+            do {
+                try await subs.restorePurchases()
+                if subs.isPro {
+                    onPurchaseComplete()
+                    dismiss()
+                } else {
+                    errorMessage = String(localized: "Nothing to restore — no purchases found on this Apple ID.", bundle: .appLanguage)
+                    showError = true
+                }
+            } catch {
+                errorMessage = error.localizedDescription
+                showError = true
+            }
         }
     }
 
@@ -381,10 +421,12 @@ struct PaywallView: View {
         }
 
         guard let product = selectedProduct else {
-            // Don't die silently — say why no sheet appeared.
+            // Don't die silently — say why no sheet appeared, and kick another
+            // load attempt so "try again" can actually succeed.
             errorMessage = String(localized: "The store isn't reachable yet. Give it a second and try again.", bundle: .appLanguage)
             showError = true
             resetPurchaseUI()
+            Task { await subs.ensureProductsLoaded() }
             return
         }
         do {

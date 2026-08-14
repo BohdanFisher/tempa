@@ -320,7 +320,9 @@ struct AddTaskAskAIView: View {
 
         Task {
             do {
-                let apiMessages = messages.map { msg -> (role: String, content: String) in
+                // The API rejects a conversation that OPENS with an assistant
+                // turn — our greeting is UI-only, so drop leading AI messages.
+                let apiMessages = messages.drop(while: { $0.from == .ai }).map { msg -> (role: String, content: String) in
                     (role: msg.from == .me ? "user" : "assistant", content: msg.text)
                 }
                 let response = try await apiClient.chat(messages: apiMessages)

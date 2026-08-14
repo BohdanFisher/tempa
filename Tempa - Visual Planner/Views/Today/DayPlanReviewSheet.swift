@@ -325,7 +325,11 @@ struct DayPlanReviewSheet: View {
             guard !trimmed.isEmpty else { continue }
             // Expand a recurring row into one TaskBlock per (day × daily time).
             let groupId = UUID()
-            let times = row.dailyTimes.isEmpty ? [cal.dateComponents([.hour, .minute], from: row.start)] : row.dailyTimes
+            // The DatePicker edits row.start — for a single task the hour the
+            // user picked wins over the AI's original time components.
+            let times = row.isRecurring && !row.dailyTimes.isEmpty
+                ? row.dailyTimes
+                : [cal.dateComponents([.hour, .minute], from: row.start)]
             let baseDay = cal.startOfDay(for: row.start)
             for d in 0..<max(row.repeatDays, 1) {
                 guard let day = cal.date(byAdding: .day, value: d, to: baseDay) else { continue }

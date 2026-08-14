@@ -30,6 +30,9 @@ struct FocusView: View {
     @State private var isActive = false
     @State private var sessionCategory: String?   // set when started from a task
     @State private var lastFocusReqID: UUID?
+    @State private var pendingFocusRequest: FocusRequest?
+    @State private var showSwitchConfirm = false
+    @State private var lastHeartbeat = Date()
     @State private var sessionStart: Date?
     @State private var elapsed: TimeInterval = 0
     @State private var isPaused = false
@@ -184,15 +187,31 @@ struct FocusView: View {
         .onChange(of: router.focusRequest) { _, req in
             guard let req, req.id != lastFocusReqID else { return }
             lastFocusReqID = req.id
-            sessionCategory = req.category
-            selectedMinutes = max(5, min(60, req.minutes))
-            startSession()
+            if isActive {
+                // A session is running — never throw it away without asking.
+                pendingFocusRequest = req
+                showSwitchConfirm = true
+            } else {
+                apply(req)
+            }
+        }
+        .confirmationDialog("A focus session is already running", isPresented: $showSwitchConfirm, titleVisibility: .visible) {
+            Button(String(localized: "Switch to the new task", bundle: .appLanguage)) {
+                if let req = pendingFocusRequest { apply(req) }
+                pendingFocusRequest = nil
+            }
+            Button(String(localized: "Keep my session", bundle: .appLanguage), role: .cancel) {
+                pendingFocusRequest = nil
+            }
         }
         .onChange(of: scenePhase) { _, phase in
             handleScenePhase(phase)
         }
         .onAppear {
             restoreSessionIfNeeded()
+            // The switch dialog may have been requested while this tab was
+            // off-screen and dropped — raise it again now that we're visible.
+            if pendingFocusRequest != nil { showSwitchConfirm = true }
         }
     }
 
@@ -507,6 +526,18 @@ struct FocusView: View {
 
     // MARK: - Session Logic
 
+    private func apply(_ req: FocusRequest) {
+        // Switching mid-session must not eat the focus already done —
+        // credit it the same way a finished dial would.
+        if isActive {
+            let earned = Int32(min(elapsed, totalSec) / 60)
+            if earned > 0 { saveFocusData(minutes: earned) }
+        }
+        sessionCategory = req.category
+        selectedMinutes = max(5, min(60, req.minutes))
+        startSession()
+    }
+
     private func startSession() {
         #if os(iOS)
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -527,7 +558,10 @@ struct FocusView: View {
     private func restoreSessionIfNeeded() {
         guard !isActive, var snap = FocusSessionStore.load() else { return }
 
-        if !snap.isPaused, let left = snap.backgroundedAt,
+        // backgroundedAt covers a clean exit; the savedAt heartbeat covers a
+        // crash/reboot where the scene handler never ran — either way a long
+        // absence comes back paused, not counted as focus.
+        if !snap.isPaused, let left = snap.backgroundedAt ?? snap.savedAt,
            Date().timeIntervalSince(left) > FocusNudge.delay {
             snap.isPaused = true
             snap.pauseStart = left
@@ -560,7 +594,8 @@ struct FocusView: View {
             isPaused: isPaused,
             pauseStart: pauseStart,
             category: sessionCategory,
-            backgroundedAt: leftAt
+            backgroundedAt: leftAt,
+            savedAt: Date()
         ))
     }
 
@@ -676,6 +711,11 @@ struct FocusView: View {
         // elapsed until the scene handler decides whether the absence was a pause.
         guard isActive, !isPaused, lastLeft == nil, let start = sessionStart else { return }
         elapsed = max(0, Date().timeIntervalSince(start) - pauseAccum)
+        // Refresh the crash-recovery heartbeat about twice a minute.
+        if Date().timeIntervalSince(lastHeartbeat) >= 30 {
+            lastHeartbeat = Date()
+            persistSession()
+        }
         if elapsed >= totalSec { completeSession() }
     }
 

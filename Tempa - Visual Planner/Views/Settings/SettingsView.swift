@@ -49,10 +49,15 @@ struct ProfileView: View {
     @AppStorage("themePreference") private var theme: ThemePreference = .system
     @AppStorage("appLanguage") private var appLanguage = "system"
     @AppStorage("nudgesEnabled") private var nudges = true
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         ZStack {
             T.bg.ignoresSafeArea()
+                .onAppear { refreshNudgeTruth() }
+                .onChange(of: scenePhase) { _, p in
+                    if p == .active { refreshNudgeTruth() }
+                }
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
@@ -199,16 +204,43 @@ struct ProfileView: View {
     }
 
     private func setNudges(_ on: Bool) {
-        nudges = on
         #if os(iOS)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
         #endif
-        if on {
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in
-                Task { @MainActor in TaskNotifications.rescheduleAll(context: viewContext) }
-            }
-        } else {
+        nudges = on   // optimistic — corrected below only if iOS says no
+        guard on else {
             TaskNotifications.rescheduleAll(context: viewContext)   // clears all pending reminders
+            return
+        }
+        UNUserNotificationCenter.current().getNotificationSettings { s in
+            Task { @MainActor in
+                if s.authorizationStatus == .denied {
+                    // iOS owns this decision now — the only way back on is the
+                    // system Settings page, so take them there.
+                    if let url = URL(string: UIApplication.openNotificationSettingsURLString) {
+                        await UIApplication.shared.open(url)
+                    }
+                    nudges = false
+                } else {
+                    let granted = (try? await UNUserNotificationCenter.current()
+                        .requestAuthorization(options: [.alert, .sound])) ?? false
+                    nudges = granted
+                    TaskNotifications.rescheduleAll(context: viewContext)
+                }
+            }
+        }
+    }
+
+    /// The toggle must reflect reality: if notifications were denied in iOS
+    /// Settings, showing it ON would be a lie — nothing can arrive.
+    private func refreshNudgeTruth() {
+        UNUserNotificationCenter.current().getNotificationSettings { s in
+            Task { @MainActor in
+                if s.authorizationStatus == .denied && nudges {
+                    nudges = false
+                    TaskNotifications.rescheduleAll(context: viewContext)
+                }
+            }
         }
     }
 

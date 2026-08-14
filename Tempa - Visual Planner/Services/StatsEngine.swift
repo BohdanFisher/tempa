@@ -85,15 +85,15 @@ enum StatsEngine {
                                            from as NSDate, to as NSDate)
         let planned = (try? context.fetch(plannedReq)) ?? []
 
-        let doneReq = NSFetchRequest<TaskBlock>(entityName: "TaskBlock")
-        doneReq.predicate = NSPredicate(format: "completedAt >= %@ AND completedAt < %@",
-                                        from as NSDate, to as NSDate)
-        let done = (try? context.fetch(doneReq)) ?? []
+        // One cohort everywhere: completions among the period's own plan.
+        // Mixing a completedAt window with a startTime window let the tiles
+        // and the chart disagree (and follow-through exceed 100%).
+        let done = planned.filter(\.isCompleted)
 
         var perDay: [Date: Int] = [:]
         for t in done {
-            guard let c = t.completedAt else { continue }
-            perDay[cal.startOfDay(for: c), default: 0] += 1
+            guard let s = t.startTime else { continue }
+            perDay[cal.startOfDay(for: s), default: 0] += 1
         }
         var perDayPlanned: [Date: Int] = [:]
         for t in planned {

@@ -13,6 +13,7 @@ struct AddTaskSheet: View {
     @State private var selectedPriority = 0   // 0 none · 1 low · 2 medium · 3 high
     @State private var breakdownSteps: [MicroStepData] = []
     @State private var isThinking = false
+    @State private var usedFallbackPlan = false
     @State private var showVoice = false
     @State private var showAskAI = false
     @State private var dumpText = ""
@@ -51,6 +52,7 @@ struct AddTaskSheet: View {
                 .scrollDismissesKeyboard(.immediately)
 
                 if !breakdownSteps.isEmpty {
+                    if usedFallbackPlan { offlinePlanNote }
                     footerActions
                 }
             }
@@ -421,8 +423,11 @@ struct AddTaskSheet: View {
             let result: TaskBreakdown
             do {
                 result = try await apiClient.breakDown(task: raw)
+                usedFallbackPlan = false
             } catch {
+                // Canned plan must never masquerade as an AI answer.
                 result = FallbackBreakdown.generate(for: raw)
+                usedFallbackPlan = true
             }
 
             // Set the start time from what the user said — an exact time/day,
@@ -491,6 +496,19 @@ struct AddTaskSheet: View {
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         #endif
         dismiss()
+    }
+
+    private var offlinePlanNote: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "wifi.slash")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(T.textSec)
+            Text("Couldn't reach the AI — here's a generic plan. Edit as needed.")
+                .font(.custom(T.fontBody, size: 12).weight(.medium))
+                .foregroundColor(T.textSec)
+        }
+        .padding(.horizontal, 22)
+        .padding(.top, 10)
     }
 
     private static func nextRoundedQuarter() -> Date {

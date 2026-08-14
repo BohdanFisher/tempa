@@ -13,6 +13,9 @@ struct FocusSessionSnapshot: Codable {
     /// When the user left the app; nil while in the foreground. Used to decide
     /// whether the absence stays counted (short hop) or becomes pause time.
     var backgroundedAt: Date?
+    /// Heartbeat — refreshed while the session runs, so after a crash or reboot
+    /// (where no scene handler got to run) we still know when it was last alive.
+    var savedAt: Date?
 }
 
 enum FocusSessionStore {

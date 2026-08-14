@@ -104,12 +104,21 @@ struct QuickTimeSheet: View {
         let cal = Calendar.current
         let now = Date()
         let inHour = now.addingTimeInterval(3600)
-        let tonight = cal.date(bySettingHour: 18, minute: 0, second: 0, of: now) ?? now
         let tomorrowBase = cal.date(byAdding: .day, value: 1, to: now) ?? now
         let tomorrow9 = cal.date(bySettingHour: 9, minute: 0, second: 0, of: tomorrowBase) ?? now
         let t = { (d: Date) in d.formatted(date: .omitted, time: .shortened) }
+        // Once 18:00 is basically here, "Tonight" would schedule into the past —
+        // slide that chip to tomorrow evening instead.
+        let sixToday = cal.date(bySettingHour: 18, minute: 0, second: 0, of: now) ?? now
+        let evening: (String, Date)
+        if now < sixToday.addingTimeInterval(-15 * 60) {
+            evening = (String(localized: "Tonight \(t(sixToday))", bundle: .appLanguage), sixToday)
+        } else {
+            let tomorrow18 = cal.date(bySettingHour: 18, minute: 0, second: 0, of: tomorrowBase) ?? now
+            evening = (String(localized: "Tomorrow \(t(tomorrow18))", bundle: .appLanguage), tomorrow18)
+        }
         return [(String(localized: "In 1 hour", bundle: .appLanguage), inHour),
-                (String(localized: "Tonight \(t(tonight))", bundle: .appLanguage), tonight),
+                evening,
                 (String(localized: "Tomorrow \(t(tomorrow9))", bundle: .appLanguage), tomorrow9)]
     }
 

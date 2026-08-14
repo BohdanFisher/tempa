@@ -10,6 +10,8 @@ struct TodayView: View {
     @State private var router = AppRouter.shared
     @State private var showingAddTask = false
     @State private var now = Date()
+    @State private var dayStart = Calendar.current.startOfDay(for: Date())
+    @Environment(\.scenePhase) private var scenePhase
     @State private var breatheScale: CGFloat = 1.0
     @State private var showCompleted = false
     @AppStorage("todayGrouping") private var grouping: TodayGrouping = .none
@@ -18,14 +20,25 @@ struct TodayView: View {
     private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 
     init() {
-        let cal = Calendar.current
-        let start = cal.startOfDay(for: Date())
-        let end = cal.date(byAdding: .day, value: 1, to: start)!
         _tasks = FetchRequest(
             sortDescriptors: [SortDescriptor(\TaskBlock.startTime, order: .forward)],
-            predicate: NSPredicate(format: "startTime >= %@ AND startTime < %@", start as NSDate, end as NSDate),
+            predicate: Self.dayPredicate(from: Calendar.current.startOfDay(for: Date())),
             animation: .default
         )
+    }
+
+    private static func dayPredicate(from start: Date) -> NSPredicate {
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
+        return NSPredicate(format: "startTime >= %@ AND startTime < %@", start as NSDate, end as NSDate)
+    }
+
+    /// The fetch window is baked at init — roll it forward once a new day
+    /// starts, or the screen keeps living in yesterday after midnight.
+    private func refreshDayWindowIfNeeded() {
+        let today = Calendar.current.startOfDay(for: now)
+        guard today != dayStart else { return }
+        dayStart = today
+        tasks.nsPredicate = Self.dayPredicate(from: today)
     }
 
     private var completedCount: Int { tasks.filter(\.isCompleted).count }
@@ -67,7 +80,16 @@ struct TodayView: View {
             fab
         }
         .confettiHost()
-        .onReceive(timer) { _ in now = Date() }
+        .onReceive(timer) { _ in
+            now = Date()
+            refreshDayWindowIfNeeded()
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active {
+                now = Date()
+                refreshDayWindowIfNeeded()
+            }
+        }
         .onAppear {
             guard !reduceMotion else { return }
             withAnimation(.easeInOut(duration: 4).repeatForever(autoreverses: true)) {
@@ -575,6 +597,7 @@ struct TimelineRow: View {
     let onTap: () -> Void
     @State private var showEdit = false
     @State private var showMove = false
+    @State private var isGeneratingSteps = false
     @Environment(\.spawnConfetti) private var spawnConfetti
 
     private var taskEnd: Date {
@@ -618,9 +641,13 @@ struct TimelineRow: View {
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                                     .fill(isNow ? T.surface : cc.bg)
                                     .frame(width: 40, height: 40)
-                                Image(systemName: task.iconName ?? "circle")
-                                    .font(.system(size: 18, weight: .medium))
-                                    .foregroundColor(isDone ? T.textTer : cc.ink)
+                                if isGeneratingSteps {
+                                    ProgressView().tint(cc.ink)
+                                } else {
+                                    Image(systemName: task.iconName ?? "circle")
+                                        .font(.system(size: 18, weight: .medium))
+                                        .foregroundColor(isDone ? T.textTer : cc.ink)
+                                }
                             }
 
                             VStack(alignment: .leading, spacing: 2) {
@@ -791,12 +818,23 @@ struct TimelineRow: View {
     /// Break this task into AI-generated micro-steps (replacing it), scheduled back-to-back.
     private func generateSteps() {
         let title = task.title ?? ""
-        guard !title.isEmpty else { return }
+        // The await below takes seconds — a second tap must not spawn a second
+        // set of steps (and delete the original twice). The guard is a shared
+        // set keyed by the task, so it survives the row being re-created
+        // (completing the task, regrouping) mid-flight.
+        let guardID = task.objectID
+        guard !title.isEmpty, !StepGenerationGuard.inFlight.contains(guardID) else { return }
+        StepGenerationGuard.inFlight.insert(guardID)
+        isGeneratingSteps = true
         let ctx = viewContext
         let cat = task.category ?? "work"
         let startBase = task.startTime ?? Date()
         let original = task
         Task { @MainActor in
+            defer {
+                StepGenerationGuard.inFlight.remove(guardID)
+                isGeneratingSteps = false
+            }
             let steps: [TaskBreakdown.Step]
             do { steps = try await ClaudeAPIClient().breakDown(task: title).steps }
             catch { steps = FallbackBreakdown.generate(for: title).steps }
@@ -1008,4 +1046,11 @@ extension View {
 #Preview {
     TodayView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+}
+
+/// Tasks whose step-generation request is currently in flight — global so the
+/// guard survives SwiftUI recreating the row mid-request.
+@MainActor
+enum StepGenerationGuard {
+    static var inFlight = Set<NSManagedObjectID>()
 }

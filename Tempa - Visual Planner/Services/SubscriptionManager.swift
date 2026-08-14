@@ -66,10 +66,14 @@ final class SubscriptionManager {
             }
             try? await Task.sleep(for: .milliseconds(600))
         }
+        #if DEBUG
+        // Dev-only: in Release a store outage must surface the real error on the
+        // paywall, never fake plans whose taps grant Pro for free.
         if products.isEmpty && !isSimulating {
             print("[Tempa] StoreKit unreachable → simulation fallback: taps fake-complete the purchase, no payment sheet will appear")
             activateSimulation()
         }
+        #endif
     }
 
     private func activateSimulation() {

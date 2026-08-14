@@ -14,14 +14,36 @@ enum TaskNotifications {
         UserDefaults.standard.object(forKey: "nudgesEnabled") as? Bool ?? true
     }
 
+    /// CloudKit imports land as bursts of transactions — collapse them into
+    /// one resync instead of one per transaction.
+    private static var pendingResync: DispatchWorkItem?
+    private static func scheduleResync(context: NSManagedObjectContext) {
+        pendingResync?.cancel()
+        let work = DispatchWorkItem { rescheduleAll(context: context) }
+        pendingResync = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: work)
+    }
+
     /// Begin observing saves so reminders stay in sync with the task list.
     static func startObserving(_ context: NSManagedObjectContext) {
+        // Without a delegate iOS silently swallows notifications that fire while
+        // the app is open — which reads as "reminders don't work at all".
+        UNUserNotificationCenter.current().delegate = TaskNotificationDelegate.shared
         NotificationCenter.default.addObserver(
             forName: .NSManagedObjectContextDidSave,
             object: context,
             queue: .main
         ) { _ in
-            rescheduleAll(context: context)
+            scheduleResync(context: context)
+        }
+        // Tasks synced in from another device never touch the local save path —
+        // reschedule on CloudKit imports too, or iPad-created tasks stay silent.
+        NotificationCenter.default.addObserver(
+            forName: .NSPersistentStoreRemoteChange,
+            object: nil,
+            queue: .main
+        ) { _ in
+            scheduleResync(context: context)
         }
         rescheduleAll(context: context)
     }
@@ -60,5 +82,14 @@ enum TaskNotifications {
                 }
             }
         }
+    }
+}
+
+/// Presents reminder banners even while the app is in the foreground.
+final class TaskNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    static let shared = TaskNotificationDelegate()
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        [.banner, .sound, .list]
     }
 }
