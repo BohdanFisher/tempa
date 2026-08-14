@@ -7,9 +7,21 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var planAfterWelcome = false
 
+    /// Dev shortcut: launch with "-force-onboarding YES" to see onboarding even
+    /// though iCloud has already restored a completed profile. On a reinstall
+    /// CloudKit brings onboardingCompleted back within seconds — correct for
+    /// real users, maddening when you're trying to TEST onboarding.
+    private var forceOnboarding: Bool {
+        #if DEBUG
+        UserDefaults.standard.bool(forKey: "force-onboarding")
+        #else
+        false
+        #endif
+    }
+
     var body: some View {
         ZStack {
-            if settings.onboardingCompleted {
+            if settings.onboardingCompleted && !forceOnboarding {
                 MainTabView()
             } else {
                 OnboardingFlow()
