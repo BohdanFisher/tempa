@@ -13,6 +13,13 @@ struct TempaApp: App {
 
     init() {
         RevenueCatService.configure()
+        #if DEBUG
+        // "-wipe-data YES": start as a brand-new user — empties the local store
+        // AND pushes the deletions to iCloud, so nothing comes back.
+        if UserDefaults.standard.bool(forKey: "wipe-data") {
+            PersistenceController.wipeAllData()
+        }
+        #endif
         let context = PersistenceController.shared.container.viewContext
         _settingsStore = State(initialValue: SettingsStore(context: context))
 

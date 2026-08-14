@@ -67,4 +67,23 @@ struct PersistenceController: Sendable {
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
+
+    #if DEBUG
+    /// Dev-only "factory reset": deletes every record object-by-object (NOT a
+    /// batch delete — CloudKit only syncs tombstones for context deletions), so
+    /// the wipe propagates to iCloud instead of being resurrected by it.
+    static func wipeAllData() {
+        let ctx = shared.container.viewContext
+        for entity in ["TaskBlock", "UserSettings", "CompletionStreak"] {
+            let req = NSFetchRequest<NSManagedObject>(entityName: entity)
+            for object in (try? ctx.fetch(req)) ?? [] { ctx.delete(object) }
+        }
+        try? ctx.save()
+        let d = UserDefaults.standard
+        ["nudgesEnabled", "trialReminderWanted", "appLanguage",
+         "tempa_last_app_open", "tempa_welcome_back_last_shown",
+         "focus_session_snapshot", "todayGrouping", "todaySorting"].forEach { d.removeObject(forKey: $0) }
+        print("[Tempa] DEBUG wipe: all local data deleted, tombstones will sync to CloudKit")
+    }
+    #endif
 }
