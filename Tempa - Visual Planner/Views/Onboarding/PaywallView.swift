@@ -1,5 +1,6 @@
 import SwiftUI
 import StoreKit
+import UserNotifications
 
 struct PaywallView: View {
     @Environment(SubscriptionManager.self) private var subs
@@ -17,86 +18,53 @@ struct PaywallView: View {
     @State private var errorMessage = ""
     @State private var showTermsDoc = false
     @State private var showPrivacyDoc = false
+    /// "Remind me before trial ends" — a real local notification on day 2,
+    /// scheduled at purchase. Trust beats a dark pattern every time.
+    @AppStorage("trialReminderWanted") private var trialReminderOn = true
+    @State private var pendingTrialReminder = false
 
-    // Bright coral in light mode; a deeper, calmer coral in dark mode (the bright
-    // one glares on a dark screen). White cards/button read well on both.
-    private let coral = Color(lightHex: "#FF7A59", darkHex: "#B5503A")
-    private let cardInk = Color(hex: "#2E2A26")   // dark text on the selected white card
-    private let cardSub = Color(hex: "#8A837C")   // muted subtitle on the white card
-    private let teal = Color(hex: "#3FC09A")      // BEST VALUE badge
+    // Bright coral in light mode; a deeper, calmer coral in dark mode.
+    private let coral = Color(lightHex: "#FF7A59", darkHex: "#D06A4B")
+    private let teal = Color(hex: "#3FC09A")
 
     var body: some View {
         ZStack {
-            coral.ignoresSafeArea()
-
-            // One faint, perfectly round circle whose centre orbits along a lightly
-            // flattened (oblate) path — the oval orbit makes the motion clearly visible.
-            GeometryReader { geo in
-                TimelineView(.animation(minimumInterval: 0.05)) { timeline in
-                    let t = timeline.date.timeIntervalSinceReferenceDate * 0.6   // ≈10s per orbit
-                    let a = 55.0, b = 38.0                                        // lightly flattened orbit
-                    Circle()
-                        .fill(Color.white.opacity(0.07))
-                        .frame(width: 380)
-                        .position(x: geo.size.width - 40 + a * cos(t),
-                                  y: geo.size.height - 70 + b * sin(t))
-                }
-            }
-            .ignoresSafeArea()
-            .allowsHitTesting(false)
+            T.bg.ignoresSafeArea()
 
             VStack(spacing: 0) {
                 topBar
                     .padding(.top, 10)
 
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("TEMPA PRO")
-                        .font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
-                        .tracking(3)
-                        .foregroundColor(.white.opacity(0.72))
-                        .padding(.bottom, 14)
+                // Flexible middle — everything fits without scrolling on modern
+                // phones; on small ones this scrolls while plans + CTA stay put.
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        header
+                            .padding(.top, 6)
 
-                    Text("Less noise.\nMore you.")
-                        .font(.custom("Nunito-ExtraBold", size: 40).weight(.heavy))
-                        .tracking(-0.8)
-                        .foregroundColor(.white)
-                        .lineSpacing(0)
-                        .fixedSize(horizontal: false, vertical: true)
+                        benefitRail
+                            .padding(.top, 16)
 
-                    VStack(alignment: .leading, spacing: 9) {
-                        benefitRow("Speak your day — AI turns it into a plan")
-                        benefitRow("One thing at a time, never a wall of tasks")
-                        benefitRow("Focus sessions with gentle comeback nudges")
+                        if hasIntroOffer {
+                            trialCard
+                                .padding(.top, 16)
+                                .staggerIn(1, baseDelay: 0.08)
+                        }
                     }
-                    .padding(.top, 16)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 24)
-                .padding(.top, 18)
-
-                Spacer(minLength: 16)
-
-                if hasIntroOffer {
-                    trialTimeline
-                        .padding(.horizontal, 24)
-                        .padding(.bottom, 14)
-                        .staggerIn(0, baseDelay: 0.08)
+                    .padding(.horizontal, 22)
+                    .padding(.bottom, 10)
                 }
 
                 planCards
                     .padding(.horizontal, 18)
+                    .padding(.top, 4)
 
                 ctaButton
                     .padding(.horizontal, 18)
-                    .padding(.top, 16)
-                    .staggerIn(2, baseDelay: 0.1)
+                    .padding(.top, 14)
 
-                if hasIntroOffer {
-                    Text("No payment today · cancel anytime")
-                        .font(.custom("Inter-Medium", size: 12).weight(.medium))
-                        .foregroundColor(.white.opacity(0.7))
-                        .padding(.top, 10)
-                }
+                transparencyLine
+                    .padding(.top, 10)
 
                 footer
             }
@@ -110,45 +78,6 @@ struct PaywallView: View {
         }
     }
 
-    private func benefitRow(_ text: LocalizedStringKey) -> some View {
-        HStack(spacing: 9) {
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(.white.opacity(0.9))
-            Text(text)
-                .font(.custom("Inter-Medium", size: 14).weight(.medium))
-                .foregroundColor(.white.opacity(0.92))
-        }
-    }
-
-    /// How the free trial unfolds — the single highest-trust element on a
-    /// trial paywall. Only shown while the user is intro-offer eligible.
-    private var trialTimeline: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            timelineRow(icon: "lock.open.fill", day: "Today", text: "Full access to everything")
-            timelineRow(icon: "bell.fill", day: "Day 2", text: "A reminder before anything is charged")
-            timelineRow(icon: "checkmark.seal.fill", day: "Day 3", text: "Yearly starts — cancel anytime before")
-        }
-        .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.white.opacity(0.12)))
-    }
-
-    private func timelineRow(icon: String, day: LocalizedStringKey, text: LocalizedStringKey) -> some View {
-        HStack(spacing: 10) {
-            Image(systemName: icon)
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundColor(coral)
-                .frame(width: 24, height: 24)
-                .background(Circle().fill(.white))
-            (Text(day).font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
-             + Text(" — ").font(.custom("Inter-Medium", size: 13).weight(.medium))
-             + Text(text).font(.custom("Inter-Medium", size: 13).weight(.medium)))
-                .foregroundColor(.white)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-    }
-
     // MARK: - Top bar
 
     private var topBar: some View {
@@ -156,26 +85,150 @@ struct PaywallView: View {
             if allowDismiss {
                 Button { dismiss() } label: {
                     Image(systemName: "xmark")
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(.white)
-                        .frame(width: 36, height: 36)
-                        .background(RoundedRectangle(cornerRadius: 11, style: .continuous).fill(Color.white.opacity(0.18)))
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(T.textSec)
+                        .frame(width: 34, height: 34)
+                        .background(Circle().fill(T.surface))
+                        .tempaShadowSm()
                 }
             }
             Spacer()
             Button { restore() } label: {
                 Text("Restore")
                     .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
-                    .foregroundColor(.white.opacity(0.9))
+                    .foregroundColor(T.textSec)
             }
         }
         .padding(.horizontal, 22)
     }
 
+    // MARK: - Header
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("TEMPA PRO")
+                .font(.custom("Nunito-ExtraBold", size: 12).weight(.heavy))
+                .tracking(2.4)
+                .foregroundColor(coral)
+                .padding(.horizontal, 11)
+                .padding(.vertical, 6)
+                .background(Capsule().fill(coral.opacity(0.12)))
+                .staggerIn(0)
+
+            Text("Less noise. More you.")
+                .font(.custom("Nunito-ExtraBold", size: 25).weight(.heavy))
+                .tracking(-0.5)
+                .foregroundColor(T.text)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .staggerIn(1)
+        }
+    }
+
+    // MARK: - Benefits
+
+    private var benefitRail: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            benefit("mic.fill", coral, "Speak your day — AI turns it into a plan")
+            benefit("rectangle.stack.fill", teal, "One thing at a time, never a wall of tasks")
+            benefit("timer", Cat.routine.ink, "Focus sessions with gentle comeback nudges")
+        }
+        .staggerIn(2)
+    }
+
+    private func benefit(_ icon: String, _ tint: Color, _ text: LocalizedStringKey) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(tint)
+                .frame(width: 30, height: 30)
+                .background(Circle().fill(tint.opacity(0.14)))
+            Text(text)
+                .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                .foregroundColor(T.text)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+    }
+
+    // MARK: - Trial timeline card
+
+    /// The single highest-trust element on a trial paywall: what happens on
+    /// which day, plus a reminder toggle that schedules a REAL notification.
+    private var trialCard: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("How your free trial works")
+                .font(.custom("Nunito-ExtraBold", size: 15).weight(.heavy))
+                .foregroundColor(T.text)
+                .padding(.bottom, 10)
+
+            timelineStep(icon: "lock.open.fill", day: "Today",
+                         text: "Full access to everything", filled: true, last: false)
+            timelineStep(icon: "bell.fill", day: "Day 2",
+                         text: "A reminder before anything is charged", filled: false, last: false)
+            timelineStep(icon: "checkmark.seal.fill", day: "Day 3",
+                         text: "Yearly starts — cancel anytime before", filled: false, last: true)
+
+            Divider()
+                .padding(.vertical, 8)
+
+            HStack {
+                Text("Remind me before trial ends")
+                    .font(.custom("Inter-Medium", size: 13).weight(.semibold))
+                    .foregroundColor(T.text)
+                Spacer()
+                Toggle("", isOn: $trialReminderOn)
+                    .labelsHidden()
+                    .tint(teal)
+                    .scaleEffect(0.85, anchor: .trailing)
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(T.surface))
+        .tempaShadowSm()
+    }
+
+    private func timelineStep(icon: String, day: LocalizedStringKey, text: LocalizedStringKey,
+                              filled: Bool, last: Bool) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            VStack(spacing: 2) {
+                ZStack {
+                    Circle()
+                        .fill(filled ? coral : coral.opacity(0.12))
+                        .frame(width: 28, height: 28)
+                    Image(systemName: icon)
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundColor(filled ? .white : coral)
+                }
+                if !last {
+                    RoundedRectangle(cornerRadius: 1.5)
+                        .fill(coral.opacity(0.18))
+                        .frame(width: 3)
+                        .frame(minHeight: 10)
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 1) {
+                Text(day)
+                    .font(.custom("Nunito-ExtraBold", size: 14).weight(.heavy))
+                    .foregroundColor(T.text)
+                Text(text)
+                    .font(.custom("Inter-Medium", size: 12).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.bottom, last ? 0 : 6)
+
+            Spacer(minLength: 0)
+        }
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
     // MARK: - Plan cards
 
     private var planCards: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 10) {
             if subs.isSimulating {
                 ForEach(Array(subs.simPlans.filter { $0.id != "tempa_weekly" }.enumerated()), id: \.element.id) { i, plan in
                     planCard(
@@ -214,10 +267,10 @@ struct PaywallView: View {
         VStack(spacing: 10) {
             Text("Couldn't reach the App Store")
                 .font(.custom("Nunito-ExtraBold", size: 15).weight(.heavy))
-                .foregroundColor(.white)
+                .foregroundColor(T.text)
             Text("Check your connection and try again.")
                 .font(.custom("Inter-Medium", size: 13).weight(.medium))
-                .foregroundColor(.white.opacity(0.8))
+                .foregroundColor(T.textSec)
             Button {
                 Task {
                     await subs.ensureProductsLoaded()
@@ -226,15 +279,16 @@ struct PaywallView: View {
             } label: {
                 Text("Try again")
                     .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
-                    .foregroundColor(coral)
+                    .foregroundColor(.white)
                     .padding(.horizontal, 18)
                     .padding(.vertical, 9)
-                    .background(Capsule().fill(.white))
+                    .background(Capsule().fill(coral))
             }
         }
         .padding(18)
         .frame(maxWidth: .infinity)
-        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Color.white.opacity(0.12)))
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(T.surface))
+        .tempaShadowSm()
     }
 
     private func planCard(id: String, title: String, isYearly: Bool, price: String, sub: String, detail: String?) -> some View {
@@ -247,12 +301,13 @@ struct PaywallView: View {
                 selectedProductID = id
             }
         } label: {
-            HStack(spacing: 14) {
+            HStack(spacing: 13) {
                 ZStack {
-                    Circle().fill(picked ? coral : .clear).frame(width: 26, height: 26)
-                    Circle().stroke(picked ? .clear : Color.white.opacity(0.65), lineWidth: 2).frame(width: 26, height: 26)
+                    Circle()
+                        .stroke(picked ? coral : T.textTer.opacity(0.5), lineWidth: 2)
+                        .frame(width: 24, height: 24)
                     if picked {
-                        Circle().fill(.white).frame(width: 10, height: 10)
+                        Circle().fill(coral).frame(width: 14, height: 14)
                             .transition(.scale(scale: 0.2).combined(with: .opacity))
                     }
                 }
@@ -261,14 +316,14 @@ struct PaywallView: View {
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 8) {
                         Text(title)
-                            .font(.custom("Nunito-ExtraBold", size: 17).weight(.heavy))
-                            .foregroundColor(picked ? cardInk : .white)
-                        if isYearly { bestValueBadge }
+                            .font(.custom("Nunito-ExtraBold", size: 16).weight(.heavy))
+                            .foregroundColor(T.text)
+                        if isYearly { savingsBadge }
                     }
                     if let detail {
                         Text(detail)
                             .font(.custom("Inter-Medium", size: 12).weight(.medium))
-                            .foregroundColor(picked ? cardSub : .white.opacity(0.8))
+                            .foregroundColor(T.textSec)
                     }
                 }
 
@@ -276,34 +331,58 @@ struct PaywallView: View {
 
                 VStack(alignment: .trailing, spacing: 1) {
                     Text(price)
-                        .font(.custom("Nunito-ExtraBold", size: 17).weight(.heavy))
-                        .foregroundColor(picked ? cardInk : .white)
+                        .font(.custom("Nunito-ExtraBold", size: 16).weight(.heavy))
+                        .foregroundColor(T.text)
                     Text(sub)
                         .font(.custom("Inter-Medium", size: 11).weight(.semibold))
-                        .foregroundColor(picked ? cardSub : .white.opacity(0.8))
+                        .foregroundColor(T.textSec)
                 }
             }
-            .padding(18)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 15)
             .frame(maxWidth: .infinity)
             .background(
-                RoundedRectangle(cornerRadius: 22, style: .continuous)
-                    .fill(picked ? Color.white : Color.white.opacity(0.16))
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .fill(picked ? coral.opacity(0.07) : T.surface)
             )
-            .shadow(color: .black.opacity(picked ? 0.12 : 0), radius: 14, x: 0, y: 8)
-            .scaleEffect(picked ? 1.02 : 1.0)
+            .overlay(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .stroke(picked ? coral : T.textTer.opacity(0.18), lineWidth: picked ? 1.8 : 1)
+            )
             .animation(.spring(response: 0.35, dampingFraction: 0.7), value: picked)
         }
         .buttonStyle(SpringPressStyle(scale: 0.98))
     }
 
-    private var bestValueBadge: some View {
-        Text("BEST VALUE")
+    /// Real savings, computed from the store's own prices — falls back to
+    /// BEST VALUE when the monthly price isn't loaded to divide by.
+    private var savingsBadge: some View {
+        Group {
+            if let pct = savingsPercent {
+                badgeText(String(localized: "SAVE \(pct)%", bundle: .appLanguage))
+            } else {
+                badgeText(String(localized: "BEST VALUE", bundle: .appLanguage))
+            }
+        }
+    }
+
+    private func badgeText(_ s: String) -> some View {
+        Text(s)
             .font(.custom("Nunito-ExtraBold", size: 10).weight(.heavy))
-            .tracking(0.6)
+            .tracking(0.5)
             .foregroundColor(.white)
-            .padding(.horizontal, 8)
+            .padding(.horizontal, 7)
             .padding(.vertical, 3)
-            .background(RoundedRectangle(cornerRadius: 8, style: .continuous).fill(teal))
+            .background(RoundedRectangle(cornerRadius: 7, style: .continuous).fill(teal))
+    }
+
+    private var savingsPercent: Int? {
+        guard let y = subs.products.first(where: { $0.id == "tempa_yearly" }),
+              let m = subs.products.first(where: { $0.id == "tempa_monthly" }),
+              m.price > 0 else { return nil }
+        let ratio = NSDecimalNumber(decimal: y.price / (m.price * 12)).doubleValue
+        let pct = Int(((1 - ratio) * 100).rounded())
+        return pct >= 5 ? pct : nil
     }
 
     // MARK: - CTA
@@ -319,7 +398,7 @@ struct PaywallView: View {
                         .font(.system(size: 22, weight: .heavy))
                         .transition(.scale(scale: 0.3).combined(with: .opacity))
                 case .working:
-                    ProgressView().tint(coral)
+                    ProgressView().tint(.white)
                         .transition(.opacity)
                 case .idle:
                     Text(hasIntroOffer ? "Start 3-day free trial" : "Continue")
@@ -328,14 +407,41 @@ struct PaywallView: View {
                 }
             }
             .animation(.spring(response: 0.4, dampingFraction: 0.7), value: purchasePhase)
-            .foregroundColor(coral)
+            .foregroundColor(.white)
             .frame(maxWidth: .infinity)
-            .frame(height: 58)
-            .background(Capsule().fill(.white))
-            .shadow(color: .black.opacity(0.14), radius: 16, x: 0, y: 8)
+            .frame(height: 56)
+            .background(
+                Capsule().fill(
+                    LinearGradient(
+                        colors: [Color(lightHex: "#FF9273", darkHex: "#D06A4B"),
+                                 Color(lightHex: "#FF7A59", darkHex: "#B5503A")],
+                        startPoint: .topLeading, endPoint: .bottomTrailing
+                    )
+                )
+            )
+            .shadow(color: coral.opacity(0.35), radius: 14, x: 0, y: 6)
         }
         .buttonStyle(SpringPressStyle(scale: 0.97))
         .disabled(isPurchasing)
+    }
+
+    /// The exact deal, in one quiet line right under the button.
+    private var transparencyLine: some View {
+        Group {
+            if hasIntroOffer, let price = yearlyPriceString {
+                Text("3 days free, then \(price)/year · cancel anytime")
+            } else {
+                Text("Cancel anytime")
+            }
+        }
+        .font(.custom("Inter-Medium", size: 12).weight(.medium))
+        .foregroundColor(T.textSec)
+    }
+
+    private var yearlyPriceString: String? {
+        if let p = subs.products.first(where: { $0.id == "tempa_yearly" }) { return p.displayPrice }
+        if let s = subs.simPlans.first(where: { $0.id == "tempa_yearly" }) { return s.price }
+        return nil
     }
 
     private var footer: some View {
@@ -347,9 +453,9 @@ struct PaywallView: View {
             Button("Privacy") { showPrivacyDoc = true }
         }
         .font(.custom("Inter-Medium", size: 12).weight(.semibold))
-        .foregroundColor(.white.opacity(0.6))
-        .padding(.top, 14)
-        .padding(.bottom, 30)
+        .foregroundColor(T.textTer)
+        .padding(.top, 12)
+        .padding(.bottom, 26)
         .sheet(isPresented: $showTermsDoc) { TermsSheet() }
         .sheet(isPresented: $showPrivacyDoc) { PrivacyPolicySheet() }
     }
@@ -424,6 +530,9 @@ struct PaywallView: View {
     private func purchaseSelected() async {
         isPurchasing = true
         withAnimation { purchasePhase = .working }
+        // Capture NOW — a successful purchase flips eligibility off before the
+        // celebration runs.
+        pendingTrialReminder = hasIntroOffer && trialReminderOn
 
         if subs.isSimulating {
             try? await Task.sleep(for: .seconds(1))
@@ -457,6 +566,7 @@ struct PaywallView: View {
 
     /// Morph the CTA into a checkmark with a success haptic, then close.
     private func finishPurchaseCelebration() async {
+        if pendingTrialReminder { scheduleTrialReminder() }
         withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) { purchasePhase = .success }
         #if os(iOS)
         UINotificationFeedbackGenerator().notificationOccurred(.success)
@@ -466,6 +576,27 @@ struct PaywallView: View {
         dismiss()
         isPurchasing = false
         purchasePhase = .idle
+    }
+
+    /// Day 2 of the 3-day trial — a real, gentle heads-up we promised on the
+    /// toggle. Requires (or asks for) notification permission.
+    private func scheduleTrialReminder() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
+            guard granted else { return }
+            let content = UNMutableNotificationContent()
+            content.title = String(localized: "Your free trial ends tomorrow", bundle: .appLanguage)
+            content.body = String(localized: "If Tempa isn't for you, cancel in the App Store — no hard feelings.", bundle: .appLanguage)
+            content.sound = .default
+            let fire = Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date().addingTimeInterval(172_800)
+            let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: fire)
+            let request = UNNotificationRequest(
+                identifier: "trial-ending-reminder",
+                content: content,
+                trigger: UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
+            )
+            center.add(request)
+        }
     }
 
     private func resetPurchaseUI() {

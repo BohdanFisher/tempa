@@ -1112,6 +1112,58 @@
     "12:00": {
       "shouldTranslate": false
     },
+    "3 days free, then %@/year · cancel anytime": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 Tage gratis, dann %@/Jahr · jederzeit kündbar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 días gratis, luego %@/año · cancela cuando quieras"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 päivää ilmaiseksi, sitten %@/vuosi · peru milloin vain"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 jours gratuits, puis %@/an · annulable à tout moment"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 dager gratis, deretter %@/år · avbryt når som helst"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 dagen gratis, daarna %@/jaar · altijd opzegbaar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 dias grátis, depois %@/ano · cancele quando quiser"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 дні безкоштовно, далі %@/рік · скасувати можна будь-коли"
+          }
+        }
+      }
+    },
     "3 days free, then billed yearly": {
       "localizations": {
         "de": {
@@ -3252,6 +3304,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Скасувати"
+          }
+        }
+      }
+    },
+    "Cancel anytime": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jederzeit kündbar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancela cuando quieras"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peru milloin vain"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annulable à tout moment"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avbryt når som helst"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altijd opzegbaar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancele quando quiser"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скасувати можна будь-коли"
           }
         }
       }
@@ -6018,6 +6122,58 @@
         }
       }
     },
+    "How your free trial works": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So funktioniert dein Gratis-Test"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cómo funciona tu prueba gratis"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Näin ilmainen kokeilu toimii"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment fonctionne ton essai gratuit"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slik fungerer prøveperioden"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zo werkt je gratis proefperiode"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Como funciona seu teste grátis"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Як працює безкоштовний період"
+          }
+        }
+      }
+    },
     "I HEARD": {
       "localizations": {
         "de": {
@@ -6430,6 +6586,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Хочу дізнатися"
+          }
+        }
+      }
+    },
+    "If Tempa isn't for you, cancel in the App Store — no hard feelings.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn Tempa nichts für dich ist, kündige im App Store — alles gut."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si Tempa no es para ti, cancela en el App Store — sin problema."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jos Tempa ei ole sinua varten, peru App Storessa — ei paineita."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si Tempa n'est pas pour toi, annule dans l'App Store — sans souci."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hvis Tempa ikke passer for deg, avbryt i App Store — helt greit."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Tempa niets voor je is, zeg op in de App Store — geen probleem."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se o Tempa não é para você, cancele na App Store — sem problemas."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Якщо Tempa не для тебе — скасуй в App Store, без образ."
           }
         }
       }
@@ -6958,54 +7166,54 @@
         }
       }
     },
-    "Less noise.\nMore you.": {
+    "Less noise. More you.": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Weniger Lärm.\nMehr du."
+            "value": "Weniger Lärm. Mehr du."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Menos ruido.\nMás tú."
+            "value": "Menos ruido. Más tú."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vähemmän hälyä.\nEnemmän sinua."
+            "value": "Vähemmän hälyä. Enemmän sinua."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Moins de bruit.\nPlus de toi."
+            "value": "Moins de bruit. Plus de toi."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mindre støy.\nMer deg."
+            "value": "Mindre støy. Mer deg."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Minder ruis.\nMeer jou."
+            "value": "Minder ruis. Meer jou."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Menos ruído.\nMais você."
+            "value": "Menos ruído. Mais você."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Менше шуму.\nБільше тебе."
+            "value": "Менше шуму. Більше тебе."
           }
         }
       }
@@ -10341,6 +10549,58 @@
         }
       }
     },
+    "Remind me before trial ends": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vor Ablauf des Tests erinnern"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recuérdame antes de que acabe la prueba"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muistuta ennen kokeilun päättymistä"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Me rappeler avant la fin de l'essai"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minn meg på det før prøven slutter"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herinner me vóór het einde van de proef"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avisar antes do fim do teste"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нагадати перед кінцем пробного періоду"
+          }
+        }
+      }
+    },
     "Reminder 10 min before each task": {
       "localizations": {
         "de": {
@@ -10597,6 +10857,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Рутина"
+          }
+        }
+      }
+    },
+    "SAVE %lld%%": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SPARE %lld%%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AHORRA %lld%%"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SÄÄSTÄ %lld%%"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "−%lld%%"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SPAR %lld%%"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BESPAAR %lld%%"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ECONOMIZE %lld%%"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ЕКОНОМІЯ %lld%%"
           }
         }
       }
@@ -17167,6 +17479,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Фокус зайняв тобі місце"
+          }
+        }
+      }
+    },
+    "Your free trial ends tomorrow": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Gratis-Test endet morgen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu prueba gratis termina mañana"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ilmainen kokeilusi päättyy huomenna"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ton essai gratuit se termine demain"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prøveperioden din slutter i morgen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je gratis proefperiode eindigt morgen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seu teste grátis termina amanhã"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Твій безкоштовний період закінчується завтра"
           }
         }
       }
