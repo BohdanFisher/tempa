@@ -47,11 +47,24 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     /// DEVICE's: Europe keeps its 24-hour clock even in English UI, the US
     /// keeps AM/PM, and the user's own 24-Hour Time toggle is honoured.
     var locale: Locale {
-        guard self != .system else { return .autoupdatingCurrent }
-        var comps = Locale.Components(identifier: rawValue)
-        comps.region = Locale.current.region
+        // .system can't use autoupdatingCurrent: after an in-app switch it
+        // stays frozen to the LAUNCH language until relaunch. Rebuild from the
+        // device's live preference list instead.
+        let identifier = self == .system
+            ? (Locale.preferredLanguages.first ?? Locale.current.identifier)
+            : rawValue
+        var comps = Locale.Components(identifier: identifier)
+        if comps.region == nil { comps.region = Locale.current.region }
         comps.hourCycle = Locale.current.hourCycle
         return Locale(components: comps)
+    }
+
+    /// The language code actually in effect — the pick, or the device's
+    /// first preferred language when following the system.
+    var effectiveCode: String {
+        guard self == .system else { return rawValue }
+        let device = Locale.preferredLanguages.first ?? "en"
+        return Locale(identifier: device).language.languageCode?.identifier ?? "en"
     }
 
     static var current: AppLanguage {
@@ -67,7 +80,9 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         } else {
             UserDefaults.standard.set([rawValue], forKey: "AppleLanguages")
         }
-        Bundle.applyLanguageOverride(self == .system ? nil : rawValue)
+        // Always resolve to a concrete code — "system" itself has no .lproj,
+        // and the frozen main bundle would keep serving the launch language.
+        Bundle.applyLanguageOverride(effectiveCode)
     }
 }
 
@@ -79,9 +94,14 @@ private var overridePathKey: UInt8 = 0
 /// language change takes effect immediately — no relaunch required.
 private final class LanguageOverrideBundle: Bundle, @unchecked Sendable {
     override func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
-        if let path = objc_getAssociatedObject(self, &overridePathKey) as? String,
-           let bundle = Bundle(path: path) {
-            return bundle.localizedString(forKey: key, value: value, table: tableName)
+        if objc_getAssociatedObject(self, &overridePathKey) != nil {
+            let target = Bundle.appLanguage
+            if target !== self {
+                return target.localizedString(forKey: key, value: value, table: tableName)
+            }
+            // Source-language fallback: the key IS the English string.
+            if let value, !value.isEmpty { return value }
+            return key
         }
         return super.localizedString(forKey: key, value: value, table: tableName)
     }
@@ -91,19 +111,32 @@ extension Bundle {
     /// The bundle serving the currently selected app language — pass this to
     /// String(localized:bundle:) so strings switch instantly on language change.
     /// (On modern iOS, String(localized:) bypasses the swizzled lookup.)
+    /// A bundle with NO string tables at all: every String(localized:bundle:)
+    /// lookup against it returns the key itself — i.e. the English source
+    /// text. This is how "English" works without an en.lproj on disk (English
+    /// is the catalog's source language and never ships as an .lproj).
+    private static let sourceLanguageFallback: Bundle = {
+        let dir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("tempa-source-language.bundle", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return Bundle(url: dir) ?? .main
+    }()
+
     static var appLanguage: Bundle {
-        if let path = objc_getAssociatedObject(Bundle.main, &overridePathKey) as? String,
+        guard let code = objc_getAssociatedObject(Bundle.main, &overridePathKey) as? String else {
+            return .main
+        }
+        if let path = Bundle.main.path(forResource: code, ofType: "lproj"),
            let bundle = Bundle(path: path) {
             return bundle
         }
-        return .main
+        return sourceLanguageFallback
     }
 
     static func applyLanguageOverride(_ code: String?) {
         if object_getClass(Bundle.main) != LanguageOverrideBundle.self {
             object_setClass(Bundle.main, LanguageOverrideBundle.self)
         }
-        let path = code.flatMap { Bundle.main.path(forResource: $0, ofType: "lproj") }
-        objc_setAssociatedObject(Bundle.main, &overridePathKey, path, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(Bundle.main, &overridePathKey, code, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 }

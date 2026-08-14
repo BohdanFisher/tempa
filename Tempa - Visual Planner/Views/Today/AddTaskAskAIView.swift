@@ -64,7 +64,15 @@ struct AddTaskAskAIView: View {
 
     private let apiClient = ClaudeAPIClient()
 
-    private let quickReplies = ["Work stuff", "Home / chores", "My body / health", "People / social"]
+    /// Computed so the chips re-resolve on a live language switch. They are
+    /// also SENT as the user message — a localized chip makes the AI answer
+    /// in the user's language.
+    private var quickReplies: [String] {
+        [String(localized: "Work stuff", bundle: .appLanguage),
+         String(localized: "Home / chores", bundle: .appLanguage),
+         String(localized: "My body / health", bundle: .appLanguage),
+         String(localized: "People / social", bundle: .appLanguage)]
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -230,7 +238,7 @@ struct AddTaskAskAIView: View {
 
                 TempaButton(label: "Not quite", variant: .ghost, size: .sm) {
                     suggestedTask = nil
-                    sendMessage("Not quite — can you suggest something else?")
+                    sendMessage(String(localized: "Not quite — can you suggest something else?", bundle: .appLanguage))
                 }
                 .frame(maxWidth: .infinity)
             }
@@ -300,7 +308,7 @@ struct AddTaskAskAIView: View {
     // MARK: - Logic
 
     private func startConversation() {
-        let greeting = "Hey — let's untangle this. What feels heaviest right now?"
+        let greeting = String(localized: "Hey — let's untangle this. What feels heaviest right now?", bundle: .appLanguage)
         messages.append(ChatMessage(from: .ai, text: greeting))
     }
 
@@ -343,7 +351,7 @@ struct AddTaskAskAIView: View {
                     messages.append(ChatMessage(from: .ai, text: response))
                 }
             } catch {
-                messages.append(ChatMessage(from: .ai, text: "Sorry, I hit a snag. Try telling me what area feels heaviest — work, home, or body?"))
+                messages.append(ChatMessage(from: .ai, text: String(localized: "Sorry, I hit a snag. Try telling me what area feels heaviest — work, home, or body?", bundle: .appLanguage)))
             }
             isLoading = false
             #if os(iOS)

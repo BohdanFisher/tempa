@@ -2,9 +2,6 @@
   "sourceLanguage": "en",
   "strings": {
     "": {},
-    " — ": {
-      "shouldTranslate": false
-    },
     " …": {
       "localizations": {
         "de": {
@@ -1742,6 +1739,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Про тебе · 2 з 3"
+          }
+        }
+      }
+    },
+    "Active": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activa"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiivinen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actif"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actief"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ativa"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Активна"
           }
         }
       }
@@ -6018,6 +6067,58 @@
         }
       }
     },
+    "Hey — let's untangle this. What feels heaviest right now?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hey — lass uns das entwirren. Was fühlt sich gerade am schwersten an?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hola — vamos a desenredar esto. ¿Qué es lo que más pesa ahora mismo?"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hei — puretaan tämä vyyhti. Mikä painaa juuri nyt eniten?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salut — on va démêler tout ça. Qu'est-ce qui te pèse le plus, là ?"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hei — la oss nøste opp i dette. Hva kjennes tyngst akkurat nå?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hé — laten we dit ontwarren. Wat voelt nu het zwaarst?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oi — vamos desembaraçar isso. O que está pesando mais agora?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Привіт. Давай розплутаємо цей клубок. Що зараз тисне найбільше?"
+          }
+        }
+      }
+    },
     "High": {
       "localizations": {
         "de": {
@@ -6118,6 +6219,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Головна"
+          }
+        }
+      }
+    },
+    "Home / chores": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuhause / Haushalt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Casa / tareas"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koti / askareet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maison / corvées"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hjem / husarbeid"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thuis / klusjes"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Casa / tarefas"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дім і побут"
           }
         }
       }
@@ -8310,6 +8463,58 @@
         }
       }
     },
+    "My body / health": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Körper / Gesundheit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mi cuerpo / salud"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keho / terveys"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mon corps / santé"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kropp / helse"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mijn lijf / gezondheid"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meu corpo / saúde"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тіло й здоров'я"
+          }
+        }
+      }
+    },
     "New task": {
       "localizations": {
         "de": {
@@ -8675,6 +8880,7 @@
       }
     },
     "No payment today · cancel anytime": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -8982,6 +9188,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Не зовсім"
+          }
+        }
+      }
+    },
+    "Not quite — can you suggest something else?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht ganz — schlägst du was anderes vor?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No exactamente — ¿me propones otra cosa?"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ei ihan — ehdotatko jotain muuta?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas tout à fait — tu proposes autre chose ?"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ikke helt — kan du foreslå noe annet?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niet helemaal — stel je iets anders voor?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não é bem isso — sugere outra coisa?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не зовсім — запропонуєш щось інше?"
           }
         }
       }
@@ -9713,6 +9971,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Зупинитися, коли таймер продзвенить"
+          }
+        }
+      }
+    },
+    "People / social": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menschen / Soziales"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gente / social"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihmiset / sosiaalinen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les gens / le social"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folk / sosialt"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mensen / sociaal"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pessoas / social"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Люди й спілкування"
           }
         }
       }
@@ -11741,6 +12051,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Тихий звук, без вібрації та бейджів. Обіцяємо не набридати."
+          }
+        }
+      }
+    },
+    "Sorry, I hit a snag. Try telling me what area feels heaviest — work, home, or body?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ups, da hakt was. Sag mir, was sich gerade am schwersten anfühlt — Arbeit, Zuhause oder Körper?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaya, algo falló. Dime qué pesa más — ¿trabajo, casa o cuerpo?"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hups, jokin takkusi. Kerro mikä painaa eniten — työ, koti vai keho?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oups, petit souci. Dis-moi ce qui pèse le plus — le travail, la maison ou le corps ?"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oi, noe gikk galt. Fortell hva som kjennes tyngst — jobb, hjem eller kropp?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oeps, er ging iets mis. Vertel wat het zwaarst voelt — werk, thuis of je lijf?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opa, algo travou. Me diz o que pesa mais — trabalho, casa ou corpo?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ой, щось зашпорталось. Скажи, що зараз найважче — робота, дім чи здоров'я?"
           }
         }
       }
@@ -16616,6 +16978,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Travail"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jobb"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Werk"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabalho"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Робота"
+          }
+        }
+      }
+    },
+    "Work stuff": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arbeit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabajo"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Työasiat"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le boulot"
           }
         },
         "nb": {

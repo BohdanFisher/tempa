@@ -34,7 +34,10 @@ enum ThemePreference: String, CaseIterable {
 private enum TimeField: String, Identifiable {
     case wake, dip
     var id: String { rawValue }
-    var title: String { self == .wake ? "Wake time" : "Energy dip" }
+    var title: String {
+        self == .wake ? String(localized: "Wake time", bundle: .appLanguage)
+                      : String(localized: "Energy dip", bundle: .appLanguage)
+    }
 }
 
 struct ProfileView: View {
@@ -170,10 +173,10 @@ struct ProfileView: View {
 
     private func planName(_ id: String) -> String {
         switch id {
-        case "tempa_yearly": "Yearly"
-        case "tempa_monthly": "Monthly"
-        case "tempa_weekly": "Weekly"
-        default: "Active"
+        case "tempa_yearly": String(localized: "Yearly", bundle: .appLanguage)
+        case "tempa_monthly": String(localized: "Monthly", bundle: .appLanguage)
+        case "tempa_weekly": String(localized: "Weekly", bundle: .appLanguage)
+        default: String(localized: "Active", bundle: .appLanguage)
         }
     }
 
