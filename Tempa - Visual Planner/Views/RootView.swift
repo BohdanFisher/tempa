@@ -3,6 +3,7 @@ import CoreData
 
 struct RootView: View {
     @Environment(SettingsStore.self) private var settings
+    @Environment(SubscriptionManager.self) private var subs
     @State private var showWelcomeBack = false
     @Environment(\.scenePhase) private var scenePhase
     @State private var planAfterWelcome = false
@@ -21,8 +22,21 @@ struct RootView: View {
 
     var body: some View {
         ZStack {
-            if settings.onboardingCompleted && !forceOnboarding {
+            // Routing by StoreKit, not by a synced flag: transactions live on
+            // the Apple ID, survive reinstalls, and can't race CloudKit.
+            //   never paid            → onboarding (fresh experience)
+            //   subscription active   → straight into the app
+            //   paid before, lapsed   → paywall only (resubscribe)
+            if forceOnboarding {
+                OnboardingFlow()
+            } else if !subs.entitlementsChecked {
+                T.bg.ignoresSafeArea()   // sub-second, offline-safe
+            } else if subs.isPro {
                 MainTabView()
+            } else if subs.hasEverSubscribed {
+                PaywallView(allowDismiss: false) {
+                    settings.completeOnboarding()
+                }
             } else {
                 OnboardingFlow()
             }

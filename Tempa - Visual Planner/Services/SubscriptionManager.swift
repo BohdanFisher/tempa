@@ -30,6 +30,10 @@ final class SubscriptionManager {
     /// eligibility itself is enforced by Apple regardless).
     private(set) var hasEverSubscribed = false
 
+    /// True after the first StoreKit entitlement pass has completed — the root
+    /// router waits for this (sub-second, works offline: local receipts).
+    private(set) var entitlementsChecked = false
+
     private let productIDs = ["tempa_yearly", "tempa_monthly", "tempa_weekly"]
 
     init() {
@@ -159,6 +163,7 @@ final class SubscriptionManager {
                 }
             }
         }
+        entitlementsChecked = true
 
         // Entitlements just moved (purchase, restore, expiry) — trial
         // eligibility may have moved with them. Fire-and-forget: the purchase
