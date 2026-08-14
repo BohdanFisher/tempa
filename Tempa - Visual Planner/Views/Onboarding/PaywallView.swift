@@ -493,7 +493,12 @@ struct PaywallView: View {
     }
 
     private var hasIntroOffer: Bool {
-        subs.hasIntroOfferEligibility[selectedProductID] ?? false
+        #if DEBUG
+        // "-force-trial YES": show the trial timeline regardless of what
+        // StoreKit says, for reviewing the screen itself. Never in Release.
+        if UserDefaults.standard.bool(forKey: "force-trial") { return true }
+        #endif
+        return subs.hasIntroOfferEligibility[selectedProductID] ?? false
     }
 
     /// Short card titles — the ASC display names ("Tempa Pro Yearly") are too

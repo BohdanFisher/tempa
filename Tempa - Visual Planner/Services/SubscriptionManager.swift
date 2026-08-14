@@ -110,10 +110,18 @@ final class SubscriptionManager {
                 // used an intro in this group", true even for plans that have no
                 // intro offer at all. Require the plan to actually carry one.
                 var eligible = false
-                if sub.introductoryOffer != nil {
+                let offer = sub.introductoryOffer
+                if offer != nil {
                     eligible = await sub.isEligibleForIntroOffer
                 }
                 hasIntroOfferEligibility[product.id] = eligible
+                #if DEBUG
+                if offer == nil {
+                    print("[Tempa] trial: \(product.id) has NO introductory offer in App Store Connect → no trial UI for anyone")
+                } else {
+                    print("[Tempa] trial: \(product.id) offers \(offer!.period.value) \(offer!.period.unit) free; this Apple ID eligible: \(eligible)")
+                }
+                #endif
             }
         }
     }
