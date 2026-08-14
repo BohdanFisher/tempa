@@ -413,6 +413,7 @@ final class ClaudeAPIClient: Sendable {
             throw ClaudeAPIError.parseError
         }
 
+        AIUsage.record()
         return text
     }
 

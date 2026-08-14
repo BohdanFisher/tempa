@@ -222,7 +222,7 @@ struct DayPlanReviewSheet: View {
 
     private var addBar: some View {
         VStack(spacing: 0) {
-            if !rows.isEmpty {
+            if totalInstances > 0 {
                 TempaButton(label: "Add \(totalInstances) task\(totalInstances == 1 ? "" : "s")",
                             variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
                     addAll()
@@ -270,6 +270,7 @@ struct DayPlanReviewSheet: View {
     private func buildRows(from plan: DayPlan) -> [PlanRow] {
         let cal = Calendar.current
         var cursor = nextHalfHour()
+        var futureDayCursors: [Date: Date] = [:]   // per-day cursor for date-only tasks
         var result: [PlanRow] = []
         for t in plan.tasks {
             let dur = min(max(t.durationMinutes ?? 30, 5), 240)
@@ -288,6 +289,14 @@ struct DayPlanReviewSheet: View {
                 start = concrete
                 times = [cal.dateComponents([.hour, .minute], from: concrete)]
                 cursor = max(cursor, concrete.addingTimeInterval(TimeInterval(dur) * 60))
+            } else if baseDay != cal.startOfDay(for: Date()),
+                      let nine = cal.date(bySettingHour: 9, minute: 0, second: 0, of: baseDay) {
+                // A date without a usable time keeps its DAY — from 09:00 on,
+                // back-to-back per day, never a pile of overlapping blocks.
+                let dayStart = futureDayCursors[baseDay] ?? nine
+                start = dayStart
+                times = [cal.dateComponents([.hour, .minute], from: dayStart)]
+                futureDayCursors[baseDay] = dayStart.addingTimeInterval(TimeInterval(dur) * 60)
             } else {
                 start = cursor
                 times = [cal.dateComponents([.hour, .minute], from: cursor)]
@@ -357,7 +366,8 @@ struct DayPlanReviewSheet: View {
     }
 
     private var totalInstances: Int {
-        rows.reduce(0) { $0 + $1.instanceCount }
+        // Rows whose title was cleared are skipped on add — don't count them.
+        rows.reduce(0) { $0 + ($1.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0 : $1.instanceCount) }
     }
 
     private func recurrenceBadge(_ timesPerDay: Int, _ days: Int) -> some View {

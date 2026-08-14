@@ -15,6 +15,7 @@ struct CalendarView: View {
     ) private var allTasks: FetchedResults<TaskBlock>
 
     @State private var selectedDate = Calendar.current.startOfDay(for: Date())
+    @State private var todayAnchor = Calendar.current.startOfDay(for: Date())
     @State private var weekOffset = 0          // 0 == current week
     @State private var now = Date()
     @State private var flatList = false
@@ -43,7 +44,16 @@ struct CalendarView: View {
             }
         }
         .confettiHost()
-        .onReceive(timer) { _ in now = Date() }
+        .onReceive(timer) { _ in
+            now = Date()
+            // Midnight: the strip's anchor week and the selected day move
+            // together — never a strip on the new week with yesterday selected.
+            let today = cal.startOfDay(for: now)
+            if today != todayAnchor {
+                if cal.isDate(selectedDate, inSameDayAs: todayAnchor) { selectedDate = today }
+                todayAnchor = today
+            }
+        }
         .onChange(of: weekOffset) { old, new in
             // Only react to an actual swipe: if the selected day already lives in the
             // newly visible week (e.g. the "Today" button just set both), do nothing.
@@ -388,8 +398,8 @@ struct CalendarView: View {
     }
 
     private func weekDays(offset: Int) -> [Date] {
-        let base = cal.dateInterval(of: .weekOfYear, for: Date())?.start
-            ?? cal.startOfDay(for: Date())
+        let base = cal.dateInterval(of: .weekOfYear, for: todayAnchor)?.start
+            ?? todayAnchor
         let weekStart = cal.date(byAdding: .weekOfYear, value: offset, to: base) ?? base
         return (0..<7).compactMap { cal.date(byAdding: .day, value: $0, to: weekStart) }
             .map { cal.startOfDay(for: $0) }

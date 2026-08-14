@@ -534,6 +534,110 @@
         }
       }
     },
+    "%lld h %lld min left": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch %lld Std. %lld Min."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quedan %lld h %lld min"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld t %lld min jäljellä"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h %lld min restantes"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld t %lld min igjen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nog %lld u %lld min"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faltam %lld h %lld min"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Лишилось %lld год %lld хв"
+          }
+        }
+      }
+    },
+    "%lld h left": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch %lld Std."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quedan %lld h"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld t jäljellä"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h restantes"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld t igjen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nog %lld u"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faltam %lld h"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Лишилось %lld год"
+          }
+        }
+      }
+    },
     "%lld hour%@ left": {
       "localizations": {
         "de": {
@@ -643,7 +747,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Noch %lld Min"
+            "value": "Noch %lld Min."
           }
         },
         "es": {
@@ -2528,54 +2632,106 @@
         }
       }
     },
-    "Best streak: %lld %@": {
+    "Best streak: %lld days": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beste Serie: %lld %@"
+            "value": "Beste Serie: %lld Tage"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mejor racha: %lld %@"
+            "value": "Mejor racha: %lld días"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paras putki: %lld %@"
+            "value": "Paras putki: %lld päivää"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Meilleure série : %lld %@"
+            "value": "Meilleure série : %lld jours"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beste rekke: %lld %@"
+            "value": "Beste rekke: %lld dager"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beste reeks: %lld %@"
+            "value": "Beste reeks: %lld dagen"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Melhor sequência: %lld %@"
+            "value": "Melhor sequência: %lld dias"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Найдовша серія: %lld %@"
+            "value": "Найдовша серія: %lld дн."
+          }
+        }
+      }
+    },
+    "Best streak: 1 day": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beste Serie: 1 Tag"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mejor racha: 1 día"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paras putki: 1 päivä"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meilleure série : 1 jour"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beste rekke: 1 dag"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beste reeks: 1 dag"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melhor sequência: 1 dia"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Найдовша серія: 1 день"
           }
         }
       }
@@ -17535,54 +17691,106 @@
         }
       }
     },
-    "focused this %@": {
+    "focused this month": {
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "fokussiert diese %@"
+            "value": "diesen Monat fokussiert"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "enfocado este %@"
+            "value": "de foco este mes"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "keskittyneenä tänä %@"
+            "value": "keskittymistä tässä kuussa"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "de focus cette %@"
+            "value": "de concentration ce mois-ci"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "fokusert denne %@"
+            "value": "fokusert denne måneden"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "gefocust deze %@"
+            "value": "gefocust deze maand"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "focado neste %@"
+            "value": "de foco este mês"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "у фокусі за %@"
+            "value": "у фокусі цього місяця"
+          }
+        }
+      }
+    },
+    "focused this week": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "diese Woche fokussiert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "de foco esta semana"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "keskittymistä tällä viikolla"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "de concentration cette semaine"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fokusert denne uken"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gefocust deze week"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "de foco esta semana"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "у фокусі цього тижня"
           }
         }
       }

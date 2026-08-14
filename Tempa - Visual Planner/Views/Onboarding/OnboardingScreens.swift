@@ -354,7 +354,7 @@ struct Onb4DemoView: View {
     @State private var steps: [TaskBreakdown.Step] = []
     @State private var isLoading = false
     @State private var showResult = false
-    @State private var didSave = false
+
     @FocusState private var focused: Bool
 
     private let apiClient = ClaudeAPIClient()
@@ -513,7 +513,7 @@ struct Onb4DemoView: View {
             .padding(.top, 22)
 
             TempaButton(label: "That helps. Continue", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
-                saveStepsToFeed()
+                state.demoSteps = steps
                 state.next()
             }
             .padding(.top, 16)
@@ -544,23 +544,6 @@ struct Onb4DemoView: View {
 
     /// Persist the steps the user generated during onboarding as real tasks,
     /// scheduled back-to-back from now, so they appear in the task feed.
-    private func saveStepsToFeed() {
-        guard !steps.isEmpty, !didSave else { return }
-        didSave = true
-        var start = Date()
-        for step in steps {
-            let task = TaskBlock(context: viewContext)
-            task.id = UUID()
-            task.title = step.title
-            task.iconName = step.icon
-            task.category = "work"
-            task.startTime = start
-            task.durationMinutes = Int32(step.duration)
-            task.createdAt = Date()
-            start = start.addingTimeInterval(TimeInterval(step.duration) * 60)
-        }
-        try? viewContext.save()
-    }
 }
 
 // MARK: - Screen 5: Personalization
@@ -791,7 +774,7 @@ struct Onb5PersonalView: View {
     }
 
     private var energyDipLabel: String {
-        guard let dip = state.energyDipTime else { return formatHour(15) }
+        guard let dip = state.energyDipTime else { return String(localized: "Off", bundle: .appLanguage) }
         let h = Calendar.current.component(.hour, from: dip)
         return formatHour(h)
     }
@@ -1058,6 +1041,7 @@ struct Onb7ForgiveView: View {
                     .tracking(-0.8)
                     .foregroundColor(T.text)
                     .lineSpacing(-2)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.top, 12)
 
                 Text("Miss a day? Tempa just says: welcome back. We'll pick the next small thing together.")

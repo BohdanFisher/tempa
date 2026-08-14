@@ -9,6 +9,7 @@ struct TempaApp: App {
     @State private var settingsStore: SettingsStore
     @AppStorage("themePreference") private var themePreference: ThemePreference = .system
     @AppStorage("appLanguage") private var appLanguageRaw = "system"
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         let context = PersistenceController.shared.container.viewContext
@@ -32,6 +33,13 @@ struct TempaApp: App {
                 .environment(\.locale, AppLanguage.current.locale)
                 // Language switch → rebuild the whole tree so every string re-resolves live.
                 .id(appLanguageRaw)
+                // An expired/refunded subscription must lose Pro on return,
+                // not at the next cold launch.
+                .onChange(of: scenePhase) { _, phase in
+                    if phase == .active {
+                        Task { await subscriptionManager.updatePurchasedProducts() }
+                    }
+                }
         }
     }
 }

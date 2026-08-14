@@ -170,9 +170,17 @@ struct TodayView: View {
                         .frame(width: 50, height: 50)
 
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(remaining > 60 ? "\(remaining/60) hour\(remaining/60 > 1 ? "s" : "") left" : "\(remaining) min left")
-                                .font(.custom(T.fontHeader, size: 13).weight(.bold))
-                                .foregroundColor(cc.ink.opacity(0.7))
+                            Group {
+                                if remaining >= 60 && remaining % 60 != 0 {
+                                    Text("\(remaining / 60) h \(remaining % 60) min left")
+                                } else if remaining >= 60 {
+                                    Text("\(remaining / 60) h left")
+                                } else {
+                                    Text("\(remaining) min left")
+                                }
+                            }
+                            .font(.custom(T.fontHeader, size: 13).weight(.bold))
+                            .foregroundColor(cc.ink.opacity(0.7))
                             Text("Ends at \(endTime.formatted(.dateTime.hour().minute()))")
                                 .font(.custom(T.fontHeader, size: 18).weight(.heavy))
                                 .tracking(-0.2)
@@ -665,7 +673,15 @@ struct TimelineRow: View {
                                         Circle()
                                             .fill(T.textTer)
                                             .frame(width: 3, height: 3)
-                                        Text("\(remaining > 60 ? "\(remaining/60)h" : "\(remaining)m") left")
+                                        Group {
+                                            if remaining >= 60 && remaining % 60 != 0 {
+                                                Text("\(remaining / 60) h \(remaining % 60) min left")
+                                            } else if remaining >= 60 {
+                                                Text("\(remaining / 60) h left")
+                                            } else {
+                                                Text("\(remaining) min left")
+                                            }
+                                        }
                                             .font(.custom(T.fontBody, size: 12).weight(.bold))
                                             .foregroundColor(cc.ink)
                                     }
@@ -739,7 +755,8 @@ struct TimelineRow: View {
         }
         .padding(.horizontal, 20)
         .fullScreenCover(isPresented: $showProPaywall) {
-            PaywallView(allowDismiss: true) {}
+            // The user asked for steps and then paid — deliver the steps.
+            PaywallView(allowDismiss: true) { generateSteps() }
         }
         .sheet(isPresented: $showEdit) {
             EditTaskSheet(task: task)
@@ -792,6 +809,7 @@ struct TimelineRow: View {
         copy.iconName = task.iconName
         copy.colorHex = task.colorHex
         copy.category = task.category
+        copy.priority = task.priority
         copy.startTime = task.startTime
         copy.durationMinutes = task.durationMinutes
         copy.notes = task.notes

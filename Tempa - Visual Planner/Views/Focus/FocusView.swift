@@ -33,6 +33,8 @@ struct FocusView: View {
     @State private var pendingFocusRequest: FocusRequest?
     @State private var showSwitchConfirm = false
     @State private var lastHeartbeat = Date()
+    @State private var pauseTick = Date()      // 1s render nudge while paused — keeps the end-time line live
+    @State private var touchActive = false     // finger on the ring, whether or not the knob captured it
     @State private var sessionStart: Date?
     @State private var elapsed: TimeInterval = 0
     @State private var isPaused = false
@@ -107,7 +109,9 @@ struct FocusView: View {
 
     private var timeRange: String {
         guard let s = sessionStart else { return "" }
-        let end = s.addingTimeInterval(totalSec)
+        // Pauses push the finish out — show the real projected end.
+        let pausedSoFar = pauseAccum + (isPaused ? Date().timeIntervalSince(pauseStart ?? Date()) : 0)
+        let end = s.addingTimeInterval(totalSec + pausedSoFar)
         // Locale-aware: 24h in Europe, AM/PM in the US/Canada, and it honours
         // the user's own 24-Hour Time toggle.
         return "\(s.formatted(date: .omitted, time: .shortened)) → \(end.formatted(date: .omitted, time: .shortened))"
@@ -410,6 +414,7 @@ struct FocusView: View {
     private var ringDrag: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { value in
+                touchActive = true
                 guard !dragCompleted else { return }
                 let dx = value.location.x - SIZE / 2
                 let dy = value.location.y - SIZE / 2
@@ -431,6 +436,7 @@ struct FocusView: View {
                 }
             }
             .onEnded { _ in
+                touchActive = false
                 isDragging = false
                 dragAnchor = nil
                 lastActiveStep = -1
@@ -568,7 +574,7 @@ struct FocusView: View {
         }
 
         sessionStart = snap.sessionStart
-        selectedMinutes = max(1, min(60, snap.selectedMinutes))
+        selectedMinutes = max(1, min(120, snap.selectedMinutes))   // legacy pre-clamp sessions may exceed 60
         pauseAccum = snap.pauseAccum
         isPaused = snap.isPaused
         pauseStart = snap.pauseStart
@@ -648,7 +654,7 @@ struct FocusView: View {
         #if os(iOS)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
         #endif
-        selectedMinutes += 1
+        selectedMinutes = min(60, selectedMinutes + 1)   // the dial's ceiling — restore clamps there too
         persistSession()
     }
 
@@ -672,6 +678,10 @@ struct FocusView: View {
         #endif
 
         if focusMin > 0 { saveFocusData(minutes: focusMin) }
+
+        // If a finger is still on the dial, the rest of that drag must not
+        // bleed into the fresh idle dial as a new session length.
+        if isDragging || touchActive { dragCompleted = true }
 
         withAnimation(.easeInOut(duration: 0.4)) { isActive = false }
         isPaused = false
@@ -707,9 +717,16 @@ struct FocusView: View {
     // MARK: - Clock
 
     private func tickClock() {
+        guard isActive else { return }
+        if isPaused {
+            // The projected end line depends on wall time — nudge a render
+            // about once a second so it doesn't freeze at the pause moment.
+            if Date().timeIntervalSince(pauseTick) >= 1 { pauseTick = Date() }
+            return
+        }
         // lastLeft != nil → we're mid-transition from background; don't recompute
         // elapsed until the scene handler decides whether the absence was a pause.
-        guard isActive, !isPaused, lastLeft == nil, let start = sessionStart else { return }
+        guard lastLeft == nil, let start = sessionStart else { return }
         elapsed = max(0, Date().timeIntervalSince(start) - pauseAccum)
         // Refresh the crash-recovery heartbeat about twice a minute.
         if Date().timeIntervalSince(lastHeartbeat) >= 30 {

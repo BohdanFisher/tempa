@@ -4,6 +4,7 @@ import CoreData
 struct RootView: View {
     @Environment(SettingsStore.self) private var settings
     @State private var showWelcomeBack = false
+    @Environment(\.scenePhase) private var scenePhase
     @State private var planAfterWelcome = false
 
     var body: some View {
@@ -40,6 +41,23 @@ struct RootView: View {
                 showWelcomeBack = true
             }
             WelcomeBackView.recordAppOpen()
+        }
+        // A daily user who never cold-launches must not be greeted with
+        // "you took a break" — record every trip to the background, and check
+        // the gap again on every return (long breaks often end in a warm
+        // resume, where onAppear never refires).
+        .onChange(of: scenePhase) { _, phase in
+            switch phase {
+            case .active:
+                if settings.onboardingCompleted && WelcomeBackView.shouldShow() {
+                    showWelcomeBack = true
+                }
+                WelcomeBackView.recordAppOpen()
+            case .background:
+                WelcomeBackView.recordAppOpen()
+            default:
+                break
+            }
         }
     }
 }

@@ -430,9 +430,13 @@ struct MeView: View {
                     .font(.custom(T.fontHeader, size: 30).weight(.heavy))
                     .tracking(-0.5)
                     .foregroundColor(T.text)
-                Text(period == .today ? "focused today" : "focused this \(period == .week ? "week" : "month")")
-                    .font(.custom(T.fontBody, size: 14).weight(.medium))
-                    .foregroundColor(T.textSec)
+                Group {
+                    if period == .today { Text("focused today") }
+                    else if period == .week { Text("focused this week") }
+                    else { Text("focused this month") }
+                }
+                .font(.custom(T.fontBody, size: 14).weight(.medium))
+                .foregroundColor(T.textSec)
             }
 
             if total == 0 {
@@ -553,7 +557,7 @@ struct MeView: View {
 
             if s.best > 0 {
                 HStack(spacing: 14) {
-                    Text("Best streak: \(s.best) \(s.best == 1 ? "day" : "days")")
+                    if s.best == 1 { Text("Best streak: 1 day") } else { Text("Best streak: \(s.best) days") }
                     if s.bestDayCount > 0, let d = s.bestDayDate {
                         Text("Best day: \(s.bestDayCount) tasks · \(d.formatted(.dateTime.month(.abbreviated).day().locale(AppLanguage.current.locale)))")
                     }

@@ -254,7 +254,7 @@ struct AddTaskSheet: View {
                 saveSingleTask()
             }
 
-            if !title.trimmingCharacters(in: .whitespaces).isEmpty && breakdownSteps.isEmpty && !isThinking {
+            if !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && breakdownSteps.isEmpty && !isThinking {
                 breakIntoStepsButton
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
@@ -413,7 +413,7 @@ struct AddTaskSheet: View {
     }
 
     private func runBreakdown() {
-        let raw = title.trimmingCharacters(in: .whitespaces)
+        let raw = title.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !raw.isEmpty else { return }
         titleFocused = false
         isThinking = true

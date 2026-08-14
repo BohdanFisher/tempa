@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreData
 
 @Observable
 final class OnboardingState {
@@ -8,6 +9,9 @@ final class OnboardingState {
     #else
     var currentStep = 0
     #endif
+    /// Micro-steps generated in the AI demo — written to the feed only when
+    /// onboarding completes, so an abandoned run leaves no orphan tasks.
+    var demoSteps: [TaskBreakdown.Step] = []
     var selfIdPicks: Set<Int> = []
     var painPicks: Set<Int> = []
     var wakeTime = Calendar.current.date(bySettingHour: 7, minute: 30, second: 0, of: Date()) ?? Date()
@@ -27,6 +31,7 @@ final class OnboardingState {
 
 struct OnboardingFlow: View {
     @Environment(SettingsStore.self) private var settings
+    @Environment(\.managedObjectContext) private var viewContext
     @State private var state = OnboardingState()
 
     var body: some View {
@@ -52,9 +57,30 @@ struct OnboardingFlow: View {
         }
         .fullScreenCover(isPresented: $state.showPaywall) {
             PaywallView(allowDismiss: false) {
+                saveDemoSteps()
                 settings.completeOnboarding()
             }
         }
+    }
+
+    /// The demo's micro-steps become the user's first real tasks — but only
+    /// now, at completion. Abandoned onboarding writes nothing.
+    private func saveDemoSteps() {
+        guard !state.demoSteps.isEmpty else { return }
+        var start = Date()
+        for step in state.demoSteps {
+            let task = TaskBlock(context: viewContext)
+            task.id = UUID()
+            task.title = step.title
+            task.iconName = step.icon
+            task.category = "work"
+            task.startTime = start
+            task.durationMinutes = Int32(step.duration)
+            task.createdAt = Date()
+            start = start.addingTimeInterval(TimeInterval(step.duration) * 60)
+        }
+        try? viewContext.save()
+        state.demoSteps = []
     }
 
     @ViewBuilder

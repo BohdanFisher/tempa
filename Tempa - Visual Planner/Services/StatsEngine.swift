@@ -167,7 +167,9 @@ enum StatsEngine {
     /// `weeksBack` weeks bucketed into weekday × 2-hour cells.
     static func hourlyActivity(weeksBack: Int, context: NSManagedObjectContext, now: Date = Date()) -> HourlyActivity {
         var cal = Calendar.current
-        cal.locale = AppLanguage.current.locale   // weekday captions follow the app language
+        let firstWeekday = cal.firstWeekday       // region decides the week start…
+        cal.locale = AppLanguage.current.locale   // …the app language only names the days
+        cal.firstWeekday = firstWeekday
         let from = cal.date(byAdding: .day, value: -(weeksBack * 7), to: cal.startOfDay(for: now)) ?? now
 
         let req = NSFetchRequest<TaskBlock>(entityName: "TaskBlock")
@@ -283,7 +285,10 @@ enum StatsEngine {
         }
         best = max(best, current)
 
-        let bestDay = perDay.max { $0.value < $1.value }
+        let bestDay = perDay.max { a, b in
+            if a.value != b.value { return a.value < b.value }
+            return a.key < b.key   // tie → the most recent day, stable across launches
+        }
 
         let last7: [Bool] = (0..<7).map { i in
             guard let d = cal.date(byAdding: .day, value: -(6 - i), to: todayStart) else { return false }

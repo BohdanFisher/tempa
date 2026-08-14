@@ -106,6 +106,7 @@ struct PaywallView: View {
             // Retry StoreKit when the paywall appears — recovers from a failed
             // cold-start load and swaps simulated plans for real products.
             await subs.ensureProductsLoaded()
+            reconcileSelection()
         }
     }
 
@@ -218,7 +219,10 @@ struct PaywallView: View {
                 .font(.custom("Inter-Medium", size: 13).weight(.medium))
                 .foregroundColor(.white.opacity(0.8))
             Button {
-                Task { await subs.ensureProductsLoaded() }
+                Task {
+                    await subs.ensureProductsLoaded()
+                    reconcileSelection()
+                }
             } label: {
                 Text("Try again")
                     .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
@@ -372,6 +376,14 @@ struct PaywallView: View {
 
     private var selectedProduct: Product? {
         subs.products.first { $0.id == selectedProductID }
+    }
+
+    /// If the pinned default didn't load, select the first plan that did —
+    /// otherwise the CTA errors while a perfectly buyable card sits there.
+    private func reconcileSelection() {
+        guard !subs.isSimulating, !subs.products.isEmpty,
+              !subs.products.contains(where: { $0.id == selectedProductID }) else { return }
+        selectedProductID = subs.products.first(where: { $0.id != "tempa_weekly" })?.id ?? selectedProductID
     }
 
     private var hasIntroOffer: Bool {

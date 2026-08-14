@@ -34,9 +34,13 @@ final class SubscriptionManager {
 
     init() {
         transactionListener = startTransactionListener()
+        // Entitlements must not queue behind the product-fetch retry loop —
+        // a paying subscriber shouldn't open the app as "free" for 2 seconds.
+        Task { [self] in
+            await updatePurchasedProducts()
+        }
         Task { [self] in
             await ensureProductsLoaded()
-            await updatePurchasedProducts()
         }
     }
 
@@ -153,6 +157,11 @@ final class SubscriptionManager {
                 }
             }
         }
+
+        // Entitlements just moved (purchase, restore, expiry) — trial
+        // eligibility may have moved with them. Fire-and-forget: the purchase
+        // path awaits us, and its checkmark must not wait on three more calls.
+        Task { await checkIntroEligibility() }
     }
 
     func restorePurchases() async throws {
