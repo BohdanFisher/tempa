@@ -5690,6 +5690,18 @@
             "value": "Nyt øyeblikket, eller trykk + for å legge til noe."
           }
         },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geniet van het moment, of tik + om iets toe te voegen."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aproveite o momento, ou toque + para adicionar algo."
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -13780,6 +13792,18 @@
             "value": "DERETTER · OM %@"
           }
         },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DAARNA · OVER %@"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DEPOIS · EM %@"
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -17831,6 +17855,18 @@
             "value": "Jobb · Dyp fokus"
           }
         },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Werk · Diepe focus"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabalho · Foco profundo"
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -18478,6 +18514,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Du er ledig akkurat nå"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je bent nu vrij"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você está livre agora"
           }
         },
         "uk": {
