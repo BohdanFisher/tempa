@@ -57,7 +57,14 @@
       }
     },
     "\"%@\"": {
-      "localizations": {},
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"%@\""
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "%@ Time": {
@@ -339,6 +346,12 @@
             "state": "translated",
             "value": "%@ · %d min"
           }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %d min"
+          }
         }
       },
       "shouldTranslate": false
@@ -448,7 +461,14 @@
       }
     },
     "%lld": {
-      "localizations": {},
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "%lld TASKS · TAP TO TWEAK": {
@@ -1172,7 +1192,14 @@
       }
     },
     "%lld%%": {
-      "localizations": {},
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld%%"
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "%lld×/day · %lldd": {
@@ -1384,7 +1411,14 @@
       }
     },
     "12:00": {
-      "localizations": {},
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "12:00"
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "3 days free, then %@/year · cancel anytime": {
@@ -1597,11 +1631,25 @@
       }
     },
     "5:00": {
-      "localizations": {},
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5:00"
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "9:00": {
-      "localizations": {},
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "9:00"
+          }
+        }
+      },
       "shouldTranslate": false
     },
     "A focus session is already running": {
@@ -1627,7 +1675,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Une session de concentration est déjà en cours"
+            "value": "Une session de focus est déjà en cours"
           }
         },
         "nb": {
@@ -1830,6 +1878,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "TEKOÄLY"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IA"
           }
         }
       },
@@ -5576,6 +5630,12 @@
             "value": "Nauti hetkestä tai napauta + lisätäksesi jotain."
           }
         },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profite du moment, ou touche + pour ajouter quelque chose."
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -7790,6 +7850,12 @@
             "value": "Viimeksi päivitetty: %@"
           }
         },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernière mise à jour : %@"
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -9999,6 +10065,12 @@
           }
         },
         "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "fr": {
           "stringUnit": {
             "state": "translated",
             "value": "OK"
@@ -13669,6 +13741,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "SITTEN · %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ENSUITE · DANS %@"
           }
         },
         "uk": {
@@ -17710,6 +17788,12 @@
             "value": "Työ · Syvä keskittyminen"
           }
         },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Travail · Focus profond"
+          }
+        },
         "uk": {
           "stringUnit": {
             "state": "translated",
@@ -18345,6 +18429,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Olet vapaana juuri nyt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu es libre en ce moment"
           }
         },
         "uk": {
