@@ -162,11 +162,16 @@ struct PaywallView: View {
                 .foregroundColor(T.text)
                 .padding(.bottom, 10)
 
-            timelineStep(icon: "lock.open.fill", day: "Today",
+            timelineStep(icon: "lock.open.fill",
+                         day: String(localized: "Today", bundle: .appLanguage),
                          text: "Full access to everything", filled: true, last: false)
-            timelineStep(icon: "bell.fill", day: "Day 2",
-                         text: "A reminder before anything is charged", filled: false, last: false)
-            timelineStep(icon: "checkmark.seal.fill", day: "Day 3",
+            if trialDays >= 2 {
+                timelineStep(icon: "bell.fill",
+                             day: String(localized: "Day \(trialDays - 1)", bundle: .appLanguage),
+                             text: "A reminder before anything is charged", filled: false, last: false)
+            }
+            timelineStep(icon: "checkmark.seal.fill",
+                         day: String(localized: "Day \(trialDays)", bundle: .appLanguage),
                          text: "Yearly starts — cancel anytime before", filled: false, last: true)
 
             Divider()
@@ -189,7 +194,7 @@ struct PaywallView: View {
         .tempaShadowSm()
     }
 
-    private func timelineStep(icon: String, day: LocalizedStringKey, text: LocalizedStringKey,
+    private func timelineStep(icon: String, day: String, text: LocalizedStringKey,
                               filled: Bool, last: Bool) -> some View {
         HStack(alignment: .top, spacing: 12) {
             VStack(spacing: 2) {
@@ -237,7 +242,7 @@ struct PaywallView: View {
                         isYearly: plan.id == "tempa_yearly",
                         price: plan.price,
                         sub: plan.monthlyPrice.map { String(localized: "\($0)/mo", bundle: .appLanguage) } ?? String(localized: "per \(plan.periodLabel)", bundle: .appLanguage),
-                        detail: plan.id == "tempa_yearly" ? String(localized: "3 days free, then billed yearly", bundle: .appLanguage) : nil
+                        detail: plan.id == "tempa_yearly" ? String(localized: "\(trialLengthText) free, then billed yearly", bundle: .appLanguage) : nil
                     )
                     .staggerIn(i, baseDelay: 0.1)
                 }
@@ -255,7 +260,7 @@ struct PaywallView: View {
                         price: product.displayPrice,
                         sub: yearly ? (monthlyEquivalent(product).map { String(localized: "\($0)/mo", bundle: .appLanguage) } ?? String(localized: "per year", bundle: .appLanguage)) : String(localized: "per \(periodLabel(product))", bundle: .appLanguage),
                         detail: yearly && (subs.hasIntroOfferEligibility["tempa_yearly"] ?? false)
-                            ? String(localized: "3 days free, then billed yearly", bundle: .appLanguage) : nil
+                            ? String(localized: "\(trialLengthText) free, then billed yearly", bundle: .appLanguage) : nil
                     )
                     .staggerIn(i, baseDelay: 0.1)
                 }
@@ -401,7 +406,7 @@ struct PaywallView: View {
                     ProgressView().tint(.white)
                         .transition(.opacity)
                 case .idle:
-                    Text(hasIntroOffer ? "Start 3-day free trial" : "Continue")
+                    Text(hasIntroOffer ? "Start your free trial" : "Continue")
                         .font(.custom("Nunito-ExtraBold", size: 17).weight(.heavy))
                         .transition(.opacity)
                 }
@@ -429,7 +434,7 @@ struct PaywallView: View {
     private var transparencyLine: some View {
         Group {
             if hasIntroOffer, let price = yearlyPriceString {
-                Text("3 days free, then \(price)/year · cancel anytime")
+                Text("\(trialLengthText) free, then \(price)/year · cancel anytime")
             } else {
                 Text("Cancel anytime")
             }
@@ -493,11 +498,17 @@ struct PaywallView: View {
     }
 
     private var hasIntroOffer: Bool {
-        #if DEBUG
         // "-force-trial YES": show the trial timeline regardless of what
-        // StoreKit says, for reviewing the screen itself. Never in Release.
-        if UserDefaults.standard.bool(forKey: "force-trial") { return true }
-        #endif
+        // StoreKit says, for reviewing the screen itself. Owner only.
+        if OwnerMode.isActive && UserDefaults.standard.bool(forKey: "force-trial") { return true }
+        // The owner's test cycle plays a brand-new user until the funnel is
+        // completed once on this install (see RootView) — and a new user IS
+        // trial-eligible, even though the owner's test Apple ID used the
+        // intro offer up long ago. Only for plans that truly carry one.
+        if OwnerMode.playingNewUser,
+           selectedProduct?.subscription?.introductoryOffer != nil {
+            return true
+        }
         return subs.hasIntroOfferEligibility[selectedProductID] ?? false
     }
 
@@ -523,13 +534,61 @@ struct PaywallView: View {
         }
     }
 
+    /// The only figure on this screen we derive rather than read — and it is
+    /// formatted by StoreKit's own style, so the currency and layout match the
+    /// App Store exactly. A NumberFormatter would take the currency from the
+    /// locale instead of from the buyer's storefront and could print the wrong
+    /// symbol where the two disagree.
     private func monthlyEquivalent(_ product: Product) -> String? {
         guard let p = product.subscription?.subscriptionPeriod, p.unit == .year else { return nil }
-        let mo = product.price / 12
-        let fmt = NumberFormatter()
-        fmt.numberStyle = .currency
-        fmt.locale = product.priceFormatStyle.locale
-        return fmt.string(from: mo as NSDecimalNumber)
+        return (product.price / 12).formatted(product.priceFormatStyle)
+    }
+
+    // MARK: - Trial length (read from the App Store offer, never assumed)
+
+    /// The introductory offer as configured in App Store Connect. Falls back to
+    /// the yearly plan's offer so the timeline still reads correctly while a
+    /// different card is selected.
+    private var introOffer: Product.SubscriptionOffer? {
+        selectedProduct?.subscription?.introductoryOffer
+            ?? subs.products.first(where: { $0.id == "tempa_yearly" })?.subscription?.introductoryOffer
+    }
+
+    /// Trial length in days — drives the timeline and the reminder, so neither
+    /// can drift from what Apple actually grants.
+    private var trialDays: Int {
+        guard let period = introOffer?.period else { return 3 }
+        switch period.unit {
+        case .day: return period.value
+        case .week: return period.value * 7
+        case .month: return period.value * 30
+        case .year: return period.value * 365
+        @unknown default: return period.value
+        }
+    }
+
+    /// "3 days", "1 week" — the offer's own length, worded by the system in the
+    /// app's language instead of hardcoded in nine translations.
+    private var trialLengthText: String {
+        var comps = DateComponents()
+        if let period = introOffer?.period {
+            switch period.unit {
+            case .day: comps.day = period.value
+            case .week: comps.weekOfMonth = period.value
+            case .month: comps.month = period.value
+            case .year: comps.year = period.value
+            @unknown default: comps.day = period.value
+            }
+        } else {
+            comps.day = 3   // no product loaded (dev simulation only)
+        }
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full
+        formatter.allowedUnits = [.day, .weekOfMonth, .month, .year]
+        var calendar = Calendar.current
+        calendar.locale = AppLanguage.current.locale
+        formatter.calendar = calendar
+        return formatter.string(from: comps) ?? "\(comps.day ?? 3)"
     }
 
     private func purchaseSelected() async {
@@ -593,7 +652,9 @@ struct PaywallView: View {
             content.title = String(localized: "Your free trial ends tomorrow", bundle: .appLanguage)
             content.body = String(localized: "If Tempa isn't for you, cancel in the App Store — no hard feelings.", bundle: .appLanguage)
             content.sound = .default
-            let fire = Calendar.current.date(byAdding: .day, value: 2, to: Date()) ?? Date().addingTimeInterval(172_800)
+            let reminderDay = max(1, trialDays - 1)
+            let fire = Calendar.current.date(byAdding: .day, value: reminderDay, to: Date())
+                ?? Date().addingTimeInterval(TimeInterval(reminderDay) * 86_400)
             let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: fire)
             let request = UNNotificationRequest(
                 identifier: "trial-ending-reminder",

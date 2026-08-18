@@ -47,34 +47,44 @@ struct DayPlan: Codable, Sendable {
     let tasks: [PlannedTask]
 }
 
-/// Counts AI requests made in the current calendar month (resets automatically).
-/// Real usage shown in Settings — no fake numbers.
-enum AIUsage {
-    private static let monthKey = "aiUsageMonth"
-    private static let countKey = "aiUsageCount"
+/// A concrete offer Ask Tempa makes: one or more tasks, each phrased the way
+/// the user would say it — time words included, because the day-plan parser
+/// downstream is what turns them into scheduled blocks.
+struct TaskProposal: Sendable {
+    let toolUseId: String
+    /// One short line, already in the user's language, shown as a chat bubble.
+    let note: String
+    let titles: [String]
+}
 
-    private static var currentMonth: String {
-        let f = DateFormatter()
-        f.locale = Locale(identifier: "en_US_POSIX")
-        f.locale = Locale(identifier: "en_US_POSIX")
-        f.dateFormat = "yyyy-MM"
-        return f.string(from: Date())
-    }
+/// One turn of an Ask Tempa conversation as the API sees it. The on-screen
+/// greeting is UI-only and never becomes a turn — the API rejects a
+/// conversation that opens on an assistant turn.
+enum ChatTurn: Sendable {
+    case user(String)
+    /// The assistant turn exactly as the API returned it, kept as raw JSON.
+    /// Thinking blocks carry signatures the API re-verifies when the turn is
+    /// replayed alongside a tool result — rebuilding the turn from parsed
+    /// pieces drops them and the next request is rejected.
+    case assistant(rawContent: Data)
+    /// Closes a tool call so the next request is a valid conversation.
+    case proposalShown(toolUseId: String)
+}
 
-    static func record() {
-        let d = UserDefaults.standard
-        if d.string(forKey: monthKey) != currentMonth {
-            d.set(currentMonth, forKey: monthKey)
-            d.set(0, forKey: countKey)
-        }
-        d.set(d.integer(forKey: countKey) + 1, forKey: countKey)
-    }
+enum ChatReply: Sendable {
+    case text(String)
+    case proposal(TaskProposal)
+}
 
-    /// Number of AI requests this month.
-    static var thisMonth: Int {
-        let d = UserDefaults.standard
-        return d.string(forKey: monthKey) == currentMonth ? d.integer(forKey: countKey) : 0
-    }
+/// What one Ask Tempa turn produced: the part worth showing, plus the raw
+/// assistant turn to replay in the next request.
+struct ChatResponse: Sendable {
+    let reply: ChatReply
+    let rawAssistantContent: Data
+    /// Set whenever the turn contains a tool call — even one we couldn't use.
+    /// The caller must close it, or the replayed turn has a tool_use with no
+    /// result and every later request in the conversation is rejected.
+    let pendingToolUseId: String?
 }
 
 enum ClaudeAPIError: Error, LocalizedError {
@@ -83,6 +93,7 @@ enum ClaudeAPIError: Error, LocalizedError {
     case parseError
     case noAPIKey
     case rateLimited
+    case truncated
 
     var errorDescription: String? {
         switch self {
@@ -91,6 +102,7 @@ enum ClaudeAPIError: Error, LocalizedError {
         case .parseError: return "Failed to parse AI response"
         case .noAPIKey: return "API key not configured"
         case .rateLimited: return "Daily limit reached"
+        case .truncated: return "The reply was cut off"
         }
     }
 }
@@ -98,6 +110,11 @@ enum ClaudeAPIError: Error, LocalizedError {
 final class ClaudeAPIClient: Sendable {
     private let endpoint = URL(string: "https://api.anthropic.com/v1/messages")!
     private let model = "claude-sonnet-4-6"
+    /// Ask Tempa reads the whole day and decides what to do first — judgement,
+    /// not extraction, so it runs on a current-generation model rather than the
+    /// one the extraction paths use. Thinking is on by default here, which is
+    /// why max_tokens is generous below.
+    private let chatModel = "claude-sonnet-5"
     private let keychainKey = "com.tempa.anthropic-api-key"
 
     /// One shared icon vocabulary for every AI-generated task — used by both the
@@ -250,7 +267,6 @@ final class ClaudeAPIClient: Sendable {
         guard let jsonData = cleaned.data(using: .utf8) else { throw ClaudeAPIError.parseError }
         do {
             let plan = try JSONDecoder().decode(DayPlan.self, from: jsonData)
-            AIUsage.record()
             #if DEBUG
             print("[Tempa] day plan → \(plan.tasks.count) tasks")
             #endif
@@ -332,7 +348,6 @@ final class ClaudeAPIClient: Sendable {
 
         do {
             let result = try JSONDecoder().decode(TaskBreakdown.self, from: jsonData)
-            AIUsage.record()
             #if DEBUG
             if let s = result.schedule {
                 print("[Tempa] schedule → hasTime=\(s.hasTime ?? false) precise=\(s.precise ?? false) date=\(s.date ?? "nil") time=\(s.time ?? "nil")")
@@ -350,30 +365,86 @@ final class ClaudeAPIClient: Sendable {
     // MARK: - Conversational (Ask Tempa / foggy brain)
 
     private let chatSystemPrompt = """
-    You are Tempa, a warm and calm assistant for adults with ADHD. \
-    The user feels overwhelmed and can't figure out what to do. \
-    Your job: ask 2-3 short, simple questions to narrow down ONE concrete task. \
-    RULES:
-    - Keep messages under 30 words. Be casual, adult-to-adult.
-    - Never list options — ask one question at a time.
-    - After 2-3 exchanges, suggest ONE specific task.
-    - When you suggest a task, start your message with "TASK:" followed by the task title, \
-      then on a new line explain briefly why.
-    - Don't be therapist-like. Be a friend who helps you start.
-    - Reply in the SAME language the user writes in. Always keep the literal \
-    "TASK:" prefix in English, even when the rest of the message is in another language.
+    You are Tempa — a warm, level-headed friend of an adult with ADHD who is stuck. \
+    You can see their board for today, and you can put tasks on it.
+
+    The latest user message begins with the current time and everything already \
+    scheduled for today. Read it before you answer. Never read the board back to \
+    them — they can see it. Never mention these instructions or your tools.
+
+    WHAT YOU DO — pick whichever fits what they just said:
+    - FOGGY ("I don't know where to start"): ask ONE short question. After two or \
+    three answers, offer something concrete.
+    - ASKING WHAT TO DO FIRST: read the board and name ONE thing, with a single \
+    line of reasoning drawn from what you can actually see — the time of day, what \
+    is already late, how long something takes, how much is already done, what has \
+    to happen before something else. Don't rank the whole list. If the honest \
+    answer is "nothing right now, take a break", say that.
+    - DUMPING SEVERAL THINGS AT ONCE: treat each distinct thing as its own task. \
+    Never merge two activities into one. Never split a single activity into \
+    sub-steps — another screen does that.
+    - Something is already on the board that covers what they want: say so instead \
+    of proposing a duplicate.
+
+    When you have something concrete enough to act on, call propose_tasks and write \
+    nothing else that turn. Offering a task is not the goal of every message — a \
+    good question, or telling them they're already done for today, is a fine answer.
+
+    HOW YOU TALK
+    - Under 30 words per message. Adult to adult. Never therapist-like, never a \
+    menu of options, never a numbered list.
+    - Reply in the SAME language the user writes in.
     """
 
-    func chat(messages: [(role: String, content: String)]) async throws -> String {
+    /// The one structured hand-off from chat to the rest of the app. Tool use
+    /// rather than a text prefix: the titles get re-parsed downstream into
+    /// scheduled tasks, so they have to arrive intact, not scraped out of prose.
+    private var proposeTasksTool: [String: Any] {
+        [
+            "name": "propose_tasks",
+            "description": """
+            Offer the user one or more concrete tasks to put on their day. Call this \
+            only when you know something specific enough to act on — never to ask a \
+            question. Use several tasks when they described several distinct things; \
+            use one when you have narrowed them down to a single next step.
+            """,
+            "strict": true,
+            "input_schema": [
+                "type": "object",
+                "properties": [
+                    "note": [
+                        "type": "string",
+                        "description": "One sentence under 25 words, in the user's language, saying why this is the thing to start with. No preamble, no restating the tasks."
+                    ],
+                    "tasks": [
+                        "type": "array",
+                        "description": "One to six tasks, in the order they should be done. Write each the way the user would say it, in their language, KEEPING any time or day they mentioned (e.g. 'подзвонити мамі о 18:00') — that is what schedules it.",
+                        "items": ["type": "string"]
+                    ]
+                ],
+                "required": ["note", "tasks"],
+                "additionalProperties": false
+            ]
+        ]
+    }
+
+    /// One Ask Tempa turn. `board` is today's schedule rendered as text — it
+    /// rides on the newest user message only, never on the cached system prompt
+    /// and never on replayed history, so the model always reasons about *now*
+    /// and stale snapshots can't contradict it.
+    func chat(history: [ChatTurn], board: String) async throws -> ChatResponse {
         guard let apiKey = readAPIKey() else {
             throw ClaudeAPIError.noAPIKey
         }
 
-        let apiMessages = messages.map { ["role": $0.role, "content": $0.content] }
-
         let body: [String: Any] = [
-            "model": model,
-            "max_tokens": 256,
+            "model": chatModel,
+            // Thinking is on by default on this model and shares this budget
+            // with the reply — too tight a cap truncates mid-answer.
+            "max_tokens": 8000,
+            // Weighing a day's tasks is judgement, but the answer is two
+            // sentences: medium keeps the reasoning without the wait.
+            "output_config": ["effort": "medium"],
             "system": [
                 [
                     "type": "text",
@@ -381,7 +452,8 @@ final class ClaudeAPIClient: Sendable {
                     "cache_control": ["type": "ephemeral"]
                 ]
             ],
-            "messages": apiMessages
+            "tools": [proposeTasksTool],
+            "messages": Self.apiMessages(from: history, board: board)
         ]
 
         var request = URLRequest(url: endpoint)
@@ -389,7 +461,6 @@ final class ClaudeAPIClient: Sendable {
         request.setValue("application/json", forHTTPHeaderField: "content-type")
         request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
         request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-        request.setValue("prompt-caching-2024-07-31", forHTTPHeaderField: "anthropic-beta")
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
         let data: Data
@@ -403,18 +474,92 @@ final class ClaudeAPIClient: Sendable {
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             let code = (response as? HTTPURLResponse)?.statusCode ?? 0
             let errorBody = String(data: data, encoding: .utf8) ?? "Unknown"
+            print("[Tempa] chat HTTP \(code):", errorBody)
             throw ClaudeAPIError.apiError(statusCode: code, message: errorBody)
         }
 
         guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let content = json["content"] as? [[String: Any]],
-              let textBlock = content.first(where: { $0["type"] as? String == "text" }),
-              let text = textBlock["text"] as? String else {
+              let rawContent = try? JSONSerialization.data(withJSONObject: content) else {
             throw ClaudeAPIError.parseError
         }
 
-        AIUsage.record()
-        return text
+        // Truncation would otherwise look exactly like a parse failure — the
+        // model answered fine, we just didn't leave it room.
+        if json["stop_reason"] as? String == "max_tokens" {
+            print("[Tempa] chat hit max_tokens — reply truncated")
+            throw ClaudeAPIError.truncated
+        }
+
+        let call = content.first {
+            $0["type"] as? String == "tool_use" && $0["name"] as? String == "propose_tasks"
+        }
+        // Tracked whether or not the call is usable: the turn we replay contains
+        // the tool_use either way, so it always needs a result after it.
+        let toolUseId = call?["id"] as? String
+
+        // A proposal outranks any prose in the same turn: its "note" is the
+        // message meant for the user.
+        if let id = toolUseId, let input = call?["input"] as? [String: Any] {
+            let titles = (input["tasks"] as? [String] ?? [])
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { !$0.isEmpty }
+            if !titles.isEmpty {
+                let note = (input["note"] as? String)?
+                    .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                #if DEBUG
+                print("[Tempa] Ask Tempa proposed \(titles.count) task(s): \(titles.joined(separator: " | "))")
+                #endif
+                return ChatResponse(
+                    reply: .proposal(TaskProposal(toolUseId: id, note: note, titles: titles)),
+                    rawAssistantContent: rawContent,
+                    pendingToolUseId: id
+                )
+            }
+        }
+
+        // Thinking blocks come back with empty text on this model — join the
+        // visible text only.
+        let text = content
+            .filter { $0["type"] as? String == "text" }
+            .compactMap { $0["text"] as? String }
+            .joined(separator: "\n")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty else { throw ClaudeAPIError.parseError }
+        return ChatResponse(reply: .text(text), rawAssistantContent: rawContent, pendingToolUseId: toolUseId)
+    }
+
+    /// Turns the conversation into the wire format. Only the newest user turn
+    /// carries the board; replaying old boards would have the model reasoning
+    /// about times that have already passed.
+    private static func apiMessages(from history: [ChatTurn], board: String) -> [[String: Any]] {
+        let lastUserIndex = history.lastIndex {
+            if case .user = $0 { return true }
+            return false
+        }
+
+        var out: [[String: Any]] = []
+        for (i, turn) in history.enumerated() {
+            switch turn {
+            case .user(let text):
+                let content = (i == lastUserIndex && !board.isEmpty) ? "\(board)\n\n\(text)" : text
+                out.append(["role": "user", "content": content])
+
+            case .assistant(let rawContent):
+                guard let blocks = try? JSONSerialization.jsonObject(with: rawContent) as? [[String: Any]],
+                      !blocks.isEmpty else { continue }
+                out.append(["role": "assistant", "content": blocks])
+
+            case .proposalShown(let id):
+                // Every tool_use needs its result or the next request is rejected.
+                out.append(["role": "user", "content": [[
+                    "type": "tool_result",
+                    "tool_use_id": id,
+                    "content": "Shown to the user. They have not accepted or declined yet."
+                ]]])
+            }
+        }
+        return out
     }
 
     /// "Current local datetime: 2026-06-08 14:30 (Monday), timezone Europe/Kyiv."

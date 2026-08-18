@@ -59,7 +59,6 @@ struct FocusView: View {
     @State private var particleID: UInt32 = 0
 
     // Audio
-    @State private var completionPlayer: AVAudioPlayer?
 
     // Timers
     private let clock = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
@@ -772,20 +771,12 @@ struct FocusView: View {
 
     // MARK: - Audio
 
+    /// Same chime, same level as finishing a task — this screen used to own a
+    /// second player, which is how the two drifted apart on volume. There is
+    /// only one now. The system-sound fallback is gone too: it played at the
+    /// system's own volume, which is exactly the blast we're avoiding.
     private func playCompletionSound() {
-        if let url = Bundle.main.url(forResource: "universfield-new-notification-013-363676", withExtension: "mp3") {
-            do {
-                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
-                try AVAudioSession.sharedInstance().setActive(true)
-                completionPlayer = try AVAudioPlayer(contentsOf: url)
-                completionPlayer?.volume = 0.5
-                completionPlayer?.play()
-            } catch { print("Completion sound error: \(error)") }
-        } else {
-            #if os(iOS)
-            AudioServicesPlaySystemSound(1007)
-            #endif
-        }
+        SoundPlayer.shared.playSuccess()
     }
 }
 

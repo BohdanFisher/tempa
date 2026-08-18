@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import CoreData
 
 struct ChatBubble: View {
     enum Sender { case me, ai }
@@ -55,7 +56,12 @@ struct ChatMessage: Identifiable {
 
 struct AddTaskAskAIView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.managedObjectContext) private var viewContext
     @State private var messages: [ChatMessage] = []
+    /// The conversation as the API sees it — deliberately separate from
+    /// `messages`, which is presentation only. Tool calls and their results
+    /// have to survive here or the next request is rejected.
+    @State private var turns: [ChatTurn] = []
     @State private var replyText = ""
     @State private var isLoading = false
     @State private var suggestedTask: String?
@@ -321,6 +327,7 @@ struct AddTaskAskAIView: View {
 
     private func sendMessage(_ text: String) {
         messages.append(ChatMessage(from: .me, text: text))
+        turns.append(.user(text))
         isLoading = true
         #if os(iOS)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -328,27 +335,25 @@ struct AddTaskAskAIView: View {
 
         Task {
             do {
-                // The API rejects a conversation that OPENS with an assistant
-                // turn — our greeting is UI-only, so drop leading AI messages.
-                let apiMessages = messages.drop(while: { $0.from == .ai }).map { msg -> (role: String, content: String) in
-                    (role: msg.from == .me ? "user" : "assistant", content: msg.text)
+                let response = try await apiClient.chat(history: turns, board: todayBoard())
+                turns.append(.assistant(rawContent: response.rawAssistantContent))
+                // Close the tool call before anything else can go wrong — an
+                // unanswered one poisons every later message in this chat.
+                if let toolUseId = response.pendingToolUseId {
+                    turns.append(.proposalShown(toolUseId: toolUseId))
                 }
-                let response = try await apiClient.chat(messages: apiMessages)
 
-                // Check if response contains a task suggestion
-                if response.hasPrefix("TASK:") {
-                    let lines = response.components(separatedBy: "\n")
-                    let taskTitle = lines[0]
-                        .replacingOccurrences(of: "TASK:", with: "")
-                        .trimmingCharacters(in: .whitespaces)
-                    let explanation = lines.dropFirst().joined(separator: " ").trimmingCharacters(in: .whitespaces)
+                switch response.reply {
+                case .text(let answer):
+                    messages.append(ChatMessage(from: .ai, text: answer))
 
-                    if !explanation.isEmpty {
-                        messages.append(ChatMessage(from: .ai, text: explanation))
+                case .proposal(let proposal):
+                    if !proposal.note.isEmpty {
+                        messages.append(ChatMessage(from: .ai, text: proposal.note))
                     }
-                    suggestedTask = taskTitle
-                } else {
-                    messages.append(ChatMessage(from: .ai, text: response))
+                    // One line per task — the card renders it as-is, and the same
+                    // text is what the day planner splits back into tasks.
+                    suggestedTask = proposal.titles.joined(separator: "\n")
                 }
             } catch {
                 messages.append(ChatMessage(from: .ai, text: String(localized: "Sorry, I hit a snag. Try telling me what area feels heaviest — work, home, or body?", bundle: .appLanguage)))
@@ -358,6 +363,54 @@ struct AddTaskAskAIView: View {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
             #endif
         }
+    }
+
+    /// Today's schedule as plain text, so Tempa can weigh what's already there
+    /// instead of guessing. Sent with each message because "now" keeps moving.
+    private func todayBoard() -> String {
+        let cal = Calendar.current
+        let startOfDay = cal.startOfDay(for: Date())
+        guard let endOfDay = cal.date(byAdding: .day, value: 1, to: startOfDay) else { return "" }
+
+        let request = NSFetchRequest<TaskBlock>(entityName: "TaskBlock")
+        request.predicate = NSPredicate(
+            format: "startTime >= %@ AND startTime < %@",
+            startOfDay as NSDate, endOfDay as NSDate
+        )
+        request.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true)]
+        request.fetchLimit = 40
+        let tasks = (try? viewContext.fetch(request)) ?? []
+
+        let clock = DateFormatter()
+        clock.locale = Locale(identifier: "en_US_POSIX")
+        clock.dateFormat = "HH:mm"
+        let day = DateFormatter()
+        day.locale = Locale(identifier: "en_US_POSIX")
+        day.dateFormat = "EEEE, yyyy-MM-dd"
+
+        var lines = ["Right now it is \(clock.string(from: Date())) on \(day.string(from: Date()))."]
+
+        if tasks.isEmpty {
+            lines.append("Nothing is scheduled for today yet.")
+        } else {
+            let done = tasks.filter(\.isCompleted).count
+            lines.append("Today's board — \(tasks.count) task(s), \(done) already done:")
+            for task in tasks {
+                let time = task.startTime.map { clock.string(from: $0) } ?? "--:--"
+                let title = task.title ?? "(untitled)"
+                var line = "- \(time) (\(task.durationMinutes) min) \(title)"
+                if let category = task.category, !category.isEmpty { line += " · \(category)" }
+                line += task.isCompleted ? " · DONE" : " · not done"
+                switch task.priority {
+                case 3: line += " · high priority"
+                case 2: line += " · medium priority"
+                case 1: line += " · low priority"
+                default: break
+                }
+                lines.append(line)
+            }
+        }
+        return lines.joined(separator: "\n")
     }
 }
 

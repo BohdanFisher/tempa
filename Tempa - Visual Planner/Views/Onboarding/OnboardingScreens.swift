@@ -914,6 +914,29 @@ struct Onb6SocialView: View {
         return String(localized: "\(n)+ reviews", bundle: .appLanguage)
     }
 
+    private var ratingStars: some View {
+        HStack(spacing: 2) {
+            ForEach(0..<5, id: \.self) { _ in
+                Image(systemName: "star.fill")
+                    .font(.system(size: 9))
+                    .foregroundColor(Cat.routine.ink)
+            }
+        }
+    }
+
+    /// Score carries the weight; the count stays quiet behind it.
+    private var ratingScoreText: some View {
+        Text(Self.ratingScore)
+            .font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
+            .foregroundColor(T.text)
+    }
+
+    private var reviewCountText: some View {
+        Text(Self.reviewCount)
+            .font(.custom("Inter-Medium", size: 12).weight(.medium))
+            .foregroundColor(T.textSec)
+    }
+
     private let testimonials = [
         (quote: String(localized: "For the first time, I finish things. I just see the tiny next step and go.", bundle: .appLanguage), name: "Maya, 32"),
         (quote: String(localized: "No streaks to lose was the unlock for me. I'm three months in.", bundle: .appLanguage), name: "Jordan, 27"),
@@ -965,21 +988,23 @@ struct Onb6SocialView: View {
                                 .foregroundColor(T.textSec)
                         }
 
-                        HStack(spacing: 6) {
-                            HStack(spacing: 2) {
-                                ForEach(0..<5, id: \.self) { _ in
-                                    Image(systemName: "star.fill")
-                                        .font(.system(size: 9))
-                                        .foregroundColor(Cat.routine.ink)
-                                }
+                        // English fits on one line; "Понад 12 400 відгуків" and
+                        // its German/Dutch cousins don't — they'd shrink to the
+                        // floor and still truncate. So the count drops to its
+                        // own line exactly when it has to, per language.
+                        ViewThatFits(in: .horizontal) {
+                            HStack(spacing: 6) {
+                                ratingStars
+                                ratingScoreText
+                                reviewCountText
                             }
-                            // Score carries the weight; the count stays quiet behind it.
-                            Text(Self.ratingScore)
-                                .font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
-                                .foregroundColor(T.text)
-                            Text(Self.reviewCount)
-                                .font(.custom("Inter-Medium", size: 12).weight(.medium))
-                                .foregroundColor(T.textSec)
+                            VStack(alignment: .leading, spacing: 3) {
+                                HStack(spacing: 6) {
+                                    ratingStars
+                                    ratingScoreText
+                                }
+                                reviewCountText
+                            }
                         }
                     }
                     .lineLimit(1)

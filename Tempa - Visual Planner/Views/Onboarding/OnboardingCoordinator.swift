@@ -33,6 +33,10 @@ struct OnboardingFlow: View {
     @Environment(SettingsStore.self) private var settings
     @Environment(\.managedObjectContext) private var viewContext
     @State private var state = OnboardingState()
+    /// Set the moment the funnel reaches the paywall — from then on RootView
+    /// routes a relaunch straight to the paywall instead of replaying all the
+    /// funnel screens. UserDefaults on purpose: a reinstall clears it.
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
 
     /// Fired once the funnel is done (paywall completed).
     var onFinished: (() -> Void)? = nil
@@ -60,31 +64,22 @@ struct OnboardingFlow: View {
         }
         .fullScreenCover(isPresented: $state.showPaywall) {
             PaywallView(allowDismiss: false) {
-                saveDemoSteps()
+                DemoPlanStash.materialize(into: viewContext)
                 settings.completeOnboarding()
                 onFinished?()
             }
         }
-    }
-
-    /// The demo's micro-steps become the user's first real tasks — but only
-    /// now, at completion. Abandoned onboarding writes nothing.
-    private func saveDemoSteps() {
-        guard !state.demoSteps.isEmpty else { return }
-        var start = Date()
-        for step in state.demoSteps {
-            let task = TaskBlock(context: viewContext)
-            task.id = UUID()
-            task.title = step.title
-            task.iconName = step.icon
-            task.category = "work"
-            task.startTime = start
-            task.durationMinutes = Int32(step.duration)
-            task.createdAt = Date()
-            start = start.addingTimeInterval(TimeInterval(step.duration) * 60)
+        .onChange(of: state.showPaywall) { _, shown in
+            guard shown else { return }
+            // The demo plan must survive a kill at the paywall — the relaunch
+            // lands on the ROOT paywall, where this funnel's memory is gone.
+            DemoPlanStash.stash(state.demoSteps)
+            // Forced test runs (RootView passes onFinished: fresh dev install
+            // or "-force-onboarding") must not persist the flag — the next
+            // NORMAL launch would land on a hard paywall instead of the app.
+            guard onFinished == nil else { return }
+            hasCompletedOnboarding = true
         }
-        try? viewContext.save()
-        state.demoSteps = []
     }
 
     @ViewBuilder
@@ -103,6 +98,49 @@ struct OnboardingFlow: View {
         case 10: Onb9BuildingView(state: state, settings: settings)
         default: EmptyView()
         }
+    }
+}
+
+// MARK: - Demo plan stash
+
+/// The onboarding demo's micro-steps, parked in UserDefaults from the moment
+/// the funnel reaches the paywall until a purchase completes — on EITHER
+/// paywall (the funnel's cover, or the root one after a kill-and-relaunch).
+/// The feed itself is only written on purchase, so a run that never pays
+/// still leaves no orphan tasks.
+enum DemoPlanStash {
+    private static let key = "pendingDemoSteps"
+
+    static func stash(_ steps: [TaskBreakdown.Step]) {
+        guard !steps.isEmpty, let data = try? JSONEncoder().encode(steps) else { return }
+        UserDefaults.standard.set(data, forKey: key)
+    }
+
+    /// Writes the stashed steps as the user's first real tasks, starting NOW —
+    /// the stash may be days old, and a plan scheduled in the past helps no one.
+    static func materialize(into context: NSManagedObjectContext) {
+        guard let data = UserDefaults.standard.data(forKey: key),
+              let steps = try? JSONDecoder().decode([TaskBreakdown.Step].self, from: data),
+              !steps.isEmpty else { return }
+        UserDefaults.standard.removeObject(forKey: key)
+        // These are written FOR the user by onboarding — they must not count
+        // as the first task they created (no rating prompt on a plan they
+        // haven't even seen yet).
+        ReviewPrompt.isWritingDemoPlan = true
+        defer { ReviewPrompt.isWritingDemoPlan = false }
+        var start = Date()
+        for step in steps {
+            let task = TaskBlock(context: context)
+            task.id = UUID()
+            task.title = step.title
+            task.iconName = step.icon
+            task.category = "work"
+            task.startTime = start
+            task.durationMinutes = Int32(step.duration)
+            task.createdAt = Date()
+            start = start.addingTimeInterval(TimeInterval(step.duration) * 60)
+        }
+        try? context.save()
     }
 }
 

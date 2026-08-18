@@ -1,6 +1,7 @@
 import SwiftUI
 import CoreData
 import Observation
+import StoreKit   // requestReview lives here
 
 // MARK: - 1. Таби
 
@@ -65,6 +66,10 @@ struct FocusRequest: Equatable {
 struct MainTabView: View {
     @State private var router = AppRouter.shared
     @State private var selectedTab: AppTab = AppRouter.shared.selectedTab
+    @State private var review = ReviewPrompt.shared
+    /// iOS supplies and localizes the whole dialog — we pass no text at all.
+    @Environment(\.requestReview) private var requestReview
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         let accent   = UIColor(T.primary)
@@ -113,6 +118,27 @@ struct MainTabView: View {
         }
         .onChange(of: router.selectedTab) { _, new in
             if selectedTab != new { selectedTab = new }
+        }
+        // First task ever created → ask for a rating, once.
+        .onChange(of: review.shouldAsk) { _, ask in
+            if ask { askForReview() }
+        }
+        // The task may have been created just before the app was backgrounded
+        // (or created while a sheet was still up) — catch it on the way back.
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active && review.shouldAsk { askForReview() }
+        }
+    }
+
+    /// Let the add-task sheet finish dismissing before the system dialog
+    /// appears — a prompt sliding in over a closing sheet reads as a glitch,
+    /// and Apple asks that it never interrupt a flow.
+    private func askForReview() {
+        Task {
+            try? await Task.sleep(for: .seconds(1.5))
+            guard review.shouldAsk, scenePhase == .active else { return }
+            requestReview()
+            review.markAsked()
         }
     }
 

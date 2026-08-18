@@ -15,15 +15,22 @@ struct TempaApp: App {
         RevenueCatService.configure()
         #if DEBUG
         // "-wipe-data YES": start as a brand-new user — empties the local store
-        // AND pushes the deletions to iCloud, so nothing comes back.
+        // AND pushes the deletions to iCloud, so nothing comes back. The funnel
+        // flag lives in UserDefaults, not the store, so clear it too or the
+        // "new user" would boot into the hard paywall instead of onboarding.
         if UserDefaults.standard.bool(forKey: "wipe-data") {
             PersistenceController.wipeAllData()
+            UserDefaults.standard.removeObject(forKey: "hasCompletedOnboarding")
+            // Also forget that the funnel was ever completed — this very run
+            // then behaves like a fresh install and boots into the funnel.
+            UserDefaults.standard.removeObject(forKey: "funnelCompletedOnce")
         }
         #endif
         let context = PersistenceController.shared.container.viewContext
         _settingsStore = State(initialValue: SettingsStore(context: context))
 
         TaskNotifications.startObserving(context)
+        ReviewPrompt.shared.startObserving(context)
         AppLanguage.current.apply()   // keep the AppleLanguages override in sync
 
         #if DEBUG

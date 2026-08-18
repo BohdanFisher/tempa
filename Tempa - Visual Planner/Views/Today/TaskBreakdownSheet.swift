@@ -6,7 +6,6 @@ struct TaskBreakdownSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     private let apiClient: ClaudeAPIClient
-    private let rateLimiter = BreakdownRateLimiter()
 
     @State private var taskText = ""
     @State private var steps: [TaskBreakdown.Step] = []
@@ -163,20 +162,9 @@ struct TaskBreakdownSheet: View {
         usedFallback = false
         focused = false
 
-        let isPro = false
-
-        guard rateLimiter.canUse(isPro: isPro) else {
-            isLoading = false
-            errorMessage = "You've used all 3 free breakdowns today. Upgrade for unlimited."
-            steps = FallbackBreakdown.generate(for: trimmed).steps
-            usedFallback = true
-            return
-        }
-
         do {
             let result = try await apiClient.breakDown(task: trimmed)
             steps = result.steps
-            rateLimiter.recordUse()
         } catch {
             steps = FallbackBreakdown.generate(for: trimmed).steps
             usedFallback = true

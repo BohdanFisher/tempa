@@ -77,7 +77,6 @@ struct ProfileView: View {
                     theDaySection
                     appearanceSection
                     languageSection
-                    aiSection
                     legalSection
 
                     Text("Tempa 1.2 · find your tempo")
@@ -320,15 +319,6 @@ struct ProfileView: View {
                            value: (AppLanguage(rawValue: appLanguage) ?? .system).displayName)
             }
             .buttonStyle(.plain)
-        }
-    }
-
-    // MARK: - AI (real usage)
-
-    private var aiSection: some View {
-        settingsGroup("AI") {
-            SettingRow(icon: "sparkles", iconBg: Color(lightHex: "#FFE9E1", darkHex: "#2C1F18"), iconColor: T.primary,
-                       title: "AI requests this month", value: "\(AIUsage.thisMonth)")
         }
     }
 
