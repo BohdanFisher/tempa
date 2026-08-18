@@ -29,11 +29,8 @@ a:hover { color: var(--coral); text-decoration: underline; }
 .nav-links a:not(.btn):hover { color: var(--coral-deep); text-decoration: none; }
 .nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: #fff; }
 
-/* app icon (Now · Coral) */
-.app-icon { position: relative; background: linear-gradient(155deg, #FF9A7C 0%, #FF7A59 50%, #E85C39 100%); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; overflow: hidden; box-shadow: 0 8px 22px rgba(50,30,20,0.22); }
-.app-icon::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.3), rgba(255,255,255,0) 40%); pointer-events: none; }
-.app-icon .bar { border-radius: 99px; background: rgba(255,255,255,0.45); }
-.app-icon .bar.on { background: #fff; }
+/* app icon — the real App Store artwork; radius matches the artwork's own corners */
+.brand-icon { width: 40px; height: 40px; border-radius: 22%; display: block; flex-shrink: 0; box-shadow: 0 6px 16px rgba(50,30,20,0.18); }
 
 /* buttons */
 .btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-head); font-weight: 800; border-radius: 99px; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
@@ -58,8 +55,24 @@ a:hover { color: var(--coral); text-decoration: underline; }
 .policy li { margin-bottom: 8px; }
 .policy strong { color: var(--ink); }
 
+/* language switcher (policy pages) */
+.lang-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: -20px 0 8px; }
+.lang-switch .globe { display: flex; color: var(--ink-ter); margin-right: 2px; }
+.lang-switch a { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--ink-sec); background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 6px 13px; line-height: 1.2; transition: border-color 0.15s ease, color 0.15s ease; }
+.lang-switch a:hover { color: var(--coral-deep); border-color: var(--coral); text-decoration: none; }
+.lang-switch a[aria-current="page"] { background: var(--coral); border-color: var(--coral); color: #fff; }
+.lang-switch + #policy-body > h2:first-child { margin-top: 36px; }
+.lang-switch + #policy-body > p:first-child { margin-top: 28px; }
+
 @media (max-width: 560px) {
   .policy { padding: 12px 20px 0; }
   .policy h1 { font-size: 30px; margin-top: 24px; }
   .policy h2 { font-size: 19px; }
+  .lang-switch { gap: 6px; }
+  .lang-switch a { font-size: 12.5px; padding: 5px 11px; }
+  /* policy pages: the brand already links home; keep only the sibling document link and never let it wrap */
+  .nav-brand { flex-shrink: 0; }
+  .nav-links { gap: 16px; }
+  .nav-links a:not(.btn) { font-size: 13.5px; white-space: nowrap; }
+  #nav-home { display: none; }
 }

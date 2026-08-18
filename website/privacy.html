@@ -4,62 +4,75 @@
   <meta charset="utf-8" />
   <title>Privacy Policy — Tempa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="How Tempa handles your data: no accounts, no ads, no tracking. Available in English, Nederlands, Suomi, Français, Deutsch, Norsk, Português, Español, Українська." />
+  <link rel="canonical" href="https://tempa-planner.app/privacy.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="site.css" />
+  <script src="site-analytics.js" defer></script>
 </head>
 <body>
   <div class="wrap">
     <nav class="nav">
       <a class="nav-brand" href="/">
-        <span class="app-icon" style="width: 40px; height: 40px; border-radius: 10px; padding: 9px 0 9px 8px; gap: 3px;">
-          <span class="bar" style="width: 16px; height: 3.5px;"></span>
-          <span class="bar on" style="width: 23px; height: 3.5px;"></span>
-          <span class="bar" style="width: 13px; height: 3.5px;"></span>
-        </span>
+        <img class="brand-icon" src="tempa-icon.png" width="40" height="40" alt="" />
         Tempa
       </a>
       <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="terms.html">Terms of Service</a>
+        <a href="/" id="nav-home">Home</a>
+        <a href="terms.html" id="nav-terms">Terms of Service</a>
       </div>
     </nav>
   </div>
 
   <main class="policy">
-    <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: July 29, 2026</p>
+    <h1 id="policy-title">Privacy Policy</h1>
+    <p class="updated" id="policy-updated">Last updated: July 29, 2026</p>
+    <nav class="lang-switch" id="lang-switch" aria-label="Language">
+      <span class="globe"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      <a href="?lang=en" data-lang="en" lang="en" hreflang="en" aria-current="page">English</a>
+      <a href="?lang=nl" data-lang="nl" lang="nl" hreflang="nl">Nederlands</a>
+      <a href="?lang=fi" data-lang="fi" lang="fi" hreflang="fi">Suomi</a>
+      <a href="?lang=fr" data-lang="fr" lang="fr" hreflang="fr">Français</a>
+      <a href="?lang=de" data-lang="de" lang="de" hreflang="de">Deutsch</a>
+      <a href="?lang=nb" data-lang="nb" lang="nb" hreflang="nb">Norsk</a>
+      <a href="?lang=pt" data-lang="pt" lang="pt-BR" hreflang="pt-BR">Português (Brasil)</a>
+      <a href="?lang=es" data-lang="es" lang="es" hreflang="es">Español</a>
+      <a href="?lang=uk" data-lang="uk" lang="uk" hreflang="uk">Українська</a>
+    </nav>
 
-    <h2>1. The short version</h2>
-    <p>Your plans stay yours. Tempa has no accounts, no ads, no analytics and no servers of its own. Almost everything lives on your device.</p>
+    <div id="policy-body">
+      <h2>1. The short version</h2>
+      <p>Your plans stay yours. Tempa has no accounts, no ads, no analytics and no servers of its own. Almost everything lives on your device.</p>
 
-    <h2>2. What stays on your device</h2>
-    <p>Your tasks, schedule, completions, focus history and stats are stored on your device and synced through your private iCloud (CloudKit). They are encrypted in your Apple account — we cannot read them.</p>
+      <h2>2. What stays on your device</h2>
+      <p>Your tasks, schedule, completions, focus history and stats are stored on your device and synced through your private iCloud (CloudKit). They are encrypted in your Apple account — we cannot read them.</p>
 
-    <h2>3. What is sent to AI</h2>
-    <p>Only the task text you type or speak is sent to Anthropic's API when you use an AI feature (break into steps, plan my day, Ask Tempa) — so it can be turned into a plan. Per Anthropic's API terms, it isn't used to train models. Your schedule, stats and everything else are never sent.</p>
+      <h2>3. What is sent to AI</h2>
+      <p>Only the task text you type or speak is sent to Anthropic's API when you use an AI feature (break into steps, plan my day, Ask Tempa) — so it can be turned into a plan. Per Anthropic's API terms, it isn't used to train models. Your schedule, stats and everything else are never sent.</p>
 
-    <h2>4. Voice input</h2>
-    <p>Speech is transcribed by Apple's speech services on your device where available; Tempa only receives the resulting text. Audio is handled under Apple's privacy policy.</p>
+      <h2>4. Voice input</h2>
+      <p>Speech is transcribed by Apple's speech services on your device where available; Tempa only receives the resulting text. Audio is handled under Apple's privacy policy.</p>
 
-    <h2>5. Notifications</h2>
-    <p>Reminders and nudges are scheduled locally on your device. They never leave it.</p>
+      <h2>5. Notifications</h2>
+      <p>Reminders and nudges are scheduled locally on your device. They never leave it.</p>
 
-    <h2>6. Purchases</h2>
-    <p>Subscriptions are processed entirely by Apple. We never see your payment details — only an anonymous receipt that says Pro is active.</p>
+      <h2>6. Purchases</h2>
+      <p>Subscriptions are processed entirely by Apple. We never see your payment details — only an anonymous receipt that says Pro is active.</p>
 
-    <h2>7. No tracking</h2>
-    <p>No ad networks, no tracking SDKs, no fingerprinting, no data brokers. We don't build profiles of you.</p>
+      <h2>7. No tracking</h2>
+      <p>No ad networks, no tracking SDKs, no fingerprinting, no data brokers. We don't build profiles of you.</p>
 
-    <h2>8. Your control</h2>
-    <p>Delete a task and it's gone from your devices and your iCloud. Delete the app and its data goes with it (iCloud data can also be removed in iOS Settings → iCloud). There's no account to close because there's no account.</p>
+      <h2>8. Your control</h2>
+      <p>Delete a task and it's gone from your devices and your iCloud. Delete the app and its data goes with it (iCloud data can also be removed in iOS Settings → iCloud). There's no account to close because there's no account.</p>
 
-    <h2>9. Changes</h2>
-    <p>If this policy changes in a meaningful way, the app will say so. Continued use after changes means you accept the updated policy.</p>
+      <h2>9. Changes</h2>
+      <p>If this policy changes in a meaningful way, the app will say so. Continued use after changes means you accept the updated policy.</p>
 
-    <h2>10. Contact</h2>
-    <p>Questions about this policy? Email us at <a href="mailto:support@tempa-planner.app">support@tempa-planner.app</a>.</p>
+      <h2>10. Contact</h2>
+      <p>Questions about this policy? Email us at <a href="mailto:support@tempa-planner.app">support@tempa-planner.app</a>.</p>
+    </div>
   </main>
 
   <div class="wrap">
@@ -69,10 +82,87 @@
         <div class="footer-links">
           <a href="privacy.html">Privacy Policy</a>
           <a href="terms.html">Terms of Service</a>
-          <a href="mailto:support@tempa-planner.app">support@tempa-planner.app</a>
+          <a href="support.html">Support</a>
         </div>
       </div>
     </footer>
   </div>
+  <script>
+  (function () {
+    var I18N = {"en":{"htmlLang":"en","name":"English","title":"Privacy Policy","updated":"Last updated: July 29, 2026","navHome":"Home","navTerms":"Terms of Service","switchLabel":"Language","sections":[["1. The short version","Your plans stay yours. Tempa has no accounts, no ads, no analytics and no servers of its own. Almost everything lives on your device."],["2. What stays on your device","Your tasks, schedule, completions, focus history and stats are stored on your device and synced through your private iCloud (CloudKit). They are encrypted in your Apple account — we cannot read them."],["3. What is sent to AI","Only the task text you type or speak is sent to Anthropic's API when you use an AI feature (break into steps, plan my day, Ask Tempa) — so it can be turned into a plan. Per Anthropic's API terms, it isn't used to train models. Your schedule, stats and everything else are never sent."],["4. Voice input","Speech is transcribed by Apple's speech services on your device where available; Tempa only receives the resulting text. Audio is handled under Apple's privacy policy."],["5. Notifications","Reminders and nudges are scheduled locally on your device. They never leave it."],["6. Purchases","Subscriptions are processed entirely by Apple. We never see your payment details — only an anonymous receipt that says Pro is active."],["7. No tracking","No ad networks, no tracking SDKs, no fingerprinting, no data brokers. We don't build profiles of you."],["8. Your control","Delete a task and it's gone from your devices and your iCloud. Delete the app and its data goes with it (iCloud data can also be removed in iOS Settings → iCloud). There's no account to close because there's no account."],["9. Changes","If this policy changes in a meaningful way, the app will say so. Continued use after changes means you accept the updated policy."],["10. Contact","Questions about this policy? Email us at {email}."]]},"nl":{"htmlLang":"nl","name":"Nederlands","title":"Privacybeleid","updated":"Laatst bijgewerkt: 29 juli 2026","navHome":"Home","navTerms":"Servicevoorwaarden","switchLabel":"Taal","sections":[["1. De korte versie","Je plannen blijven van jou. Tempa heeft geen accounts, geen advertenties, geen analytics en geen eigen servers. Bijna alles blijft op je apparaat."],["2. Wat op je apparaat blijft","Je taken, planning, afgeronde taken, focusgeschiedenis en statistieken worden op je apparaat opgeslagen en gesynchroniseerd via je privé-iCloud (CloudKit). Ze zijn versleuteld in je Apple-account — wij kunnen ze niet lezen."],["3. Wat naar de AI wordt gestuurd","Alleen de taaktekst die je typt of inspreekt wordt naar de API van Anthropic gestuurd wanneer je een AI-functie gebruikt (Opdelen, plan mijn dag, Vraag Tempa) — zodat er een plan van gemaakt kan worden. Volgens de API-voorwaarden van Anthropic wordt die niet gebruikt om modellen te trainen. Je planning, statistieken en al het andere worden nooit verstuurd."],["4. Spraakinvoer","Spraak wordt waar mogelijk op je apparaat omgezet naar tekst door de spraakdiensten van Apple; Tempa ontvangt alleen de resulterende tekst. Audio valt onder het privacybeleid van Apple."],["5. Meldingen","Herinneringen en duwtjes worden lokaal op je apparaat ingepland. Ze verlaten het nooit."],["6. Aankopen","Abonnementen worden volledig door Apple verwerkt. Wij zien je betaalgegevens nooit — alleen een anoniem bewijs dat Pro actief is."],["7. Geen tracking","Geen advertentienetwerken, geen tracking-SDK's, geen fingerprinting, geen datahandelaren. We bouwen geen profielen van je op."],["8. Jouw controle","Verwijder een taak en die is weg van je apparaten en uit je iCloud. Verwijder de app en de gegevens gaan mee (iCloud-gegevens kun je ook verwijderen via iOS Instellingen → iCloud). Er is geen account om op te zeggen, want er is geen account."],["9. Wijzigingen","Als dit beleid wezenlijk verandert, laat de app dat weten. Blijf je de app daarna gebruiken, dan ga je akkoord met het bijgewerkte beleid."],["10. Contact","Vragen over dit beleid? Mail ons op {email}."]]},"fi":{"htmlLang":"fi","name":"Suomi","title":"Tietosuojakäytäntö","updated":"Päivitetty viimeksi: 29. heinäkuuta 2026","navHome":"Etusivu","navTerms":"Käyttöehdot","switchLabel":"Kieli","sections":[["1. Lyhyesti","Suunnitelmasi pysyvät sinun. Tempassa ei ole tilejä, mainoksia, analytiikkaa eikä omia palvelimia. Lähes kaikki pysyy laitteellasi."],["2. Mikä pysyy laitteellasi","Tehtäväsi, aikataulusi, valmiit tehtävät, fokushistoria ja tilastot tallennetaan laitteellesi ja synkronoidaan yksityisen iCloudisi (CloudKit) kautta. Ne on salattu Apple-tililläsi — me emme voi lukea niitä."],["3. Mitä lähetetään tekoälylle","Vain kirjoittamasi tai sanelemasi tehtäväteksti lähetetään Anthropicin rajapintaan, kun käytät tekoälyominaisuutta (Pilko osiin, suunnittele päiväni, Kysy Tempalta) — jotta siitä saadaan suunnitelma. Anthropicin API-ehtojen mukaan sitä ei käytetä mallien kouluttamiseen. Aikatauluasi, tilastojasi tai mitään muuta ei koskaan lähetetä."],["4. Puhesyöte","Puhe litteroidaan Applen puhepalveluilla laitteellasi, kun se on mahdollista; Tempa saa vain syntyneen tekstin. Ääntä käsitellään Applen tietosuojakäytännön mukaisesti."],["5. Ilmoitukset","Muistutukset ja tuuppaukset ajastetaan paikallisesti laitteellasi. Ne eivät koskaan poistu siltä."],["6. Ostot","Tilaukset käsittelee kokonaan Apple. Emme koskaan näe maksutietojasi — vain anonyymin kuitin siitä, että Pro on käytössä."],["7. Ei seurantaa","Ei mainosverkostoja, ei seuranta-SDK:ita, ei sormenjälkitunnistusta, ei datavälittäjiä. Emme rakenna sinusta profiileja."],["8. Sinun hallinnassasi","Poista tehtävä, ja se katoaa laitteiltasi ja iCloudistasi. Poista sovellus, ja sen tiedot lähtevät mukana (iCloud-tiedot voi poistaa myös iOS:n Asetuksista → iCloud). Suljettavaa tiliä ei ole, koska tiliä ei ole."],["9. Muutokset","Jos tämä käytäntö muuttuu merkittävästi, sovellus kertoo siitä. Käytön jatkaminen muutosten jälkeen tarkoittaa, että hyväksyt päivitetyn käytännön."],["10. Yhteystiedot","Kysyttävää tästä käytännöstä? Lähetä sähköpostia osoitteeseen {email}."]]},"fr":{"htmlLang":"fr","name":"Français","title":"Politique de confidentialité","updated":"Dernière mise à jour : 29 juillet 2026","navHome":"Accueil","navTerms":"Conditions d'utilisation","switchLabel":"Langue","sections":[["1. En bref","Vos plans restent les vôtres. Tempa n'a ni comptes, ni publicités, ni analytics, ni serveurs à lui. Presque tout reste sur votre appareil."],["2. Ce qui reste sur votre appareil","Vos tâches, votre planning, vos tâches accomplies, votre historique de focus et vos statistiques sont stockés sur votre appareil et synchronisés via votre iCloud privé (CloudKit). Ils sont chiffrés dans votre compte Apple — nous ne pouvons pas les lire."],["3. Ce qui est envoyé à l'IA","Seul le texte de la tâche que vous saisissez ou dictez est envoyé à l'API d'Anthropic lorsque vous utilisez une fonction IA (Découper, planifier ma journée, Demande à Tempa) — pour le transformer en plan. Conformément aux conditions de l'API d'Anthropic, il n'est pas utilisé pour entraîner des modèles. Votre planning, vos statistiques et tout le reste ne sont jamais envoyés."],["4. Saisie vocale","La parole est transcrite par les services vocaux d'Apple sur votre appareil lorsque c'est possible ; Tempa ne reçoit que le texte obtenu. L'audio est traité selon la politique de confidentialité d'Apple."],["5. Notifications","Les rappels et coups de pouce sont programmés localement sur votre appareil. Ils ne le quittent jamais."],["6. Achats","Les abonnements sont entièrement traités par Apple. Nous ne voyons jamais vos données de paiement — seulement un reçu anonyme indiquant que Pro est actif."],["7. Aucun pistage","Pas de réseaux publicitaires, pas de SDK de pistage, pas de fingerprinting, pas de courtiers en données. Nous ne dressons aucun profil de vous."],["8. Votre contrôle","Supprimez une tâche et elle disparaît de vos appareils et de votre iCloud. Supprimez l'app et ses données partent avec elle (les données iCloud peuvent aussi être supprimées dans Réglages iOS → iCloud). Il n'y a aucun compte à fermer, car il n'y a pas de compte."],["9. Modifications","Si cette politique change de manière significative, l'app vous le dira. Continuer à l'utiliser après les modifications vaut acceptation de la politique mise à jour."],["10. Contact","Des questions sur cette politique ? Écrivez-nous à {email}."]]},"de":{"htmlLang":"de","name":"Deutsch","title":"Datenschutzerklärung","updated":"Zuletzt aktualisiert: 29. Juli 2026","navHome":"Start","navTerms":"Nutzungsbedingungen","switchLabel":"Sprache","sections":[["1. Kurz gesagt","Deine Pläne bleiben deine. Tempa hat keine Konten, keine Werbung, keine Analytics und keine eigenen Server. Fast alles bleibt auf deinem Gerät."],["2. Was auf deinem Gerät bleibt","Deine Aufgaben, dein Zeitplan, erledigte Aufgaben, Fokus-Verlauf und Statistiken werden auf deinem Gerät gespeichert und über deine private iCloud (CloudKit) synchronisiert. Sie sind in deinem Apple-Account verschlüsselt — wir können sie nicht lesen."],["3. Was an die KI gesendet wird","Nur der Aufgabentext, den du eingibst oder sprichst, wird an die API von Anthropic gesendet, wenn du eine KI-Funktion nutzt (Zerlegen, Tag planen, Frag Tempa) — damit daraus ein Plan wird. Gemäß den API-Bedingungen von Anthropic wird er nicht zum Training von Modellen verwendet. Dein Zeitplan, deine Statistiken und alles andere werden nie gesendet."],["4. Spracheingabe","Sprache wird, wo verfügbar, von Apples Sprachdiensten auf deinem Gerät transkribiert; Tempa erhält nur den daraus entstehenden Text. Audio unterliegt der Datenschutzrichtlinie von Apple."],["5. Mitteilungen","Erinnerungen und Anstupser werden lokal auf deinem Gerät geplant. Sie verlassen es nie."],["6. Käufe","Abonnements werden vollständig von Apple abgewickelt. Wir sehen deine Zahlungsdaten nie — nur eine anonyme Quittung, dass Pro aktiv ist."],["7. Kein Tracking","Keine Werbenetzwerke, keine Tracking-SDKs, kein Fingerprinting, keine Datenhändler. Wir erstellen keine Profile von dir."],["8. Deine Kontrolle","Lösche eine Aufgabe, und sie ist von deinen Geräten und deiner iCloud verschwunden. Lösche die App, und ihre Daten gehen mit (iCloud-Daten lassen sich auch in den iOS-Einstellungen → iCloud entfernen). Es gibt kein Konto zum Schließen, weil es kein Konto gibt."],["9. Änderungen","Ändert sich diese Erklärung wesentlich, sagt die App das. Wer die App danach weiter nutzt, akzeptiert die aktualisierte Erklärung."],["10. Kontakt","Fragen zu dieser Erklärung? Schreib uns an {email}."]]},"nb":{"htmlLang":"nb","name":"Norsk","title":"Personvernerklæring","updated":"Sist oppdatert: 29. juli 2026","navHome":"Hjem","navTerms":"Vilkår for bruk","switchLabel":"Språk","sections":[["1. Kortversjonen","Planene dine forblir dine. Tempa har ingen kontoer, ingen annonser, ingen analyse og ingen egne servere. Nesten alt ligger på enheten din."],["2. Hva som blir på enheten din","Oppgavene, timeplanen, fullførte oppgaver, fokushistorikken og statistikken din lagres på enheten din og synkroniseres via din private iCloud (CloudKit). De er kryptert i Apple-kontoen din — vi kan ikke lese dem."],["3. Hva som sendes til KI","Bare oppgaveteksten du skriver eller sier sendes til Anthropics API når du bruker en KI-funksjon (Del det opp, planlegg dagen min, Spør Tempa) — slik at den kan gjøres om til en plan. I henhold til Anthropics API-vilkår brukes den ikke til å trene modeller. Timeplanen din, statistikken din og alt annet sendes aldri."],["4. Taleinndata","Tale transkriberes av Apples taletjenester på enheten din der det er tilgjengelig; Tempa mottar bare den resulterende teksten. Lyd håndteres i henhold til Apples personvernerklæring."],["5. Varsler","Påminnelser og dytt planlegges lokalt på enheten din. De forlater den aldri."],["6. Kjøp","Abonnementer behandles i sin helhet av Apple. Vi ser aldri betalingsopplysningene dine — bare en anonym kvittering som sier at Pro er aktivt."],["7. Ingen sporing","Ingen annonsenettverk, ingen sporings-SDK-er, ingen fingerprinting, ingen datameglere. Vi bygger ikke profiler av deg."],["8. Din kontroll","Slett en oppgave, og den er borte fra enhetene dine og iCloud. Slett appen, og dataene forsvinner med den (iCloud-data kan også fjernes i iOS-innstillinger → iCloud). Det finnes ingen konto å avslutte, fordi det ikke finnes noen konto."],["9. Endringer","Hvis denne erklæringen endres på en vesentlig måte, sier appen fra. Fortsatt bruk etter endringer betyr at du godtar den oppdaterte erklæringen."],["10. Kontakt","Spørsmål om denne erklæringen? Send oss en e-post på {email}."]]},"pt":{"htmlLang":"pt-BR","name":"Português (Brasil)","title":"Política de Privacidade","updated":"Última atualização: 29 de julho de 2026","navHome":"Início","navTerms":"Termos de Serviço","switchLabel":"Idioma","sections":[["1. A versão curta","Seus planos continuam sendo seus. O Tempa não tem contas, anúncios, analytics nem servidores próprios. Quase tudo fica no seu dispositivo."],["2. O que fica no seu dispositivo","Suas tarefas, agenda, tarefas concluídas, histórico de foco e estatísticas ficam armazenados no seu dispositivo e são sincronizados pelo seu iCloud privado (CloudKit). Eles são criptografados na sua conta Apple — nós não conseguimos lê-los."],["3. O que é enviado à IA","Apenas o texto da tarefa que você digita ou dita é enviado à API da Anthropic quando você usa um recurso de IA (Dividir em passos, planejar meu dia, Pergunte ao Tempa) — para que vire um plano. Pelos termos da API da Anthropic, ele não é usado para treinar modelos. Sua agenda, suas estatísticas e todo o resto nunca são enviados."],["4. Entrada por voz","A fala é transcrita pelos serviços de voz da Apple no seu dispositivo, quando disponíveis; o Tempa recebe apenas o texto resultante. O áudio é tratado conforme a política de privacidade da Apple."],["5. Notificações","Lembretes e cutucadas são agendados localmente no seu dispositivo. Eles nunca saem dele."],["6. Compras","As assinaturas são processadas inteiramente pela Apple. Nunca vemos seus dados de pagamento — apenas um recibo anônimo dizendo que o Pro está ativo."],["7. Sem rastreamento","Sem redes de anúncios, sem SDKs de rastreamento, sem fingerprinting, sem corretores de dados. Não criamos perfis sobre você."],["8. Seu controle","Exclua uma tarefa e ela some dos seus dispositivos e do seu iCloud. Exclua o app e os dados vão junto (os dados do iCloud também podem ser removidos em Ajustes do iOS → iCloud). Não há conta para encerrar, porque não existe conta."],["9. Alterações","Se esta política mudar de forma relevante, o app avisará. Continuar usando após as mudanças significa que você aceita a política atualizada."],["10. Contato","Dúvidas sobre esta política? Escreva para {email}."]]},"es":{"htmlLang":"es","name":"Español","title":"Política de privacidad","updated":"Última actualización: 29 de julio de 2026","navHome":"Inicio","navTerms":"Términos del servicio","switchLabel":"Idioma","sections":[["1. La versión corta","Tus planes son tuyos. Tempa no tiene cuentas, ni anuncios, ni analíticas, ni servidores propios. Casi todo vive en tu dispositivo."],["2. Qué se queda en tu dispositivo","Tus tareas, horario, tareas completadas, historial de enfoque y estadísticas se guardan en tu dispositivo y se sincronizan a través de tu iCloud privado (CloudKit). Están cifrados en tu cuenta de Apple: nosotros no podemos leerlos."],["3. Qué se envía a la IA","Solo el texto de la tarea que escribes o dictas se envía a la API de Anthropic cuando usas una función de IA (Desglosar, planificar mi día, Pregunta a Tempa), para convertirlo en un plan. Según los términos de la API de Anthropic, no se usa para entrenar modelos. Tu horario, tus estadísticas y todo lo demás nunca se envían."],["4. Entrada de voz","La voz se transcribe con los servicios de voz de Apple en tu dispositivo cuando están disponibles; Tempa solo recibe el texto resultante. El audio se gestiona según la política de privacidad de Apple."],["5. Notificaciones","Los recordatorios y avisos se programan localmente en tu dispositivo. Nunca salen de él."],["6. Compras","Las suscripciones las procesa íntegramente Apple. Nunca vemos tus datos de pago, solo un recibo anónimo que indica que Pro está activo."],["7. Sin rastreo","Sin redes publicitarias, sin SDK de rastreo, sin fingerprinting, sin intermediarios de datos. No creamos perfiles sobre ti."],["8. Tu control","Borra una tarea y desaparece de tus dispositivos y de tu iCloud. Borra la app y sus datos se van con ella (los datos de iCloud también se pueden eliminar en Ajustes de iOS → iCloud). No hay ninguna cuenta que cerrar porque no hay cuenta."],["9. Cambios","Si esta política cambia de forma significativa, la app te lo dirá. Seguir usándola después de los cambios implica que aceptas la política actualizada."],["10. Contacto","¿Preguntas sobre esta política? Escríbenos a {email}."]]},"uk":{"htmlLang":"uk","name":"Українська","title":"Політика конфіденційності","updated":"Останнє оновлення: 29 липня 2026 р.","navHome":"Головна","navTerms":"Умови використання","switchLabel":"Мова","sections":[["1. Коротко","Твої плани залишаються твоїми. У Tempa немає акаунтів, реклами, аналітики та власних серверів. Майже все живе на твоєму пристрої."],["2. Що залишається на пристрої","Твої задачі, розклад, виконані задачі, історія фокусу та статистика зберігаються на твоєму пристрої й синхронізуються через твій приватний iCloud (CloudKit). Вони зашифровані у твоєму акаунті Apple — ми не можемо їх прочитати."],["3. Що надсилається AI","Лише текст задачі, який ти вводиш або надиктовуєш, надсилається до API Anthropic, коли ти використовуєш AI-функцію (Розбити на кроки, спланувати день, Запитай Tempa) — щоб перетворити його на план. Згідно з умовами API Anthropic, він не використовується для навчання моделей. Твій розклад, статистика і все інше ніколи не надсилаються."],["4. Голосове введення","Мовлення розпізнається сервісами Apple на твоєму пристрої, де це доступно; Tempa отримує лише готовий текст. Аудіо обробляється відповідно до політики конфіденційності Apple."],["5. Сповіщення","Нагадування й м'які підказки плануються локально на твоєму пристрої. Вони ніколи його не залишають."],["6. Покупки","Підписки повністю обробляє Apple. Ми ніколи не бачимо твоїх платіжних даних — лише анонімний чек про те, що Pro активний."],["7. Без стеження","Жодних рекламних мереж, SDK для стеження, фінгерпринтингу чи брокерів даних. Ми не будуємо твоїх профілів."],["8. Твій контроль","Видали задачу — і вона зникне з твоїх пристроїв та iCloud. Видали застосунок — і його дані підуть разом із ним (дані iCloud також можна прибрати в Параметрах iOS → iCloud). Немає акаунта, який треба закривати, бо акаунта немає."],["9. Зміни","Якщо ця політика суттєво зміниться, застосунок про це повідомить. Подальше використання після змін означає, що ти приймаєш оновлену політику."],["10. Контакти","Є запитання щодо цієї політики? Напиши нам на {email}."]]}};
+    var ORDER = ["en","nl","fi","fr","de","nb","pt","es","uk"];
+    var ALIASES = {"no":"nb","nn":"nb"};
+    var EMAIL = "support@tempa-planner.app";
+    var STORE = "tempa-lang";
+
+    function normalize(tag) {
+      if (!tag) return null;
+      var p = String(tag).split("-")[0].toLowerCase();
+      p = ALIASES[p] || p;
+      return I18N[p] ? p : null;
+    }
+    function pick() {
+      var q = normalize(new URLSearchParams(location.search).get("lang"));
+      if (q) return q;
+      try { var s = normalize(localStorage.getItem(STORE)); if (s) return s; } catch (e) {}
+      var langs = navigator.languages || [navigator.language || ""];
+      for (var i = 0; i < langs.length; i++) { var b = normalize(langs[i]); if (b) return b; }
+      return "en";
+    }
+    function paragraph(text) {
+      var p = document.createElement("p");
+      var parts = text.split("{email}");
+      for (var i = 0; i < parts.length; i++) {
+        if (i > 0) {
+          var a = document.createElement("a");
+          a.href = "mailto:" + EMAIL; a.textContent = EMAIL; p.appendChild(a);
+        }
+        p.appendChild(document.createTextNode(parts[i]));
+      }
+      return p;
+    }
+    function render(code) {
+      var t = I18N[code];
+      document.documentElement.lang = t.htmlLang;
+      document.title = t.title + " — Tempa";
+      document.getElementById("policy-title").textContent = t.title;
+      document.getElementById("policy-updated").textContent = t.updated;
+      document.getElementById("nav-home").textContent = t.navHome;
+      document.getElementById("nav-terms").textContent = t.navTerms;
+      var sw = document.getElementById("lang-switch");
+      sw.setAttribute("aria-label", t.switchLabel);
+      var links = sw.querySelectorAll("a[data-lang]");
+      for (var i = 0; i < links.length; i++) {
+        if (links[i].getAttribute("data-lang") === code) links[i].setAttribute("aria-current", "page");
+        else links[i].removeAttribute("aria-current");
+      }
+      var body = document.getElementById("policy-body");
+      body.textContent = "";
+      for (var s = 0; s < t.sections.length; s++) {
+        var h2 = document.createElement("h2");
+        h2.textContent = t.sections[s][0];
+        body.appendChild(h2);
+        body.appendChild(paragraph(t.sections[s][1]));
+      }
+    }
+    function choose(code, remember) {
+      render(code);
+      if (remember) { try { localStorage.setItem(STORE, code); } catch (e) {} }
+    }
+
+    document.getElementById("lang-switch").addEventListener("click", function (ev) {
+      var a = ev.target.closest("a[data-lang]");
+      if (!a) return;
+      ev.preventDefault();
+      choose(a.getAttribute("data-lang"), true);
+      // keep the URL as-is: the same link works for everyone
+      if (location.search) history.replaceState(null, "", location.pathname);
+    });
+
+    var initial = pick();
+    if (initial !== "en") render(initial);
+    if (location.search) history.replaceState(null, "", location.pathname);
+  })();
+  </script>
 </body>
 </html>
