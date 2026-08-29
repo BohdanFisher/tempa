@@ -1,5 +1,6 @@
 import Foundation
 import Security
+import CloudKit
 
 struct TaskBreakdown: Codable, Sendable {
     struct Step: Codable, Sendable {
@@ -222,8 +223,6 @@ final class ClaudeAPIClient: Sendable {
 
     /// Split a spoken brain-dump into several scheduled tasks ("plan my day").
     func planTasks(from brainDump: String) async throws -> DayPlan {
-        guard let apiKey = readAPIKey() else { throw ClaudeAPIError.noAPIKey }
-
         var userContent = "\(Self.dateContextLine())\n\nBrain dump: \(brainDump)"
         if let directive = TaskLanguage.outputDirective(for: brainDump) {
             userContent += "\n\n\(directive)"
@@ -237,18 +236,7 @@ final class ClaudeAPIClient: Sendable {
             "messages": [["role": "user", "content": userContent]]
         ]
 
-        var request = URLRequest(url: endpoint)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "content-type")
-        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
-        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-        request.setValue("prompt-caching-2024-07-31", forHTTPHeaderField: "anthropic-beta")
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let http = response as? HTTPURLResponse else {
-            throw ClaudeAPIError.apiError(statusCode: 0, message: "Invalid response")
-        }
+        let (data, http) = try await perform(body, beta: "prompt-caching-2024-07-31")
         guard http.statusCode == 200 else {
             let err = String(data: data, encoding: .utf8) ?? "Unknown"
             print("[Tempa] planTasks HTTP \(http.statusCode):", err)
@@ -278,10 +266,6 @@ final class ClaudeAPIClient: Sendable {
     }
 
     func breakDown(task: String) async throws -> TaskBreakdown {
-        guard let apiKey = readAPIKey() else {
-            throw ClaudeAPIError.noAPIKey
-        }
-
         var userContent = "\(Self.dateContextLine())\n\nTask: \(task)"
         if let directive = TaskLanguage.outputDirective(for: task) {
             userContent += "\n\n\(directive)"
@@ -302,26 +286,7 @@ final class ClaudeAPIClient: Sendable {
             ]
         ]
 
-        var request = URLRequest(url: endpoint)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "content-type")
-        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
-        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-        request.setValue("prompt-caching-2024-07-31", forHTTPHeaderField: "anthropic-beta")
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
-
-        let data: Data
-        let response: URLResponse
-        do {
-            (data, response) = try await URLSession.shared.data(for: request)
-        } catch {
-            print("[Tempa] breakDown network error:", error)
-            throw ClaudeAPIError.networkError(error)
-        }
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw ClaudeAPIError.apiError(statusCode: 0, message: "Invalid response")
-        }
+        let (data, httpResponse) = try await perform(body, beta: "prompt-caching-2024-07-31")
 
         guard httpResponse.statusCode == 200 else {
             let errorBody = String(data: data, encoding: .utf8) ?? "Unknown"
@@ -433,10 +398,6 @@ final class ClaudeAPIClient: Sendable {
     /// and never on replayed history, so the model always reasons about *now*
     /// and stale snapshots can't contradict it.
     func chat(history: [ChatTurn], board: String) async throws -> ChatResponse {
-        guard let apiKey = readAPIKey() else {
-            throw ClaudeAPIError.noAPIKey
-        }
-
         let body: [String: Any] = [
             "model": chatModel,
             // Thinking is on by default on this model and shares this budget
@@ -456,26 +417,12 @@ final class ClaudeAPIClient: Sendable {
             "messages": Self.apiMessages(from: history, board: board)
         ]
 
-        var request = URLRequest(url: endpoint)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "content-type")
-        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
-        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        let (data, httpResponse) = try await perform(body)
 
-        let data: Data
-        let response: URLResponse
-        do {
-            (data, response) = try await URLSession.shared.data(for: request)
-        } catch {
-            throw ClaudeAPIError.networkError(error)
-        }
-
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            let code = (response as? HTTPURLResponse)?.statusCode ?? 0
+        guard httpResponse.statusCode == 200 else {
             let errorBody = String(data: data, encoding: .utf8) ?? "Unknown"
-            print("[Tempa] chat HTTP \(code):", errorBody)
-            throw ClaudeAPIError.apiError(statusCode: code, message: errorBody)
+            print("[Tempa] chat HTTP \(httpResponse.statusCode):", errorBody)
+            throw ClaudeAPIError.apiError(statusCode: httpResponse.statusCode, message: errorBody)
         }
 
         guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -577,6 +524,81 @@ final class ClaudeAPIClient: Sendable {
         return "Current local datetime: \(stamp.string(from: now)) (\(weekday.string(from: now))), timezone \(TimeZone.current.identifier). Resolve any relative day/time against this."
     }
 
+    // MARK: - Transport
+
+    /// Builds and POSTs one Messages request. Owns the key lifecycle: the key
+    /// comes from ensureAPIKey(), and a 401 — the cached key was rotated or
+    /// revoked after we stored it — triggers one CloudKit re-fetch and retry,
+    /// so a key rotation reaches every install without an app update.
+    private func perform(_ body: [String: Any], beta: String? = nil) async throws -> (Data, HTTPURLResponse) {
+        var apiKey = try await ensureAPIKey()
+        var retriedKey = false
+        while true {
+            var request = URLRequest(url: endpoint)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "content-type")
+            request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+            request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+            if let beta { request.setValue(beta, forHTTPHeaderField: "anthropic-beta") }
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+            let data: Data
+            let response: URLResponse
+            do {
+                (data, response) = try await URLSession.shared.data(for: request)
+            } catch {
+                print("[Tempa] API network error:", error)
+                throw ClaudeAPIError.networkError(error)
+            }
+            guard let http = response as? HTTPURLResponse else {
+                throw ClaudeAPIError.apiError(statusCode: 0, message: "Invalid response")
+            }
+            if http.statusCode == 401, !retriedKey {
+                retriedKey = true
+                apiKey = try await refreshAPIKeyFromCloud()
+                continue
+            }
+            return (data, http)
+        }
+    }
+
+    // MARK: - Key provisioning
+
+    /// Release installs have no dev key: it arrives from the app's own CloudKit
+    /// PUBLIC database — record AppConfig/anthropic-api-key, String field
+    /// "value" — and is cached in the Keychain. Public-database reads need no
+    /// iCloud account, and swapping the record in the CloudKit Console rotates
+    /// the key for every device without shipping an update.
+    private static let cloudContainerID = "iCloud.Bohdan-Rybak.Tempa---Visual-Planner"
+    private static let keyRecordName = "anthropic-api-key"
+
+    func ensureAPIKey() async throws -> String {
+        if let key = readAPIKey() { return key }
+        return try await refreshAPIKeyFromCloud()
+    }
+
+    @discardableResult
+    func refreshAPIKeyFromCloud() async throws -> String {
+        let recordID = CKRecord.ID(recordName: Self.keyRecordName)
+        do {
+            let record = try await CKContainer(identifier: Self.cloudContainerID)
+                .publicCloudDatabase.record(for: recordID)
+            guard let key = (record["value"] as? String)?
+                    .trimmingCharacters(in: .whitespacesAndNewlines),
+                  !key.isEmpty else {
+                throw ClaudeAPIError.noAPIKey
+            }
+            storeAPIKey(key)
+            print("[Tempa] API key provisioned from CloudKit")
+            return key
+        } catch let error as ClaudeAPIError {
+            throw error
+        } catch {
+            print("[Tempa] API key fetch from CloudKit failed:", error)
+            throw ClaudeAPIError.noAPIKey
+        }
+    }
+
     // MARK: - Keychain
 
     func readAPIKey() -> String? {
@@ -614,6 +636,16 @@ final class ClaudeAPIClient: Sendable {
         // Always refresh in debug — a stale/wrong key left in the Keychain by an
         // earlier build would otherwise linger and break every API call.
         storeAPIKey(DevConstants.anthropicAPIKey)
+    }
+
+    /// Dev-only: empty the cached key so "-test-cloud-key YES" starts the way
+    /// every Release install does — nothing in the Keychain.
+    func wipeStoredAPIKey() {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: keychainKey
+        ]
+        SecItemDelete(query as CFDictionary)
     }
     #endif
 }

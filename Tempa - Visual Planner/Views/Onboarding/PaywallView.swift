@@ -620,6 +620,17 @@ struct PaywallView: View {
                 await finishPurchaseCelebration()
                 return
             }
+            // No new transaction, but the Apple ID may already OWN an active
+            // subscription — StoreKit shows "already subscribed" and reports
+            // it as a cancellation. Real users never see a paywall while
+            // subscribed; the owner's forced funnel does (god mode routes by
+            // funnel state, not entitlements), and without this the funnel's
+            // paywall is a dead end on a subscribed Apple ID.
+            await subs.updatePurchasedProducts()
+            if subs.isPro {
+                await finishPurchaseCelebration()
+                return
+            }
             resetPurchaseUI()   // user cancelled the sheet
         } catch {
             errorMessage = error.localizedDescription

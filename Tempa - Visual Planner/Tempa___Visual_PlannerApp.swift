@@ -34,8 +34,19 @@ struct TempaApp: App {
         AppLanguage.current.apply()   // keep the AppleLanguages override in sync
 
         #if DEBUG
-        ClaudeAPIClient().setupDevKey()
+        if UserDefaults.standard.bool(forKey: "test-cloud-key") {
+            // "-test-cloud-key YES": rehearse the App Store path — no dev key,
+            // empty Keychain, the key must arrive from the CloudKit public
+            // record exactly like on a real user's phone.
+            ClaudeAPIClient().wipeStoredAPIKey()
+        } else {
+            ClaudeAPIClient().setupDevKey()
+        }
         #endif
+        // Real installs have no dev key — warm it from CloudKit now so the
+        // user's first AI request doesn't also pay the fetch round-trip.
+        // No-op when the Keychain already holds one; failures self-heal on use.
+        Task { _ = try? await ClaudeAPIClient().ensureAPIKey() }
     }
 
     var body: some Scene {
