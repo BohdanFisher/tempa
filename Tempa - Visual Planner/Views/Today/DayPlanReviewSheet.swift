@@ -65,25 +65,7 @@ struct DayPlanReviewSheet: View {
     // MARK: - States
 
     private var loadingView: some View {
-        VStack(spacing: 16) {
-            VStack(spacing: 10) {
-                ForEach(0..<4, id: \.self) { _ in
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(T.surface)
-                        .frame(height: 70)
-                        .tempaShadowSm()
-                }
-            }
-            .padding(.horizontal, 20)
-
-            HStack(spacing: 8) {
-                ProgressView().tint(T.primary)
-                Text("Sorting what you said into tasks…")
-                    .font(.custom(T.fontHeader, size: 14).weight(.semibold))
-                    .foregroundColor(T.textSec)
-            }
-            .padding(.top, 8)
-        }
+        WavePlanLoadingView()
     }
 
     private func errorView(_ msg: String) -> some View {
@@ -408,5 +390,126 @@ struct DayPlanReviewSheet: View {
         let m = cal.component(.minute, from: now)
         let addMin = (m < 30 ? 30 : 60) - m
         return cal.date(byAdding: .minute, value: addMin, to: now) ?? now
+    }
+}
+
+
+// MARK: - Loading: the wave becomes the plan
+
+/// The wait as a continuation of speaking: the same voice wave from the
+/// recording screen keeps pulsing while skeleton cards breathe in its rhythm,
+/// and an honest status line says what is actually happening. Deliberately not
+/// gated behind Reduce Motion — this IS the feedback that the app is working.
+private struct WavePlanLoadingView: View {
+    var body: some View {
+        VStack(spacing: 0) {
+            TempaWaveform(color: T.primary, bars: 9, maxHeight: 84, barWidth: 7, spacing: 7)
+                .frame(height: 92)
+                .padding(.top, 6)
+                .padding(.bottom, 20)
+
+            VStack(spacing: 10) {
+                ForEach(0..<3, id: \.self) { i in
+                    SkeletonPlanRow(index: i)
+                }
+            }
+            .padding(.horizontal, 20)
+
+            RotatingStatusLine()
+                .padding(.top, 20)
+
+            Spacer(minLength: 0)
+        }
+        .padding(.top, 10)
+    }
+}
+
+/// Shadow of a real plan row: same card, same 34pt icon slot, same corner
+/// radii — so the reveal swaps placeholders for content without the layout
+/// jumping. Breathes and shimmers in the wave's own tempo.
+private struct SkeletonPlanRow: View {
+    let index: Int
+
+    var body: some View {
+        TimelineView(.animation(minimumInterval: 0.04)) { timeline in
+            let t = timeline.date.timeIntervalSinceReferenceDate
+            // Same 2.2 rad/s pulse as TempaWaveform, staggered per card.
+            let phase = sin(t * 2.2 - Double(index) * 0.9)
+            let sweep = (t / 2.4 + Double(index) * 0.18).truncatingRemainder(dividingBy: 1)
+
+            HStack(spacing: 10) {
+                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                    .fill(T.bgWarm)
+                    .frame(width: 34, height: 34)
+
+                VStack(alignment: .leading, spacing: 7) {
+                    RoundedRectangle(cornerRadius: 5, style: .continuous)
+                        .fill(T.bgWarm)
+                        .frame(width: index == 1 ? 150 : 190, height: 11)
+                    RoundedRectangle(cornerRadius: 4, style: .continuous)
+                        .fill(T.bgWarm)
+                        .frame(width: index == 2 ? 70 : 96, height: 8)
+                }
+
+                Spacer(minLength: 6)
+
+                Circle()
+                    .fill(T.bgWarm)
+                    .frame(width: 19, height: 19)
+            }
+            .padding(.horizontal, 14)
+            .frame(height: 70)
+            .background(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(T.surface)
+            )
+            .overlay(
+                // A soft coral gleam travelling across — the wave's energy
+                // flowing down into the cards.
+                GeometryReader { geo in
+                    LinearGradient(
+                        colors: [.clear, T.primary.opacity(0.09), .clear],
+                        startPoint: .leading, endPoint: .trailing
+                    )
+                    .frame(width: geo.size.width * 0.6)
+                    .offset(x: -geo.size.width * 0.6 + sweep * geo.size.width * 1.6)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            )
+            .tempaShadowSm()
+            .scaleEffect(1 + 0.014 * (phase + 1) / 2)
+        }
+    }
+}
+
+/// Three honest stages, cycling. Localized like everything else in the app.
+private struct RotatingStatusLine: View {
+    @State private var index = 0
+
+    private var phrases: [String] {
+        [String(localized: "Listening closely…", bundle: .appLanguage),
+         String(localized: "Splitting it into tasks…", bundle: .appLanguage),
+         String(localized: "Finding the right times…", bundle: .appLanguage)]
+    }
+
+    var body: some View {
+        Text(phrases[index])
+            .font(.custom(T.fontHeader, size: 13).weight(.bold))
+            .foregroundColor(T.textSec)
+            .id(index)
+            .transition(.asymmetric(
+                insertion: .move(edge: .bottom).combined(with: .opacity),
+                removal: .move(edge: .top).combined(with: .opacity)
+            ))
+            .frame(height: 22)
+            .clipped()
+            .task {
+                while !Task.isCancelled {
+                    try? await Task.sleep(for: .seconds(2.2))
+                    withAnimation(.easeInOut(duration: 0.35)) {
+                        index = (index + 1) % phrases.count
+                    }
+                }
+            }
     }
 }
