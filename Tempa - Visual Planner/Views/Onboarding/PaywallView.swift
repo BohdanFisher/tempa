@@ -616,6 +616,9 @@ struct PaywallView: View {
         }
         do {
             let tx = try await subs.purchase(product)
+            #if DEBUG
+            print("[Tempa] paywall purchase → \(tx != nil ? "new transaction" : "nil (cancelled / pending / already owned)"), isPro=\(subs.isPro)")
+            #endif
             if tx != nil {
                 await finishPurchaseCelebration()
                 return
@@ -633,6 +636,9 @@ struct PaywallView: View {
             }
             resetPurchaseUI()   // user cancelled the sheet
         } catch {
+            #if DEBUG
+            print("[Tempa] paywall purchase threw:", error)
+            #endif
             errorMessage = error.localizedDescription
             showError = true
             resetPurchaseUI()

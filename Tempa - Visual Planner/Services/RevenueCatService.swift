@@ -28,13 +28,31 @@ enum RevenueCatService {
     /// result BEFORE the transaction is finished, or it never sees the sale.
     /// Failures are swallowed and the wait is BOUNDED — the user has already
     /// paid, and a RevenueCat outage must not hold the success screen hostage.
+    /// A cancel()-based deadline is NOT a bound here: recordPurchase ignores
+    /// task cancellation, so the await would ride out the SDK's own retries.
+    /// Race it against a real timer instead — first finisher resumes the
+    /// caller, a late recordPurchase still completes in the background.
     static func record(_ result: Product.PurchaseResult) async {
-        let recordTask = Task { _ = try? await Purchases.shared.recordPurchase(result) }
-        let deadline = Task {
-            try? await Task.sleep(for: .seconds(3))
-            recordTask.cancel()
+        final class Once: @unchecked Sendable {
+            private let lock = NSLock()
+            private var resumed = false
+            func claim() -> Bool {
+                lock.lock(); defer { lock.unlock() }
+                if resumed { return false }
+                resumed = true
+                return true
+            }
         }
-        _ = await recordTask.value
-        deadline.cancel()
+        let once = Once()
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            Task {
+                _ = try? await Purchases.shared.recordPurchase(result)
+                if once.claim() { cont.resume() }
+            }
+            Task {
+                try? await Task.sleep(for: .seconds(3))
+                if once.claim() { cont.resume() }
+            }
+        }
     }
 }

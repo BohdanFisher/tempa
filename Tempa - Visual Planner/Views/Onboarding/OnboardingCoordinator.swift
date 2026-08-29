@@ -41,6 +41,13 @@ struct OnboardingFlow: View {
     /// Fired once the funnel is done (paywall completed).
     var onFinished: (() -> Void)? = nil
 
+    /// Set when the forced-funnel paywall completes a purchase. The hand-off
+    /// to RootView (onFinished) must wait until the cover has FULLY dismissed:
+    /// firing it while the cover is still presented swaps the root branch out
+    /// from under a live presentation, which can leave the paywall stuck on
+    /// screen after a successful purchase.
+    @State private var finishAfterDismiss = false
+
     var body: some View {
         ZStack {
             T.bg.ignoresSafeArea()
@@ -62,11 +69,13 @@ struct OnboardingFlow: View {
                     .animation(.spring(response: 0.5, dampingFraction: 0.86), value: state.currentStep)
             }
         }
-        .fullScreenCover(isPresented: $state.showPaywall) {
+        .fullScreenCover(isPresented: $state.showPaywall, onDismiss: {
+            if finishAfterDismiss { onFinished?() }
+        }) {
             PaywallView(allowDismiss: false) {
                 DemoPlanStash.materialize(into: viewContext)
                 settings.completeOnboarding()
-                onFinished?()
+                if onFinished != nil { finishAfterDismiss = true }
             }
         }
         .onChange(of: state.showPaywall) { _, shown in
