@@ -34,6 +34,12 @@ final class SubscriptionManager {
     /// router waits for this (sub-second, works offline: local receipts).
     private(set) var entitlementsChecked = false
 
+    /// Purchases completed in THIS process, by expiry. Merged into every
+    /// entitlement refresh so a lagging currentEntitlements (sandbox does this
+    /// right after finish()) can't clobber a subscription we watched the user
+    /// buy seconds ago. Entries retire on their own as they expire.
+    private var locallyPurchased: [String: Date] = [:]
+
     private let productIDs = ["tempa_yearly", "tempa_monthly", "tempa_weekly"]
 
     init() {
@@ -135,6 +141,17 @@ final class SubscriptionManager {
             // RevenueCat observer mode: must see the purchase before finish().
             await RevenueCatService.record(result)
             await transaction.finish()
+            // currentEntitlements can lag right after finish() — reliably in
+            // sandbox, occasionally in production. The verified transaction in
+            // hand IS the entitlement: remember it and merge it into every
+            // refresh until its expiry, or isPro stays false and the router
+            // bounces a fresh subscriber onto the hard paywall.
+            if transaction.revocationDate == nil,
+               (transaction.expirationDate ?? .distantFuture) > .now {
+                locallyPurchased[transaction.productID] =
+                    transaction.expirationDate ?? .distantFuture
+                hasEverSubscribed = true
+            }
             await updatePurchasedProducts()
             return transaction
 
@@ -161,7 +178,12 @@ final class SubscriptionManager {
                   (transaction.expirationDate ?? .distantFuture) > .now else { continue }
             purchased.insert(transaction.productID)
         }
+        locallyPurchased = locallyPurchased.filter { $0.value > .now }
+        for id in locallyPurchased.keys { purchased.insert(id) }
         purchasedProductIDs = purchased
+        #if DEBUG
+        print("[Tempa] entitlements refresh → \(purchased.isEmpty ? "none" : purchased.joined(separator: ", "))")
+        #endif
 
         if !hasEverSubscribed {
             for id in productIDs {
