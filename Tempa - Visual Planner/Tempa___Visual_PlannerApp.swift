@@ -34,10 +34,13 @@ struct TempaApp: App {
         AppLanguage.current.apply()   // keep the AppleLanguages override in sync
 
         #if DEBUG
-        if UserDefaults.standard.bool(forKey: "test-cloud-key") {
+        if UserDefaults.standard.bool(forKey: "test-cloud-key")
+            || UserDefaults.standard.bool(forKey: "remove-god-nail") {
             // "-test-cloud-key YES": rehearse the App Store path — no dev key,
             // empty Keychain, the key must arrive from the CloudKit public
             // record exactly like on a real user's phone.
+            // "-remove-god-nail YES": un-owner a device — leave its Keychain
+            // the way a production phone has it, so no dev key either.
             ClaudeAPIClient().wipeStoredAPIKey()
         } else {
             ClaudeAPIClient().setupDevKey()

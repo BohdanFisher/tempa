@@ -19,6 +19,14 @@ enum OwnerMode {
 
     static let isActive: Bool = {
         #if DEBUG
+        // "-remove-god-nail YES": pull the nail out of THIS device's Keychain —
+        // for a device that got nailed by accident (a real person's phone
+        // plugged into Xcode once). Must be the LAST Xcode run on that device:
+        // any later plain DEBUG launch plants the nail again.
+        if UserDefaults.standard.bool(forKey: "remove-god-nail") {
+            removeNail()
+            return false
+        }
         plantToken()
         return true
         #else
@@ -44,6 +52,16 @@ enum OwnerMode {
     }
 
     #if DEBUG
+    private static func removeNail() {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: account,
+        ]
+        SecItemDelete(query as CFDictionary)
+        print("[Tempa] OwnerMode: nail REMOVED — this device is a production user again")
+    }
+
     private static func plantToken() {
         guard !tokenExists() else { return }
         let attrs: [String: Any] = [
