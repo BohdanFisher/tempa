@@ -22,6 +22,11 @@ enum RevenueCatService {
                 .with(networkTimeout: 10)
                 .build()
         )
+        // Apple Search Ads attribution: hand RevenueCat the AdServices token
+        // so installs/trials/revenue segment by ASA campaign in Charts.
+        // Without this the dashboard integration shows "Active" but every
+        // customer lands in "No campaign".
+        Purchases.shared.attribution.enableAdServicesAttributionTokenCollection()
     }
 
     /// StoreKit 2 observer mode contract: hand RevenueCat the raw purchase
