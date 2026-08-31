@@ -1866,18 +1866,21 @@ struct OnbFirstWinView: View {
             }
 
             Text("First step: done.")
-                .font(.custom("Nunito-ExtraBold", size: 30).weight(.heavy))
-                .tracking(-0.6)
+                .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                .tracking(-0.56)
                 .foregroundColor(T.text)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
                 .padding(.top, 28)
                 .opacity(shown ? 1 : 0)
 
-            Text("You just did the hardest part of any task — the start. That feeling? That's how every day begins with Tempa.")
+            Text("Starting is the hardest part — and it's already done. That's how Tempa works.")
                 .font(.custom("Inter-Medium", size: 15).weight(.medium))
                 .foregroundColor(T.textSec)
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
-                .padding(.horizontal, 34)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 44)
                 .padding(.top, 12)
                 .opacity(shown ? 1 : 0)
 

@@ -7639,7 +7639,7 @@
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перший крок — зроблено."
+            "value": "Перший крок зроблено."
           }
         }
       }
@@ -8685,6 +8685,7 @@
       }
     },
     "Hey.": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -16794,6 +16795,58 @@
         }
       }
     },
+    "Starting is the hardest part — and it's already done. That's how Tempa works.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anfangen ist das Schwerste — und das ist schon erledigt. Genau so funktioniert Tempa."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezar es lo más difícil — y ya está hecho. Así funciona Tempa."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aloittaminen on vaikeinta — ja se on jo tehty. Näin Tempa toimii."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le plus dur, c'est de commencer — et c'est déjà fait. C'est exactement comme ça que marche Tempa."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Å starte er det vanskeligste — og det er allerede gjort. Sånn funker Tempa."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beginnen is het moeilijkst — en dat is al gebeurd. Zo werkt Tempa."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Começar é o mais difícil — e isso já foi. É assim que o Tempa funciona."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Найважче — почати. І це вже позаду. Саме так працює Tempa."
+          }
+        }
+      }
+    },
     "Starting tasks": {
       "localizations": {
         "de": {
@@ -19197,6 +19250,7 @@
       }
     },
     "This is Tempa.": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
