@@ -2217,12 +2217,21 @@ struct OnbTrialGiftView: View {
         VStack(spacing: 0) {
             Spacer()
 
+            // Same hero language as the first-win checkmark: soft ring, solid
+            // core, white SF Symbol. Emoji are reserved for the "other apps"
+            // anti-pattern rows — Tempa's own moments stay in the system icon
+            // family.
             ZStack {
                 Circle()
                     .fill(Cat.personal.bg)
-                    .frame(width: 120, height: 120)
-                Text("🎁")
-                    .font(.system(size: 54))
+                    .frame(width: 132, height: 132)
+                Circle()
+                    .fill(T.primary)
+                    .frame(width: 96, height: 96)
+                    .shadow(color: T.primary.opacity(0.35), radius: 14, x: 0, y: 8)
+                Image(systemName: "gift.fill")
+                    .font(.system(size: 40, weight: .semibold))
+                    .foregroundColor(.white)
             }
             .staggerIn(0)
 
