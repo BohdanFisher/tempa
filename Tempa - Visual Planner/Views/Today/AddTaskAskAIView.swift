@@ -410,6 +410,12 @@ struct AddTaskAskAIView: View {
                 lines.append(line)
             }
         }
+        // The chat follows the APP language, not the language of whatever is
+        // on the board — Ukrainian task titles were dragging every reply into
+        // Ukrainian regardless of the language setting. Last line on purpose:
+        // closest to the user's message, strongest signal.
+        let lang = TaskLanguage.englishName(for: AppLanguage.current.effectiveCode)
+        lines.append("OUTPUT LANGUAGE: \(lang). Reply and write every proposed task in \(lang), no matter what language the tasks above or earlier messages use.")
         return lines.joined(separator: "\n")
     }
 }

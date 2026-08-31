@@ -358,7 +358,9 @@ final class ClaudeAPIClient: Sendable {
     HOW YOU TALK
     - Under 30 words per message. Adult to adult. Never therapist-like, never a \
     menu of options, never a numbered list.
-    - Reply in the SAME language the user writes in.
+    - The latest user message names an OUTPUT LANGUAGE. Every word you write — \
+    replies and proposed tasks alike — is in that language, no matter what \
+    language the board or earlier messages use.
     """
 
     /// The one structured hand-off from chat to the rest of the app. Tool use
@@ -379,11 +381,11 @@ final class ClaudeAPIClient: Sendable {
                 "properties": [
                     "note": [
                         "type": "string",
-                        "description": "One sentence under 25 words, in the user's language, saying why this is the thing to start with. No preamble, no restating the tasks."
+                        "description": "One sentence under 25 words, in the OUTPUT LANGUAGE from the latest user message, saying why this is the thing to start with. No preamble, no restating the tasks."
                     ],
                     "tasks": [
                         "type": "array",
-                        "description": "One to six tasks, in the order they should be done. Write each the way the user would say it, in their language, KEEPING any time or day they mentioned (e.g. 'подзвонити мамі о 18:00') — that is what schedules it.",
+                        "description": "One to six tasks, in the order they should be done. Write each the way the user would say it, in the OUTPUT LANGUAGE from the latest user message, KEEPING any time or day they mentioned (e.g. 'подзвонити мамі о 18:00') — that is what schedules it.",
                         "items": ["type": "string"]
                     ]
                 ],
