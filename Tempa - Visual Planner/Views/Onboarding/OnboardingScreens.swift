@@ -76,8 +76,10 @@ struct OnbProblemView: View {
                 .padding(.horizontal, 24)
                 .padding(.top, 36)
 
-            // The backdrop everyone recognises: an overloaded list already
-            // slipping out of focus — the feeling itself, not a screenshot.
+            // The backdrop everyone recognises: an overloaded list sinking out
+            // of focus. Depth is PROGRESSIVE — the first row is pin-sharp (the
+            // recognition anchor), each next one sinks deeper. A uniform blur
+            // here read as a rendering bug, not a metaphor.
             VStack(spacing: 8) {
                 ForEach(listRows.indices, id: \.self) { i in
                     HStack(spacing: 10) {
@@ -101,20 +103,13 @@ struct OnbProblemView: View {
                     .padding(.vertical, 10)
                     .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(T.surface))
                     .tempaShadowSm()
+                    .blur(radius: CGFloat(i) * CGFloat(i) * 0.22)
+                    .opacity(1.0 - Double(i) * 0.14)
                     .staggerIn(i, baseDelay: 0.06)
                 }
             }
             .padding(.horizontal, 34)
             .padding(.top, 30)
-            .blur(radius: 2.2)
-            .opacity(0.75)
-            .mask(
-                LinearGradient(stops: [
-                    .init(color: .black, location: 0),
-                    .init(color: .black, location: 0.55),
-                    .init(color: .black.opacity(0.05), location: 1),
-                ], startPoint: .top, endPoint: .bottom)
-            )
             .allowsHitTesting(false)
 
             Spacer()
