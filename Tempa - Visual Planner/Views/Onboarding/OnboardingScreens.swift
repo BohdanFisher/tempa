@@ -1,6 +1,7 @@
 import SwiftUI
 import UserNotifications
 import CoreData
+import StoreKit
 
 // MARK: - Screen 1: Hook
 
@@ -103,6 +104,562 @@ struct Onb1HookView: View {
         }
     }
 
+}
+
+// MARK: - Screen: Problem (the pain they already feel, named out loud)
+
+struct OnbProblemView: View {
+    let state: OnboardingState
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                OnbLabel(text: "Sound familiar?")
+
+                Text("Your brain isn't broken. Most planners just aren't built for it.")
+                    .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                    .tracking(-0.56)
+                    .foregroundColor(T.text)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
+
+                Text("They hand you a wall of tasks and assume you'll just… start. That's the one thing an ADHD brain can't do on command.")
+                    .font(.custom("Inter-Medium", size: 15).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .lineSpacing(4)
+                    .padding(.top, 12)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 22)
+            .padding(.top, 32)
+
+            // The wall of tasks vs the way in — same contrast card language as
+            // the anti-streak promise later.
+            VStack(spacing: 10) {
+                HStack(spacing: 12) {
+                    Text("🧱")
+                        .font(.system(size: 22))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("23 tasks, zero idea where to start")
+                            .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
+                            .foregroundColor(T.textSec)
+                            .strikethrough(true, color: T.textSec)
+                        Text("Every other planner")
+                            .font(.custom("Inter-Medium", size: 12).weight(.medium))
+                            .foregroundColor(T.textSec)
+                    }
+                    Spacer()
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundColor(T.textTer)
+                }
+                .padding(14)
+                .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(T.bgWarm))
+                .opacity(0.7)
+                .staggerIn(0)
+
+                HStack(spacing: 12) {
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 22))
+                        .foregroundColor(T.primary)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("One tiny step. Then the next.")
+                            .font(.custom("Nunito-ExtraBold", size: 15).weight(.bold))
+                            .foregroundColor(T.text)
+                        Text("How Tempa works")
+                            .font(.custom("Inter-Medium", size: 12).weight(.medium))
+                            .foregroundColor(T.textSec)
+                    }
+                    Spacer()
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundColor(Cat.health.solid)
+                }
+                .padding(14)
+                .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Cat.personal.bg))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .stroke(T.primary, lineWidth: 1.5)
+                )
+                .staggerIn(1)
+            }
+            .padding(22)
+            .background(RoundedRectangle(cornerRadius: 22, style: .continuous).fill(T.surface))
+            .tempaShadowSm()
+            .padding(.horizontal, 22)
+            .padding(.top, 28)
+
+            Spacer()
+
+            TempaButton(label: "That's me", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.next()
+            }
+            .padding(.horizontal, 22)
+            .padding(.bottom, 50)
+        }
+    }
+}
+
+// MARK: - Screen: Solution (what Tempa does, in three beats)
+
+struct OnbSolutionView: View {
+    let state: OnboardingState
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                OnbLabel(text: "The Tempa way")
+
+                Text("Say your day out loud. We'll turn it into steps you can actually start.")
+                    .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                    .tracking(-0.56)
+                    .foregroundColor(T.text)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 22)
+            .padding(.top, 32)
+
+            VStack(spacing: 10) {
+                solutionRow(icon: "mic.fill", cat: "work",
+                            title: "Speak your plans",
+                            sub: "AI turns a brain-dump into a scheduled day", index: 0)
+                solutionRow(icon: "rectangle.stack.fill", cat: "personal",
+                            title: "One thing at a time",
+                            sub: "You only ever see the next small step", index: 1)
+                solutionRow(icon: "timer", cat: "routine",
+                            title: "Focus that forgives",
+                            sub: "A gentle timer — and no guilt when life happens", index: 2)
+            }
+            .padding(.horizontal, 22)
+            .padding(.top, 26)
+
+            Spacer()
+
+            TempaButton(label: "Show me how", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.next()
+            }
+            .padding(.horizontal, 22)
+            .padding(.bottom, 50)
+        }
+    }
+
+    private func solutionRow(icon: String, cat: String, title: LocalizedStringKey,
+                             sub: LocalizedStringKey, index: Int) -> some View {
+        let cc = Cat.named(cat)
+        return HStack(spacing: 14) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(cc.bg)
+                    .frame(width: 44, height: 44)
+                Image(systemName: icon)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(cc.ink)
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.custom("Nunito-ExtraBold", size: 16).weight(.heavy))
+                    .foregroundColor(T.text)
+                Text(sub)
+                    .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(16)
+        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(T.surface))
+        .tempaShadowSm()
+        .staggerIn(index)
+    }
+}
+
+// MARK: - Screen: Name (personalization starts here)
+
+struct OnbNameView: View {
+    @Bindable var state: OnboardingState
+    @FocusState private var focused: Bool
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                OnbLabel(text: "Nice to meet you")
+
+                Text("What should we call you?")
+                    .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                    .tracking(-0.56)
+                    .foregroundColor(T.text)
+                    .padding(.top, 10)
+
+                Text("Just a first name — so your plan feels like yours.")
+                    .font(.custom("Inter-Medium", size: 14).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .padding(.top, 6)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 22)
+            .padding(.top, 32)
+
+            TextField(String(localized: "Your name", bundle: .appLanguage), text: $state.userName)
+                .font(.custom("Nunito-ExtraBold", size: 22).weight(.bold))
+                .foregroundColor(T.text)
+                .focused($focused)
+                .submitLabel(.done)
+                .onSubmit { advance() }
+                .padding(18)
+                .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(T.surface))
+                .tempaShadowSm()
+                .padding(.horizontal, 22)
+                .padding(.top, 24)
+
+            Spacer()
+
+            TempaButton(label: "Continue", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                advance()
+            }
+            .padding(.horizontal, 22)
+            .opacity(state.userName.trimmingCharacters(in: .whitespaces).isEmpty ? 0.5 : 1)
+
+            Button {
+                #if os(iOS)
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                #endif
+                state.userName = ""
+                focused = false
+                state.next()
+            } label: {
+                Text("I'd rather not say")
+                    .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
+                    .foregroundColor(T.textSec)
+            }
+            .padding(.top, 12)
+            .padding(.bottom, 34)
+        }
+        .onAppear { focused = true }
+    }
+
+    private func advance() {
+        state.userName = state.userName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !state.userName.isEmpty else { return }
+        UserDefaults.standard.set(state.userName, forKey: "userName")
+        focused = false
+        state.next()
+    }
+}
+
+// MARK: - Screen: Hours lost (sets up the math)
+
+struct OnbHoursView: View {
+    @Bindable var state: OnboardingState
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                OnbLabel(text: "About you · 3 of 3")
+
+                Text("On a heavy day, how much time gets eaten by putting things off?")
+                    .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                    .tracking(-0.56)
+                    .foregroundColor(T.text)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
+
+                Text("Scrolling counts. Honest guess — nobody's judging.")
+                    .font(.custom("Inter-Medium", size: 14).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .padding(.top, 6)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 22)
+            .padding(.top, 32)
+
+            VStack(spacing: 0) {
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text(hoursText)
+                        .font(.custom("Nunito-ExtraBold", size: 44).weight(.heavy))
+                        .tracking(-0.88)
+                        .foregroundColor(T.text)
+                        .monospacedDigit()
+                    Text("h")
+                        .font(.custom("Nunito-ExtraBold", size: 22).weight(.heavy))
+                        .foregroundColor(T.textSec)
+                }
+                .frame(maxWidth: .infinity)
+
+                GeometryReader { geo in
+                    let trackWidth = geo.size.width
+                    let pct = (state.hoursLost - 1) / 5
+
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 3)
+                            .fill(Color(lightHex: "#EAE5DA", darkHex: "#2E2722"))
+                            .frame(height: 6)
+                        RoundedRectangle(cornerRadius: 3)
+                            .fill(T.primary)
+                            .frame(width: trackWidth * pct, height: 6)
+                        Circle()
+                            .fill(T.surface)
+                            .frame(width: 28, height: 28)
+                            .overlay(Circle().stroke(T.primary, lineWidth: 3))
+                            .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
+                            .offset(x: trackWidth * pct - 14)
+                            .gesture(
+                                DragGesture(minimumDistance: 0)
+                                    .onChanged { value in
+                                        let newPct = min(max(value.location.x / trackWidth, 0), 1)
+                                        let snapped = ((1 + newPct * 5) * 2).rounded() / 2
+                                        if snapped != state.hoursLost {
+                                            #if os(iOS)
+                                            UISelectionFeedbackGenerator().selectionChanged()
+                                            #endif
+                                        }
+                                        state.hoursLost = snapped
+                                    }
+                            )
+                    }
+                }
+                .frame(height: 28)
+                .padding(.top, 24)
+
+                HStack {
+                    Text(verbatim: "1h")
+                    Spacer()
+                    Text(verbatim: "3h")
+                    Spacer()
+                    Text(verbatim: "6h+")
+                }
+                .font(.custom("Inter-Medium", size: 11).weight(.semibold))
+                .foregroundColor(T.textSec)
+                .padding(.top, 8)
+            }
+            .padding(22)
+            .background(RoundedRectangle(cornerRadius: 22, style: .continuous).fill(T.surface))
+            .tempaShadowSm()
+            .padding(.horizontal, 22)
+            .padding(.top, 28)
+
+            Spacer()
+
+            TempaButton(label: "Continue", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.next()
+            }
+            .padding(.horizontal, 22)
+            .padding(.bottom, 50)
+        }
+    }
+
+    private var hoursText: String {
+        state.hoursLost.truncatingRemainder(dividingBy: 1) == 0
+            ? String(Int(state.hoursLost))
+            : String(format: "%.1f", state.hoursLost)
+    }
+}
+
+// MARK: - Screen: The math (aha moment — their number, not our lecture)
+
+struct OnbBombshellView: View {
+    let state: OnboardingState
+    @State private var shown = [false, false, false, false]
+
+    /// hours/day → full weeks of waking life per year (their own number).
+    private var weeksPerYear: Int {
+        max(1, Int((state.hoursLost * 365 / (24 * 7)).rounded()))
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                OnbLabel(text: "Let's do the math")
+                    .padding(.top, 32)
+
+                Text("\(hoursLine) a day adds up to…")
+                    .font(.custom("Nunito-ExtraBold", size: 26).weight(.heavy))
+                    .tracking(-0.52)
+                    .foregroundColor(T.text)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
+                    .opacity(shown[0] ? 1 : 0)
+                    .offset(y: shown[0] ? 0 : 12)
+
+                // The number gets the whole stage.
+                HStack(alignment: .firstTextBaseline, spacing: 10) {
+                    Text(verbatim: "≈\(weeksPerYear)")
+                        .font(.custom("Nunito-ExtraBold", size: 76).weight(.heavy))
+                        .tracking(-1.5)
+                        .foregroundColor(T.primary)
+                        .monospacedDigit()
+                    Text(weeksLabel)
+                        .font(.custom("Nunito-ExtraBold", size: 22).weight(.heavy))
+                        .foregroundColor(T.text)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(.top, 18)
+                .opacity(shown[1] ? 1 : 0)
+                .offset(y: shown[1] ? 0 : 12)
+
+                Text("gone to \"I'll do it later.\"")
+                    .font(.custom("Inter-Medium", size: 16).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .padding(.top, 4)
+                    .opacity(shown[1] ? 1 : 0)
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("It doesn't have to be this way.")
+                        .font(.custom("Nunito-ExtraBold", size: 20).weight(.heavy))
+                        .foregroundColor(T.text)
+                    Text("Five minutes of planning a day wins most of it back. Let's build your plan.")
+                        .font(.custom("Inter-Medium", size: 15).weight(.medium))
+                        .foregroundColor(T.textSec)
+                        .lineSpacing(4)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(18)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(Cat.health.bg))
+                .padding(.top, 30)
+                .opacity(shown[2] ? 1 : 0)
+                .offset(y: shown[2] ? 0 : 12)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 22)
+
+            Spacer()
+
+            TempaButton(label: "Build my plan", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.next()
+            }
+            .padding(.horizontal, 22)
+            .padding(.bottom, 50)
+            .opacity(shown[3] ? 1 : 0)
+        }
+        .onAppear {
+            // One thought at a time — the pause is what lets the number land.
+            for i in 0..<4 {
+                withAnimation(.spring(response: 0.55, dampingFraction: 0.8).delay(0.25 + Double(i) * 0.55)) {
+                    shown[i] = true
+                }
+            }
+        }
+    }
+
+    private var hoursLine: String {
+        let h = state.hoursLost.truncatingRemainder(dividingBy: 1) == 0
+            ? String(Int(state.hoursLost))
+            : String(format: "%.1f", state.hoursLost)
+        // Abbreviated unit on purpose: "1 hours"/"1 годин" would be wrong,
+        // "1h"/"1 год" is right for every count in every language.
+        return String(localized: "\(h)h", bundle: .appLanguage)
+    }
+
+    /// Slavic languages decline the noun after a numeral (2–4 тижні, 5+
+    /// тижнів). The range here is 2…13, so two variants cover it exactly;
+    /// languages without the distinction translate both keys identically.
+    private var weeksLabel: LocalizedStringKey {
+        (2...4).contains(weeksPerYear) ? "weeks of the year" : "weeks a year"
+    }
+}
+
+// MARK: - Screen: Mirror (their answers, heard and answered)
+
+struct OnbMirrorView: View {
+    let state: OnboardingState
+    @State private var shownCount = 0
+
+    /// Echo lines mapped 1:1 to the quiz rows — the user reads their own
+    /// answers back, each already answered by what Tempa does about it.
+    private static let selfIdEchoes: [LocalizedStringKey] = [
+        "Your brain works differently — Tempa is built around that, not against it.",
+        "Big lists overwhelm you — here you'll only ever see the next small step.",
+        "Starting is the hardest part — AI shrinks scary tasks into tiny first moves.",
+        "Time slips away — your day becomes blocks you can actually see.",
+        "You want calmer days — no streaks, no guilt, no noise.",
+    ]
+    private static let painEchoes: [LocalizedStringKey] = [
+        "Starting tasks: one tap turns anything into a five-minute first step.",
+        "Time blindness: visual blocks keep the day where you can see it.",
+        "Routines: gentle reminders that nudge without nagging.",
+        "Apps that didn't stick: this one forgives the days you disappear.",
+        "The guilt: banned. A missed day just gets a \"welcome back.\"",
+    ]
+
+    private var echoes: [LocalizedStringKey] {
+        var out: [LocalizedStringKey] = []
+        for i in state.selfIdPicks.sorted() where i < Self.selfIdEchoes.count {
+            out.append(Self.selfIdEchoes[i])
+        }
+        for i in state.painPicks.sorted() where i < Self.painEchoes.count {
+            out.append(Self.painEchoes[i])
+        }
+        if out.isEmpty {
+            out = [Self.selfIdEchoes[1], Self.painEchoes[0], Self.selfIdEchoes[4]]
+        }
+        return Array(out.prefix(4))
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                OnbLabel(text: "We heard you")
+                    .padding(.top, 32)
+
+                Group {
+                    if state.userName.isEmpty {
+                        Text("Here's what you told us.")
+                    } else {
+                        Text("\(state.userName), here's what you told us.")
+                    }
+                }
+                .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                .tracking(-0.56)
+                .foregroundColor(T.text)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 10)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 22)
+
+            VStack(spacing: 10) {
+                ForEach(Array(echoes.enumerated()), id: \.offset) { i, line in
+                    HStack(alignment: .top, spacing: 12) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 18))
+                            .foregroundColor(Cat.health.solid)
+                            .padding(.top, 1)
+                        Text(line)
+                            .font(.custom("Nunito-ExtraBold", size: 15).weight(.bold))
+                            .foregroundColor(T.text)
+                            .lineSpacing(3)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(16)
+                    .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(T.surface))
+                    .tempaShadowSm()
+                    .opacity(shownCount > i ? 1 : 0)
+                    .offset(y: shownCount > i ? 0 : 14)
+                }
+            }
+            .padding(.horizontal, 22)
+            .padding(.top, 24)
+
+            Spacer()
+
+            TempaButton(label: "That's exactly it", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.next()
+            }
+            .padding(.horizontal, 22)
+            .padding(.bottom, 50)
+            .opacity(shownCount >= echoes.count ? 1 : 0.3)
+        }
+        .onAppear {
+            for i in 0...echoes.count {
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.3 + Double(i) * 0.5)) {
+                    shownCount = i + 1
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Screen 2: Self-Identification
@@ -390,7 +947,9 @@ struct Onb4DemoView: View {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         #endif
                         focused = false
-                        state.next()
+                        // No demo → no win to celebrate: jump past the
+                        // first-win screen straight to personalization.
+                        state.currentStep = min(state.currentStep + 2, state.totalSteps - 1)
                     } label: {
                         Text("Skip")
                             .font(.custom("Inter-Medium", size: 14))
@@ -564,7 +1123,7 @@ struct Onb5PersonalView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "Set your day · 3 of 3")
+                OnbLabel(text: "Set your day")
 
                 Text("When does your day start?")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
@@ -1021,9 +1580,9 @@ struct Onb6SocialView: View {
                             )
                         )
                 )
-                .padding(.top, 22)
+                .padding(.top, 24)
 
-                // Testimonials
+                // Testimonials — same 10pt rhythm as the count card above.
                 VStack(spacing: 10) {
                     ForEach(testimonials.indices, id: \.self) { i in
                         let t = testimonials[i]
@@ -1046,12 +1605,12 @@ struct Onb6SocialView: View {
                         .staggerIn(i + 4, baseDelay: 0.09)
                     }
                 }
-                .padding(.top, 14)
+                .padding(.top, 10)
 
                 TempaButton(label: "Continue", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
                     state.next()
                 }
-                .padding(.top, 22)
+                .padding(.top, 24)
                 .padding(.bottom, 50)
             }
             .padding(.horizontal, 22)
@@ -1380,7 +1939,347 @@ struct Onb9BuildingView: View {
         settings.energyDipTime = state.energyDipTime
         settings.save()
 
-        state.showPaywall = true
+        // The gift screen makes the offer; the paywall opens from there.
+        state.next()
+    }
+}
+
+// MARK: - Screen: First win (the peak — and the only right moment to ask)
+
+struct OnbFirstWinView: View {
+    let state: OnboardingState
+    @Environment(\.requestReview) private var requestReview
+    @State private var ringScale: CGFloat = 0.4
+    @State private var shown = false
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            ZStack {
+                Circle()
+                    .fill(Cat.health.bg)
+                    .frame(width: 132, height: 132)
+                    .scaleEffect(ringScale * 1.08)
+                Circle()
+                    .fill(Cat.health.solid)
+                    .frame(width: 96, height: 96)
+                    .scaleEffect(ringScale)
+                Image(systemName: "checkmark")
+                    .font(.system(size: 42, weight: .heavy))
+                    .foregroundColor(.white)
+                    .scaleEffect(ringScale)
+            }
+
+            Text("First step: done.")
+                .font(.custom("Nunito-ExtraBold", size: 30).weight(.heavy))
+                .tracking(-0.6)
+                .foregroundColor(T.text)
+                .padding(.top, 28)
+                .opacity(shown ? 1 : 0)
+
+            Text("You just did the hardest part of any task — the start. That feeling? That's how every day begins with Tempa.")
+                .font(.custom("Inter-Medium", size: 15).weight(.medium))
+                .foregroundColor(T.textSec)
+                .multilineTextAlignment(.center)
+                .lineSpacing(4)
+                .padding(.horizontal, 34)
+                .padding(.top, 12)
+                .opacity(shown ? 1 : 0)
+
+            Spacer()
+
+            TempaButton(label: "Keep going", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.next()
+            }
+            .padding(.horizontal, 22)
+            .padding(.bottom, 50)
+            .opacity(shown ? 1 : 0)
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.55)) { ringScale = 1 }
+            withAnimation(.easeOut(duration: 0.4).delay(0.35)) { shown = true }
+            #if os(iOS)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            #endif
+            // The emotional peak is the one honest moment to ask for a rating —
+            // and only when the demo actually ran (a skipped demo earned nothing).
+            // Marking ReviewPrompt keeps the in-app first-task ask from doubling.
+            if !state.demoSteps.isEmpty {
+                Task {
+                    try? await Task.sleep(for: .seconds(1.6))
+                    requestReview()
+                    ReviewPrompt.shared.markAsked()
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Screen: Commitment (Cialdini — an active yes before the paywall)
+
+struct OnbCommitView: View {
+    let state: OnboardingState
+    @State private var picked: Int? = nil
+
+    private let options: [LocalizedStringKey] = [
+        "All in — let's do this",
+        "Ready to give it a real shot",
+        "Curious, but cautious",
+    ]
+    /// Every answer gets warmth back — including the cautious one.
+    private let affirmations: [LocalizedStringKey] = [
+        "Love that energy. We'll match it — one small step at a time.",
+        "A real shot is all it takes. We'll keep it light.",
+        "Cautious is smart. Tempa earns trust one small win at a time.",
+    ]
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                OnbLabel(text: "One honest question")
+
+                Text("How ready are you to try a different way?")
+                    .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                    .tracking(-0.56)
+                    .foregroundColor(T.text)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 22)
+            .padding(.top, 32)
+
+            VStack(spacing: 10) {
+                ForEach(options.indices, id: \.self) { i in
+                    Button {
+                        #if os(iOS)
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        #endif
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) { picked = i }
+                    } label: {
+                        HStack(spacing: 10) {
+                            Text(options[i])
+                                .font(.custom("Nunito-ExtraBold", size: 16).weight(.bold))
+                                .foregroundColor(T.text)
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            if picked == i {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 18))
+                                    .foregroundColor(T.primary)
+                                    .transition(.scale(scale: 0.4).combined(with: .opacity))
+                            }
+                        }
+                        .padding(18)
+                        .background(
+                            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                .fill(picked == i ? Cat.personal.bg : T.surface)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                .stroke(picked == i ? T.primary : .clear, lineWidth: 1.5)
+                        )
+                        .tempaShadowSm()
+                    }
+                    .buttonStyle(SpringPressStyle())
+                    .staggerIn(i)
+                }
+            }
+            .padding(.horizontal, 22)
+            .padding(.top, 24)
+
+            if let picked {
+                HStack(spacing: 12) {
+                    Image(systemName: "heart.fill")
+                        .font(.system(size: 20))
+                        .foregroundColor(Cat.health.ink)
+                    Text(affirmations[picked])
+                        .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
+                        .foregroundColor(T.text)
+                        .lineSpacing(3)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(Cat.health.bg))
+                .padding(.horizontal, 22)
+                .padding(.top, 14)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+
+            Spacer()
+
+            TempaButton(label: "Continue", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.next()
+            }
+            .padding(.horizontal, 22)
+            .padding(.bottom, 50)
+            .opacity(picked == nil ? 0.4 : 1)
+            .disabled(picked == nil)
+        }
+    }
+}
+
+// MARK: - Screen: Journey summary (the last word belongs to them)
+
+struct OnbSummaryView: View {
+    let state: OnboardingState
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                OnbLabel(text: "Your plan")
+                    .padding(.top, 32)
+
+                Group {
+                    if state.userName.isEmpty {
+                        Text("Here's your next 30 days.")
+                    } else {
+                        Text("\(state.userName), here's your next 30 days.")
+                    }
+                }
+                .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                .tracking(-0.56)
+                .foregroundColor(T.text)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 10)
+
+                Text("Built from your answers — your mornings, your energy, your pace.")
+                    .font(.custom("Inter-Medium", size: 14).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .padding(.top, 8)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 22)
+
+            VStack(spacing: 10) {
+                journeyRow(day: "Today", text: "Speak tomorrow's plan out loud — five minutes.",
+                           icon: "mic.fill", cat: "work", index: 0)
+                journeyRow(day: "Day 3", text: "First focus blocks behind you — starting feels lighter.",
+                           icon: "timer", cat: "routine", index: 1)
+                journeyRow(day: "Day 30", text: "A calmer rhythm that survives even the bad days.",
+                           icon: "leaf", cat: "rest", index: 2)
+            }
+            .padding(.horizontal, 22)
+            .padding(.top, 26)
+
+            Spacer()
+
+            TempaButton(label: "I want this", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.next()
+            }
+            .padding(.horizontal, 22)
+            .padding(.bottom, 50)
+        }
+    }
+
+    private func journeyRow(day: LocalizedStringKey, text: LocalizedStringKey,
+                            icon: String, cat: String, index: Int) -> some View {
+        let cc = Cat.named(cat)
+        return HStack(alignment: .top, spacing: 14) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(cc.bg)
+                    .frame(width: 44, height: 44)
+                Image(systemName: icon)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(cc.ink)
+            }
+            VStack(alignment: .leading, spacing: 3) {
+                Text(day)
+                    .font(.custom("Nunito-ExtraBold", size: 12).weight(.heavy))
+                    .tracking(1.2)
+                    .textCase(.uppercase)
+                    .foregroundColor(T.primary)
+                Text(text)
+                    .font(.custom("Nunito-ExtraBold", size: 15).weight(.bold))
+                    .foregroundColor(T.text)
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(16)
+        .background(RoundedRectangle(cornerRadius: 18, style: .continuous).fill(T.surface))
+        .tempaShadowSm()
+        .staggerIn(index)
+    }
+}
+
+// MARK: - Screen: The gift (a free trial, offered like one)
+
+struct OnbTrialGiftView: View {
+    @Bindable var state: OnboardingState
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            ZStack {
+                Circle()
+                    .fill(Cat.personal.bg)
+                    .frame(width: 120, height: 120)
+                Text("🎁")
+                    .font(.system(size: 54))
+            }
+            .staggerIn(0)
+
+            Text("We'd like you to try everything — free.")
+                .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                .tracking(-0.56)
+                .foregroundColor(T.text)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 30)
+                .padding(.top, 24)
+                .staggerIn(1)
+
+            Text("Your plan is ready. Test-drive the full app on us and see how your week feels.")
+                .font(.custom("Inter-Medium", size: 15).weight(.medium))
+                .foregroundColor(T.textSec)
+                .multilineTextAlignment(.center)
+                .lineSpacing(4)
+                .padding(.horizontal, 34)
+                .padding(.top, 10)
+                .staggerIn(2)
+
+            VStack(alignment: .leading, spacing: 10) {
+                giftRow(icon: "lock.open.fill", text: "Every feature unlocked from minute one")
+                giftRow(icon: "bell.fill", text: "We'll remind you before the trial ends")
+                giftRow(icon: "hand.raised.fill", text: "Cancel anytime in two taps — no hard feelings")
+            }
+            .padding(18)
+            .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(T.surface))
+            .tempaShadowSm()
+            .padding(.horizontal, 22)
+            .padding(.top, 24)
+            .staggerIn(3)
+
+            Spacer()
+
+            TempaButton(label: "Unwrap my free trial", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.showPaywall = true
+            }
+            .padding(.horizontal, 22)
+            .padding(.bottom, 50)
+            .staggerIn(4)
+        }
+    }
+
+    private func giftRow(icon: String, text: LocalizedStringKey) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(T.primary)
+                .frame(width: 26)
+            Text(text)
+                .font(.custom("Inter-Medium", size: 14).weight(.medium))
+                .foregroundColor(T.text)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
     }
 }
 

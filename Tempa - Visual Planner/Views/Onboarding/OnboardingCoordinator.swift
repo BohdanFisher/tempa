@@ -14,12 +14,17 @@ final class OnboardingState {
     var demoSteps: [TaskBreakdown.Step] = []
     var selfIdPicks: Set<Int> = []
     var painPicks: Set<Int> = []
+    /// First name for personalization — mirrors, summary, and later the app
+    /// itself. Empty when the user skipped the ask.
+    var userName = ""
+    /// Self-reported hours lost per heavy day — feeds the "do the math" screen.
+    var hoursLost: Double = 3
     var wakeTime = Calendar.current.date(bySettingHour: 7, minute: 30, second: 0, of: Date()) ?? Date()
     var energyDipTime: Date?
     var notificationsGranted = false
     var showPaywall = false
 
-    let totalSteps = 11
+    let totalSteps = 21
 
     func next() {
         if currentStep < totalSteps - 1 { currentStep += 1 }
@@ -91,20 +96,34 @@ struct OnboardingFlow: View {
         }
     }
 
+    /// Three acts (the funnel is a story): Introduction 0–8 builds the problem
+    /// and lets the user tell us — and themselves — why they're here; Climax
+    /// 9–13 has them DO the core thing and feel the win; Conclusion 14–19
+    /// mirrors it all back and walks into the paywall.
     @ViewBuilder
     private func screenForStep(_ step: Int) -> some View {
         switch step {
         case 0: Onb1HookView(state: state)
-        case 1: Onb2SelfIdView(state: state)
-        case 2: Onb3PainView(state: state)
-        case 3: OnbMicroYesView(state: state)
-        case 4: Onb4DemoView(state: state)
-        case 5: Onb5PersonalView(state: state)
-        case 6: OnbPlanPreviewView(state: state)
-        case 7: Onb6SocialView(state: state)
-        case 8: Onb7ForgiveView(state: state)
-        case 9: Onb8NotifsView(state: state)
-        case 10: Onb9BuildingView(state: state, settings: settings)
+        case 1: OnbProblemView(state: state)
+        case 2: OnbSolutionView(state: state)
+        case 3: OnbNameView(state: state)
+        case 4: Onb2SelfIdView(state: state)
+        case 5: Onb3PainView(state: state)
+        case 6: OnbHoursView(state: state)
+        case 7: OnbBombshellView(state: state)
+        case 8: OnbMirrorView(state: state)
+        case 9: OnbMicroYesView(state: state)
+        case 10: Onb4DemoView(state: state)
+        case 11: OnbFirstWinView(state: state)
+        case 12: Onb5PersonalView(state: state)
+        case 13: OnbPlanPreviewView(state: state)
+        case 14: Onb7ForgiveView(state: state)
+        case 15: OnbCommitView(state: state)
+        case 16: OnbSummaryView(state: state)
+        case 17: Onb6SocialView(state: state)
+        case 18: Onb8NotifsView(state: state)
+        case 19: Onb9BuildingView(state: state, settings: settings)
+        case 20: OnbTrialGiftView(state: state)
         default: EmptyView()
         }
     }
