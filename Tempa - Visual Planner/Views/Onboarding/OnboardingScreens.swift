@@ -3,285 +3,123 @@ import UserNotifications
 import CoreData
 import StoreKit
 
-// MARK: - Screen 1: Hook
+// MARK: - Screen 1: Welcome (the door — its one job is to open warmly)
 
-struct Onb1HookView: View {
-    let state: OnboardingState
-
-    // Bright coral in light mode; a deeper, calmer coral in dark mode (the bright
-    // one glares on a dark screen). White text/buttons read well on both.
-    private let coral = Color(lightHex: "#FF8A66", darkHex: "#B5503A")
-    private let coralDeep = Color(lightHex: "#F26742", darkHex: "#8F3B29")
-
-    /// The intro demo: the voice wave "assembles" a plan card by card, and the
-    /// first task completes itself — the whole product story in two seconds,
-    /// with not a single string to localize.
-    @State private var cardShown = [false, false, false]
-    @State private var firstDone = false
-
-    var body: some View {
-        ZStack {
-            // Depth — two soft lights behind everything, so the screen reads
-            // as a space, not a poster. They live in overlays so their size
-            // never leaks into layout.
-            LinearGradient(colors: [coral, coralDeep], startPoint: .top, endPoint: .bottom)
-                .overlay(alignment: .topLeading) {
-                    Circle().fill(.white.opacity(0.07))
-                        .frame(width: 430, height: 430)
-                        .offset(x: -150, y: -120)
-                        .blur(radius: 2)
-                }
-                .overlay(alignment: .bottomTrailing) {
-                    Circle().fill(.white.opacity(0.05))
-                        .frame(width: 540, height: 540)
-                        .offset(x: 200, y: 180)
-                        .blur(radius: 2)
-                }
-                .clipped()
-                .ignoresSafeArea()
-
-            VStack(spacing: 0) {
-                // Own progress bar — white on coral.
-                HStack(spacing: 4) {
-                    ForEach(0..<state.totalSteps, id: \.self) { i in
-                        Capsule()
-                            .fill(Color.white.opacity(i == 0 ? 1 : 0.28))
-                            .frame(height: 4)
-                    }
-                }
-                .padding(.horizontal, 24)
-                .padding(.top, 8)
-
-                Spacer(minLength: 10)
-
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("TEMPA")
-                        .font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
-                        .tracking(3)
-                        .foregroundColor(.white.opacity(0.72))
-                        .padding(.bottom, 12)
-                        .staggerIn(0)
-
-                    (
-                        Text("The ADHD-friendly planner that moves at your ")
-                            .font(.custom("Nunito-ExtraBold", size: 31).weight(.heavy))
-                            .foregroundColor(.white)
-                        + Text("tempo.")
-                            .font(.system(size: 31, weight: .semibold, design: .serif))
-                            .italic()
-                            .foregroundColor(.white.opacity(0.9))
-                    )
-                    .tracking(-0.5)
-                    .lineSpacing(2)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .staggerIn(1)
-
-                    Text("Voice-first planning with AI scheduling and a built-in focus timer — one task at a time.")
-                        .font(.custom("Inter-Medium", size: 15).weight(.medium))
-                        .foregroundColor(.white.opacity(0.85))
-                        .lineSpacing(3)
-                        .padding(.top, 12)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .staggerIn(2)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 26)
-
-                // Voice → plan, live.
-                VStack(spacing: 14) {
-                    TempaWaveform(color: .white, bars: 13, maxHeight: 40, barWidth: 5, spacing: 6)
-                        .frame(height: 48)
-
-                    VStack(spacing: 9) {
-                        demoCard(icon: "sun.max.fill", cat: "routine", barWidth: 118, index: 0, showsDone: true)
-                        demoCard(icon: "laptopcomputer", cat: "work", barWidth: 150, index: 1)
-                        demoCard(icon: "leaf.fill", cat: "rest", barWidth: 96, index: 2)
-                    }
-                }
-                .padding(.top, 22)
-                .padding(.horizontal, 40)
-
-                Spacer(minLength: 12)
-
-                Button {
-                    #if os(iOS)
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    #endif
-                    state.next()
-                } label: {
-                    HStack(spacing: 10) {
-                        Text("Find my tempo")
-                            .font(.custom("Nunito-ExtraBold", size: 17).weight(.heavy))
-                        Image(systemName: "arrow.right")
-                            .font(.system(size: 16, weight: .bold))
-                    }
-                    .foregroundColor(coral)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 19)
-                    .background(Capsule().fill(.white))
-                    .shadow(color: .black.opacity(0.12), radius: 16, x: 0, y: 8)
-                }
-                .buttonStyle(SpringPressStyle())
-                .padding(.horizontal, 22)
-                .staggerIn(4)
-
-                Text("Takes 60 seconds · free to try")
-                    .font(.custom("Inter-Medium", size: 13).weight(.medium))
-                    .foregroundColor(.white.opacity(0.55))
-                    .padding(.top, 14)
-                    .padding(.bottom, 28)
-                    .staggerIn(5)
-            }
-        }
-        .onAppear {
-            for i in 0..<3 {
-                withAnimation(.spring(response: 0.55, dampingFraction: 0.72).delay(0.5 + Double(i) * 0.25)) {
-                    cardShown[i] = true
-                }
-            }
-            // …and the first task quietly completes itself: things get DONE here.
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.6).delay(1.8)) {
-                firstDone = true
-            }
-        }
-    }
-
-    /// A skeleton task row in the app's real card language — icon chip, text
-    /// bars instead of words (nothing to translate), a check circle that the
-    /// first card fills in on its own.
-    private func demoCard(icon: String, cat: String, barWidth: CGFloat, index: Int,
-                          showsDone: Bool = false) -> some View {
-        let cc = Cat.named(cat)
-        let done = showsDone && firstDone
-        return HStack(spacing: 12) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 9, style: .continuous)
-                    .fill(cc.bg)
-                    .frame(width: 32, height: 32)
-                Image(systemName: icon)
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(cc.ink)
-            }
-
-            VStack(alignment: .leading, spacing: 5) {
-                RoundedRectangle(cornerRadius: 3, style: .continuous)
-                    .fill(Color(lightHex: "#E9E2D6", darkHex: "#3A322B"))
-                    .frame(width: barWidth, height: 9)
-                RoundedRectangle(cornerRadius: 3, style: .continuous)
-                    .fill(Color(lightHex: "#F2EDE3", darkHex: "#2E2722"))
-                    .frame(width: barWidth * 0.55, height: 7)
-            }
-
-            Spacer(minLength: 0)
-
-            ZStack {
-                Circle()
-                    .fill(done ? Cat.health.solid : .clear)
-                    .frame(width: 22, height: 22)
-                Circle()
-                    .stroke(done ? Cat.health.solid : Color(lightHex: "#DAD2C4", darkHex: "#4A4038"), lineWidth: 2)
-                    .frame(width: 22, height: 22)
-                if done {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 11, weight: .bold))
-                        .foregroundColor(.white)
-                        .transition(.scale(scale: 0.3).combined(with: .opacity))
-                }
-            }
-        }
-        .padding(13)
-        .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(T.surface))
-        .shadow(color: .black.opacity(0.10), radius: 12, x: 0, y: 7)
-        .opacity(cardShown[index] ? 1 : 0)
-        .scaleEffect(cardShown[index] ? 1 : 0.86)
-        .offset(y: cardShown[index] ? 0 : 18)
-    }
-}
-
-// MARK: - Screen: Problem (the pain they already feel, named out loud)
-
-struct OnbProblemView: View {
+struct OnbWelcomeView: View {
     let state: OnboardingState
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("Your brain isn't broken. Most planners just aren't built for it.")
-                    .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
-                    .tracking(-0.56)
-                    .foregroundColor(T.text)
-                    .fixedSize(horizontal: false, vertical: true)
+            Spacer()
 
-                Text("They hand you a wall of tasks and assume you'll just… start. That's the one thing an ADHD brain can't do on command.")
-                    .font(.custom("Inter-Medium", size: 15).weight(.medium))
-                    .foregroundColor(T.textSec)
-                    .lineSpacing(4)
-                    .padding(.top, 12)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 22)
-            .padding(.top, 32)
-
-            // The wall of tasks vs the way in — same contrast card language as
-            // the anti-streak promise later.
-            VStack(spacing: 10) {
-                HStack(spacing: 12) {
-                    Text("🧱")
-                        .font(.system(size: 22))
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("23 tasks, zero idea where to start")
-                            .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
-                            .foregroundColor(T.textSec)
-                            .strikethrough(true, color: T.textSec)
-                        Text("Every other planner")
-                            .font(.custom("Inter-Medium", size: 12).weight(.medium))
-                            .foregroundColor(T.textSec)
-                    }
-                    Spacer()
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 18))
-                        .foregroundColor(T.textTer)
-                }
-                .padding(14)
-                .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(T.bgWarm))
-                .opacity(0.7)
+            Image("tempa_icon_onbording")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 92, height: 92)
+                .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                .shadow(color: .black.opacity(0.14), radius: 18, x: 0, y: 10)
                 .staggerIn(0)
 
-                HStack(spacing: 12) {
-                    Image(systemName: "sparkles")
-                        .font(.system(size: 22))
-                        .foregroundColor(T.primary)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("One tiny step. Then the next.")
-                            .font(.custom("Nunito-ExtraBold", size: 15).weight(.bold))
-                            .foregroundColor(T.text)
-                        Text("How Tempa works")
-                            .font(.custom("Inter-Medium", size: 12).weight(.medium))
-                            .foregroundColor(T.textSec)
-                    }
-                    Spacer()
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 18))
-                        .foregroundColor(Cat.health.solid)
-                }
-                .padding(14)
-                .background(RoundedRectangle(cornerRadius: 14, style: .continuous).fill(Cat.personal.bg))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(T.primary, lineWidth: 1.5)
-                )
+            Text("Hey.")
+                .font(.custom("Nunito-ExtraBold", size: 46).weight(.heavy))
+                .tracking(-0.9)
+                .foregroundColor(T.text)
+                .padding(.top, 26)
                 .staggerIn(1)
-            }
-            .padding(22)
-            .background(RoundedRectangle(cornerRadius: 22, style: .continuous).fill(T.surface))
-            .tempaShadowSm()
-            .padding(.horizontal, 22)
-            .padding(.top, 28)
+
+            Text("This is Tempa.")
+                .font(.custom("Inter-Medium", size: 17).weight(.medium))
+                .foregroundColor(T.textSec)
+                .padding(.top, 6)
+                .staggerIn(2)
 
             Spacer()
 
-            TempaButton(label: "That's me", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+            TempaButton(label: "Let's begin", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                state.next()
+            }
+            .padding(.horizontal, 22)
+            .staggerIn(3)
+
+            Text("Takes 60 seconds · free to try")
+                .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                .foregroundColor(T.textTer)
+                .padding(.top, 14)
+                .padding(.bottom, 34)
+                .staggerIn(4)
+        }
+    }
+}
+
+// MARK: - Screen 2: Problem (the pain, asked as a question)
+
+struct OnbProblemView: View {
+    let state: OnboardingState
+
+    private let listRows: [(LocalizedStringKey, Bool)] = [
+        ("Pay the bills", true),
+        ("The report!!!", false),
+        ("Book the dentist", false),
+        ("Clear the inbox (247)", false),
+        ("Call the bank back", true),
+        ("Buy the gift", false),
+    ]
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Text("How often does one big task freeze you — and everything slides to \u{201C}later\u{201D}?")
+                .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                .tracking(-0.56)
+                .foregroundColor(T.text)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 24)
+                .padding(.top, 36)
+
+            // The backdrop everyone recognises: an overloaded list already
+            // slipping out of focus — the feeling itself, not a screenshot.
+            VStack(spacing: 8) {
+                ForEach(listRows.indices, id: \.self) { i in
+                    HStack(spacing: 10) {
+                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                            .stroke(T.textTer.opacity(0.7), lineWidth: 1.6)
+                            .frame(width: 15, height: 15)
+                        Text(listRows[i].0)
+                            .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                            .foregroundColor(T.textSec)
+                        Spacer(minLength: 6)
+                        if listRows[i].1 {
+                            Text("yesterday")
+                                .font(.custom("Inter-Medium", size: 10).weight(.bold))
+                                .foregroundColor(Color(lightHex: "#C0392B", darkHex: "#E58273"))
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 3)
+                                .background(Capsule().fill(Color(lightHex: "#FBE4E0", darkHex: "#3A211D")))
+                        }
+                    }
+                    .padding(.horizontal, 13)
+                    .padding(.vertical, 10)
+                    .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(T.surface))
+                    .tempaShadowSm()
+                    .staggerIn(i, baseDelay: 0.06)
+                }
+            }
+            .padding(.horizontal, 34)
+            .padding(.top, 30)
+            .blur(radius: 2.2)
+            .opacity(0.75)
+            .mask(
+                LinearGradient(stops: [
+                    .init(color: .black, location: 0),
+                    .init(color: .black, location: 0.55),
+                    .init(color: .black.opacity(0.05), location: 1),
+                ], startPoint: .top, endPoint: .bottom)
+            )
+            .allowsHitTesting(false)
+
+            Spacer()
+
+            TempaButton(label: "Yes, that's familiar", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
                 state.next()
             }
             .padding(.horizontal, 22)
@@ -298,10 +136,17 @@ struct OnbSolutionView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                Text("Say your day out loud. We'll turn it into steps you can actually start.")
+                Text("Tempa takes that chaos off your hands.")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text("Complex becomes small, clear steps you can actually start.")
+                    .font(.custom("Inter-Medium", size: 15).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .lineSpacing(4)
+                    .padding(.top, 12)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

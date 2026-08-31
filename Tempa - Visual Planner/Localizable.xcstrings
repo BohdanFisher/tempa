@@ -2215,6 +2215,7 @@
       }
     },
     "A promise": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -2615,6 +2616,7 @@
       }
     },
     "About you · 1 of 3": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -2667,6 +2669,7 @@
       }
     },
     "About you · 2 of 3": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -2719,6 +2722,7 @@
       }
     },
     "About you · 3 of 3": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -4252,6 +4256,58 @@
         }
       }
     },
+    "Book the dentist": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahnarzttermin machen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pedir cita al dentista"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Varaa hammaslääkäri"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prendre RDV chez le dentiste"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestille tannlegetime"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tandarts afspreken"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar o dentista"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запис до стоматолога"
+          }
+        }
+      }
+    },
     "Break it down": {
       "localizations": {
         "de": {
@@ -4508,6 +4564,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Складено з твоїх відповідей — твої ранки, твоя енергія, твій темп."
+          }
+        }
+      }
+    },
+    "Buy the gift": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschenk kaufen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprar el regalo"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osta lahja"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acheter le cadeau"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kjøpe gaven"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cadeau kopen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprar o presente"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Купити подарунок"
           }
         }
       }
@@ -4824,6 +4932,58 @@
         }
       }
     },
+    "Call the bank back": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bank zurückrufen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devolver la llamada al banco"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soita pankkiin takaisin"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rappeler la banque"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ringe banken tilbake"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bank terugbellen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retornar a ligação do banco"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Передзвонити в банк"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "de": {
@@ -5136,6 +5296,58 @@
         }
       }
     },
+    "Clear the inbox (247)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Postfach aufräumen (247)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaciar el correo (247)"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siivoa sähköposti (247)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trier les mails (247)"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rydde innboksen (247)"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inbox opruimen (247)"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpar os e-mails (247)"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Розібрати пошту (247)"
+          }
+        }
+      }
+    },
     "Close and reopen Tempa to switch the language.": {
       "extractionState": "stale",
       "localizations": {
@@ -5185,6 +5397,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Перезапусти Tempa, щоб змінити мову."
+          }
+        }
+      }
+    },
+    "Complex becomes small, clear steps you can actually start.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kompliziertes wird zu kleinen, klaren Schritten, die du wirklich anfangen kannst."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo complejo se convierte en pasos pequeños y claros que de verdad puedes empezar."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monimutkainen muuttuu pieniksi, selkeiksi askeliksi, jotka oikeasti pystyt aloittamaan."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le complexe devient de petites étapes claires que tu peux vraiment commencer."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Det kompliserte blir små, tydelige steg du faktisk kan begynne på."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Complex wordt kleine, duidelijke stappen waar je echt aan kunt beginnen."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O complexo vira passos pequenos e claros que você realmente consegue começar."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Складне стає простими зрозумілими кроками, які реально почати."
           }
         }
       }
@@ -5972,7 +6236,6 @@
       }
     },
     "Day 3": {
-      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -8418,6 +8681,58 @@
         }
       }
     },
+    "Hey.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hey."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hola."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hei."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salut."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hei."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hé."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oi."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Привіт."
+          }
+        }
+      }
+    },
     "High": {
       "localizations": {
         "de": {
@@ -8622,6 +8937,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Як працює Tempa"
+          }
+        }
+      }
+    },
+    "How often does one big task freeze you — and everything slides to “later”?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie oft lähmt dich eine große Aufgabe — und alles rutscht auf „später“?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cuántas veces una tarea grande te bloquea — y todo se va al «luego»?"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kuinka usein yksi iso tehtävä jähmettää sinut — ja kaikki siirtyy ”myöhemmäksi”?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Combien de fois une grosse tâche te fige — et tout part à « plus tard » ?"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hvor ofte fryser én stor oppgave deg — og alt glir til «senere»?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoe vaak bevriest één grote taak je — en schuift alles naar ‘later’?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quantas vezes uma tarefa grande te trava — e tudo escorrega para o “depois”?"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Як часто одна велика задача вганяє тебе в ступор — і все летить у «потім»?"
           }
         }
       }
@@ -10031,7 +10398,60 @@
         }
       }
     },
+    "Let's begin": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los geht's"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empecemos"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aloitetaan"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On commence"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La oss begynne"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laten we beginnen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vamos começar"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Почнімо"
+          }
+        }
+      }
+    },
     "Let's do the math": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -11384,6 +11804,7 @@
       }
     },
     "Nice to meet you": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -12512,6 +12933,7 @@
       }
     },
     "One honest question": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -12564,6 +12986,7 @@
       }
     },
     "One last thing": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -13079,6 +13502,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Пауза, коли таймер скінчиться"
+          }
+        }
+      }
+    },
+    "Pay the bills": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechnungen bezahlen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pagar las facturas"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maksa laskut"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Payer les factures"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Betale regninger"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rekeningen betalen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pagar as contas"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оплатити рахунки"
           }
         }
       }
@@ -13708,6 +14183,7 @@
       }
     },
     "Quick question": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -14956,6 +15432,7 @@
       }
     },
     "Set your day": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -15008,6 +15485,7 @@
       }
     },
     "Set your day · 3 of 3": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -15633,6 +16111,7 @@
       }
     },
     "Sound familiar?": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -17773,6 +18252,58 @@
         }
       }
     },
+    "Tempa takes that chaos off your hands.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempa nimmt dir dieses Chaos ab."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempa te quita ese caos de encima."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempa ottaa sen kaaoksen hoitaakseen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempa te débarrasse de ce chaos."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempa tar det kaoset for deg."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempa neemt die chaos van je over."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Tempa tira esse caos das suas mãos."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempa бере цей хаос на себе."
+          }
+        }
+      }
+    },
     "Terms": {
       "localizations": {
         "de": {
@@ -18138,6 +18669,7 @@
       }
     },
     "The Tempa way": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -18190,6 +18722,7 @@
       }
     },
     "The aha moment": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -18397,6 +18930,58 @@
         }
       }
     },
+    "The report!!!": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Bericht!!!"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡¡El informe!!"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raportti!!!"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le rapport !!!"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rapporten!!!"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Het rapport!!!"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O relatório!!!"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Звіт!!!"
+          }
+        }
+      }
+    },
     "The store isn't reachable yet. Give it a second and try again.": {
       "localizations": {
         "de": {
@@ -18549,6 +19134,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Думаю…"
+          }
+        }
+      }
+    },
+    "This is Tempa.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist Tempa."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto es Tempa."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tämä on Tempa."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voici Tempa."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dette er Tempa."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dit is Tempa."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este é o Tempa."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Це Tempa."
           }
         }
       }
@@ -20271,6 +20908,7 @@
       }
     },
     "We heard you": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -21831,6 +22469,58 @@
         }
       }
     },
+    "Yes, that's familiar": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ja, kenn ich"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sí, me suena"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kyllä, tuttua"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oui, je connais"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ja, det kjenner jeg"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ja, herkenbaar"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sim, conheço bem"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Так, знайомо"
+          }
+        }
+      }
+    },
     "Yesterday": {
       "localizations": {
         "de": {
@@ -22389,6 +23079,7 @@
       "shouldTranslate": false
     },
     "You're not alone": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -22858,6 +23549,7 @@
       }
     },
     "Your plan": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -22962,6 +23654,7 @@
       }
     },
     "Your rhythm": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -23740,6 +24433,10 @@
           }
         }
       }
+    },
+    "h": {
+      "comment": "A single letter \"h\" used in the hours lost counter.",
+      "isCommentAutoGenerated": true
     },
     "month": {
       "localizations": {
@@ -24625,6 +25322,58 @@
         }
       }
     },
+    "yesterday": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gestern"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ayer"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "eilen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hier"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "i går"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gisteren"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ontem"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "вчора"
+          }
+        }
+      }
+    },
     "·": {
       "shouldTranslate": false
     },
@@ -24633,6 +25382,10 @@
     },
     "🔥": {
       "shouldTranslate": false
+    },
+    "🧱": {
+      "comment": "A 🧱 emoji.",
+      "isCommentAutoGenerated": true
     }
   },
   "version": "1.1"

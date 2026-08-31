@@ -58,7 +58,7 @@ struct OnboardingFlow: View {
             T.bg.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Screen 1 is a full-bleed coral hero with its own white progress bar.
+                // The welcome door stays chrome-free — the bar appears from screen 2.
                 if state.currentStep != 0 {
                     OnbProgressBar(step: state.currentStep, total: state.totalSteps)
                 }
@@ -103,7 +103,7 @@ struct OnboardingFlow: View {
     @ViewBuilder
     private func screenForStep(_ step: Int) -> some View {
         switch step {
-        case 0: Onb1HookView(state: state)
+        case 0: OnbWelcomeView(state: state)
         case 1: OnbProblemView(state: state)
         case 2: OnbSolutionView(state: state)
         case 3: OnbNameView(state: state)
