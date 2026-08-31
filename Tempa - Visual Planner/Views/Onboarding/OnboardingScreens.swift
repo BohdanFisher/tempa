@@ -10,11 +10,35 @@ struct Onb1HookView: View {
 
     // Bright coral in light mode; a deeper, calmer coral in dark mode (the bright
     // one glares on a dark screen). White text/buttons read well on both.
-    private let coral = Color(lightHex: "#FF7A59", darkHex: "#B5503A")
+    private let coral = Color(lightHex: "#FF8A66", darkHex: "#B5503A")
+    private let coralDeep = Color(lightHex: "#F26742", darkHex: "#8F3B29")
+
+    /// The intro demo: the voice wave "assembles" a plan card by card, and the
+    /// first task completes itself — the whole product story in two seconds,
+    /// with not a single string to localize.
+    @State private var cardShown = [false, false, false]
+    @State private var firstDone = false
 
     var body: some View {
         ZStack {
-            coral.ignoresSafeArea()
+            // Depth — two soft lights behind everything, so the screen reads
+            // as a space, not a poster. They live in overlays so their size
+            // never leaks into layout.
+            LinearGradient(colors: [coral, coralDeep], startPoint: .top, endPoint: .bottom)
+                .overlay(alignment: .topLeading) {
+                    Circle().fill(.white.opacity(0.07))
+                        .frame(width: 430, height: 430)
+                        .offset(x: -150, y: -120)
+                        .blur(radius: 2)
+                }
+                .overlay(alignment: .bottomTrailing) {
+                    Circle().fill(.white.opacity(0.05))
+                        .frame(width: 540, height: 540)
+                        .offset(x: 200, y: 180)
+                        .blur(radius: 2)
+                }
+                .clipped()
+                .ignoresSafeArea()
 
             VStack(spacing: 0) {
                 // Own progress bar — white on coral.
@@ -28,47 +52,55 @@ struct Onb1HookView: View {
                 .padding(.horizontal, 24)
                 .padding(.top, 8)
 
-                Spacer(minLength: 12)
+                Spacer(minLength: 10)
 
                 VStack(alignment: .leading, spacing: 0) {
                     Text("TEMPA")
                         .font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
                         .tracking(3)
                         .foregroundColor(.white.opacity(0.72))
-                        .padding(.bottom, 16)
+                        .padding(.bottom, 12)
                         .staggerIn(0)
 
                     (
                         Text("The ADHD-friendly planner that moves at your ")
-                            .font(.custom("Nunito-ExtraBold", size: 38).weight(.heavy))
+                            .font(.custom("Nunito-ExtraBold", size: 31).weight(.heavy))
                             .foregroundColor(.white)
                         + Text("tempo.")
-                            .font(.system(size: 38, weight: .semibold, design: .serif))
+                            .font(.system(size: 31, weight: .semibold, design: .serif))
                             .italic()
                             .foregroundColor(.white.opacity(0.9))
                     )
-                    .tracking(-0.6)
-                    .lineSpacing(3)
+                    .tracking(-0.5)
+                    .lineSpacing(2)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
                     .staggerIn(1)
 
                     Text("Voice-first planning with AI scheduling and a built-in focus timer — one task at a time.")
-                        .font(.custom("Inter-Medium", size: 16).weight(.medium))
+                        .font(.custom("Inter-Medium", size: 15).weight(.medium))
                         .foregroundColor(.white.opacity(0.85))
-                        .lineSpacing(4)
-                        .padding(.top, 16)
+                        .lineSpacing(3)
+                        .padding(.top, 12)
                         .fixedSize(horizontal: false, vertical: true)
                         .staggerIn(2)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 26)
 
-                TempaWaveform(color: .white, maxHeight: 118)
-                    .frame(height: 150)
-                    .padding(.top, 26)
-                    .padding(.horizontal, 26)
-                    .staggerIn(3)
+                // Voice → plan, live.
+                VStack(spacing: 14) {
+                    TempaWaveform(color: .white, bars: 13, maxHeight: 40, barWidth: 5, spacing: 6)
+                        .frame(height: 48)
+
+                    VStack(spacing: 9) {
+                        demoCard(icon: "sun.max.fill", cat: "routine", barWidth: 118, index: 0, showsDone: true)
+                        demoCard(icon: "laptopcomputer", cat: "work", barWidth: 150, index: 1)
+                        demoCard(icon: "leaf.fill", cat: "rest", barWidth: 96, index: 2)
+                    }
+                }
+                .padding(.top, 22)
+                .padding(.horizontal, 40)
 
                 Spacer(minLength: 12)
 
@@ -102,8 +134,69 @@ struct Onb1HookView: View {
                     .staggerIn(5)
             }
         }
+        .onAppear {
+            for i in 0..<3 {
+                withAnimation(.spring(response: 0.55, dampingFraction: 0.72).delay(0.5 + Double(i) * 0.25)) {
+                    cardShown[i] = true
+                }
+            }
+            // …and the first task quietly completes itself: things get DONE here.
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.6).delay(1.8)) {
+                firstDone = true
+            }
+        }
     }
 
+    /// A skeleton task row in the app's real card language — icon chip, text
+    /// bars instead of words (nothing to translate), a check circle that the
+    /// first card fills in on its own.
+    private func demoCard(icon: String, cat: String, barWidth: CGFloat, index: Int,
+                          showsDone: Bool = false) -> some View {
+        let cc = Cat.named(cat)
+        let done = showsDone && firstDone
+        return HStack(spacing: 12) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                    .fill(cc.bg)
+                    .frame(width: 32, height: 32)
+                Image(systemName: icon)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(cc.ink)
+            }
+
+            VStack(alignment: .leading, spacing: 5) {
+                RoundedRectangle(cornerRadius: 3, style: .continuous)
+                    .fill(Color(lightHex: "#E9E2D6", darkHex: "#3A322B"))
+                    .frame(width: barWidth, height: 9)
+                RoundedRectangle(cornerRadius: 3, style: .continuous)
+                    .fill(Color(lightHex: "#F2EDE3", darkHex: "#2E2722"))
+                    .frame(width: barWidth * 0.55, height: 7)
+            }
+
+            Spacer(minLength: 0)
+
+            ZStack {
+                Circle()
+                    .fill(done ? Cat.health.solid : .clear)
+                    .frame(width: 22, height: 22)
+                Circle()
+                    .stroke(done ? Cat.health.solid : Color(lightHex: "#DAD2C4", darkHex: "#4A4038"), lineWidth: 2)
+                    .frame(width: 22, height: 22)
+                if done {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(.white)
+                        .transition(.scale(scale: 0.3).combined(with: .opacity))
+                }
+            }
+        }
+        .padding(13)
+        .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(T.surface))
+        .shadow(color: .black.opacity(0.10), radius: 12, x: 0, y: 7)
+        .opacity(cardShown[index] ? 1 : 0)
+        .scaleEffect(cardShown[index] ? 1 : 0.86)
+        .offset(y: cardShown[index] ? 0 : 18)
+    }
 }
 
 // MARK: - Screen: Problem (the pain they already feel, named out loud)
