@@ -74,10 +74,20 @@ struct OnboardingFlow: View {
                     .animation(.spring(response: 0.5, dampingFraction: 0.86), value: state.currentStep)
             }
         }
+        .onAppear {
+            AnalyticsService.shared.track(.onboardingScreenView,
+                                          properties: ["step": state.currentStep,
+                                                       "name": Self.stepName(state.currentStep)])
+        }
+        .onChange(of: state.currentStep) { _, step in
+            AnalyticsService.shared.track(.onboardingScreenView,
+                                          properties: ["step": step, "name": Self.stepName(step)])
+        }
         .fullScreenCover(isPresented: $state.showPaywall, onDismiss: {
             if finishAfterDismiss { onFinished?() }
         }) {
             PaywallView(allowDismiss: false) {
+                AnalyticsService.shared.track(.onboardingCompleted)
                 DemoPlanStash.materialize(into: viewContext)
                 settings.completeOnboarding()
                 if onFinished != nil { finishAfterDismiss = true }
@@ -94,6 +104,17 @@ struct OnboardingFlow: View {
             guard onFinished == nil else { return }
             hasCompletedOnboarding = true
         }
+    }
+
+    /// Funnel step names for analytics — index-aligned with screenForStep.
+    private static let stepNames = [
+        "welcome", "problem", "solution", "name", "quiz_self", "quiz_pain",
+        "hours_lost", "math", "mirror", "micro_yes", "ai_demo", "first_win",
+        "wake_time", "plan_preview", "forgiveness", "commitment", "summary",
+        "social_proof", "notifications", "building", "trial_gift",
+    ]
+    private static func stepName(_ i: Int) -> String {
+        stepNames.indices.contains(i) ? stepNames[i] : "step_\(i)"
     }
 
     /// Three acts (the funnel is a story): Introduction 0–8 builds the problem

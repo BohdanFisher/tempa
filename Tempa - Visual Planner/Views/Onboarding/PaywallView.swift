@@ -71,6 +71,8 @@ struct PaywallView: View {
         }
         .alert("Error", isPresented: $showError) { Button("OK") {} } message: { Text(errorMessage) }
         .task {
+            AnalyticsService.shared.track(.paywallShown,
+                                          properties: ["trial_ui": hasIntroOffer])
             // Retry StoreKit when the paywall appears — recovers from a failed
             // cold-start load and swaps simulated plans for real products.
             await subs.ensureProductsLoaded()
@@ -305,6 +307,7 @@ struct PaywallView: View {
             withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
                 selectedProductID = id
             }
+            AnalyticsService.shared.track(.paywallProductSelected, properties: ["product": id])
         } label: {
             HStack(spacing: 13) {
                 ZStack {
@@ -592,6 +595,9 @@ struct PaywallView: View {
     }
 
     private func purchaseSelected() async {
+        AnalyticsService.shared.track(.paywallCTATapped,
+                                      properties: ["product": selectedProductID,
+                                                   "trial_ui": hasIntroOffer])
         isPurchasing = true
         withAnimation { purchasePhase = .working }
         // Capture NOW — a successful purchase flips eligibility off before the
@@ -647,6 +653,8 @@ struct PaywallView: View {
 
     /// Morph the CTA into a checkmark with a success haptic, then close.
     private func finishPurchaseCelebration() async {
+        AnalyticsService.shared.track(pendingTrialReminder || hasIntroOffer ? .trialStarted : .subscriptionPurchased,
+                                      properties: ["product": selectedProductID])
         if pendingTrialReminder { scheduleTrialReminder() }
         withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) { purchasePhase = .success }
         #if os(iOS)

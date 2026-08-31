@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CA7B0000000000000000RC03 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000RC02 /* RevenueCat */; };
+		CA7B0000000000000000PH03 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000PH02 /* PostHog */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA7B0000000000000000RC03 /* RevenueCat in Frameworks */,
+				CA7B0000000000000000PH03 /* PostHog in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +153,7 @@
 			name = "Tempa - Visual Planner";
 			packageProductDependencies = (
 				CA7B0000000000000000RC02 /* RevenueCat */,
+				CA7B0000000000000000PH02 /* PostHog */,
 			);
 			productName = "Tempa - Visual Planner";
 			productReference = EA9860F32FC7B6A000B8AD2B /* Tempa - Visual Planner.app */;
@@ -244,6 +247,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				CA7B0000000000000000RC01 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
+				CA7B0000000000000000PH01 /* XCRemoteSwiftPackageReference "posthog-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EA9860F42FC7B6A000B8AD2B /* Products */;
@@ -658,6 +662,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		CA7B0000000000000000PH01 /* XCRemoteSwiftPackageReference "posthog-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PostHog/posthog-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -665,6 +677,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA7B0000000000000000RC01 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
 			productName = RevenueCat;
+		};
+		CA7B0000000000000000PH02 /* PostHog */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7B0000000000000000PH01 /* XCRemoteSwiftPackageReference "posthog-ios" */;
+			productName = PostHog;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

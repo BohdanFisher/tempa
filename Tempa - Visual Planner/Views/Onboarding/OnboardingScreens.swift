@@ -989,6 +989,8 @@ struct Onb4DemoView: View {
             .padding(.top, 22)
 
             TempaButton(label: "That helps. Continue", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                AnalyticsService.shared.track(.taskBreakdownAccepted,
+                                              properties: ["source": "onboarding", "steps": steps.count])
                 state.demoSteps = steps
                 state.next()
             }
@@ -997,6 +999,7 @@ struct Onb4DemoView: View {
     }
 
     private func doBreakdown() async {
+        AnalyticsService.shared.track(.taskBreakdownRequested, properties: ["source": "onboarding"])
         isLoading = true
         focused = false
         do {

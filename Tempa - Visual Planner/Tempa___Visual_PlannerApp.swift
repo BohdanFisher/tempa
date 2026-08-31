@@ -50,6 +50,7 @@ struct TempaApp: App {
         // user's first AI request doesn't also pay the fetch round-trip.
         // No-op when the Keychain already holds one; failures self-heal on use.
         Task { _ = try? await ClaudeAPIClient().ensureAPIKey() }
+        AnalyticsService.configure()
     }
 
     var body: some Scene {

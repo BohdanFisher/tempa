@@ -1,4 +1,5 @@
 import Foundation
+import PostHog
 
 enum AnalyticsEvent: String {
     case onboardingScreenView = "onboarding_screen_view"
@@ -19,16 +20,32 @@ enum AnalyticsEvent: String {
     case dayComplete = "day_complete"
 }
 
+/// Behavioral counters only — never task titles, names, or anything typed by
+/// the user: for this audience that's de facto medical data. The phc_ key is
+/// PostHog's public write-only project token, safe to ship in the binary.
 final class AnalyticsService {
     static let shared = AnalyticsService()
 
-    func track(_ event: AnalyticsEvent, properties: [String: Any] = [:]) {
+    private static var configured = false
+
+    /// Call once at launch. DEBUG builds stay silent unless launched with
+    /// "-analytics-debug YES", so simulator runs and owner test cycles don't
+    /// pollute the funnel numbers.
+    static func configure() {
         #if DEBUG
-        return
-        #else
-        // TODO: PostHog integration
-        // PHGPostHog.shared()?.capture(event.rawValue, properties: properties)
-        print("[Analytics] \(event.rawValue) \(properties)")
+        guard UserDefaults.standard.bool(forKey: "analytics-debug") else { return }
         #endif
+        let config = PostHogConfig(
+            projectToken: "phc_mK4TwzdB2Hv4Gnu3Yvx6qxVPtY4j5xsRe6ZCQ2dN2u6G",
+            host: "https://eu.i.posthog.com"
+        )
+        config.captureApplicationLifecycleEvents = true
+        PostHogSDK.shared.setup(config)
+        configured = true
+    }
+
+    func track(_ event: AnalyticsEvent, properties: [String: Any] = [:]) {
+        guard Self.configured else { return }
+        PostHogSDK.shared.capture(event.rawValue, properties: properties)
     }
 }
