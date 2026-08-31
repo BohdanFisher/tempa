@@ -1762,6 +1762,7 @@
       "shouldTranslate": false
     },
     "23 tasks, zero idea where to start": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -7226,6 +7227,7 @@
       }
     },
     "Every other planner": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -7434,6 +7436,7 @@
       }
     },
     "Find my tempo": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -8890,6 +8893,7 @@
       }
     },
     "How Tempa works": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -13195,6 +13199,7 @@
       }
     },
     "One tiny step. Then the next.": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -15068,6 +15073,7 @@
       }
     },
     "Say your day out loud. We'll turn it into steps you can actually start.": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -17204,9 +17210,6 @@
         }
       }
     },
-    "TEMPA": {
-      "shouldTranslate": false
-    },
     "TEMPA PRO": {
       "localizations": {
         "de": {
@@ -18513,6 +18516,7 @@
       }
     },
     "That's me": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -18617,6 +18621,7 @@
       }
     },
     "The ADHD-friendly planner that moves at your ": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -18770,6 +18775,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "Момент прозріння"
+          }
+        }
+      }
+    },
+    "The calm planner that turns big tasks into small, doable steps.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der ruhige Planer, der große Aufgaben in kleine, machbare Schritte verwandelt."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El planificador tranquilo que convierte tareas grandes en pasos pequeños y realizables."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rauhallinen suunnittelija, joka muuttaa isot tehtävät pieniksi askeliksi, jotka oikeasti pystyt tekemään."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le planificateur serein qui transforme les grosses tâches en petites étapes faisables."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Den rolige planleggeren som gjør store oppgaver om til små, gjennomførbare steg."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De rustige planner die grote taken omzet in kleine, haalbare stappen."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O planejador tranquilo que transforma tarefas grandes em passos pequenos e possíveis."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спокійний планер, що перетворює великі задачі на маленькі кроки, які реально зробити."
           }
         }
       }
@@ -19035,6 +19092,7 @@
       }
     },
     "They hand you a wall of tasks and assume you'll just… start. That's the one thing an ADHD brain can't do on command.": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -20440,6 +20498,7 @@
       }
     },
     "Voice-first planning with AI scheduling and a built-in focus timer — one task at a time.": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -21320,6 +21379,58 @@
           "stringUnit": {
             "state": "translated",
             "value": "З поверненням. Почнімо з малого."
+          }
+        }
+      }
+    },
+    "Welcome to Tempa": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Willkommen bei Tempa"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te damos la bienvenida a Tempa"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tervetuloa Tempaan"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bienvenue dans Tempa"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Velkommen til Tempa"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Welkom bij Tempa"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boas-vindas ao Tempa"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ласкаво просимо до Tempa"
           }
         }
       }
@@ -23132,6 +23243,7 @@
       }
     },
     "Your brain isn't broken. Most planners just aren't built for it.": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -24907,6 +25019,7 @@
       }
     },
     "tempo.": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -25382,10 +25495,6 @@
     },
     "🔥": {
       "shouldTranslate": false
-    },
-    "🧱": {
-      "comment": "A 🧱 emoji.",
-      "isCommentAutoGenerated": true
     }
   },
   "version": "1.1"
