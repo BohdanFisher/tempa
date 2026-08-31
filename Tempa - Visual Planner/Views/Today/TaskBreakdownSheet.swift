@@ -156,6 +156,7 @@ struct TaskBreakdownSheet: View {
         let trimmed = taskText.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
 
+        AnalyticsService.shared.track(.taskBreakdownRequested, properties: ["source": "task_sheet"])
         isLoading = true
         steps = []
         errorMessage = nil
@@ -175,6 +176,8 @@ struct TaskBreakdownSheet: View {
     }
 
     private func addAllToToday() {
+        AnalyticsService.shared.track(.taskBreakdownAccepted,
+                                      properties: ["source": "task_sheet", "steps": steps.count])
         var start = Date()
         let cal = Calendar.current
         let min = cal.component(.minute, from: start)

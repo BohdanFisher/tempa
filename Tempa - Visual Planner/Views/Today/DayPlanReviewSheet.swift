@@ -226,6 +226,7 @@ struct DayPlanReviewSheet: View {
     // MARK: - Logic
 
     private func load() async {
+        AnalyticsService.shared.track(.taskBreakdownRequested, properties: ["source": "voice_day_plan"])
         isLoading = true
         errorMessage = nil
         for attempt in 0..<2 {
@@ -314,6 +315,8 @@ struct DayPlanReviewSheet: View {
     }
 
     private func addAll() {
+        AnalyticsService.shared.track(.taskBreakdownAccepted,
+                                      properties: ["source": "voice_day_plan", "tasks": totalInstances])
         let cal = Calendar.current
         for row in rows {
             let trimmed = row.title.trimmingCharacters(in: .whitespacesAndNewlines)

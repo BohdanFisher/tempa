@@ -448,6 +448,7 @@ struct TodayView: View {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 38))
                 .foregroundColor(T.secondary)
+                .onAppear { AnalyticsService.shared.track(.dayComplete) }
             Text("All done for today")
                 .font(.custom(T.fontHeader, size: 19).weight(.bold))
                 .foregroundColor(T.text)
@@ -585,6 +586,7 @@ struct TodayView: View {
         }
         if task.isCompleted {
             SoundPlayer.shared.playSuccess()
+            AnalyticsService.shared.track(.taskCompleted)
         }
         #if os(iOS)
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
@@ -790,6 +792,7 @@ struct TimelineRow: View {
     }
 
     private func startTask() {
+        AnalyticsService.shared.track(.taskStarted, properties: ["source": "task_row"])
         AppRouter.shared.focusRequest = FocusRequest(
             category: task.category ?? "work",
             minutes: Int(task.durationMinutes),

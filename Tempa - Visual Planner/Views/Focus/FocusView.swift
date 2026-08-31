@@ -544,6 +544,8 @@ struct FocusView: View {
     }
 
     private func startSession() {
+        AnalyticsService.shared.track(.focusSessionStarted,
+                                      properties: ["minutes": Int(totalSec) / 60])
         #if os(iOS)
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         #endif
@@ -660,6 +662,8 @@ struct FocusView: View {
     private func completeSession() {
         // Clamp to the dialed length — a short background hop can overshoot slightly.
         let focusMin = Int32(min(elapsed, totalSec) / 60)
+        AnalyticsService.shared.track(.focusSessionCompleted,
+                                      properties: ["minutes": Int(focusMin)])
         FocusNudge.cancel()
         FocusSessionStore.clear()
         playCompletionSound()

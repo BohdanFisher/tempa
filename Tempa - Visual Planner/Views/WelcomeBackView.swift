@@ -97,6 +97,7 @@ struct WelcomeBackView: View {
             }
         }
         .onAppear {
+            AnalyticsService.shared.track(.welcomeBackShown)
             week = StatsEngine.periodStats(daysBack: 7, context: viewContext)
         }
     }
