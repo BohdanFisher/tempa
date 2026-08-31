@@ -114,14 +114,11 @@ struct OnbProblemView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "Sound familiar?")
-
                 Text("Your brain isn't broken. Most planners just aren't built for it.")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 10)
 
                 Text("They hand you a wall of tasks and assume you'll just… start. That's the one thing an ADHD brain can't do on command.")
                     .font(.custom("Inter-Medium", size: 15).weight(.medium))
@@ -208,14 +205,11 @@ struct OnbSolutionView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "The Tempa way")
-
                 Text("Say your day out loud. We'll turn it into steps you can actually start.")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 10)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 22)
@@ -284,13 +278,10 @@ struct OnbNameView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "Nice to meet you")
-
                 Text("What should we call you?")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
-                    .padding(.top, 10)
 
                 Text("Just a first name — so your plan feels like yours.")
                     .font(.custom("Inter-Medium", size: 14).weight(.medium))
@@ -356,14 +347,11 @@ struct OnbHoursView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "About you · 3 of 3")
-
                 Text("On a heavy day, how much time gets eaten by putting things off?")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 10)
 
                 Text("Scrolling counts. Honest guess — nobody's judging.")
                     .font(.custom("Inter-Medium", size: 14).weight(.medium))
@@ -470,15 +458,12 @@ struct OnbBombshellView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "Let's do the math")
-                    .padding(.top, 32)
-
                 Text("\(hoursLine) a day adds up to…")
                     .font(.custom("Nunito-ExtraBold", size: 26).weight(.heavy))
                     .tracking(-0.52)
                     .foregroundColor(T.text)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 10)
+                    .padding(.top, 32)
                     .opacity(shown[0] ? 1 : 0)
                     .offset(y: shown[0] ? 0 : 12)
 
@@ -600,9 +585,6 @@ struct OnbMirrorView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "We heard you")
-                    .padding(.top, 32)
-
                 Group {
                     if state.userName.isEmpty {
                         Text("Here's what you told us.")
@@ -614,7 +596,7 @@ struct OnbMirrorView: View {
                 .tracking(-0.56)
                 .foregroundColor(T.text)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 10)
+                .padding(.top, 32)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 22)
@@ -678,14 +660,11 @@ struct Onb2SelfIdView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "About you · 1 of 3")
-
                 Text("What brings you here?")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
                     .lineSpacing(-2)
-                    .padding(.top, 10)
 
                 Text("Pick all that feel true. We'll tune Tempa to you.")
                     .font(.custom("Inter-Medium", size: 14).weight(.medium))
@@ -737,14 +716,11 @@ struct Onb3PainView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "About you · 2 of 3")
-
                 Text("What's hardest for you?")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
                     .lineSpacing(-2)
-                    .padding(.top, 10)
 
                 Text("So we know what to fix first.")
                     .font(.custom("Inter-Medium", size: 14).weight(.medium))
@@ -862,15 +838,12 @@ struct OnbMicroYesView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            OnbLabel(text: "Quick question")
-                .padding(.top, 32)
-
             Text("If you finished one important thing a day — would your week feel different?")
                 .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                 .tracking(-0.56)
                 .foregroundColor(T.text)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 10)
+                .padding(.top, 32)
 
             VStack(spacing: 10) {
                 ForEach(Array(options.enumerated()), id: \.offset) { i, label in
@@ -927,15 +900,12 @@ struct Onb4DemoView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "The aha moment")
-                    .padding(.top, 24)
-
                 Text("Try it. Type something you've been avoiding.")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
                     .lineSpacing(-2)
-                    .padding(.top, 10)
+                    .padding(.top, 24)
 
                 if showResult {
                     resultCard
@@ -1123,14 +1093,11 @@ struct Onb5PersonalView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "Set your day")
-
                 Text("When does your day start?")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
                     .lineSpacing(-2)
-                    .padding(.top, 10)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 22)
@@ -1376,15 +1343,12 @@ struct OnbPlanPreviewView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            OnbLabel(text: "Your rhythm")
-                .padding(.top, 32)
-
             Text("Here's a day that works with your brain")
                 .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                 .tracking(-0.56)
                 .foregroundColor(T.text)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 10)
+                .padding(.top, 32)
 
             Text("Starts at your pace — \(state.wakeTime.formatted(date: .omitted, time: .shortened)). One small thing at a time.")
                 .font(.custom("Inter-Medium", size: 15).weight(.medium))
@@ -1505,15 +1469,12 @@ struct Onb6SocialView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "You're not alone")
-                    .padding(.top, 32)
-
                 Text("Thousands are building calmer days with Tempa.")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
                     .lineSpacing(-2)
-                    .padding(.top, 10)
+                    .padding(.top, 32)
 
                 // Count card with gradient
                 HStack(spacing: 14) {
@@ -1626,15 +1587,12 @@ struct Onb7ForgiveView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "A promise")
-
                 Text("No guilt streaks here.")
                     .font(.custom("Nunito-ExtraBold", size: 32).weight(.heavy))
                     .tracking(-0.8)
                     .foregroundColor(T.text)
                     .lineSpacing(-2)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 12)
 
                 Text("Miss a day? Tempa just says: welcome back. We'll pick the next small thing together.")
                     .font(.custom("Inter-Medium", size: 16).weight(.medium))
@@ -1730,14 +1688,11 @@ struct Onb8NotifsView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "One last thing")
-
                 Text("Want a gentle nudge for your next block?")
                     .font(.custom("Nunito-ExtraBold", size: 30).weight(.heavy))
                     .tracking(-0.75)
                     .foregroundColor(T.text)
                     .lineSpacing(-2)
-                    .padding(.top, 12)
 
                 Text("Soft sound, no buzz, no badges. We promise not to be annoying.")
                     .font(.custom("Inter-Medium", size: 15).weight(.medium))
@@ -2037,14 +1992,11 @@ struct OnbCommitView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "One honest question")
-
                 Text("How ready are you to try a different way?")
                     .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
                     .tracking(-0.56)
                     .foregroundColor(T.text)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 10)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 22)
@@ -2130,9 +2082,6 @@ struct OnbSummaryView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                OnbLabel(text: "Your plan")
-                    .padding(.top, 32)
-
                 Group {
                     if state.userName.isEmpty {
                         Text("Here's your next 30 days.")
@@ -2144,7 +2093,7 @@ struct OnbSummaryView: View {
                 .tracking(-0.56)
                 .foregroundColor(T.text)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 10)
+                .padding(.top, 32)
 
                 Text("Built from your answers — your mornings, your energy, your pace.")
                     .font(.custom("Inter-Medium", size: 14).weight(.medium))
