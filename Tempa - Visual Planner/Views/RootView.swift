@@ -70,6 +70,13 @@ struct RootView: View {
                     // Killed at the funnel's paywall, bought here after the
                     // relaunch — their demo plan still becomes their first day.
                     DemoPlanStash.materialize(into: viewContext)
+                    // That cohort finishes onboarding HERE, not in the funnel —
+                    // without this the ad platforms see their trial/purchase
+                    // with no Registration before it. A lapsed subscriber
+                    // re-subscribing isn't finishing onboarding, so skip them.
+                    if !subs.hasEverSubscribed {
+                        AnalyticsService.shared.track(.onboardingCompleted)
+                    }
                     settings.completeOnboarding()
                 }
             } else {

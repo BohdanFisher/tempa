@@ -41,11 +41,13 @@ final class AnalyticsService {
         )
         config.captureApplicationLifecycleEvents = true
         PostHogSDK.shared.setup(config)
+        TikTokEvents.configure()
         configured = true
     }
 
     func track(_ event: AnalyticsEvent, properties: [String: Any] = [:]) {
         guard Self.configured else { return }
         PostHogSDK.shared.capture(event.rawValue, properties: properties)
+        TikTokEvents.forward(event, properties: properties)
     }
 }

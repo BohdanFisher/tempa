@@ -601,13 +601,14 @@ struct PaywallView: View {
         isPurchasing = true
         withAnimation { purchasePhase = .working }
         // Capture NOW — a successful purchase flips eligibility off before the
-        // celebration runs.
+        // celebration runs. wasTrial must not depend on the reminder toggle.
         pendingTrialReminder = hasIntroOffer && trialReminderOn
+        let wasTrial = hasIntroOffer
 
         if subs.isSimulating {
             try? await Task.sleep(for: .seconds(1))
             subs.simulatePurchase()
-            await finishPurchaseCelebration()
+            await finishPurchaseCelebration(wasTrial: wasTrial)
             return
         }
 
@@ -626,7 +627,7 @@ struct PaywallView: View {
             print("[Tempa] paywall purchase → \(tx != nil ? "new transaction" : "nil (cancelled / pending / already owned)"), isPro=\(subs.isPro)")
             #endif
             if tx != nil {
-                await finishPurchaseCelebration()
+                await finishPurchaseCelebration(wasTrial: wasTrial)
                 return
             }
             // No new transaction, but the Apple ID may already OWN an active
@@ -637,7 +638,7 @@ struct PaywallView: View {
             // paywall is a dead end on a subscribed Apple ID.
             await subs.updatePurchasedProducts()
             if subs.isPro {
-                await finishPurchaseCelebration()
+                await finishPurchaseCelebration(wasTrial: wasTrial, isNewPurchase: false)
                 return
             }
             resetPurchaseUI()   // user cancelled the sheet
@@ -652,10 +653,23 @@ struct PaywallView: View {
     }
 
     /// Morph the CTA into a checkmark with a success haptic, then close.
-    private func finishPurchaseCelebration() async {
-        AnalyticsService.shared.track(pendingTrialReminder || hasIntroOffer ? .trialStarted : .subscriptionPurchased,
-                                      properties: ["product": selectedProductID])
-        if pendingTrialReminder { scheduleTrialReminder() }
+    /// wasTrial is captured at CTA time — after the purchase StoreKit flips
+    /// intro-offer eligibility off, so reading hasIntroOffer here would file
+    /// a $0 trial as a paid Subscribe.
+    /// isNewPurchase is false on the already-subscribed recovery path:
+    /// routing back into the app is right, but reporting a conversion for a
+    /// purchase made weeks ago would hand the ad platforms a fake sale.
+    private func finishPurchaseCelebration(wasTrial: Bool, isNewPurchase: Bool = true) async {
+        if isNewPurchase {
+            var purchaseProps: [String: Any] = ["product": selectedProductID]
+            if let product = selectedProduct {
+                purchaseProps["price"] = NSDecimalNumber(decimal: product.price).doubleValue
+                purchaseProps["currency"] = product.priceFormatStyle.currencyCode
+            }
+            AnalyticsService.shared.track(wasTrial ? .trialStarted : .subscriptionPurchased,
+                                          properties: purchaseProps)
+            if pendingTrialReminder { scheduleTrialReminder() }
+        }
         withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) { purchasePhase = .success }
         #if os(iOS)
         UINotificationFeedbackGenerator().notificationOccurred(.success)
