@@ -1,0 +1,155 @@
+{
+  "_instructions": {
+    "task": "Translate every 'en' value into: uk (Ukrainian), de (German), es (Spanish), fr (French), pt (Brazilian Portuguese), nb (Norwegian Bokmål), fi (Finnish), nl (Dutch). Add each translation as a field next to 'en' (e.g. \"uk\": \"...\"). Return the SAME JSON structure, do not change any 'key' values — they are identifiers.",
+    "voice": "Warm, calm, adult-to-adult. Never nagging, never shaming, no corporate tone. Informal address everywhere it's natural (ти / du / tu / você). Write like a native copywriter, not a translator — rhythm and idiom over literalness.",
+    "brand_rules": [
+      "App name 'Tempa' is never translated or declined.",
+      "Ukrainian: modern natural Ukrainian, no russian calques. If ADHD ever comes up it is РДУГ (it does not appear in these strings).",
+      "German: du-form. ADHD would be ADHS (does not appear here).",
+      "Keep placeholders exactly: %@ is substituted at runtime (a first name, or an hour value like '3'). Position it naturally for the language.",
+      "Keep '!!!', '(247)', '·', quotes and dashes in the spirit of the original — they are design, adapt the quote style to the language norm.",
+      "Gender-neutral phrasing everywhere: the reader may be any gender. Avoid past-tense first-person forms that force gender (e.g. Ukrainian 'зробив/зробила') — rephrase instead."
+    ],
+    "special_cases": {
+      "weeks a year / weeks of the year": "Both label the big number on the math screen ('≈7 weeks a year'). Languages that decline nouns after numerals use TWO forms: 'weeks of the year' is shown for counts 2–4, 'weeks a year' for 5+. In Ukrainian that is 'тижні на рік' vs 'тижнів на рік'. Languages without this distinction translate both identically.",
+      "%@h": "Compact hour unit shown as '3h' / '1.5h'. Use the shortest natural unit: uk '%@ год', de '%@ Std.', fr/es/pt '%@ h', nb '%@ t', fi '%@ h', nl '%@ u'.",
+      "yesterday": "A tiny red overdue badge on a task row — one lowercase word."
+    }
+  },
+  "screens": [
+    {
+      "screen": "0 · Welcome (the door: icon, greeting, one button)",
+      "strings": [
+        { "key": "Welcome to Tempa", "en": "Welcome to Tempa", "note": "big headline under the app icon" },
+        { "key": "The calm planner that turns big tasks into small, doable steps.", "en": "The calm planner that turns big tasks into small, doable steps.", "note": "one-sentence subtitle explaining what the app is" },
+        { "key": "Let's begin", "en": "Let's begin", "note": "primary button" }
+      ]
+    },
+    {
+      "screen": "1 · Problem (pain asked as a question over a blurred overloaded to-do list)",
+      "strings": [
+        { "key": "How often does one big task freeze you — and everything slides to “later”?", "en": "How often does one big task freeze you — and everything slides to “later”?", "note": "headline question — must sting with recognition" },
+        { "key": "Yes, that's familiar", "en": "Yes, that's familiar", "note": "primary button — the user's first small 'yes'" },
+        { "key": "Pay the bills", "en": "Pay the bills", "note": "fake to-do row in the blurred backdrop list" },
+        { "key": "The report!!!", "en": "The report!!!", "note": "fake to-do row, panicky" },
+        { "key": "Book the dentist", "en": "Book the dentist", "note": "fake to-do row" },
+        { "key": "Clear the inbox (247)", "en": "Clear the inbox (247)", "note": "fake to-do row, 247 unread" },
+        { "key": "Call the bank back", "en": "Call the bank back", "note": "fake to-do row" },
+        { "key": "Buy the gift", "en": "Buy the gift", "note": "fake to-do row" },
+        { "key": "yesterday", "en": "yesterday", "note": "small red overdue badge" }
+      ]
+    },
+    {
+      "screen": "2 · Solution (answers the problem screen)",
+      "strings": [
+        { "key": "Tempa takes that chaos off your hands.", "en": "Tempa takes that chaos off your hands.", "note": "headline — 'that chaos' refers to the previous screen" },
+        { "key": "Complex becomes small, clear steps you can actually start.", "en": "Complex becomes small, clear steps you can actually start.", "note": "subtitle" },
+        { "key": "Speak your plans", "en": "Speak your plans", "note": "feature row title" },
+        { "key": "AI turns a brain-dump into a scheduled day", "en": "AI turns a brain-dump into a scheduled day", "note": "feature row subtitle" },
+        { "key": "One thing at a time", "en": "One thing at a time", "note": "feature row title" },
+        { "key": "You only ever see the next small step", "en": "You only ever see the next small step", "note": "feature row subtitle" },
+        { "key": "Focus that forgives", "en": "Focus that forgives", "note": "feature row title" },
+        { "key": "A gentle timer — and no guilt when life happens", "en": "A gentle timer — and no guilt when life happens", "note": "feature row subtitle" },
+        { "key": "Show me how", "en": "Show me how", "note": "primary button" }
+      ]
+    },
+    {
+      "screen": "3 · Name",
+      "strings": [
+        { "key": "What should we call you?", "en": "What should we call you?", "note": "headline" },
+        { "key": "Just a first name — so your plan feels like yours.", "en": "Just a first name — so your plan feels like yours.", "note": "subtitle" },
+        { "key": "Your name", "en": "Your name", "note": "text field placeholder" },
+        { "key": "I'd rather not say", "en": "I'd rather not say", "note": "quiet skip button" }
+      ]
+    },
+    {
+      "screen": "6 · Hours-lost slider",
+      "strings": [
+        { "key": "On a heavy day, how much time gets eaten by putting things off?", "en": "On a heavy day, how much time gets eaten by putting things off?", "note": "headline over a 1–6h slider" },
+        { "key": "Scrolling counts. Honest guess — nobody's judging.", "en": "Scrolling counts. Honest guess — nobody's judging.", "note": "subtitle, disarming" }
+      ]
+    },
+    {
+      "screen": "7 · The math (their own number turned into weeks per year, then the bridge)",
+      "strings": [
+        { "key": "%@ a day adds up to…", "en": "%@ a day adds up to…", "note": "headline; %@ is the compact hours string, e.g. '3h' → '3h a day adds up to…'" },
+        { "key": "%@h", "en": "%@h", "note": "compact hour unit fed into the line above — see special_cases" },
+        { "key": "weeks a year", "en": "weeks a year", "note": "label after the huge '≈7' — plural form for 5+, see special_cases" },
+        { "key": "weeks of the year", "en": "weeks of the year", "note": "same label, form for counts 2–4 — see special_cases" },
+        { "key": "gone to \"I'll do it later.\"", "en": "gone to \"I'll do it later.\"", "note": "line under the big number, completes: '≈7 weeks a year — gone to \"I'll do it later.\"'" },
+        { "key": "It doesn't have to be this way.", "en": "It doesn't have to be this way.", "note": "the bridge — hope after the math" },
+        { "key": "Five minutes of planning a day wins most of it back. Let's build your plan.", "en": "Five minutes of planning a day wins most of it back. Let's build your plan.", "note": "bridge body" },
+        { "key": "Build my plan", "en": "Build my plan", "note": "primary button" }
+      ]
+    },
+    {
+      "screen": "8 · Mirror (their quiz answers echoed back, already answered by the product)",
+      "strings": [
+        { "key": "Here's what you told us.", "en": "Here's what you told us.", "note": "headline when no name was given" },
+        { "key": "%@, here's what you told us.", "en": "%@, here's what you told us.", "note": "headline; %@ = first name" },
+        { "key": "Your brain works differently — Tempa is built around that, not against it.", "en": "Your brain works differently — Tempa is built around that, not against it.", "note": "echo of quiz pick 'neurodivergent'" },
+        { "key": "Big lists overwhelm you — here you'll only ever see the next small step.", "en": "Big lists overwhelm you — here you'll only ever see the next small step.", "note": "echo of 'overwhelmed by to-do list'" },
+        { "key": "Starting is the hardest part — AI shrinks scary tasks into tiny first moves.", "en": "Starting is the hardest part — AI shrinks scary tasks into tiny first moves.", "note": "echo of 'I procrastinate'" },
+        { "key": "Time slips away — your day becomes blocks you can actually see.", "en": "Time slips away — your day becomes blocks you can actually see.", "note": "echo of 'I lose track of time'" },
+        { "key": "You want calmer days — no streaks, no guilt, no noise.", "en": "You want calmer days — no streaks, no guilt, no noise.", "note": "echo of 'I want a calmer day'" },
+        { "key": "Starting tasks: one tap turns anything into a five-minute first step.", "en": "Starting tasks: one tap turns anything into a five-minute first step.", "note": "echo of pain 'starting tasks'" },
+        { "key": "Time blindness: visual blocks keep the day where you can see it.", "en": "Time blindness: visual blocks keep the day where you can see it.", "note": "echo of pain 'time blindness'" },
+        { "key": "Routines: gentle reminders that nudge without nagging.", "en": "Routines: gentle reminders that nudge without nagging.", "note": "echo of pain 'remembering routines'" },
+        { "key": "Apps that didn't stick: this one forgives the days you disappear.", "en": "Apps that didn't stick: this one forgives the days you disappear.", "note": "echo of pain 'too many apps that didn't stick'" },
+        { "key": "The guilt: banned. A missed day just gets a \"welcome back.\"", "en": "The guilt: banned. A missed day just gets a \"welcome back.\"", "note": "echo of pain 'feeling guilty'" },
+        { "key": "That's exactly it", "en": "That's exactly it", "note": "primary button" }
+      ]
+    },
+    {
+      "screen": "11 · First win (after the AI demo — celebration + review prompt moment)",
+      "strings": [
+        { "key": "First step: done.", "en": "First step: done.", "note": "headline under a big checkmark" },
+        { "key": "You just did the hardest part of any task — the start. That feeling? That's how every day begins with Tempa.", "en": "You just did the hardest part of any task — the start. That feeling? That's how every day begins with Tempa.", "note": "body — gender-neutral phrasing required (see brand_rules)" },
+        { "key": "Keep going", "en": "Keep going", "note": "primary button" }
+      ]
+    },
+    {
+      "screen": "15 · Commitment (Cialdini question with a warm affirmation for every answer)",
+      "strings": [
+        { "key": "How ready are you to try a different way?", "en": "How ready are you to try a different way?", "note": "headline question" },
+        { "key": "All in — let's do this", "en": "All in — let's do this", "note": "answer option 1 (highest energy)" },
+        { "key": "Ready to give it a real shot", "en": "Ready to give it a real shot", "note": "answer option 2 — gender-neutral!" },
+        { "key": "Curious, but cautious", "en": "Curious, but cautious", "note": "answer option 3 — gender-neutral!" },
+        { "key": "Love that energy. We'll match it — one small step at a time.", "en": "Love that energy. We'll match it — one small step at a time.", "note": "affirmation for option 1" },
+        { "key": "A real shot is all it takes. We'll keep it light.", "en": "A real shot is all it takes. We'll keep it light.", "note": "affirmation for option 2" },
+        { "key": "Cautious is smart. Tempa earns trust one small win at a time.", "en": "Cautious is smart. Tempa earns trust one small win at a time.", "note": "affirmation for option 3 — no shaming the cautious" }
+      ]
+    },
+    {
+      "screen": "16 · Journey summary (their next 30 days, last personal screen before social proof)",
+      "strings": [
+        { "key": "Here's your next 30 days.", "en": "Here's your next 30 days.", "note": "headline when no name" },
+        { "key": "%@, here's your next 30 days.", "en": "%@, here's your next 30 days.", "note": "headline; %@ = first name" },
+        { "key": "Built from your answers — your mornings, your energy, your pace.", "en": "Built from your answers — your mornings, your energy, your pace.", "note": "subtitle" },
+        { "key": "Day 3", "en": "Day 3", "note": "timeline label" },
+        { "key": "Day 30", "en": "Day 30", "note": "timeline label" },
+        { "key": "Speak tomorrow's plan out loud — five minutes.", "en": "Speak tomorrow's plan out loud — five minutes.", "note": "timeline row 'Today'" },
+        { "key": "First focus blocks behind you — starting feels lighter.", "en": "First focus blocks behind you — starting feels lighter.", "note": "timeline row 'Day 3'" },
+        { "key": "A calmer rhythm that survives even the bad days.", "en": "A calmer rhythm that survives even the bad days.", "note": "timeline row 'Day 30'" },
+        { "key": "I want this", "en": "I want this", "note": "primary button" }
+      ]
+    },
+    {
+      "screen": "20 · Trial gift (last screen before the paywall — the trial offered as a gift)",
+      "strings": [
+        { "key": "We'd like you to try everything — free.", "en": "We'd like you to try everything — free.", "note": "headline under a gift icon" },
+        { "key": "Your plan is ready. Test-drive the full app on us and see how your week feels.", "en": "Your plan is ready. Test-drive the full app on us and see how your week feels.", "note": "body" },
+        { "key": "Every feature unlocked from minute one", "en": "Every feature unlocked from minute one", "note": "bullet 1" },
+        { "key": "We'll remind you before the trial ends", "en": "We'll remind you before the trial ends", "note": "bullet 2 — the trust promise" },
+        { "key": "Cancel anytime in two taps — no hard feelings", "en": "Cancel anytime in two taps — no hard feelings", "note": "bullet 3" },
+        { "key": "Unwrap my free trial", "en": "Unwrap my free trial", "note": "primary button — keeps the gift metaphor" }
+      ]
+    },
+    {
+      "screen": "12 · Wake-time screen (only the changed label)",
+      "strings": [
+        { "key": "Set your day", "en": "Set your day", "note": "was 'Set your day · 3 of 3'; short section label" }
+      ]
+    }
+  ]
+}

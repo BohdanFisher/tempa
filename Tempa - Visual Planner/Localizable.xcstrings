@@ -128,49 +128,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ am Tag ergibt…"
+            "value": "Aus %@ am Tag werden …"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ al día suman…"
+            "value": "Con %@ al día, al final son…"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ päivässä tekee…"
+            "value": "%@ päivässä tekee yhteensä…"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ par jour, ça fait…"
+            "value": "%@ par jour, ça finit par faire…"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ om dagen blir…"
+            "value": "%@ om dagen blir til…"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ per dag is samen…"
+            "value": "%@ per dag loopt op tot…"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ por dia dá…"
+            "value": "%@ por dia viram…"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ на день — це…"
+            "value": "%@ на день — це аж…"
           }
         }
       }
@@ -579,25 +579,25 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, das hast du uns erzählt."
+            "value": "%@, das hast du uns über dich erzählt."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, esto es lo que nos contaste."
+            "value": "%@, esto es lo que nos has contado."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, tämän kerroit meille."
+            "value": "%@, tätä kerroit meille."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, voilà ce que tu nous as dit."
+            "value": "%@, voici ce que tu nous as dit."
           }
         },
         "nb": {
@@ -615,13 +615,13 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, foi isso que você nos contou."
+            "value": "%@, foi isso que você contou pra gente."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, ось що ми від тебе почули."
+            "value": "%@, ось що ми дізналися з твоїх відповідей."
           }
         }
       }
@@ -631,19 +631,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, das sind deine nächsten 30 Tage."
+            "value": "%@, so sehen deine nächsten 30 Tage aus."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, estos son tus próximos 30 días."
+            "value": "%@, así serán tus próximos 30 días."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, tässä seuraavat 30 päivääsi."
+            "value": "%@, tältä seuraavat 30 päivääsi näyttävät."
           }
         },
         "fr": {
@@ -655,13 +655,13 @@
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, her er dine neste 30 dager."
+            "value": "%@, her er de neste 30 dagene dine."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@, dit zijn je komende 30 dagen."
+            "value": "%@, dit zijn je volgende 30 dagen."
           }
         },
         "pt": {
@@ -2064,49 +2064,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ein ruhigerer Rhythmus, der auch schlechte Tage übersteht."
+            "value": "Ein ruhigerer Rhythmus, der auch an schlechten Tagen hält."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un ritmo más tranquilo que sobrevive incluso a los días malos."
+            "value": "Un ritmo más tranquilo que se mantiene incluso en los días malos."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rauhallisempi rytmi, joka kestää huonotkin päivät."
+            "value": "Rauhallisempi rytmi, joka kestää myös huonot päivät."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un rythme plus calme qui survit même aux mauvais jours."
+            "value": "Un rythme plus calme qui tient même les mauvais jours."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "En roligere rytme som overlever selv de dårlige dagene."
+            "value": "En roligere rytme som holder, selv på dårlige dager."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Een rustiger ritme dat zelfs de slechte dagen overleeft."
+            "value": "Een rustiger ritme dat ook op slechte dagen standhoudt."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Um ritmo mais calmo que sobrevive até aos dias ruins."
+            "value": "Um ritmo mais tranquilo que se mantém até nos dias difíceis."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Спокійніший ритм, який переживає навіть погані дні."
+            "value": "Спокійніший ритм, який тримається навіть у погані дні."
           }
         }
       }
@@ -2168,49 +2168,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ein sanfter Timer — und keine Schuldgefühle, wenn das Leben dazwischenkommt"
+            "value": "Ein sanfter Timer — und kein schlechtes Gewissen, wenn das Leben dazwischenkommt"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un temporizador amable — y sin culpa cuando la vida se interpone"
+            "value": "Un temporizador suave — y nada de culpa cuando la vida se interpone"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lempeä ajastin — eikä syyllisyyttä, kun elämä yllättää"
+            "value": "Lempeä ajastin — eikä syyllisyyttä, kun elämä tulee väliin"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un minuteur doux — et zéro culpabilité quand la vie s'en mêle"
+            "value": "Un minuteur tout en douceur — et aucune culpabilité quand la vie s’en mêle"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "En vennlig timer — og ingen skyldfølelse når livet skjer"
+            "value": "En mild timer — og ingen dårlig samvittighet når livet kommer i veien"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Een vriendelijke timer — en geen schuldgevoel als het leven ertussen komt"
+            "value": "Een milde timer — zonder schuldgevoel als het leven ertussen komt"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Um timer gentil — e zero culpa quando a vida acontece"
+            "value": "Um timer leve — e nada de culpa quando a vida muda os planos"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Лагідний таймер — і жодної провини, коли життя вносить своє"
+            "value": "Лагідний таймер — і жодного почуття провини, коли життя вносить свої корективи"
           }
         }
       }
@@ -2273,49 +2273,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eine echte Chance reicht völlig. Wir halten es leicht."
+            "value": "Ein echter Versuch reicht. Wir halten es locker."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Con una oportunidad de verdad basta. Lo mantendremos ligero."
+            "value": "Intentarlo de verdad es suficiente. Lo haremos fácil."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kunnon mahdollisuus riittää. Pidetään tämä kevyenä."
+            "value": "Riittää, että kokeilet tosissasi. Pidetään tämä helppona."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Une vraie chance, c'est tout ce qu'il faut. On restera léger."
+            "value": "Essayer pour de vrai, c’est déjà suffisant. On va garder ça simple."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "En ærlig sjanse er alt som trengs. Vi holder det lett."
+            "value": "Det holder å gi det en ordentlig sjanse. Vi gjør det enkelt."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Een echte kans is genoeg. We houden het licht."
+            "value": "Het echt een kans geven is genoeg. We houden het luchtig."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Uma chance de verdade já basta. Vamos manter leve."
+            "value": "Tentar pra valer já basta. Vamos manter tudo leve."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Чесного шансу цілком досить. Ми не тиснутимемо."
+            "value": "Справжня спроба — це все, що потрібно. Буде легко."
           }
         }
       }
@@ -2517,43 +2517,43 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "KI macht aus deinem Gedankenstrom einen geplanten Tag"
+            "value": "KI macht aus deinem Gedankenchaos einen geplanten Tag"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La IA convierte tu lluvia de ideas en un día planificado"
+            "value": "La IA convierte todo lo que tienes en la cabeza en un día organizado"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tekoäly muuttaa ajatustulvan aikataulutetuksi päiväksi"
+            "value": "Tekoäly muuttaa ajatusten sekamelskan aikataulutetuksi päiväksi"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "L'IA transforme le vrac en journée planifiée"
+            "value": "L’IA transforme tout ce que tu as en tête en une journée planifiée"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "KI gjør tankestrømmen om til en planlagt dag"
+            "value": "KI gjør tankekaoset ditt om til en planlagt dag"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "AI maakt van je gedachtestroom een geplande dag"
+            "value": "AI zet alles in je hoofd om in een geplande dag"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "A IA transforma o despejo mental em um dia agendado"
+            "value": "A IA transforma tudo que está na sua cabeça em um dia organizado"
           }
         },
         "uk": {
@@ -3446,49 +3446,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Voll dabei — los geht's"
+            "value": "Voll dabei — los geht’s"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Con todo — vamos"
+            "value": "A por todas — vamos"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Täysillä — mennään"
+            "value": "Täysillä mukana — mennään"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "À fond — on y va"
+            "value": "À fond — c’est parti"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Helt med — kjør på"
+            "value": "Jeg er med — kjør på"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Helemaal — we gaan ervoor"
+            "value": "Helemaal ervoor — kom maar op"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Com tudo — bora"
+            "value": "Tô dentro — vamos nessa"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ва-банк — погнали"
+            "value": "На всі сто — поїхали"
           }
         }
       }
@@ -3758,49 +3758,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apps, die nicht geblieben sind: Diese verzeiht dir die Tage, an denen du verschwindest."
+            "value": "Apps, die keine Gewohnheit wurden: Diese verzeiht dir, wenn du ein paar Tage raus bist."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apps que no cuajaron: esta perdona los días en que desapareces."
+            "value": "Apps que no se convirtieron en hábito: esta te perdona los días en los que desapareces."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sovellukset, jotka eivät jääneet: tämä antaa anteeksi päivät, jolloin katoat."
+            "value": "Sovellukset, jotka eivät jääneet käyttöön: tämä antaa anteeksi päivät, jolloin putoat kyydistä."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les applis qui n'ont pas tenu : celle-ci pardonne les jours où tu disparais."
+            "value": "Les apps qui ne sont pas devenues une habitude : celle-ci te pardonne les jours où tu disparais."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apper som ikke funket: denne tilgir dagene du forsvinner."
+            "value": "Apper som ikke ble en vane: denne tilgir dagene du blir borte."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apps die niet bleven hangen: deze vergeeft de dagen dat je verdwijnt."
+            "value": "Apps die geen gewoonte werden: deze vergeeft de dagen waarop je even verdwijnt."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apps que não vingaram: este perdoa os dias em que você some."
+            "value": "Apps que não deram certo: este perdoa os dias em que você some."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Апки, які не прижилися: ця прощає дні, коли ти зникаєш."
+            "value": "Застосунки, які не прижилися: цей прощає дні, коли випадаєш із життя."
           }
         }
       }
@@ -4210,25 +4210,25 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lange Listen erschlagen dich — hier siehst du immer nur den nächsten kleinen Schritt."
+            "value": "Große Listen überfordern dich — hier siehst du immer nur den nächsten kleinen Schritt."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Las listas largas te abruman — aquí solo verás el siguiente paso pequeño."
+            "value": "Las listas enormes te abruman — aquí solo verás el siguiente pequeño paso."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Isot listat musertavat — täällä näet vain seuraavan pienen askeleen."
+            "value": "Pitkät listat kuormittavat sinua — täällä näet vain seuraavan pienen askeleen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les longues listes t'étouffent — ici tu ne verras que la prochaine petite étape."
+            "value": "Les longues listes te submergent — ici, tu ne vois que la prochaine petite étape."
           }
         },
         "nb": {
@@ -4246,13 +4246,13 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Listas grandes te sobrecarregam — aqui você só verá o próximo pequeno passo."
+            "value": "Listas enormes te sobrecarregam — aqui, você só vê o próximo pequeno passo."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Великі списки тебе накривають — тут ти бачитимеш лише наступний маленький крок."
+            "value": "Великі списки перевантажують — тут ти бачиш лише наступний маленький крок."
           }
         }
       }
@@ -4262,25 +4262,25 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zahnarzttermin machen"
+            "value": "Zahnarzttermin vereinbaren"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pedir cita al dentista"
+            "value": "Pedir cita con el dentista"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Varaa hammaslääkäri"
+            "value": "Varaa hammaslääkäriaika"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Prendre RDV chez le dentiste"
+            "value": "Prendre rendez-vous chez le dentiste"
           }
         },
         "nb": {
@@ -4292,19 +4292,19 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tandarts afspreken"
+            "value": "Tandartsafspraak maken"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Marcar o dentista"
+            "value": "Marcar consulta no dentista"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Запис до стоматолога"
+            "value": "Записатися до стоматолога"
           }
         }
       }
@@ -4470,7 +4470,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Meinen Plan bauen"
+            "value": "Meinen Plan erstellen"
           }
         },
         "es": {
@@ -4482,25 +4482,25 @@
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rakenna suunnitelmani"
+            "value": "Tee suunnitelmani"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Construire mon plan"
+            "value": "Créer mon planning"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bygg planen min"
+            "value": "Lag planen min"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bouw mijn plan"
+            "value": "Maak mijn plan"
           }
         },
         "pt": {
@@ -4512,7 +4512,7 @@
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Побудувати мій план"
+            "value": "Створити мій план"
           }
         }
       }
@@ -4522,19 +4522,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gebaut aus deinen Antworten — deine Morgen, deine Energie, dein Tempo."
+            "value": "Basierend auf deinen Antworten — deinen Morgen, deiner Energie, deinem Tempo."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hecho con tus respuestas — tus mañanas, tu energía, tu ritmo."
+            "value": "Creado a partir de tus respuestas: tus mañanas, tu energía, tu ritmo."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rakennettu vastauksistasi — sinun aamusi, energiasi, tahtisi."
+            "value": "Rakennettu vastaustesi pohjalta — aamujesi, energiasi ja oman tahtisi mukaan."
           }
         },
         "fr": {
@@ -4546,25 +4546,25 @@
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bygget av svarene dine — dine morgener, din energi, ditt tempo."
+            "value": "Bygget på svarene dine — morgenene dine, energien din, tempoet ditt."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gebouwd uit jouw antwoorden — jouw ochtenden, jouw energie, jouw tempo."
+            "value": "Gebouwd op basis van je antwoorden — je ochtenden, je energie, je tempo."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Feito das suas respostas — suas manhãs, sua energia, seu ritmo."
+            "value": "Feito a partir das suas respostas — suas manhãs, sua energia, seu ritmo."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Складено з твоїх відповідей — твої ранки, твоя енергія, твій темп."
+            "value": "На основі твоїх відповідей — твоїх ранків, енергії та ритму."
           }
         }
       }
@@ -4938,7 +4938,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bank zurückrufen"
+            "value": "Bei der Bank zurückrufen"
           }
         },
         "es": {
@@ -4968,13 +4968,13 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bank terugbellen"
+            "value": "De bank terugbellen"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Retornar a ligação do banco"
+            "value": "Ligar de volta para o banco"
           }
         },
         "uk": {
@@ -5094,49 +5094,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Jederzeit mit zwei Tipps kündbar — ganz ohne Groll"
+            "value": "Jederzeit mit zwei Fingertipps kündigen — kein Problem"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cancela cuando quieras en dos toques — sin rencores"
+            "value": "Cancela cuando quieras en dos toques — sin dramas"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Peru milloin vain kahdella napautuksella — ei pahalla"
+            "value": "Peru milloin vain kahdella napautuksella — ei mitään draamaa"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Annulable à tout moment en deux taps — sans rancune"
+            "value": "Annule quand tu veux en deux gestes — aucun souci"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Avbryt når som helst med to trykk — helt greit"
+            "value": "Avslutt når som helst med to trykk — ingen sure miner"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Altijd opzegbaar in twee tikken — geen probleem"
+            "value": "Op elk moment opzeggen met twee tikken — geen gedoe"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cancele quando quiser em dois toques — sem ressentimentos"
+            "value": "Cancele quando quiser com dois toques — sem drama"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Скасування будь-коли у два тапи — без образ"
+            "value": "Скасуй будь-коли у два дотики — жодних образ"
           }
         }
       }
@@ -5146,49 +5146,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vorsicht ist klug. Tempa verdient sich Vertrauen mit einem kleinen Erfolg nach dem anderen."
+            "value": "Vorsichtig zu sein ist klug. Tempa verdient sich dein Vertrauen — mit einem kleinen Erfolg nach dem anderen."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ser cauteloso es inteligente. Tempa se gana la confianza con pequeñas victorias."
+            "value": "Ir con cautela es buena idea. Tempa se gana tu confianza con cada pequeña victoria."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Varovaisuus on viisautta. Tempa ansaitsee luottamuksen pienin voitoin."
+            "value": "Varovaisuus on fiksua. Tempa ansaitsee luottamuksesi yksi pieni onnistuminen kerrallaan."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "La prudence, c'est malin. Tempa gagnera ta confiance une petite victoire à la fois."
+            "value": "La prudence, c’est malin. Tempa gagne ta confiance, petite victoire après petite victoire."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forsiktighet er smart. Tempa fortjener tillit én liten seier om gangen."
+            "value": "Det er smart å være forsiktig. Tempa bygger tillit én liten seier om gangen."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Voorzichtig is slim. Tempa verdient vertrouwen met kleine overwinningen."
+            "value": "Voorzichtig zijn is slim. Tempa verdient je vertrouwen met kleine overwinningen, stap voor stap."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cautela é inteligente. O Tempa conquista confiança uma pequena vitória por vez."
+            "value": "Ir com calma é inteligente. O Tempa conquista sua confiança com pequenas vitórias, uma de cada vez."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Обережність — це мудро. Tempa заслужить довіру маленькими перемогами."
+            "value": "Обережність — це розумно. Tempa завойовує довіру маленькими перемогами, крок за кроком."
           }
         }
       }
@@ -5302,19 +5302,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Postfach aufräumen (247)"
+            "value": "Posteingang aufräumen (247)"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vaciar el correo (247)"
+            "value": "Poner al día la bandeja de entrada (247)"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Siivoa sähköposti (247)"
+            "value": "Käy sähköpostit läpi (247)"
           }
         },
         "fr": {
@@ -5332,13 +5332,13 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Inbox opruimen (247)"
+            "value": "Inbox wegwerken (247)"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Limpar os e-mails (247)"
+            "value": "Zerar a caixa de entrada (247)"
           }
         },
         "uk": {
@@ -5407,49 +5407,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kompliziertes wird zu kleinen, klaren Schritten, die du wirklich anfangen kannst."
+            "value": "Komplexe Aufgaben werden zu kleinen, klaren Schritten, mit denen du wirklich anfangen kannst."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lo complejo se convierte en pasos pequeños y claros que de verdad puedes empezar."
+            "value": "Una tarea complicada se divide en pasos pequeños y claros que sí puedes empezar."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Monimutkainen muuttuu pieniksi, selkeiksi askeliksi, jotka oikeasti pystyt aloittamaan."
+            "value": "Monimutkainen tehtävä pilkkoutuu pieniksi, selkeiksi askeliksi, joista on helppo aloittaa."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le complexe devient de petites étapes claires que tu peux vraiment commencer."
+            "value": "Ce qui paraît compliqué devient une suite de petites étapes claires, pour pouvoir enfin commencer."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Det kompliserte blir små, tydelige steg du faktisk kan begynne på."
+            "value": "Det kompliserte blir til små, tydelige steg du faktisk kan komme i gang med."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Complex wordt kleine, duidelijke stappen waar je echt aan kunt beginnen."
+            "value": "Iets ingewikkelds wordt opgedeeld in kleine, duidelijke stappen waar je echt aan kunt beginnen."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "O complexo vira passos pequenos e claros que você realmente consegue começar."
+            "value": "Uma tarefa complicada vira passos pequenos e claros, fáceis de começar."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Складне стає простими зрозумілими кроками, які реально почати."
+            "value": "Складне завдання розкладається на маленькі, зрозумілі кроки, з яких реально почати."
           }
         }
       }
@@ -5882,19 +5882,19 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Con curiosidad, pero con cautela"
+            "value": "Me da curiosidad, pero voy con cautela"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Utelias mutta varovainen"
+            "value": "Utelias, mutta varovainen"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ça m'intrigue, mais j'y vais doucement"
+            "value": "Ça m’intrigue, mais j’y vais doucement"
           }
         },
         "nb": {
@@ -5912,13 +5912,13 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Curiosidade, mas com cautela"
+            "value": "Tenho curiosidade, mas vou com calma"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Цікаво, але обережно"
+            "value": "Цікаво, але без поспіху"
           }
         }
       }
@@ -7191,13 +7191,13 @@
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kaikki ominaisuudet auki ensimmäisestä minuutista"
+            "value": "Kaikki ominaisuudet käytössä heti ensimmäisestä minuutista"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Toutes les fonctions débloquées dès la première minute"
+            "value": "Toutes les fonctionnalités débloquées dès la première minute"
           }
         },
         "nb": {
@@ -7209,7 +7209,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alle functies ontgrendeld vanaf de eerste minuut"
+            "value": "Alle functies vanaf minuut één ontgrendeld"
           }
         },
         "pt": {
@@ -7545,49 +7545,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Die ersten Fokusblöcke sind geschafft — anfangen fühlt sich leichter an."
+            "value": "Die ersten Fokusblöcke sind geschafft — Anfangen fällt leichter."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Primeros bloques de concentración completados — empezar se siente más ligero."
+            "value": "Tus primeros bloques de enfoque ya están hechos — empezar cuesta menos."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ensimmäiset keskittymisjaksot takana — aloittaminen tuntuu kevyemmältä."
+            "value": "Ensimmäiset keskittymisjaksot ovat takana — aloittaminen tuntuu kevyemmältä."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Premiers blocs de focus derrière toi — commencer devient plus léger."
+            "value": "Tes premiers blocs de concentration sont derrière toi — commencer paraît déjà plus facile."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "De første fokusblokkene er unnagjort — det føles lettere å starte."
+            "value": "De første fokusblokkene er bak deg — det føles lettere å starte."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eerste focusblokken achter de rug — beginnen voelt lichter."
+            "value": "Je eerste focusblokken zitten erop — beginnen gaat al makkelijker."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Primeiros blocos de foco concluídos — começar já parece mais leve."
+            "value": "Os primeiros blocos de foco ficaram para trás — começar fica mais leve."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Перші фокус-блоки позаду — починати вже легше."
+            "value": "Перші фокус-блоки вже позаду — починати стає легше."
           }
         }
       }
@@ -7627,7 +7627,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eerste stap: gezet."
+            "value": "Eerste stap: gedaan."
           }
         },
         "pt": {
@@ -7649,49 +7649,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fünf Minuten Planung am Tag holen das meiste davon zurück. Bauen wir deinen Plan."
+            "value": "Fünf Minuten Planung am Tag holen dir den Großteil davon zurück. Lass uns deinen Plan erstellen."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cinco minutos de planificación al día recuperan la mayor parte. Construyamos tu plan."
+            "value": "Cinco minutos de planificación al día te ayudan a recuperar gran parte de ese tiempo. Vamos a crear tu plan."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Viisi minuuttia suunnittelua päivässä voittaa suurimman osan takaisin. Rakennetaan suunnitelmasi."
+            "value": "Viisi minuuttia suunnittelua päivässä auttaa saamaan suurimman osan tuosta ajasta takaisin. Tehdään suunnitelmasi."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cinq minutes de planification par jour en récupèrent l'essentiel. Construisons ton plan."
+            "value": "Cinq minutes de planification par jour suffisent à récupérer une bonne partie de ce temps. Créons ton planning."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fem minutter planlegging om dagen vinner det meste tilbake. La oss bygge planen din."
+            "value": "Fem minutter planlegging om dagen kan gi deg mesteparten av den tiden tilbake. La oss lage planen din."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vijf minuten plannen per dag wint het meeste terug. Laten we jouw plan bouwen."
+            "value": "Met vijf minuten plannen per dag win je het grootste deel van die tijd terug. Laten we je plan maken."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cinco minutos de planejamento por dia recuperam a maior parte. Vamos montar seu plano."
+            "value": "Cinco minutos de planejamento por dia ajudam a recuperar boa parte desse tempo. Vamos montar seu plano."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "П'ять хвилин планування на день повертають більшість цього часу. Побудуймо твій план."
+            "value": "П’ять хвилин планування на день допоможуть повернути більшість цього часу. Створімо твій план."
           }
         }
       }
@@ -7857,49 +7857,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fokus, der verzeiht"
+            "value": "Fokus ohne Schuldgefühle"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Concentración que perdona"
+            "value": "Enfoque sin culpa"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Keskittyminen, joka antaa anteeksi"
+            "value": "Keskittyminen ilman syyllisyyttä"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un focus qui pardonne"
+            "value": "Se concentrer sans culpabiliser"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fokus som tilgir"
+            "value": "Fokus uten dårlig samvittighet"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Focus die vergeeft"
+            "value": "Focus zonder schuldgevoel"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Foco que perdoa"
+            "value": "Foco sem culpa"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Фокус, який прощає"
+            "value": "Фокус без провини"
           }
         }
       }
@@ -8533,25 +8533,25 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Das hast du uns erzählt."
+            "value": "Das hast du uns über dich erzählt."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esto es lo que nos contaste."
+            "value": "Esto es lo que nos has contado."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tämän kerroit meille."
+            "value": "Tätä kerroit meille."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Voilà ce que tu nous as dit."
+            "value": "Voici ce que tu nous as dit."
           }
         },
         "nb": {
@@ -8569,13 +8569,13 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Foi isso que você nos contou."
+            "value": "Foi isso que você contou pra gente."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ось що ми від тебе почули."
+            "value": "Ось що ми дізналися з твоїх відповідей."
           }
         }
       }
@@ -8585,19 +8585,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Das sind deine nächsten 30 Tage."
+            "value": "So sehen deine nächsten 30 Tage aus."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estos son tus próximos 30 días."
+            "value": "Así serán tus próximos 30 días."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tässä seuraavat 30 päivääsi."
+            "value": "Tältä seuraavat 30 päivääsi näyttävät."
           }
         },
         "fr": {
@@ -8609,13 +8609,13 @@
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her er dine neste 30 dager."
+            "value": "Her er de neste 30 dagene dine."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dit zijn je komende 30 dagen."
+            "value": "Dit zijn je volgende 30 dagen."
           }
         },
         "pt": {
@@ -8950,49 +8950,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wie oft lähmt dich eine große Aufgabe — und alles rutscht auf „später“?"
+            "value": "Wie oft blockiert dich eine große Aufgabe — und plötzlich wird alles auf „später“ verschoben?"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¿Cuántas veces una tarea grande te bloquea — y todo se va al «luego»?"
+            "value": "¿Con qué frecuencia una tarea grande te bloquea y todo termina quedando «para después»?"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kuinka usein yksi iso tehtävä jähmettää sinut — ja kaikki siirtyy ”myöhemmäksi”?"
+            "value": "Kuinka usein yksi iso tehtävä saa sinut jumiin — ja kaikki siirtyy ”myöhemmäksi”?"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Combien de fois une grosse tâche te fige — et tout part à « plus tard » ?"
+            "value": "À quelle fréquence une grosse tâche te bloque — et tout finit repoussé à « plus tard » ?"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hvor ofte fryser én stor oppgave deg — og alt glir til «senere»?"
+            "value": "Hvor ofte låser én stor oppgave deg — og alt blir skjøvet til «senere»?"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hoe vaak bevriest één grote taak je — en schuift alles naar ‘later’?"
+            "value": "Hoe vaak blokkeert één grote taak je — en schuift alles door naar ‘later’?"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quantas vezes uma tarefa grande te trava — e tudo escorrega para o “depois”?"
+            "value": "Quantas vezes uma tarefa grande te trava — e tudo acaba ficando “pra depois”?"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Як часто одна велика задача вганяє тебе в ступор — і все летить у «потім»?"
+            "value": "Як часто одне велике завдання змушує тебе завмерти — і все відкладається «на потім»?"
           }
         }
       }
@@ -9002,49 +9002,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wie bereit bist du, es anders anzugehen?"
+            "value": "Wie wäre es, es mal anders zu versuchen?"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¿Cuántas ganas tienes de intentarlo de otra manera?"
+            "value": "¿Qué tal si pruebas una forma distinta?"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kuinka valmis olet kokeilemaan toisenlaista tapaa?"
+            "value": "Mitä jos kokeilisit toisin?"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "À quel point veux-tu essayer autrement ?"
+            "value": "Et si tu essayais autrement ?"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hvor klar er du for å prøve en annen måte?"
+            "value": "Hva med å prøve en annen måte?"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hoe klaar ben je om het anders te proberen?"
+            "value": "Wat als je het eens anders probeert?"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quanta vontade você tem de tentar de um jeito diferente?"
+            "value": "Que tal tentar de um jeito diferente?"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Спробувати інший підхід — наскільки ти в ділі?"
+            "value": "Як щодо того, щоб спробувати інакше?"
           }
         }
       }
@@ -9488,7 +9488,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je veux ça"
+            "value": "C’est ce que je veux"
           }
         },
         "nb": {
@@ -9512,7 +9512,7 @@
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Хочу так"
+            "value": "Я цього хочу"
           }
         }
       }
@@ -9586,19 +9586,19 @@
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mieluummin en kerro"
+            "value": "Jätän mieluummin kertomatta"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je préfère ne pas dire"
+            "value": "Je préfère ne pas le dire"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Helst ikke"
+            "value": "Jeg vil helst ikke si det"
           }
         },
         "nl": {
@@ -9616,7 +9616,7 @@
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Краще без імені"
+            "value": "Краще пропущу"
           }
         }
       }
@@ -9834,7 +9834,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Das muss nicht so bleiben."
+            "value": "Es muss nicht so sein."
           }
         },
         "es": {
@@ -9846,25 +9846,25 @@
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sen ei tarvitse olla näin."
+            "value": "Sen ei tarvitse mennä näin."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ça peut changer."
+            "value": "Ça ne doit pas forcément se passer comme ça."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sånn trenger det ikke være."
+            "value": "Det trenger ikke å være sånn."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dat hoeft niet zo te zijn."
+            "value": "Het hoeft niet zo te zijn."
           }
         },
         "pt": {
@@ -9876,7 +9876,7 @@
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Так не мусить бути."
+            "value": "Так не обов’язково має бути."
           }
         }
       }
@@ -9938,49 +9938,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nur dein Vorname — damit sich dein Plan nach dir anfühlt."
+            "value": "Nur dein Vorname — damit sich dein Plan wirklich nach dir anfühlt."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Solo tu nombre — para que el plan se sienta tuyo."
+            "value": "Solo tu nombre — para que el plan se sienta más tuyo."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pelkkä etunimi — jotta suunnitelma tuntuu omaltasi."
+            "value": "Pelkkä etunimi — jotta suunnitelma tuntuu omalta."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Juste ton prénom — pour que ton plan te ressemble."
+            "value": "Juste ton prénom — pour que ton planning te ressemble vraiment."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bare fornavnet — så planen føles som din."
+            "value": "Bare fornavnet ditt — så planen føles som din."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alleen je voornaam — zodat je plan als het jouwe voelt."
+            "value": "Alleen je voornaam — zodat je plan echt bij jou past."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Só o primeiro nome — para o plano parecer seu."
+            "value": "Só seu primeiro nome — para seu plano ter mais a sua cara."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Просто ім'я — щоб план відчувався твоїм."
+            "value": "Лише ім’я — щоб твій план відчувався справді твоїм."
           }
         }
       }
@@ -9990,25 +9990,25 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Weiter geht's"
+            "value": "Weiter"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sigamos"
+            "value": "Seguir"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Jatketaan"
+            "value": "Jatka"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "On continue"
+            "value": "Continuer"
           }
         },
         "nb": {
@@ -10032,7 +10032,7 @@
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Далі"
+            "value": "Продовжити"
           }
         }
       }
@@ -10407,7 +10407,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los geht's"
+            "value": "Los geht’s"
           }
         },
         "es": {
@@ -10425,7 +10425,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "On commence"
+            "value": "C’est parti"
           }
         },
         "nb": {
@@ -10824,49 +10824,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Diese Energie gefällt uns. Wir halten mit — ein kleiner Schritt nach dem anderen."
+            "value": "Diese Energie gefällt uns. Wir gehen mit — Schritt für Schritt."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nos encanta esa energía. La igualaremos — un pequeño paso a la vez."
+            "value": "Nos encanta esa energía. Vamos a tu ritmo — un pequeño paso a la vez."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mahtava asenne. Pysymme mukana — pieni askel kerrallaan."
+            "value": "Mahtava energia. Pidetään siitä kiinni — yksi pieni askel kerrallaan."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "On adore cette énergie. On suivra le rythme — un petit pas à la fois."
+            "value": "On adore cette énergie. On suit le rythme — un petit pas après l’autre."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elsker den energien. Vi matcher den — ett lite steg om gangen."
+            "value": "Elsker energien. Vi følger tempoet ditt — ett lite steg om gangen."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Heerlijk, die energie. Wij doen mee — één stapje tegelijk."
+            "value": "Heerlijk, die energie. We gaan met je mee — één kleine stap tegelijk."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Adoramos essa energia. Vamos acompanhar — um passinho de cada vez."
+            "value": "Adoramos essa energia. Vamos no seu ritmo — um pequeno passo de cada vez."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Оце енергія! Ми її підхопимо — крок за кроком."
+            "value": "Оце настрій. Підтримаємо його — по одному маленькому кроку за раз."
           }
         }
       }
@@ -12785,49 +12785,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wie viel Zeit frisst das Aufschieben an einem schweren Tag?"
+            "value": "Wie viel Zeit geht dir an einem anstrengenden Tag durchs Aufschieben verloren?"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "En un día difícil, ¿cuánto tiempo se come el postergar?"
+            "value": "En un día difícil, ¿cuánto tiempo se te va por dejar las cosas para después?"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kuinka paljon aikaa lykkääminen syö raskaana päivänä?"
+            "value": "Kuinka paljon aikaa lykkääminen vie raskaina päivinä?"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un jour difficile, combien de temps part dans la procrastination ?"
+            "value": "Lors d’une journée difficile, combien de temps perds-tu à tout remettre à plus tard ?"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "På en tung dag, hvor mye tid spiser utsettelsene?"
+            "value": "På en tung dag, hvor mye tid forsvinner på å utsette ting?"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hoeveel tijd vreet uitstellen op een zware dag?"
+            "value": "Hoeveel tijd gaat er op een zware dag verloren aan uitstellen?"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Num dia pesado, quanto tempo o adiamento engole?"
+            "value": "Num dia pesado, quanto tempo vai embora adiando as coisas?"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "У важкий день скільки часу з'їдає відкладання справ?"
+            "value": "У важкий день скільки часу з’їдає відкладання справ?"
           }
         }
       }
@@ -13099,7 +13099,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eins nach dem anderen"
+            "value": "Eine Sache nach der anderen"
           }
         },
         "es": {
@@ -13141,7 +13141,7 @@
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Одна справа за раз"
+            "value": "По одній справі за раз"
           }
         }
       }
@@ -13540,7 +13540,7 @@
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Betale regninger"
+            "value": "Betale regningene"
           }
         },
         "nl": {
@@ -14401,49 +14401,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bereit, ihm eine echte Chance zu geben"
+            "value": "Bereit, es wirklich zu versuchen"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le daré una oportunidad de verdad"
+            "value": "Quiero intentarlo de verdad"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Annan tälle kunnon mahdollisuuden"
+            "value": "Valmis antamaan tälle kunnon mahdollisuuden"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je vais lui donner une vraie chance"
+            "value": "Envie d’essayer pour de vrai"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gir det en ærlig sjanse"
+            "value": "Klar for å gi det en ordentlig sjanse"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ik geef het een echte kans"
+            "value": "Klaar om het echt een kans te geven"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vou dar uma chance de verdade"
+            "value": "Quero tentar pra valer"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Дам цьому чесний шанс"
+            "value": "Спробую по-справжньому"
           }
         }
       }
@@ -14817,49 +14817,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Routinen: sanfte Erinnerungen, die anstupsen statt nörgeln."
+            "value": "Routinen: Sanfte Erinnerungen, die anstupsen, ohne zu nerven."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rutinas: recordatorios amables que empujan sin regañar."
+            "value": "Rutinas: recordatorios suaves que te dan un empujoncito sin agobiar."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rutiinit: lempeät muistutukset, jotka tuuppaavat nalkuttamatta."
+            "value": "Rutiinit: lempeitä muistutuksia, jotka kannustavat ilman nalkutusta."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Routines : des rappels doux qui encouragent sans harceler."
+            "value": "Routines : des rappels doux qui donnent un petit coup de pouce sans insister."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rutiner: vennlige påminnelser som dytter uten å mase."
+            "value": "Rutiner: Milde påminnelser som dytter deg i gang uten å mase."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Routines: vriendelijke herinneringen die duwen zonder zeuren."
+            "value": "Routines: vriendelijke herinneringen die je een zetje geven zonder te zeuren."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rotinas: lembretes gentis que empurram sem encher."
+            "value": "Rotinas: lembretes gentis que dão um empurrãozinho sem cobrar."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Рутини: лагідні нагадування, які підштовхують, а не пиляють."
+            "value": "Рутина: лагідні нагадування, що підштовхують, але не дратують."
           }
         }
       }
@@ -15130,49 +15130,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scrollen zählt mit. Ehrliche Schätzung — niemand urteilt."
+            "value": "Scrollen zählt mit. Schätz ehrlich — hier urteilt niemand."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El scroll también cuenta. Un cálculo honesto — nadie juzga."
+            "value": "El scroll también cuenta. Haz una estimación honesta — nadie te juzga."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Selaaminen lasketaan. Rehellinen arvio — kukaan ei tuomitse."
+            "value": "Selaaminenkin lasketaan. Arvioi rehellisesti — kukaan ei tuomitse."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le scroll compte aussi. Estimation honnête — personne ne juge."
+            "value": "Le scroll compte aussi. Estime honnêtement — personne ne te juge."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scrolling teller. Ærlig gjetning — ingen dømmer."
+            "value": "Scrollingen teller også. Et ærlig anslag — ingen dømmer deg."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scrollen telt mee. Eerlijke gok — niemand oordeelt."
+            "value": "Scrollen telt ook mee. Schat eerlijk — niemand oordeelt."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rolar o feed também conta. Chute honesto — ninguém julga."
+            "value": "Scroll também conta. Pode chutar com sinceridade — ninguém vai julgar."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Скролінг теж рахується. Чесна прикидка — ніхто не засуджує."
+            "value": "Скролінг теж рахується. Прикинь чесно — ніхто не засуджує."
           }
         }
       }
@@ -15443,13 +15443,13 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Richte deinen Tag ein"
+            "value": "Plane deinen Tag"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Configura tu día"
+            "value": "Organiza tu día"
           }
         },
         "fi": {
@@ -15461,7 +15461,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Règle ta journée"
+            "value": "Organise ta journée"
           }
         },
         "nb": {
@@ -15479,7 +15479,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Configure seu dia"
+            "value": "Organize seu dia"
           }
         },
         "uk": {
@@ -15652,7 +15652,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zeig mir wie"
+            "value": "Zeig mir, wie"
           }
         },
         "es": {
@@ -15670,7 +15670,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Montre-moi"
+            "value": "Montre-moi comment"
           }
         },
         "nb": {
@@ -15682,13 +15682,13 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Laat maar zien"
+            "value": "Laat zien hoe"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Me mostra como"
+            "value": "Quero ver como"
           }
         },
         "uk": {
@@ -16226,13 +16226,13 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sprich den Plan für morgen aus — fünf Minuten."
+            "value": "Sprich deinen Plan für morgen laut aus — fünf Minuten."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Di en voz alta el plan de mañana — cinco minutos."
+            "value": "Di en voz alta tu plan para mañana — cinco minutos."
           }
         },
         "fi": {
@@ -16244,31 +16244,31 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dicte le plan de demain — cinq minutes."
+            "value": "Dis à voix haute ton plan pour demain — cinq minutes."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Si morgendagens plan høyt — fem minutter."
+            "value": "Si planen for i morgen høyt — fem minutter."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Spreek het plan voor morgen in — vijf minuten."
+            "value": "Spreek je plan voor morgen hardop uit — vijf minuten."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fale o plano de amanhã em voz alta — cinco minutos."
+            "value": "Conte em voz alta o plano de amanhã — cinco minutos."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Наговори план на завтра — п'ять хвилин."
+            "value": "Скажи вголос план на завтра — п’ять хвилин."
           }
         }
       }
@@ -16330,49 +16330,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sprich deine Pläne"
+            "value": "Sprich deine Pläne laut aus"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dicta tus planes"
+            "value": "Cuenta tus planes en voz alta"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sanele suunnitelmasi"
+            "value": "Sano suunnitelmasi ääneen"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dicte tes plans"
+            "value": "Dis tes plans à voix haute"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Si planene dine"
+            "value": "Si planene dine høyt"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Spreek je plannen in"
+            "value": "Vertel je plannen hardop"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fale seus planos"
+            "value": "Conte seus planos em voz alta"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Наговорюй плани"
+            "value": "Розкажи про свої плани вголос"
           }
         }
       }
@@ -16747,49 +16747,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Anfangen ist das Schwerste — KI schrumpft große Aufgaben zu winzigen ersten Schritten."
+            "value": "Anfangen ist am schwersten — KI zerlegt einschüchternde Aufgaben in winzige erste Schritte."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Empezar es lo más difícil — la IA encoge las tareas temibles en primeros pasos diminutos."
+            "value": "Empezar es lo más difícil — la IA divide las tareas que intimidan en primeros pasos diminutos."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aloittaminen on vaikeinta — tekoäly kutistaa pelottavat tehtävät pikkuruisiksi ensiaskeliksi."
+            "value": "Aloittaminen on vaikeinta — tekoäly pilkkoo pelottavat tehtävät aivan pieniksi ensimmäisiksi askeliksi."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Commencer est le plus dur — l'IA réduit les tâches effrayantes en tout petits premiers pas."
+            "value": "Le plus dur, c’est de commencer — l’IA transforme les tâches intimidantes en tout petits premiers pas."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Å begynne er det vanskeligste — KI krymper skumle oppgaver til bitte små første steg."
+            "value": "Det vanskeligste er å starte — KI gjør overveldende oppgaver om til bittesmå første steg."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beginnen is het moeilijkst — AI krimpt enge taken tot piepkleine eerste stapjes."
+            "value": "Beginnen is het moeilijkst — AI maakt intimiderende taken klein genoeg voor een eerste stap."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Começar é o mais difícil — a IA encolhe tarefas assustadoras em primeiros passos minúsculos."
+            "value": "Começar é a parte mais difícil — a IA transforma tarefas que assustam em primeiros passos bem pequenos."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Найважче — почати. ШІ стискає страшні задачі до крихітних перших кроків."
+            "value": "Найважче — почати. ШІ перетворює страшні великі завдання до крихітного першого кроку."
           }
         }
       }
@@ -16851,7 +16851,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aufgaben anfangen: Ein Tipp macht aus allem einen Fünf-Minuten-Startschritt."
+            "value": "Aufgaben anfangen: Ein Fingertipp macht aus jeder Aufgabe einen ersten Fünf-Minuten-Schritt."
           }
         },
         "es": {
@@ -16863,37 +16863,37 @@
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tehtävien aloitus: yksi napautus muuttaa minkä tahansa viiden minuutin ensiaskeleeksi."
+            "value": "Tehtävien aloittaminen: yksi napautus muuttaa minkä tahansa tehtävän viiden minuutin ensiaskeleeksi."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Commencer : un tap transforme n'importe quoi en un premier pas de cinq minutes."
+            "value": "Commencer une tâche : un simple appui la transforme en un premier pas de cinq minutes."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Å starte oppgaver: ett trykk gjør hva som helst til et fem minutters første steg."
+            "value": "Å starte oppgaver: Ett trykk gjør hva som helst til et første steg på fem minutter."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Taken starten: één tik maakt van alles een eerste stap van vijf minuten."
+            "value": "Taken starten: één tik verandert alles in een eerste stap van vijf minuten."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Começar tarefas: um toque transforma qualquer coisa num primeiro passo de cinco minutos."
+            "value": "Começar tarefas: um toque transforma qualquer coisa em um primeiro passo de cinco minutos."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Почати задачу: один тап перетворює будь-що на перший крок у п'ять хвилин."
+            "value": "Початок справ: один дотик перетворює будь-що на перший крок на п’ять хвилин."
           }
         }
       }
@@ -18266,25 +18266,25 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tempa te quita ese caos de encima."
+            "value": "Tempa se encarga de ese caos por ti."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tempa ottaa sen kaaoksen hoitaakseen."
+            "value": "Tempa hoitaa tuon kaaoksen puolestasi."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tempa te débarrasse de ce chaos."
+            "value": "Tempa prend ce chaos en charge pour toi."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tempa tar det kaoset for deg."
+            "value": "Tempa tar seg av det kaoset for deg."
           }
         },
         "nl": {
@@ -18296,13 +18296,13 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "O Tempa tira esse caos das suas mãos."
+            "value": "O Tempa cuida desse caos por você."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tempa бере цей хаос на себе."
+            "value": "Tempa забирає цей хаос на себе."
           }
         }
       }
@@ -18468,31 +18468,31 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Genau so ist es"
+            "value": "Genau das"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Exactamente eso"
+            "value": "Exactamente"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Juuri näin"
+            "value": "Juuri noin"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "C'est exactement ça"
+            "value": "C’est exactement ça"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Akkurat sånn"
+            "value": "Akkurat sånn er det"
           }
         },
         "nl": {
@@ -18790,25 +18790,25 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El planificador tranquilo que convierte tareas grandes en pasos pequeños y realizables."
+            "value": "El planificador que convierte tareas grandes en pasos pequeños y fáciles de dar."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rauhallinen suunnittelija, joka muuttaa isot tehtävät pieniksi askeliksi, jotka oikeasti pystyt tekemään."
+            "value": "Rauhallinen suunnittelusovellus, joka pilkkoo isot tehtävät pieniksi, helpoiksi askeliksi."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le planificateur serein qui transforme les grosses tâches en petites étapes faisables."
+            "value": "L’agenda qui transforme les grosses tâches en petites étapes simples et réalisables."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Den rolige planleggeren som gjør store oppgaver om til små, gjennomførbare steg."
+            "value": "En rolig dagsplanlegger som gjør store oppgaver om til små, overkommelige steg."
           }
         },
         "nl": {
@@ -18820,13 +18820,13 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "O planejador tranquilo que transforma tarefas grandes em passos pequenos e possíveis."
+            "value": "O planner que transforma tarefas grandes em passos pequenos e fáceis de começar."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Спокійний планер, що перетворює великі задачі на маленькі кроки, які реально зробити."
+            "value": "Планер, що перетворює великі завдання на маленькі та прості кроки."
           }
         }
       }
@@ -18940,49 +18940,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schuldgefühle: verboten. Ein verpasster Tag bekommt nur ein „willkommen zurück“."
+            "value": "Schuldgefühle: verboten. Nach einem verpassten Tag gibt’s einfach ein „Willkommen zurück“."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La culpa: prohibida. Un día perdido solo recibe un «bienvenido de vuelta»."
+            "value": "La culpa: prohibida. Si te saltas un día, solo hay un «qué bueno tenerte de vuelta»."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Syyllisyys: kielletty. Väliin jäänyt päivä saa vain ”tervetuloa takaisin”."
+            "value": "Syyllisyys: kielletty. Jos yksi päivä jää väliin, vastassa on vain ”tervetuloa takaisin”."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "La culpabilité : bannie. Un jour manqué reçoit juste un « content de te revoir »."
+            "value": "La culpabilité : interdite. Si tu rates une journée, tu as juste droit à un « te revoilà »."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Skyldfølelsen: bannlyst. En tapt dag får bare et «velkommen tilbake»."
+            "value": "Skyldfølelse: forbudt. Hopper du over en dag, får du bare et «velkommen tilbake»."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schuldgevoel: verboden. Een gemiste dag krijgt gewoon een 'welkom terug'."
+            "value": "Schuldgevoel: verboden. Na een gemiste dag krijg je gewoon een ‘welkom terug’."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "A culpa: banida. Um dia perdido só recebe um «bem-vindo de volta»."
+            "value": "Culpa: proibida. Perdeu um dia? Você só recebe um “que bom ter você de volta”."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Провина: заборонена. Пропущений день отримує лише «з поверненням»."
+            "value": "Почуття провини: під забороною. Пропущений день — це просто привід сказати «з поверненням»."
           }
         }
       }
@@ -18998,13 +18998,13 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¡¡El informe!!"
+            "value": "¡El informe!!!"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Raportti!!!"
+            "value": "Se raportti!!!"
           }
         },
         "fr": {
@@ -19357,49 +19357,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zeitblindheit: Visuelle Blöcke halten den Tag dort, wo du ihn siehst."
+            "value": "Zeitblindheit: Visuelle Blöcke halten deinen Tag im Blick."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ceguera temporal: los bloques visuales mantienen el día a la vista."
+            "value": "Ceguera temporal: los bloques visuales mantienen tu día a la vista."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aikasokeus: visuaaliset lohkot pitävät päivän silmiesi edessä."
+            "value": "Aikasokeus: visuaaliset lohkot pitävät päivän näkyvillä."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cécité temporelle : des blocs visuels gardent la journée sous tes yeux."
+            "value": "Cécité temporelle : des blocs visuels gardent ta journée sous tes yeux."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tidsblindhet: visuelle blokker holder dagen der du ser den."
+            "value": "Tidsblindhet: Visuelle blokker holder dagen synlig foran deg."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tijdblindheid: visuele blokken houden de dag in zicht."
+            "value": "Tijdblindheid: visuele blokken houden je dag in beeld."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cegueira temporal: blocos visuais mantêm o dia onde você o vê."
+            "value": "Cegueira temporal: blocos visuais mantêm o dia à sua frente."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Часова сліпота: візуальні блоки тримають день перед очима."
+            "value": "Сліпота до часу: візуальні блоки тримають день перед очима."
           }
         }
       }
@@ -19409,49 +19409,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Die Zeit zerrinnt — dein Tag wird zu Blöcken, die du wirklich siehst."
+            "value": "Die Zeit rutscht dir weg — dein Tag wird zu Blöcken, die du wirklich vor dir siehst."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El tiempo se escapa — tu día se convierte en bloques que puedes ver de verdad."
+            "value": "El tiempo se te escapa — tu día se convierte en bloques que puedes ver de verdad."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aika karkaa — päivästäsi tulee lohkoja, jotka oikeasti näet."
+            "value": "Aika karkaa huomaamatta — päiväsi muuttuu lohkoiksi, jotka näet selkeästi."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le temps file — ta journée devient des blocs que tu vois vraiment."
+            "value": "Le temps t’échappe — ta journée devient des blocs que tu peux vraiment visualiser."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiden glipper — dagen din blir blokker du faktisk kan se."
+            "value": "Tiden glipper — dagen din blir til blokker du faktisk kan se."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tijd glipt weg — je dag wordt blokken die je echt kunt zien."
+            "value": "De tijd glipt weg — je dag wordt opgedeeld in blokken die je echt kunt zien."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "O tempo escorre — seu dia vira blocos que você realmente enxerga."
+            "value": "O tempo escapa — seu dia vira blocos que você consegue enxergar de verdade."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Час вислизає — твій день стане блоками, які реально видно."
+            "value": "Час непомітно зникає — Tempa перетворює день на блоки, які ти справді бачиш."
           }
         }
       }
@@ -20242,49 +20242,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Meine Gratis-Testphase auspacken"
+            "value": "Kostenlos testen"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abrir mi prueba gratis"
+            "value": "Probar gratis"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Avaa ilmainen kokeiluni"
+            "value": "Kokeile ilmaiseksi"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Déballer mon essai gratuit"
+            "value": "Essayer gratuitement"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pakk opp gratisprøven min"
+            "value": "Prøv gratis"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pak mijn gratis proefperiode uit"
+            "value": "Gratis proberen"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abrir meu teste grátis"
+            "value": "Testar grátis"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Розгорнути мій подарунок"
+            "value": "Спробувати безкоштовно"
           }
         }
       }
@@ -21024,49 +21024,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wir möchten, dass du alles ausprobierst — kostenlos."
+            "value": "Probier alles aus — kostenlos."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Queremos que lo pruebes todo — gratis."
+            "value": "Prueba todas las funciones — gratis."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Haluamme, että kokeilet kaikkea — ilmaiseksi."
+            "value": "Kokeile kaikkia ominaisuuksia — ilmaiseksi."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "On veut que tu essaies tout — gratuitement."
+            "value": "Essaie toutes les fonctionnalités — gratuitement."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vi vil at du skal prøve alt — gratis."
+            "value": "Prøv alle funksjonene — gratis."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "We willen dat je alles probeert — gratis."
+            "value": "Probeer alle functies — gratis."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Queremos que você experimente tudo — de graça."
+            "value": "Experimente todos os recursos — de graça."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ми хочемо подарувати тобі повний доступ — безкоштовно."
+            "value": "Спробуй усі функції — безкоштовно."
           }
         }
       }
@@ -21180,7 +21180,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wir erinnern dich, bevor die Testphase endet"
+            "value": "Wir erinnern dich, bevor der Testzeitraum endet"
           }
         },
         "es": {
@@ -21192,37 +21192,37 @@
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muistutamme ennen kokeilun päättymistä"
+            "value": "Muistutamme ennen kokeilujakson päättymistä"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "On te préviendra avant la fin de l'essai"
+            "value": "On te préviendra avant la fin de l’essai"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vi minner deg på det før prøveperioden slutter"
+            "value": "Vi minner deg på det før prøveperioden er over"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "We herinneren je eraan vóór de proefperiode afloopt"
+            "value": "We herinneren je voordat de proefperiode afloopt"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Avisaremos antes de o teste acabar"
+            "value": "Vamos avisar antes do teste grátis acabar"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Нагадаємо до завершення пробного періоду"
+            "value": "Ми нагадаємо до завершення пробного періоду"
           }
         }
       }
@@ -21400,13 +21400,13 @@
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tervetuloa Tempaan"
+            "value": "Tervetuloa! Tämä on Tempa"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bienvenue dans Tempa"
+            "value": "Bienvenue sur Tempa"
           }
         },
         "nb": {
@@ -21424,13 +21424,13 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Boas-vindas ao Tempa"
+            "value": "Que bom ter você no Tempa"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ласкаво просимо до Tempa"
+            "value": "Вітаємо в Tempa"
           }
         }
       }
@@ -21544,25 +21544,25 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wie dürfen wir dich nennen?"
+            "value": "Wie sollen wir dich nennen?"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¿Cómo te llamamos?"
+            "value": "¿Cómo quieres que te llamemos?"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Miksi saamme kutsua sinua?"
+            "value": "Millä nimellä kutsumme sinua?"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Comment doit-on t'appeler ?"
+            "value": "Comment veux-tu qu’on t’appelle ?"
           }
         },
         "nb": {
@@ -21580,7 +21580,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Como podemos te chamar?"
+            "value": "Como você quer que a gente te chame?"
           }
         },
         "uk": {
@@ -22585,31 +22585,31 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ja, kenn ich"
+            "value": "Ja, kenne ich"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sí, me suena"
+            "value": "Sí, me pasa"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kyllä, tuttua"
+            "value": "Joo, kuulostaa tutulta"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Oui, je connais"
+            "value": "Oui, ça me parle"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ja, det kjenner jeg"
+            "value": "Ja, det kjenner jeg igjen"
           }
         },
         "nl": {
@@ -22621,7 +22621,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sim, conheço bem"
+            "value": "Sim, acontece comigo"
           }
         },
         "uk": {
@@ -22829,49 +22829,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du hast gerade den schwersten Teil jeder Aufgabe geschafft — den Anfang. Dieses Gefühl? Genau so beginnt jeder Tag mit Tempa."
+            "value": "Du hast gerade den schwierigsten Teil jeder Aufgabe geschafft: den Anfang. Dieses Gefühl? So beginnt jeder Tag mit Tempa."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Acabas de hacer la parte más difícil de cualquier tarea: empezar. ¿Esa sensación? Así empieza cada día con Tempa."
+            "value": "Acabas de hacer la parte más difícil de cualquier tarea: empezar. ¿Esa sensación? Así comienza cada día con Tempa."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Teit juuri jokaisen tehtävän vaikeimman osan — aloituksen. Tuo tunne? Näin jokainen päivä alkaa Tempan kanssa."
+            "value": "Teit juuri minkä tahansa tehtävän vaikeimman osan: aloitit. Tuo tunne? Näin jokainen päivä alkaa, kun käytössäsi on Tempa."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tu viens de faire le plus dur de toute tâche : commencer. Cette sensation ? C'est comme ça que chaque journée démarre avec Tempa."
+            "value": "Tu viens de faire le plus dur dans n’importe quelle tâche : commencer. Cette sensation ? C’est comme ça que chaque journée démarre avec Tempa."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du gjorde nettopp den vanskeligste delen av enhver oppgave — starten. Den følelsen? Sånn begynner hver dag med Tempa."
+            "value": "Du gjorde nettopp den vanskeligste delen av enhver oppgave: å starte. Den følelsen? Sånn begynner hver dag med Tempa."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je deed net het moeilijkste deel van elke taak — het begin. Dat gevoel? Zo begint elke dag met Tempa."
+            "value": "Je hebt zojuist het moeilijkste deel van elke taak gedaan: beginnen. Dat gevoel? Zo begint elke dag met Tempa."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Você acabou de fazer a parte mais difícil de qualquer tarefa — o começo. Essa sensação? É assim que todo dia começa com o Tempa."
+            "value": "Você acabou de fazer a parte mais difícil de qualquer tarefa: começar. Essa sensação? É assim que todo dia começa com o Tempa."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Найважча частина будь-якої задачі — початок. І він уже позаду. Це відчуття? Саме так починається кожен день із Tempa."
+            "value": "Найважча частина будь-якої справи вже позаду — початок. Відчуваєш? Саме так починається кожен день із Tempa."
           }
         }
       }
@@ -22887,7 +22887,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Solo ves el siguiente paso pequeño"
+            "value": "Solo ves el siguiente pequeño paso"
           }
         },
         "fi": {
@@ -22917,7 +22917,7 @@
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Você só vê o próximo pequeno passo"
+            "value": "Você vê apenas o próximo pequeno passo"
           }
         },
         "uk": {
@@ -23037,49 +23037,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du willst ruhigere Tage — ohne Streaks, Schuld und Lärm."
+            "value": "Du willst ruhigere Tage — ohne Streaks, Schuldgefühle oder unnötigen Lärm."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quieres días más tranquilos — sin rachas, sin culpa, sin ruido."
+            "value": "Quieres días más tranquilos — sin rachas, culpa ni ruido."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Haluat rauhallisempia päiviä — ei putkia, ei syyllisyyttä, ei hälyä."
+            "value": "Haluat rauhallisempia päiviä — ilman suoritusputkia, syyllisyyttä tai turhaa hälyä."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tu veux des jours plus calmes — sans séries, sans culpabilité, sans bruit."
+            "value": "Tu veux des journées plus calmes — sans séries à maintenir, sans culpabilité, sans bruit inutile."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du vil ha roligere dager — ingen streaks, ingen skyld, ingen støy."
+            "value": "Du vil ha roligere dager — uten streaks, skyldfølelse eller støy."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Jij wilt rustigere dagen — geen streaks, geen schuld, geen ruis."
+            "value": "Je wilt rustigere dagen — zonder streaks, schuldgevoel of ruis."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Você quer dias mais calmos — sem ofensivas, sem culpa, sem barulho."
+            "value": "Você quer dias mais tranquilos — sem sequências para manter, sem culpa e sem ruído."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ти хочеш спокійніших днів — без стріків, провини й шуму."
+            "value": "Тобі хочеться спокійніших днів — жодних серій виконання, відчуття провини чи зайвого шуму."
           }
         }
       }
@@ -23353,49 +23353,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dein Gehirn tickt anders — Tempa ist darum herum gebaut, nicht dagegen."
+            "value": "Dein Gehirn funktioniert anders — Tempa arbeitet damit, nicht dagegen."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tu cerebro funciona distinto — Tempa está construida alrededor de eso, no en contra."
+            "value": "Tu cerebro funciona de otra manera — Tempa se adapta a ti, no lucha contra ti."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aivosi toimivat eri tavalla — Tempa on rakennettu sen ympärille, ei sitä vastaan."
+            "value": "Aivosi toimivat eri tavalla — Tempa toimii niiden ehdoilla, ei niitä vastaan."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ton cerveau fonctionne autrement — Tempa est construit autour de ça, pas contre."
+            "value": "Ton cerveau fonctionne différemment — Tempa s’adapte à lui, pas l’inverse."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hjernen din funker annerledes — Tempa er bygget rundt det, ikke mot det."
+            "value": "Hjernen din fungerer annerledes — Tempa jobber med den, ikke mot den."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je brein werkt anders — Tempa is daaromheen gebouwd, niet ertegenin."
+            "value": "Je brein werkt anders — Tempa werkt ermee mee, niet ertegenin."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seu cérebro funciona diferente — o Tempa é construído em torno disso, não contra."
+            "value": "Seu cérebro funciona de um jeito diferente — o Tempa trabalha com ele, não contra ele."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Твій мозок працює інакше — Tempa збудована навколо цього, а не всупереч."
+            "value": "Твій мозок працює інакше — Tempa підлаштовується під нього, а не бореться з ним."
           }
         }
       }
@@ -23655,7 +23655,7 @@
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Твоє ім'я"
+            "value": "Твоє ім’я"
           }
         }
       }
@@ -23718,49 +23718,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dein Plan steht. Teste die volle App auf uns und spür, wie sich deine Woche anfühlt."
+            "value": "Dein Plan ist fertig. Probier die komplette App kostenlos aus und spür, wie sich deine Woche damit anfühlt."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tu plan está listo. Prueba la app completa por nuestra cuenta y mira cómo se siente tu semana."
+            "value": "Tu plan está listo. Prueba gratis la app completa y descubre cómo puede cambiar tu semana."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Suunnitelmasi on valmis. Koeaja koko sovellus meidän piikkiimme ja katso, miltä viikkosi tuntuu."
+            "value": "Suunnitelmasi on valmis. Kokeile koko sovellusta ilmaiseksi ja katso, miltä viikkosi tuntuu."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ton plan est prêt. Essaie l'app complète à nos frais et vois ce que ça change sur ta semaine."
+            "value": "Ton planning est prêt. Essaie gratuitement l’app complète et vois comment se passe ta semaine."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Planen din er klar. Prøv hele appen på vår regning og kjenn hvordan uken din føles."
+            "value": "Planen din er klar. Prøv hele appen gratis og se hvordan uka di føles."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Je plan is klaar. Test de volledige app op onze kosten en voel hoe je week wordt."
+            "value": "Je plan is klaar. Probeer de volledige app gratis en ervaar hoe je week ermee verloopt."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seu plano está pronto. Teste o app completo por nossa conta e veja como sua semana fica."
+            "value": "Seu plano está pronto. Teste o app completo de graça e veja como é passar a semana com o Tempa."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Твій план готовий. Протестуй повну версію нашим коштом і відчуй, яким стане твій тиждень."
+            "value": "Твій план готовий. Спробуй повну версію застосунку за наш рахунок і відчуй, як пройде твій тиждень."
           }
         }
       }
@@ -24499,49 +24499,49 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "— verschwunden in „mach ich später“."
+            "value": "gehen für „Mach ich später.“ drauf."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "— perdidas en el «luego lo hago»."
+            "value": "perdidas en «lo hago luego»."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "— kadonnut ”teen sen myöhemmin” -aukkoon."
+            "value": "kuluu siihen, että ajattelet ”teen sen myöhemmin”."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "— partis dans « je le ferai plus tard »."
+            "value": "englouties par « je le ferai plus tard »."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "— borte i «jeg gjør det senere»."
+            "value": "borte i «jeg gjør det senere»."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "— verdwenen in ‘doe ik later wel’."
+            "value": "opgegaan aan ‘dat doe ik later’."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "— sumidas no «depois eu faço»."
+            "value": "perdidas no “depois eu faço”."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "— у прірву «зроблю потім»."
+            "value": "пішли на «зроблю це потім»."
           }
         }
       }
@@ -25284,7 +25284,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wochen pro Jahr"
+            "value": "Wochen im Jahr"
           }
         },
         "es": {
@@ -25336,7 +25336,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wochen pro Jahr"
+            "value": "Wochen im Jahr"
           }
         },
         "es": {
