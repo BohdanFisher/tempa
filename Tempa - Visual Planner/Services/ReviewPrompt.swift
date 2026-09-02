@@ -18,7 +18,11 @@ import Observation
 final class ReviewPrompt {
     static let shared = ReviewPrompt()
 
-    private static let askedKey = "reviewPromptAsked"
+    /// Rotated from "reviewPromptAsked": onboarding's late "first win" screen
+    /// (removed) set that flag while asking at the wrong moment, which would
+    /// have silenced this — the intended — ask forever on every install that
+    /// went through it. iOS rate-limits the dialog, so a second ask is safe.
+    private static let askedKey = "reviewPromptAskedAfterFirstTask"
 
     /// Set once a first task lands; MainTabView watches this and does the ask.
     /// Stays true until the prompt is actually delivered, so a task created
