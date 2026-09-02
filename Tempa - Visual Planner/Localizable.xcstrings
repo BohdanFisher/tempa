@@ -56,6 +56,58 @@
         }
       }
     },
+    "Mapping your next 30 days" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine nächsten 30 Tage entwerfen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trazando tus próximos 30 días"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hahmotellaan seuraavat 30 päivääsi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracé de tes 30 prochains jours"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tegner opp de neste 30 dagene dine"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je volgende 30 dagen uitstippelen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mapeando seus próximos 30 dias"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Складаємо твої наступні 30 днів"
+          }
+        }
+      }
+    },
     "— %@" : {
       "shouldTranslate" : false
     },
@@ -14667,58 +14719,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Обери все, що відгукується. Ми налаштуємо Tempa під тебе."
-          }
-        }
-      }
-    },
-    "Picking gentle nudge sounds" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sanfte Stups-Töne auswählen"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eligiendo sonidos suaves de aviso"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valitaan lempeät muistutusäänet"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choix de sons de rappel doux"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Velger milde puff-lyder"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geluiden voor zachte seintjes kiezen"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Escolhendo sons dos lembretes suaves"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Обираємо лагідні звуки нагадувань"
           }
         }
       }

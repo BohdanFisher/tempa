@@ -1662,7 +1662,7 @@ struct Onb9BuildingView: View {
         (String(localized: "Setting your wake time", bundle: .appLanguage), false),
         (String(localized: "Calibrating your energy dip", bundle: .appLanguage), false),
         (String(localized: "Lining up your first focus block", bundle: .appLanguage), false),
-        (String(localized: "Picking gentle nudge sounds", bundle: .appLanguage), false),
+        (String(localized: "Mapping your next 30 days", bundle: .appLanguage), false),
     ]
 
     var body: some View {
