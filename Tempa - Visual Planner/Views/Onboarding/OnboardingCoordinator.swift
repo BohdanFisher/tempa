@@ -110,8 +110,8 @@ struct OnboardingFlow: View {
     private static let stepNames = [
         "welcome", "problem", "solution", "name", "quiz_self", "quiz_pain",
         "hours_lost", "math", "mirror", "micro_yes", "ai_demo", "wake_time",
-        "building", "summary", "forgiveness", "commitment", "social_proof",
-        "notifications", "trial_gift",
+        "building", "summary", "forgiveness", "social_proof", "notifications",
+        "commitment", "trial_gift",
     ]
     private static func stepName(_ i: Int) -> String {
         stepNames.indices.contains(i) ? stepNames[i] : "step_\(i)"
@@ -144,9 +144,10 @@ struct OnboardingFlow: View {
         case 12: Onb9BuildingView(state: state, settings: settings)
         case 13: OnbSummaryView(state: state)
         case 14: Onb7ForgiveView(state: state)
-        case 15: OnbCommitView(state: state)
-        case 16: Onb6SocialView(state: state)
-        case 17: Onb8NotifsView(state: state)
+        case 15: Onb6SocialView(state: state)
+        case 16: Onb8NotifsView(state: state)
+        // The active "yes" sits right before the offer, where it still counts.
+        case 17: OnbCommitView(state: state)
         case 18: OnbTrialGiftView(state: state)
         default: EmptyView()
         }
