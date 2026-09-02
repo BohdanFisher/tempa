@@ -856,9 +856,7 @@ struct Onb4DemoView: View {
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         #endif
                         focused = false
-                        // No demo → no win to celebrate: jump past the
-                        // first-win screen straight to personalization.
-                        state.currentStep = min(state.currentStep + 2, state.totalSteps - 1)
+                        state.next()
                     } label: {
                         Text("Skip")
                             .font(.custom("Inter-Medium", size: 14))
@@ -1838,81 +1836,6 @@ struct Onb9BuildingView: View {
 
         // The gift screen makes the offer; the paywall opens from there.
         state.next()
-    }
-}
-
-// MARK: - Screen: First win (the peak — and the only right moment to ask)
-
-struct OnbFirstWinView: View {
-    let state: OnboardingState
-    @Environment(\.requestReview) private var requestReview
-    @State private var ringScale: CGFloat = 0.4
-    @State private var shown = false
-
-    var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-
-            ZStack {
-                Circle()
-                    .fill(Cat.health.bg)
-                    .frame(width: 132, height: 132)
-                    .scaleEffect(ringScale * 1.08)
-                Circle()
-                    .fill(Cat.health.solid)
-                    .frame(width: 96, height: 96)
-                    .scaleEffect(ringScale)
-                Image(systemName: "checkmark")
-                    .font(.system(size: 42, weight: .heavy))
-                    .foregroundColor(.white)
-                    .scaleEffect(ringScale)
-            }
-
-            Text("First step: done.")
-                .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
-                .tracking(-0.56)
-                .foregroundColor(T.text)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
-                .padding(.top, 28)
-                .opacity(shown ? 1 : 0)
-
-            Text("Starting is the hardest part — and it's already done. That's how Tempa works.")
-                .font(.custom("Inter-Medium", size: 15).weight(.medium))
-                .foregroundColor(T.textSec)
-                .multilineTextAlignment(.center)
-                .lineSpacing(4)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 44)
-                .padding(.top, 12)
-                .opacity(shown ? 1 : 0)
-
-            Spacer()
-
-            TempaButton(label: "Keep going", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
-                state.next()
-            }
-            .padding(.horizontal, 22)
-            .padding(.bottom, 50)
-            .opacity(shown ? 1 : 0)
-        }
-        .onAppear {
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.55)) { ringScale = 1 }
-            withAnimation(.easeOut(duration: 0.4).delay(0.35)) { shown = true }
-            #if os(iOS)
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
-            #endif
-            // The emotional peak is the one honest moment to ask for a rating —
-            // and only when the demo actually ran (a skipped demo earned nothing).
-            // Marking ReviewPrompt keeps the in-app first-task ask from doubling.
-            if !state.demoSteps.isEmpty {
-                Task {
-                    try? await Task.sleep(for: .seconds(1.6))
-                    requestReview()
-                    ReviewPrompt.shared.markAsked()
-                }
-            }
-        }
     }
 }
 

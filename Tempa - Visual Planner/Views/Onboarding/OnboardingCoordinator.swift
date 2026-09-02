@@ -24,7 +24,7 @@ final class OnboardingState {
     var notificationsGranted = false
     var showPaywall = false
 
-    let totalSteps = 21
+    let totalSteps = 20
 
     func next() {
         if currentStep < totalSteps - 1 { currentStep += 1 }
@@ -109,9 +109,9 @@ struct OnboardingFlow: View {
     /// Funnel step names for analytics — index-aligned with screenForStep.
     private static let stepNames = [
         "welcome", "problem", "solution", "name", "quiz_self", "quiz_pain",
-        "hours_lost", "math", "mirror", "micro_yes", "ai_demo", "first_win",
-        "wake_time", "plan_preview", "forgiveness", "commitment", "summary",
-        "social_proof", "notifications", "building", "trial_gift",
+        "hours_lost", "math", "mirror", "micro_yes", "ai_demo", "wake_time",
+        "plan_preview", "forgiveness", "commitment", "summary", "social_proof",
+        "notifications", "building", "trial_gift",
     ]
     private static func stepName(_ i: Int) -> String {
         stepNames.indices.contains(i) ? stepNames[i] : "step_\(i)"
@@ -119,8 +119,10 @@ struct OnboardingFlow: View {
 
     /// Three acts (the funnel is a story): Introduction 0–8 builds the problem
     /// and lets the user tell us — and themselves — why they're here; Climax
-    /// 9–13 has them DO the core thing and feel the win; Conclusion 14–19
-    /// mirrors it all back and walks into the paywall.
+    /// 9–12 has them DO the core thing and see their own day take shape;
+    /// Conclusion 13–19 mirrors it all back and walks into the paywall.
+    /// (The demo flows straight into personalization — a "first win"
+    /// celebration screen between them lost users, not kept them.)
     @ViewBuilder
     private func screenForStep(_ step: Int) -> some View {
         switch step {
@@ -135,16 +137,15 @@ struct OnboardingFlow: View {
         case 8: OnbMirrorView(state: state)
         case 9: OnbMicroYesView(state: state)
         case 10: Onb4DemoView(state: state)
-        case 11: OnbFirstWinView(state: state)
-        case 12: Onb5PersonalView(state: state)
-        case 13: OnbPlanPreviewView(state: state)
-        case 14: Onb7ForgiveView(state: state)
-        case 15: OnbCommitView(state: state)
-        case 16: OnbSummaryView(state: state)
-        case 17: Onb6SocialView(state: state)
-        case 18: Onb8NotifsView(state: state)
-        case 19: Onb9BuildingView(state: state, settings: settings)
-        case 20: OnbTrialGiftView(state: state)
+        case 11: Onb5PersonalView(state: state)
+        case 12: OnbPlanPreviewView(state: state)
+        case 13: Onb7ForgiveView(state: state)
+        case 14: OnbCommitView(state: state)
+        case 15: OnbSummaryView(state: state)
+        case 16: Onb6SocialView(state: state)
+        case 17: Onb8NotifsView(state: state)
+        case 18: Onb9BuildingView(state: state, settings: settings)
+        case 19: OnbTrialGiftView(state: state)
         default: EmptyView()
         }
     }
