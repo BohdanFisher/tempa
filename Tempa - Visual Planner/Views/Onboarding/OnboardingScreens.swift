@@ -1743,7 +1743,7 @@ struct Onb9BuildingView: View {
         settings.energyDipTime = state.energyDipTime
         settings.save()
 
-        // The gift screen makes the offer; the paywall opens from there.
+        // The summary is the reveal of what was just "built".
         state.next()
     }
 }

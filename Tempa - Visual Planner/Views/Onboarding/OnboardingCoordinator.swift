@@ -110,8 +110,8 @@ struct OnboardingFlow: View {
     private static let stepNames = [
         "welcome", "problem", "solution", "name", "quiz_self", "quiz_pain",
         "hours_lost", "math", "mirror", "micro_yes", "ai_demo", "wake_time",
-        "forgiveness", "commitment", "summary", "social_proof", "notifications",
-        "building", "trial_gift",
+        "building", "summary", "forgiveness", "commitment", "social_proof",
+        "notifications", "trial_gift",
     ]
     private static func stepName(_ i: Int) -> String {
         stepNames.indices.contains(i) ? stepNames[i] : "step_\(i)"
@@ -119,11 +119,13 @@ struct OnboardingFlow: View {
 
     /// Three acts (the funnel is a story): Introduction 0–8 builds the problem
     /// and lets the user tell us — and themselves — why they're here; Climax
-    /// 9–11 has them DO the core thing and set their own rhythm; Conclusion
-    /// 12–18 mirrors it all back and walks into the paywall.
-    /// (The demo flows straight into personalization, and personalization
-    /// straight into forgiveness — the "first win" celebration and the
-    /// sample-day preview between them lost users, not kept them.)
+    /// 9–13 has them DO the core thing, set their own rhythm, watch the app
+    /// build on it and see the result; Conclusion 14–18 mirrors it all back
+    /// and walks into the paywall.
+    /// (The demo flows straight into personalization — the "first win"
+    /// celebration and the sample-day preview once between them lost users,
+    /// not kept them. "Building" sits right after the inputs it claims to
+    /// build on, and the summary is the reveal of what it built.)
     @ViewBuilder
     private func screenForStep(_ step: Int) -> some View {
         switch step {
@@ -139,12 +141,12 @@ struct OnboardingFlow: View {
         case 9: OnbMicroYesView(state: state)
         case 10: Onb4DemoView(state: state)
         case 11: Onb5PersonalView(state: state)
-        case 12: Onb7ForgiveView(state: state)
-        case 13: OnbCommitView(state: state)
-        case 14: OnbSummaryView(state: state)
-        case 15: Onb6SocialView(state: state)
-        case 16: Onb8NotifsView(state: state)
-        case 17: Onb9BuildingView(state: state, settings: settings)
+        case 12: Onb9BuildingView(state: state, settings: settings)
+        case 13: OnbSummaryView(state: state)
+        case 14: Onb7ForgiveView(state: state)
+        case 15: OnbCommitView(state: state)
+        case 16: Onb6SocialView(state: state)
+        case 17: Onb8NotifsView(state: state)
         case 18: OnbTrialGiftView(state: state)
         default: EmptyView()
         }
