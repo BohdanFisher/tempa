@@ -184,15 +184,12 @@ struct TaskBreakdownSheet: View {
         let rounded = ((min / 5) + 1) * 5
         start = cal.date(bySetting: .minute, value: rounded % 60, of: start) ?? start
 
-        let cats = Cat.all
-        for (i, step) in steps.enumerated() {
+        for step in steps {
             let task = TaskBlock(context: viewContext)
             task.id = UUID()
             task.title = step.title
             task.iconName = step.icon
-            let cat = cats[i % cats.count]
-            task.category = cat.0
-            task.colorHex = "#E3EDFF"
+            task.category = step.resolvedCategory
             task.startTime = start
             task.durationMinutes = Int32(step.duration)
             task.createdAt = Date()
@@ -223,14 +220,14 @@ struct MicroStepCard: View {
                 .frame(width: 24, height: 24)
                 .background(Circle().fill(T.primary))
 
-            // Icon
+            // Icon — in the category the step will be filed under.
             Image(systemName: step.icon)
                 .font(.system(size: 18, weight: .medium))
-                .foregroundColor(Cat.work.ink)
+                .foregroundColor(Cat.named(step.resolvedCategory).ink)
                 .frame(width: 38, height: 38)
                 .background(
                     RoundedRectangle(cornerRadius: 11, style: .continuous)
-                        .fill(Cat.work.bg)
+                        .fill(Cat.named(step.resolvedCategory).bg)
                 )
 
             VStack(alignment: .leading, spacing: 2) {

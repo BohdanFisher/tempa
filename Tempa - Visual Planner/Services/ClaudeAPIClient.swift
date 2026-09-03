@@ -7,6 +7,25 @@ struct TaskBreakdown: Codable, Sendable {
         let title: String
         let duration: Int
         let icon: String
+        /// One of Cat.all's names, chosen by the model from what the step IS.
+        /// Optional: the offline fallback and older responses don't carry it.
+        var category: String? = nil
+
+        /// The category to file the step under — the model's pick when it's
+        /// a real one, otherwise derived from the icon (the icon vocabulary
+        /// is shared, so it says a lot about the kind of action). Never
+        /// silently "work": a cleaning step in work-blue was the bug.
+        var resolvedCategory: String {
+            if let category, Cat.all.contains(where: { $0.0 == category }) { return category }
+            switch icon {
+            case "laptopcomputer", "doc.text", "envelope": return "work"
+            case "phone": return "social"
+            case "bed.double", "book", "leaf": return "rest"
+            case "figure.walk", "pills", "drop", "fork.knife", "shower": return "health"
+            case "alarm", "trash", "sparkles", "hammer", "paintbrush": return "routine"
+            default: return "personal"
+            }
+        }
     }
 
     /// Scheduling intent parsed from the user's words ("завтра о 3", "після роботи", …).
@@ -130,6 +149,9 @@ final class ClaudeAPIClient: Sendable {
     - Each step must be a concrete physical action, not abstract.
     - Each step needs an estimated duration in minutes (5-30 range).
     - Each step needs an SF Symbol icon name that fits the action.
+    - Each step needs a "category" — exactly one of: work, personal, health, routine, \
+    social, rest — chosen from what the step IS (wiping a counter is routine, a phone \
+    call is social, a walk is health), not from the task's topic as a whole.
     - Tone: encouraging but not patronizing. Adult-to-adult.
     - LANGUAGE (most important): write "title" and "cleanTitle" in the SAME language as \
     the user's task text. The phrase examples further down are multilingual on purpose — \
@@ -177,7 +199,7 @@ final class ClaudeAPIClient: Sendable {
       "cleanTitle": "task without time words",
       "schedule": { "hasTime": true, "precise": false, "date": "2026-06-09", "time": "18:00" },
       "steps": [
-        { "title": "...", "duration": 10, "icon": "trash" }
+        { "title": "...", "duration": 10, "icon": "trash", "category": "routine" }
       ]
     }
     Available icons (use only these SF Symbols): \(ClaudeAPIClient.iconVocabulary)

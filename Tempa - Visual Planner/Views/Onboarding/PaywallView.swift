@@ -79,7 +79,7 @@ struct PaywallView: View {
             optionsSheet
                 // Scrolls and can grow to full height, so the Continue button
                 // stays reachable at every Dynamic Type size.
-                .presentationDetents([.height(372), .large])
+                .presentationDetents([.height(312), .large])
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(28)
                 .interactiveDismissDisabled(isPurchasing)

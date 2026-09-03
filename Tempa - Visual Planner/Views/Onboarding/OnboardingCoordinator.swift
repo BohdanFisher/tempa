@@ -187,7 +187,7 @@ enum DemoPlanStash {
             task.id = UUID()
             task.title = step.title
             task.iconName = step.icon
-            task.category = "work"
+            task.category = step.resolvedCategory
             task.startTime = start
             task.durationMinutes = Int32(step.duration)
             task.createdAt = Date()
