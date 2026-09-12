@@ -688,7 +688,7 @@ struct PaywallView: View {
         if subs.isSimulating {
             try? await Task.sleep(for: .seconds(1))
             subs.simulatePurchase()
-            await finishPurchaseCelebration(productID: productID, wasTrial: wasTrial)
+            await finishPurchaseCelebration(productID: productID, wasTrial: wasTrial, transaction: nil)
             return
         }
 
@@ -706,8 +706,8 @@ struct PaywallView: View {
             #if DEBUG
             print("[Tempa] paywall purchase → \(tx != nil ? "new transaction" : "nil (cancelled / pending / already owned)"), isPro=\(subs.isPro)")
             #endif
-            if tx != nil {
-                await finishPurchaseCelebration(productID: productID, wasTrial: wasTrial)
+            if let tx {
+                await finishPurchaseCelebration(productID: productID, wasTrial: wasTrial, transaction: tx)
                 return
             }
             // No new transaction, but the Apple ID may already OWN an active
@@ -718,7 +718,8 @@ struct PaywallView: View {
             // paywall is a dead end on a subscribed Apple ID.
             await subs.updatePurchasedProducts()
             if subs.isPro {
-                await finishPurchaseCelebration(productID: productID, wasTrial: wasTrial, isNewPurchase: false)
+                await finishPurchaseCelebration(productID: productID, wasTrial: wasTrial,
+                                                transaction: nil, isNewPurchase: false)
                 return
             }
             resetPurchaseUI()   // user cancelled the sheet
@@ -739,14 +740,27 @@ struct PaywallView: View {
     /// isNewPurchase is false on the already-subscribed recovery path:
     /// routing back into the app is right, but reporting a conversion for a
     /// purchase made weeks ago would hand the ad platforms a fake sale.
-    private func finishPurchaseCelebration(productID: String, wasTrial: Bool, isNewPurchase: Bool = true) async {
+    /// `transaction` is the verified StoreKit transaction of a NEW purchase —
+    /// nil only for the dev simulation. Its environment is what lets the ad
+    /// platforms ignore sandbox and Xcode purchases.
+    private func finishPurchaseCelebration(productID: String, wasTrial: Bool,
+                                           transaction: StoreKit.Transaction?, isNewPurchase: Bool = true) async {
         if isNewPurchase {
-            var purchaseProps: [String: Any] = ["product": productID]
-            if let product = product(for: productID) {
-                purchaseProps["price"] = NSDecimalNumber(decimal: product.price).doubleValue
-                purchaseProps["currency"] = product.priceFormatStyle.currencyCode
+            var purchaseProps: [String: Any]
+            // The transaction knows whether it was a free trial; the UI's
+            // wasTrial is an eligibility guess from before the purchase.
+            var isTrial = wasTrial
+            if let transaction {
+                isTrial = PurchaseSignals.isIntroductory(transaction)
+                purchaseProps = PurchaseSignals.properties(for: transaction, product: product(for: productID))
+            } else {
+                purchaseProps = ["product": productID, "environment": "simulated"]
+                if let product = product(for: productID) {
+                    purchaseProps["price"] = NSDecimalNumber(decimal: product.price).doubleValue
+                    purchaseProps["currency"] = product.priceFormatStyle.currencyCode
+                }
             }
-            AnalyticsService.shared.track(wasTrial ? .trialStarted : .subscriptionPurchased,
+            AnalyticsService.shared.track(isTrial ? .trialStarted : .subscriptionPurchased,
                                           properties: purchaseProps)
             if pendingTrialReminder { scheduleTrialReminder() }
         }

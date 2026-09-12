@@ -22,6 +22,38 @@
 			<key>SKAdNetworkIdentifier</key>
 			<string>22mmun2rn5.skadnetwork</string>
 		</dict>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>v9wttpbfk9.skadnetwork</string>
+		</dict>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>n38lu8286q.skadnetwork</string>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>903997455821868</string>
+	<key>FacebookClientToken</key>
+	<string>9c098492338c11c5c9996faf32e4f914</string>
+	<key>FacebookDisplayName</key>
+	<string>Tempa</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<true/>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb903997455821868</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
 	</array>
 </dict>
 </plist>

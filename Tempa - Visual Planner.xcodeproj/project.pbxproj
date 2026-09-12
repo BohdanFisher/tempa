@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CA7B0000000000000000RC03 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000RC02 /* RevenueCat */; };
 		CA7B0000000000000000PH03 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000PH02 /* PostHog */; };
-		CA7B0000000000000000TT03 /* TikTokBusinessSDK in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000TT02 /* TikTokBusinessSDK */; };
 		CA7B0000000000000000PH04 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000PH05 /* PostHog */; };
+		CA7B0000000000000000RC03 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000RC02 /* RevenueCat */; };
+		CA7B0000000000000000TT03 /* TikTokBusinessSDK in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000TT02 /* TikTokBusinessSDK */; };
 		CA7B0000000000000000TT04 /* TikTokBusinessSDK in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000TT05 /* TikTokBusinessSDK */; };
+		CA7B0000000000000000FB03 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000FB02 /* FacebookCore */; };
+		CA7B0000000000000000FB04 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000FB05 /* FacebookCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +98,7 @@
 				CA7B0000000000000000RC03 /* RevenueCat in Frameworks */,
 				CA7B0000000000000000PH03 /* PostHog in Frameworks */,
 				CA7B0000000000000000TT03 /* TikTokBusinessSDK in Frameworks */,
+				CA7B0000000000000000FB03 /* FacebookCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +108,7 @@
 			files = (
 				CA7B0000000000000000PH04 /* PostHog in Frameworks */,
 				CA7B0000000000000000TT04 /* TikTokBusinessSDK in Frameworks */,
+				CA7B0000000000000000FB04 /* FacebookCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,6 +165,7 @@
 				CA7B0000000000000000RC02 /* RevenueCat */,
 				CA7B0000000000000000PH02 /* PostHog */,
 				CA7B0000000000000000TT02 /* TikTokBusinessSDK */,
+				CA7B0000000000000000FB02 /* FacebookCore */,
 			);
 			productName = "Tempa - Visual Planner";
 			productReference = EA9860F32FC7B6A000B8AD2B /* Tempa - Visual Planner.app */;
@@ -186,6 +191,7 @@
 			packageProductDependencies = (
 				CA7B0000000000000000PH05 /* PostHog */,
 				CA7B0000000000000000TT05 /* TikTokBusinessSDK */,
+				CA7B0000000000000000FB05 /* FacebookCore */,
 			);
 			productName = "Tempa - Visual PlannerTests";
 			productReference = EA9861042FC7B6A300B8AD2B /* Tempa - Visual PlannerTests.xctest */;
@@ -258,6 +264,7 @@
 				CA7B0000000000000000RC01 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
 				CA7B0000000000000000PH01 /* XCRemoteSwiftPackageReference "posthog-ios" */,
 				CA7B0000000000000000TT01 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */,
+				CA7B0000000000000000FB01 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EA9860F42FC7B6A000B8AD2B /* Products */;
@@ -545,15 +552,14 @@
 		EA98611D2FC7B6A300B8AD2B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 55Z7829Q3J;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
 				MARKETING_VERSION = 1.0.3;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				PRODUCT_BUNDLE_IDENTIFIER = "Bohdan-Rybak.Tempa---Visual-PlannerTests";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tempa - Visual Planner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tempa - Visual Planner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -561,21 +567,21 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tempa - Visual Planner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tempa - Visual Planner";
 			};
 			name = Debug;
 		};
 		EA98611E2FC7B6A300B8AD2B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 55Z7829Q3J;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
 				MARKETING_VERSION = 1.0.3;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				PRODUCT_BUNDLE_IDENTIFIER = "Bohdan-Rybak.Tempa---Visual-PlannerTests";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tempa - Visual Planner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tempa - Visual Planner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -583,6 +589,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tempa - Visual Planner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tempa - Visual Planner";
 			};
 			name = Release;
 		};
@@ -668,20 +675,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CA7B0000000000000000RC01 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
 		CA7B0000000000000000PH01 /* XCRemoteSwiftPackageReference "posthog-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/PostHog/posthog-ios.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 3.0.0;
+			};
+		};
+		CA7B0000000000000000RC01 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
 			};
 		};
 		CA7B0000000000000000TT01 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */ = {
@@ -692,33 +699,51 @@
 				minimumVersion = 1.7.2;
 			};
 		};
+		CA7B0000000000000000FB01 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 18.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CA7B0000000000000000RC02 /* RevenueCat */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CA7B0000000000000000RC01 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
-			productName = RevenueCat;
-		};
 		CA7B0000000000000000PH02 /* PostHog */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CA7B0000000000000000PH01 /* XCRemoteSwiftPackageReference "posthog-ios" */;
 			productName = PostHog;
-		};
-		CA7B0000000000000000TT02 /* TikTokBusinessSDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CA7B0000000000000000TT01 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */;
-			productName = TikTokBusinessSDK;
 		};
 		CA7B0000000000000000PH05 /* PostHog */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CA7B0000000000000000PH01 /* XCRemoteSwiftPackageReference "posthog-ios" */;
 			productName = PostHog;
 		};
+		CA7B0000000000000000RC02 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7B0000000000000000RC01 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+		CA7B0000000000000000TT02 /* TikTokBusinessSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7B0000000000000000TT01 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */;
+			productName = TikTokBusinessSDK;
+		};
 		CA7B0000000000000000TT05 /* TikTokBusinessSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CA7B0000000000000000TT01 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */;
 			productName = TikTokBusinessSDK;
+		};
+		CA7B0000000000000000FB02 /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7B0000000000000000FB01 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		CA7B0000000000000000FB05 /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7B0000000000000000FB01 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -1,6 +1,15 @@
 {
-  "originHash" : "e351d50761ce0a1a5b9b245d6ad52027d01c464856aa7199c52641a9611142a3",
+  "originHash" : "992425904b50bc960f0aec70794dba324108dc7ec832ecc9ea11e350068fc53d",
   "pins" : [
+    {
+      "identity" : "facebook-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/facebook/facebook-ios-sdk.git",
+      "state" : {
+        "revision" : "80d0ee82f6370d1bace1431a80cb80575f98ee90",
+        "version" : "18.1.1"
+      }
+    },
     {
       "identity" : "posthog-ios",
       "kind" : "remoteSourceControl",

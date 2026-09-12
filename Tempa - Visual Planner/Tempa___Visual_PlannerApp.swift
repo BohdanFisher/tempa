@@ -1,8 +1,19 @@
 import SwiftUI
 import CoreData
 
+/// The Meta SDK only initializes from the UIKit launch hook; everything else
+/// still configures from TempaApp.init, which runs first.
+final class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        MetaEvents.configure(application: application, launchOptions: launchOptions)
+        return true
+    }
+}
+
 @main
 struct TempaApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     let persistenceController = PersistenceController.shared
     let subscriptionManager = SubscriptionManager.shared
 

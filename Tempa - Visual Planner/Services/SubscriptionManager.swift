@@ -25,6 +25,11 @@ final class SubscriptionManager {
 
     var isPro: Bool { !purchasedProductIDs.isEmpty }
 
+    /// When the running free trial ends — nil when there is no trial. Home's
+    /// first-day card says it out loud, because "I'll forget to cancel" is
+    /// the reflex that cancels a trial in its first minute.
+    private(set) var trialEndsAt: Date?
+
     /// True once ANY subscription transaction has ever existed for this Apple ID —
     /// drives the no-trial resubscribe paywall for churned users (trial
     /// eligibility itself is enforced by Apple regardless).
@@ -41,6 +46,12 @@ final class SubscriptionManager {
     private var locallyPurchased: [String: Date] = [:]
 
     private let productIDs = ["tempa_yearly", "tempa_monthly", "tempa_weekly"]
+
+    /// Products with a purchase() call in progress. Transaction.updates can
+    /// echo that very purchase before purchase() returns; the paywall reports
+    /// it as trial_started / subscription_purchased, so the listener must
+    /// leave it alone or Meta counts the sale twice.
+    private var inFlightProductIDs: Set<String> = []
 
     init() {
         transactionListener = startTransactionListener()
@@ -105,6 +116,9 @@ final class SubscriptionManager {
 
     func simulatePurchase() {
         purchasedProductIDs.insert("tempa_yearly")
+        // Survive the entitlement refresh on the next foreground — a
+        // simulated buyer must stay "Pro" for the whole test session.
+        locallyPurchased["tempa_yearly"] = .distantFuture
         hasEverSubscribed = true
     }
 
@@ -133,6 +147,8 @@ final class SubscriptionManager {
     }
 
     func purchase(_ product: Product) async throws -> Transaction? {
+        inFlightProductIDs.insert(product.id)
+        defer { inFlightProductIDs.remove(product.id) }
         let result = try await product.purchase()
 
         switch result {
@@ -141,6 +157,12 @@ final class SubscriptionManager {
             // RevenueCat observer mode: must see the purchase before finish().
             await RevenueCatService.record(result)
             await transaction.finish()
+            // Only now, with the transaction finished, does the ledger take
+            // it: a kill between purchase() and finish() re-delivers it
+            // through Transaction.updates on the next launch, and THAT copy
+            // must still be reportable — the celebration never ran.
+            PurchaseSignals.recordOwnedHere(transaction)
+            PurchaseSignals.markReported(transaction)
             // currentEntitlements can lag right after finish() — reliably in
             // sandbox, occasionally in production. The verified transaction in
             // hand IS the entitlement: remember it and merge it into every
@@ -160,7 +182,9 @@ final class SubscriptionManager {
 
         case .pending:
             // Ask-to-Buy: a parent still has to approve. Not an error — the
-            // Transaction.updates listener completes it whenever they do.
+            // Transaction.updates listener completes it whenever they do,
+            // and reports it then (the paywall never sees a transaction).
+            PurchaseSignals.markPending(product.id)
             return nil
 
         @unknown default:
@@ -170,6 +194,7 @@ final class SubscriptionManager {
 
     func updatePurchasedProducts() async {
         var purchased: Set<String> = []
+        var trialEnd: Date?
         for await result in Transaction.currentEntitlements {
             guard let transaction = try? checkVerified(result) else { continue }
             // Belt and braces: currentEntitlements should only yield active
@@ -177,7 +202,9 @@ final class SubscriptionManager {
             guard transaction.revocationDate == nil,
                   (transaction.expirationDate ?? .distantFuture) > .now else { continue }
             purchased.insert(transaction.productID)
+            if PurchaseSignals.isIntroductory(transaction) { trialEnd = transaction.expirationDate }
         }
+        trialEndsAt = trialEnd
         locallyPurchased = locallyPurchased.filter { $0.value > .now }
         for id in locallyPurchased.keys { purchased.insert(id) }
         purchasedProductIDs = purchased
@@ -218,9 +245,50 @@ final class SubscriptionManager {
                     // them server-side. Entitlements are unaffected either way.
                     await transaction.finish()
                     await self?.updatePurchasedProducts()
+                    await self?.reportOutOfBandTransaction(transaction)
                 }
             }
         }
+    }
+
+    /// The money that never crosses the paywall: the yearly trial converting
+    /// on day 3, every renewal after it, an Ask-to-Buy approval. Reported
+    /// once per transaction as subscription_renewed (kind: purchase /
+    /// trial_converted / renewal) — the ad platforms turn it into revenue,
+    /// PostHog into the trial→paid rate.
+    ///
+    /// Only THIS device's subscriptions count: StoreKit delivers every
+    /// renewal to every device on the Apple ID, and the ledger that stops a
+    /// double report lives on one device. So a renewal is reported by the
+    /// device where the subscription was bought (or Ask-to-Buy'd); a phone
+    /// that merely shares the Apple ID stays quiet. Reinstalling the buying
+    /// device loses that memory and under-reports — the safe direction for
+    /// ad ROAS, and RevenueCat has the server-side truth anyway.
+    private func reportOutOfBandTransaction(_ transaction: Transaction) async {
+        guard !inFlightProductIDs.contains(transaction.productID),
+              transaction.revocationDate == nil else { return }
+        // Not the expiry: a renewal that happened while the app was closed
+        // for months arrives already expired and is still money that was paid.
+        let approvedHere = transaction.originalID == transaction.id
+            && PurchaseSignals.isPending(transaction.productID)
+        guard approvedHere || PurchaseSignals.isOwnedHere(transaction),
+              PurchaseSignals.markReported(transaction) else { return }
+        if approvedHere {
+            PurchaseSignals.clearPending(transaction.productID)
+            PurchaseSignals.recordOwnedHere(transaction)
+        }
+        // The list price is the fallback for the amount; make sure it exists.
+        await ensureProductsLoaded()
+        let product = products.first { $0.id == transaction.productID }
+        var props = PurchaseSignals.properties(for: transaction, product: product)
+        if PurchaseSignals.isIntroductory(transaction) {
+            // Only an Ask-to-Buy trial approved after the fact lands here —
+            // the paywall reports every other trial start itself.
+            AnalyticsService.shared.track(.trialStarted, properties: props)
+            return
+        }
+        props["kind"] = PurchaseSignals.kind(of: transaction)
+        AnalyticsService.shared.track(.subscriptionRenewed, properties: props)
     }
 
     nonisolated private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
@@ -230,6 +298,128 @@ final class SubscriptionManager {
         case .verified(let value):
             return value
         }
+    }
+}
+
+/// What analytics may say about a verified StoreKit transaction — and the
+/// device-local ledger that makes each sale reported exactly once, whichever
+/// path (purchase() result or Transaction.updates) delivers it. Everything
+/// lives in UserDefaults: a reinstall forgets it all, which only ever means
+/// under-reporting.
+enum PurchaseSignals {
+    /// Transaction IDs analytics has already reported.
+    private static let reportedKey = "analyticsReportedTransactionIDs"
+    /// Original transaction IDs of subscriptions bought (or Ask-to-Buy'd)
+    /// on this device — the ones whose renewals this device reports.
+    private static let ownedKey = "analyticsOwnedOriginalTransactionIDs"
+    /// Originals that started as a free trial — their first paid renewal is
+    /// the trial converting, not a routine renewal.
+    private static let trialKey = "analyticsTrialOriginalTransactionIDs"
+    /// Originals whose trial conversion has been reported.
+    private static let convertedKey = "analyticsConvertedOriginalTransactionIDs"
+    /// Products awaiting an Ask-to-Buy decision from this device.
+    private static let pendingKey = "analyticsPendingProductIDs"
+
+    /// Marks the transaction as reported. Returns false when it already was.
+    @discardableResult
+    static func markReported(_ transaction: Transaction) -> Bool {
+        insert(String(transaction.id), into: reportedKey)
+    }
+
+    /// A subscription bought on this device: its renewals are ours to report.
+    static func recordOwnedHere(_ transaction: Transaction) {
+        insert(String(transaction.originalID), into: ownedKey)
+        if isIntroductory(transaction) {
+            insert(String(transaction.originalID), into: trialKey)
+        }
+    }
+
+    static func isOwnedHere(_ transaction: Transaction) -> Bool {
+        list(ownedKey).contains(String(transaction.originalID))
+    }
+
+    static func markPending(_ productID: String) { insert(productID, into: pendingKey) }
+    static func isPending(_ productID: String) -> Bool { list(pendingKey).contains(productID) }
+    static func clearPending(_ productID: String) {
+        UserDefaults.standard.set(list(pendingKey).filter { $0 != productID }, forKey: pendingKey)
+    }
+
+    /// "purchase" for a brand-new subscription, "trial_converted" for the
+    /// first paid renewal of one that started free, "renewal" otherwise.
+    /// Records the conversion, so ask once per transaction.
+    static func kind(of transaction: Transaction) -> String {
+        if transaction.originalID == transaction.id { return "purchase" }
+        let original = String(transaction.originalID)
+        if list(trialKey).contains(original), insert(original, into: convertedKey) {
+            return "trial_converted"
+        }
+        return "renewal"
+    }
+
+    /// A free-trial transaction — not money.
+    static func isIntroductory(_ transaction: Transaction) -> Bool {
+        if #available(iOS 17.2, *) {
+            return transaction.offer?.type == .introductory
+        } else {
+            return transaction.offerType == .introductory
+        }
+    }
+
+    /// The purchase facts every channel receives: product, price, currency,
+    /// and the environment — the ad platforms drop anything that isn't
+    /// "production". Price is what the transaction itself says was paid
+    /// when StoreKit knows it (iOS 17.2+; a promo-code renewal reports the
+    /// promo price, a free one 0 — and 0 never reaches an ad platform).
+    /// A free trial carries the LIST price of the plan being tried instead:
+    /// trial_started has always meant that, and the ad SDKs hard-code the
+    /// trial's own value to 0 anyway. The list price is also the fallback
+    /// on iOS 17.0–17.1, where the transaction has no price of its own.
+    static func properties(for transaction: Transaction, product: Product?) -> [String: Any] {
+        var props: [String: Any] = [
+            "product": transaction.productID,
+            "transaction_id": String(transaction.id),
+            "environment": environmentName(transaction),
+        ]
+        var price: Decimal?
+        var currency: String?
+        if #available(iOS 17.2, *), !isIntroductory(transaction), let paid = transaction.price {
+            price = paid
+            currency = transaction.currency?.identifier
+        }
+        if price == nil, let product {
+            price = product.price
+            currency = product.priceFormatStyle.currencyCode
+        }
+        if let price { props["price"] = NSDecimalNumber(decimal: price).doubleValue }
+        if let currency { props["currency"] = currency }
+        return props
+    }
+
+    static func environmentName(_ transaction: Transaction) -> String {
+        switch transaction.environment {
+        case .production: return "production"
+        case .sandbox: return "sandbox"
+        case .xcode: return "xcode"
+        default: return "unknown"
+        }
+    }
+
+    // MARK: - Storage
+
+    private static func list(_ key: String) -> [String] {
+        UserDefaults.standard.stringArray(forKey: key) ?? []
+    }
+
+    /// Appends when absent; returns false if it was already there. Each list
+    /// is capped at 200 — years of renewals — so nothing grows forever.
+    @discardableResult
+    private static func insert(_ value: String, into key: String) -> Bool {
+        var values = list(key)
+        if values.contains(value) { return false }
+        values.append(value)
+        if values.count > 200 { values.removeFirst(values.count - 200) }
+        UserDefaults.standard.set(values, forKey: key)
+        return true
     }
 }
 

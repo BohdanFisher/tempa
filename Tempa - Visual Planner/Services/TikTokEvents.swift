@@ -24,6 +24,7 @@ enum TikTokEvents {
     /// builds behind "-analytics-debug YES" — owner test runs stay out of the
     /// campaign data. Debug builds report to the Test Events tab only.
     static func configure() {
+        guard AnalyticsService.adSDKsEnabled else { return }
         guard let config = TikTokConfig(
             accessToken: accessToken,
             appId: appStoreID,
@@ -54,14 +55,19 @@ enum TikTokEvents {
         case .paywallCTATapped:
             send("Checkout", contentID: productID)
         case .trialStarted:
+            guard AnalyticsService.isRealMoney(properties) else { return }
             // A trial hasn't paid anything yet — value 0 keeps TikTok's
             // revenue math honest; the money arrives as Subscribe.
             send("StartTrial", contentID: productID, value: "0", currency: properties["currency"] as? String)
             TikTokBusiness.explicitlyFlush()
-        case .subscriptionPurchased:
+        case .subscriptionPurchased, .subscriptionRenewed:
+            // Every paid transaction is a Subscribe with its real value — the
+            // direct monthly buy, the yearly trial converting on day 3, and
+            // each renewal after that.
+            guard let price = AnalyticsService.paidAmount(properties) else { return }
             send("Subscribe",
                  contentID: productID,
-                 value: (properties["price"] as? Double).map { String($0) },
+                 value: String(price),
                  currency: properties["currency"] as? String)
             TikTokBusiness.explicitlyFlush()
         default:
