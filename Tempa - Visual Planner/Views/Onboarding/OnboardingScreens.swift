@@ -823,32 +823,51 @@ struct OnbMicroYesView: View {
 
 // MARK: - Screen 4: AI Demo
 
-struct Onb4DemoView: View {
+struct OnbDayPlanView: View {
     let state: OnboardingState
-    @Environment(\.managedObjectContext) private var viewContext
 
-    @State private var taskText = ""
-    @State private var steps: [TaskBreakdown.Step] = []
+    @State private var text = ""
+    @State private var plan: [PlannedTask] = []
+    @State private var preview: [DayBuilder.Draft] = []
     @State private var isLoading = false
     @State private var showResult = false
+    @State private var usedFallback = false
 
     @FocusState private var focused: Bool
 
     private let apiClient = ClaudeAPIClient()
 
+    /// Late in their day (under three waking hours left), the day they can
+    /// still shape is tomorrow's.
+    private var plansTomorrow: Bool {
+        DayBuilder.plansTomorrow(now: Date(), wake: state.wakeTime)
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                Text("Try it. Type something you've been avoiding.")
-                    .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
-                    .tracking(-0.56)
-                    .foregroundColor(T.text)
-                    .lineSpacing(-2)
-                    .padding(.top, 24)
+                Group {
+                    if plansTomorrow {
+                        Text("What's on your plate tomorrow?")
+                    } else {
+                        Text("What's on your plate today?")
+                    }
+                }
+                .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                .tracking(-0.56)
+                .foregroundColor(T.text)
+                .lineSpacing(-2)
+                .padding(.top, 24)
 
                 if showResult {
                     resultCard
                 } else {
+                    Text("Type it as it comes — a list or one messy sentence. Tempa lays it out by the hour.")
+                        .font(.custom("Inter-Medium", size: 15).weight(.medium))
+                        .foregroundColor(T.textSec)
+                        .lineSpacing(3)
+                        .padding(.top, 10)
+
                     inputCard
 
                     Button {
@@ -870,19 +889,23 @@ struct Onb4DemoView: View {
             .padding(.horizontal, 22)
             .padding(.bottom, 50)
         }
+        .scrollDismissesKeyboard(.interactively)
         .onAppear { focused = true }
     }
 
     private var inputCard: some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
-                Text("What's on your mind?")
-                    .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                Text("YOUR DAY")
+                    .font(.custom("Inter-Medium", size: 12).weight(.semibold))
+                    .tracking(0.7)
                     .foregroundColor(T.textSec)
 
-                TextField("e.g. File my taxes", text: $taskText)
+                TextField("e.g. call the dentist, finish the report, gym after work, groceries",
+                          text: $text, axis: .vertical)
                     .font(.custom("Nunito-ExtraBold", size: 19).weight(.bold))
                     .foregroundColor(T.text)
+                    .lineLimit(2...6)
                     .focused($focused)
             }
             .padding(16)
@@ -891,43 +914,43 @@ struct Onb4DemoView: View {
                     .fill(T.surface)
             )
             .tempaShadowSm()
-            .padding(.top, 22)
+            .padding(.top, 20)
 
             if isLoading {
                 HStack(spacing: 12) {
                     Spacer()
                     TempaWaveform(color: T.primary, bars: 9, maxHeight: 26, barWidth: 4, spacing: 4)
                         .frame(width: 60, height: 30)
-                    Text("Breaking it down...")
+                    Text("Laying out your day…")
                         .font(.custom("Nunito-ExtraBold", size: 14).weight(.semibold))
                         .foregroundColor(T.textSec)
                     Spacer()
                 }
                 .padding(.vertical, 20)
             } else {
-                TempaButton(label: "Break it down", variant: .primary, size: .lg, fullWidth: true) {
-                    Task { await doBreakdown() }
+                TempaButton(label: "Lay out my day", variant: .primary, size: .lg, fullWidth: true) {
+                    Task { await layOut() }
                 }
                 .padding(.top, 16)
-                .opacity(taskText.trimmingCharacters(in: .whitespaces).isEmpty ? 0.5 : 1)
-                .disabled(taskText.trimmingCharacters(in: .whitespaces).isEmpty)
+                .opacity(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1)
+                .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
         }
     }
 
     private var resultCard: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // "You typed" card
             VStack(alignment: .leading, spacing: 6) {
-                Text("YOU TYPED")
+                Text("YOU SAID")
                     .font(.custom("Nunito-ExtraBold", size: 11).weight(.bold))
                     .tracking(1.1)
                     .foregroundColor(T.textSec)
 
-                Text(taskText)
-                    .font(.custom("Nunito-ExtraBold", size: 19).weight(.bold))
+                Text(text)
+                    .font(.custom("Nunito-ExtraBold", size: 17).weight(.bold))
                     .foregroundColor(T.text)
                     .tracking(-0.2)
+                    .lineSpacing(2)
             }
             .padding(16)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -938,7 +961,6 @@ struct Onb4DemoView: View {
             .tempaShadowSm()
             .padding(.top, 22)
 
-            // "Tempa broke it down" label
             HStack(spacing: 8) {
                 RoundedRectangle(cornerRadius: 7, style: .continuous)
                     .fill(
@@ -954,26 +976,25 @@ struct Onb4DemoView: View {
                             .foregroundColor(T.primary)
                     )
 
-                Text("Tempa broke it down")
+                Text("Tempa laid it out")
                     .font(.custom("Nunito-ExtraBold", size: 14).weight(.heavy))
                     .foregroundColor(T.text)
             }
             .padding(.top, 22)
             .padding(.bottom, 12)
 
-            // Steps
             VStack(spacing: 8) {
-                ForEach(Array(steps.enumerated()), id: \.offset) { i, step in
-                    MicroStepCard(step: step, index: i + 1) { deleteStep(at: i) }
+                ForEach(Array(preview.enumerated()), id: \.element.id) { i, draft in
+                    PlanPreviewRow(draft: draft)
+                        .staggerIn(i, baseDelay: 0.06)
                 }
             }
 
-            // "Not so scary" banner
             HStack(spacing: 12) {
-                Image(systemName: "heart.fill")
-                    .font(.system(size: 22))
+                Image(systemName: "eye.fill")
+                    .font(.system(size: 20))
                     .foregroundColor(Cat.health.ink)
-                Text("See? Not so scary when it's this small.")
+                Text("Your whole day, in blocks you can actually see.")
                     .font(.custom("Nunito-ExtraBold", size: 15).weight(.bold))
                     .foregroundColor(T.text)
                     .lineSpacing(2)
@@ -986,41 +1007,80 @@ struct Onb4DemoView: View {
             )
             .padding(.top, 22)
 
-            TempaButton(label: "That helps. Continue", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+            TempaButton(label: "That's my day. Continue", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
                 AnalyticsService.shared.track(.taskBreakdownAccepted,
-                                              properties: ["source": "onboarding", "steps": steps.count])
-                state.demoSteps = steps
+                                              properties: ["source": "onboarding", "steps": plan.count,
+                                                           "fallback": usedFallback, "tomorrow": plansTomorrow])
+                state.dayPlan = plan
+                state.dayDump = text
                 state.next()
             }
             .padding(.top, 16)
         }
     }
 
-    private func doBreakdown() async {
+    private func layOut() async {
         AnalyticsService.shared.track(.taskBreakdownRequested, properties: ["source": "onboarding"])
         isLoading = true
         focused = false
+        let now = Date()
+        let day = DayBuilder.targetDay(now: now, wake: state.wakeTime)
         do {
-            let result = try await apiClient.breakDown(task: taskText)
-            steps = result.steps
+            let result = try await apiClient.planTasks(from: text, targetDay: plansTomorrow ? day : nil)
+            plan = result.tasks
+            usedFallback = plan.isEmpty
         } catch {
-            steps = FallbackBreakdown.generate(for: taskText).steps
+            usedFallback = true
         }
+        if usedFallback { plan = FallbackDayPlan.generate(from: text) }
+        preview = DayBuilder.preview(plan, wake: state.wakeTime, dip: state.energyDipTime, now: now)
         isLoading = false
         withAnimation(.easeInOut(duration: 0.3)) {
             showResult = true
         }
     }
+}
 
-    private func deleteStep(at index: Int) {
-        guard steps.indices.contains(index) else { return }
-        withAnimation(.easeInOut(duration: 0.2)) {
-            _ = steps.remove(at: index)
+/// One line of the laid-out day: time, icon in its category colour, title,
+/// length. Same shape the Home timeline will show.
+struct PlanPreviewRow: View {
+    let draft: DayBuilder.Draft
+
+    var body: some View {
+        let cc = Cat.named(draft.category)
+        HStack(spacing: 12) {
+            Text(draft.start.formatted(.dateTime.hour().minute().locale(AppLanguage.current.locale)))
+                .font(.custom("Nunito-ExtraBold", size: 13).weight(.heavy))
+                .foregroundColor(cc.ink)
+                .frame(width: 48, alignment: .leading)
+
+            Image(systemName: draft.icon)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(cc.ink)
+                .frame(width: 34, height: 34)
+                .background(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(cc.bg)
+                )
+
+            Text(draft.title)
+                .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
+                .foregroundColor(T.text)
+                .lineLimit(2)
+
+            Spacer(minLength: 8)
+
+            Text("\(draft.minutes) min")
+                .font(.custom("Inter-Medium", size: 12).weight(.medium))
+                .foregroundColor(T.textSec)
         }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(T.surface)
+        )
+        .tempaShadowSm()
     }
-
-    /// Persist the steps the user generated during onboarding as real tasks,
-    /// scheduled back-to-back from now, so they appear in the task feed.
 }
 
 // MARK: - Screen 5: Personalization

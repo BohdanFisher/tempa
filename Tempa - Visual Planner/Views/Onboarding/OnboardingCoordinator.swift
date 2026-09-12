@@ -9,9 +9,11 @@ final class OnboardingState {
     #else
     var currentStep = 0
     #endif
-    /// Micro-steps generated in the AI demo — written to the feed only when
-    /// onboarding completes, so an abandoned run leaves no orphan tasks.
-    var demoSteps: [TaskBreakdown.Step] = []
+    /// What the user said their day has on it, laid out by the AI — written
+    /// to the feed only when onboarding completes, so an abandoned run
+    /// leaves no orphan tasks. Empty when the screen was skipped.
+    var dayPlan: [PlannedTask] = []
+    var dayDump = ""
     var selfIdPicks: Set<Int> = []
     var painPicks: Set<Int> = []
     /// First name for personalization — mirrors, summary, and later the app
@@ -88,16 +90,16 @@ struct OnboardingFlow: View {
         }) {
             PaywallView(allowDismiss: false) {
                 AnalyticsService.shared.track(.onboardingCompleted)
-                DemoPlanStash.materialize(into: viewContext)
+                FirstDayStash.materialize(into: viewContext, settings: settings)
                 settings.completeOnboarding()
                 if onFinished != nil { finishAfterDismiss = true }
             }
         }
         .onChange(of: state.showPaywall) { _, shown in
             guard shown else { return }
-            // The demo plan must survive a kill at the paywall — the relaunch
+            // The first day must survive a kill at the paywall — the relaunch
             // lands on the ROOT paywall, where this funnel's memory is gone.
-            DemoPlanStash.stash(state.demoSteps)
+            FirstDayStash.stash(FirstDayPlan(dump: state.dayDump, tasks: state.dayPlan, stashedAt: Date()))
             // Forced test runs (RootView passes onFinished: fresh dev install
             // or "-force-onboarding") must not persist the flag — the next
             // NORMAL launch would land on a hard paywall instead of the app.
@@ -109,7 +111,7 @@ struct OnboardingFlow: View {
     /// Funnel step names for analytics — index-aligned with screenForStep.
     private static let stepNames = [
         "welcome", "problem", "solution", "name", "quiz_self", "quiz_pain",
-        "hours_lost", "math", "mirror", "micro_yes", "ai_demo", "wake_time",
+        "hours_lost", "math", "mirror", "micro_yes", "wake_time", "ai_demo",
         "building", "summary", "forgiveness", "social_proof", "notifications",
         "commitment", "trial_gift",
     ]
@@ -122,10 +124,10 @@ struct OnboardingFlow: View {
     /// 9–13 has them DO the core thing, set their own rhythm, watch the app
     /// build on it and see the result; Conclusion 14–18 mirrors it all back
     /// and walks into the paywall.
-    /// (The demo flows straight into personalization — the "first win"
-    /// celebration and the sample-day preview once between them lost users,
-    /// not kept them. "Building" sits right after the inputs it claims to
-    /// build on, and the summary is the reveal of what it built.)
+    /// (Wake time comes BEFORE the day plan: the plan is laid out from it.
+    /// "ai_demo" is the analytics name of the plan screen — kept so the
+    /// PostHog funnel keeps its history. "Building" sits right after the
+    /// inputs it claims to build on, and the summary is the reveal.)
     @ViewBuilder
     private func screenForStep(_ step: Int) -> some View {
         switch step {
@@ -139,8 +141,8 @@ struct OnboardingFlow: View {
         case 7: OnbBombshellView(state: state)
         case 8: OnbMirrorView(state: state)
         case 9: OnbMicroYesView(state: state)
-        case 10: Onb4DemoView(state: state)
-        case 11: Onb5PersonalView(state: state)
+        case 10: Onb5PersonalView(state: state)
+        case 11: OnbDayPlanView(state: state)
         case 12: Onb9BuildingView(state: state, settings: settings)
         case 13: OnbSummaryView(state: state)
         case 14: Onb7ForgiveView(state: state)
@@ -154,46 +156,44 @@ struct OnboardingFlow: View {
     }
 }
 
-// MARK: - Demo plan stash
+// MARK: - First day stash
 
-/// The onboarding demo's micro-steps, parked in UserDefaults from the moment
-/// the funnel reaches the paywall until a purchase completes — on EITHER
-/// paywall (the funnel's cover, or the root one after a kill-and-relaunch).
-/// The feed itself is only written on purchase, so a run that never pays
-/// still leaves no orphan tasks.
-enum DemoPlanStash {
-    private static let key = "pendingDemoSteps"
+/// The first day, parked in UserDefaults from the moment the funnel reaches
+/// the paywall until a purchase completes — on EITHER paywall (the funnel's
+/// cover, or the root one after a kill-and-relaunch). The feed itself is
+/// only written on purchase, so a run that never pays leaves no tasks.
+/// Stashed even when the plan screen was skipped: the routine built from
+/// the wake time and energy dip is part of the first day too.
+enum FirstDayStash {
+    private static let key = "pendingFirstDay"
+    /// Home shows the one-time "set up from your answers" card while true.
+    static let receiptKey = "showFirstDayReceipt"
 
-    static func stash(_ steps: [TaskBreakdown.Step]) {
-        guard !steps.isEmpty, let data = try? JSONEncoder().encode(steps) else { return }
+    static func stash(_ plan: FirstDayPlan) {
+        guard let data = try? JSONEncoder().encode(plan) else { return }
         UserDefaults.standard.set(data, forKey: key)
     }
 
-    /// Writes the stashed steps as the user's first real tasks, starting NOW —
-    /// the stash may be days old, and a plan scheduled in the past helps no one.
-    static func materialize(into context: NSManagedObjectContext) {
+    /// Writes the first day as the user's real tasks. Today or tomorrow is
+    /// decided NOW, not when the plan was typed — the stash may be days old
+    /// (killed at the paywall, back later), and a plan for a day that's gone
+    /// helps no one.
+    static func materialize(into context: NSManagedObjectContext, settings: SettingsStore) {
+        // One-shot: no stash means the first day was already written (a
+        // lapsed subscriber buying again on the root paywall must not get a
+        // second seeded week).
         guard let data = UserDefaults.standard.data(forKey: key),
-              let steps = try? JSONDecoder().decode([TaskBreakdown.Step].self, from: data),
-              !steps.isEmpty else { return }
+              let plan = try? JSONDecoder().decode(FirstDayPlan.self, from: data) else { return }
         UserDefaults.standard.removeObject(forKey: key)
         // These are written FOR the user by onboarding — they must not count
         // as the first task they created (no rating prompt on a plan they
         // haven't even seen yet).
         ReviewPrompt.isWritingDemoPlan = true
         defer { ReviewPrompt.isWritingDemoPlan = false }
-        var start = Date()
-        for step in steps {
-            let task = TaskBlock(context: context)
-            task.id = UUID()
-            task.title = step.title
-            task.iconName = step.icon
-            task.category = step.resolvedCategory
-            task.startTime = start
-            task.durationMinutes = Int32(step.duration)
-            task.createdAt = Date()
-            start = start.addingTimeInterval(TimeInterval(step.duration) * 60)
-        }
-        try? context.save()
+        let drafts = DayBuilder.build(plan: plan, wake: settings.wakeTime,
+                                      dip: settings.energyDipTime, now: Date())
+        DayBuilder.write(drafts, into: context)
+        UserDefaults.standard.set(true, forKey: receiptKey)
     }
 }
 

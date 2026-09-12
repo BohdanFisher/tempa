@@ -5,6 +5,8 @@ import Combine
 struct TodayView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(SettingsStore.self) private var settings
+    @Environment(SubscriptionManager.self) private var subs
 
     @FetchRequest private var tasks: FetchedResults<TaskBlock>
     @State private var router = AppRouter.shared
@@ -16,6 +18,11 @@ struct TodayView: View {
     @State private var showCompleted = false
     @AppStorage("todayGrouping") private var grouping: TodayGrouping = .none
     @AppStorage("todaySorting") private var sorting: TodaySorting = .time
+    /// The one-time "set up from your answers" card after the first purchase.
+    @AppStorage(FirstDayStash.receiptKey) private var showFirstDayReceipt = false
+    /// Until the user has added a task of their own, the "+" wears a label —
+    /// the door people didn't notice gets a name.
+    @State private var hasOwnTask = true
 
     private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 
@@ -51,6 +58,17 @@ struct TodayView: View {
             return now >= s && now < e
         }
     }
+
+    /// One thing at a time: the block running now; else the next one coming
+    /// up; else the earliest one whose time has passed, offered without a
+    /// clock ("whenever you're ready") — a day never opens on a bare list.
+    enum HeroMode { case now, next, waiting }
+    private var hero: (TaskBlock, HeroMode)? {
+        if let current = currentTask { return (current, .now) }
+        if let next = activeTasks.first(where: { ($0.startTime ?? .distantPast) > now }) { return (next, .next) }
+        if let waiting = activeTasks.first(where: { ($0.startTime ?? .distantFuture) <= now }) { return (waiting, .waiting) }
+        return nil
+    }
     private var dateString: String {
         let f = DateFormatter()
         f.locale = AppLanguage.current.locale
@@ -65,16 +83,21 @@ struct TodayView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     greetingSection
+                    if showFirstDayReceipt {
+                        firstDayReceipt
+                            .transition(.scale(scale: 0.96, anchor: .top).combined(with: .opacity))
+                    }
                     dayPulseCard
-                    if let current = currentTask {
-                        nowHero(current)
+                    if let (task, mode) = hero {
+                        heroCard(task, mode: mode)
                             .padding(.bottom, 8)
                             .transition(.scale(scale: 0.96, anchor: .top).combined(with: .opacity))
                     }
                     timelineSection
                 }
                 .padding(.bottom, 140)
-                .animation(.spring(response: 0.5, dampingFraction: 0.85), value: currentTask?.objectID)
+                .animation(.spring(response: 0.5, dampingFraction: 0.85), value: hero?.0.objectID)
+                .animation(.spring(response: 0.5, dampingFraction: 0.85), value: showFirstDayReceipt)
             }
 
             fab
@@ -91,12 +114,13 @@ struct TodayView: View {
             }
         }
         .onAppear {
+            refreshOwnTaskFlag()
             guard !reduceMotion else { return }
             withAnimation(.easeInOut(duration: 4).repeatForever(autoreverses: true)) {
                 breatheScale = 1.08
             }
         }
-        .fullScreenCover(isPresented: $showingAddTask) {
+        .fullScreenCover(isPresented: $showingAddTask, onDismiss: { refreshOwnTaskFlag() }) {
             AddTaskSheet()
         }
         .onChange(of: router.addTaskRequest) { _, req in
@@ -109,7 +133,7 @@ struct TodayView: View {
 
     // MARK: - "Right now" spotlight
 
-    private func nowHero(_ task: TaskBlock) -> some View {
+    private func heroCard(_ task: TaskBlock, mode: HeroMode) -> some View {
         let start = task.startTime ?? now
         let total = TimeInterval(task.durationMinutes) * 60
         let elapsed = now.timeIntervalSince(start)
@@ -117,14 +141,23 @@ struct TodayView: View {
         let remaining = max(0, Int((total - elapsed) / 60))
         let cc = Cat.named(task.category ?? "work")
         let endTime = start.addingTimeInterval(total)
+        let minutes = Int(task.durationMinutes)
 
         return VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
-                PulseDot(size: 8, color: cc.ink, rings: 2, speed: 3)
-                Text("RIGHT NOW")
-                    .font(.custom(T.fontHeader, size: 11).weight(.heavy))
-                    .tracking(2)
-                    .foregroundColor(cc.ink)
+                if mode == .now {
+                    PulseDot(size: 8, color: cc.ink, rings: 2, speed: 3)
+                }
+                Group {
+                    switch mode {
+                    case .now: Text("RIGHT NOW")
+                    case .next: Text("UP NEXT")
+                    case .waiting: Text("WHENEVER YOU'RE READY")
+                    }
+                }
+                .font(.custom(T.fontHeader, size: 11).weight(.heavy))
+                .tracking(2)
+                .foregroundColor(cc.ink)
             }
             .padding(.top, 18)
 
@@ -156,35 +189,51 @@ struct TodayView: View {
                         .padding(.top, 20)
 
                     HStack(spacing: 14) {
-                        ZStack {
-                            Circle()
-                                .stroke(Color.white.opacity(0.5), lineWidth: 5)
-                            Circle()
-                                .trim(from: 0, to: pct)
-                                .stroke(cc.ink, style: StrokeStyle(lineWidth: 5, lineCap: .round))
-                                .rotationEffect(.degrees(-90))
-                            Text("\(Int(pct * 100))%")
-                                .font(.custom(T.fontHeader, size: 13).weight(.heavy))
-                                .foregroundColor(cc.ink)
+                        if mode == .now {
+                            ZStack {
+                                Circle()
+                                    .stroke(Color.white.opacity(0.5), lineWidth: 5)
+                                Circle()
+                                    .trim(from: 0, to: pct)
+                                    .stroke(cc.ink, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                                    .rotationEffect(.degrees(-90))
+                                Text("\(Int(pct * 100))%")
+                                    .font(.custom(T.fontHeader, size: 13).weight(.heavy))
+                                    .foregroundColor(cc.ink)
+                            }
+                            .frame(width: 50, height: 50)
                         }
-                        .frame(width: 50, height: 50)
 
                         VStack(alignment: .leading, spacing: 2) {
                             Group {
-                                if remaining >= 60 && remaining % 60 != 0 {
-                                    Text("\(remaining / 60) h \(remaining % 60) min left")
-                                } else if remaining >= 60 {
-                                    Text("\(remaining / 60) h left")
-                                } else {
-                                    Text("\(remaining) min left")
+                                switch mode {
+                                case .now:
+                                    if remaining >= 60 && remaining % 60 != 0 {
+                                        Text("\(remaining / 60) h \(remaining % 60) min left")
+                                    } else if remaining >= 60 {
+                                        Text("\(remaining / 60) h left")
+                                    } else {
+                                        Text("\(remaining) min left")
+                                    }
+                                case .next, .waiting:
+                                    Text("\(minutes) min")
                                 }
                             }
                             .font(.custom(T.fontHeader, size: 13).weight(.bold))
                             .foregroundColor(cc.ink.opacity(0.7))
-                            Text("Ends at \(endTime.formatted(.dateTime.hour().minute()))")
-                                .font(.custom(T.fontHeader, size: 18).weight(.heavy))
-                                .tracking(-0.2)
-                                .foregroundColor(T.text)
+                            Group {
+                                switch mode {
+                                case .now:
+                                    Text("Ends at \(endTime.formatted(.dateTime.hour().minute().locale(AppLanguage.current.locale)))")
+                                case .next:
+                                    Text("Starts at \(start.formatted(.dateTime.hour().minute().locale(AppLanguage.current.locale)))")
+                                case .waiting:
+                                    Text("No clock on this one.")
+                                }
+                            }
+                            .font(.custom(T.fontHeader, size: 18).weight(.heavy))
+                            .tracking(-0.2)
+                            .foregroundColor(T.text)
                         }
                     }
                     .padding(.top, 18)
@@ -211,7 +260,16 @@ struct TodayView: View {
             .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
 
             HStack(spacing: 10) {
-                TempaButton(label: "Focus mode", variant: .primary, size: .md) {
+                // One tap → the hourglass is already running, sized to THIS
+                // block. The Focus tab clamps to 5–60 min, so say what it
+                // will actually set.
+                TempaButton(label: "Start · \(max(5, min(60, minutes))) min", variant: .primary, size: .md) {
+                    AnalyticsService.shared.track(.taskStarted, properties: ["source": "hero"])
+                    AppRouter.shared.focusRequest = FocusRequest(
+                        category: task.category ?? "work",
+                        minutes: minutes,
+                        title: task.title ?? ""
+                    )
                     AppRouter.shared.selectedTab = .focus
                 }
                 .frame(maxWidth: .infinity)
@@ -220,8 +278,81 @@ struct TodayView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
+            // The labelled "+" pill is wide — keep the hero's buttons clear of it.
+            .padding(.bottom, hasOwnTask ? 0 : 64)
         }
         .padding(.horizontal, 20)
+    }
+
+    // MARK: - First-day receipt
+
+    /// Shown once, right after the first purchase: the "Creating your calm
+    /// day…" checklist from the funnel, now with the real values behind it
+    /// — and the trial's end date said plainly, so nobody cancels out of
+    /// fear of forgetting.
+    private var firstDayReceipt: some View {
+        let name = UserDefaults.standard.string(forKey: "userName")?.trimmingCharacters(in: .whitespaces) ?? ""
+        let time = Date.FormatStyle(date: .omitted, time: .shortened).locale(AppLanguage.current.locale)
+        let day = Date.FormatStyle(date: .abbreviated, time: .omitted).locale(AppLanguage.current.locale)
+        return VStack(alignment: .leading, spacing: 14) {
+            Group {
+                if name.isEmpty {
+                    Text("Your day is set up from your answers.")
+                } else {
+                    Text("\(name), your day is set up from your answers.")
+                }
+            }
+            .font(.custom(T.fontHeader, size: 18).weight(.heavy))
+            .tracking(-0.3)
+            .foregroundColor(T.text)
+            .lineSpacing(2)
+
+            VStack(alignment: .leading, spacing: 10) {
+                receiptRow("sunrise.fill", Text("Wake time · \(settings.wakeTime.formatted(time))"))
+                if let dip = settings.energyDipTime {
+                    receiptRow("leaf.fill", Text("Energy dip · \(dip.formatted(time)) — that block stays light"))
+                }
+                receiptRow("checklist", Text("Meals, a breather and five minutes to plan tomorrow are already on your day. Move or delete any of them."))
+                if let ends = subs.trialEndsAt {
+                    receiptRow("lock.open.fill", Text("Free until \(ends.formatted(day)) · nothing is charged before then · cancel any time in Settings"))
+                }
+            }
+
+            TempaButton(label: "Got it", variant: .ghost, size: .sm) {
+                showFirstDayReceipt = false
+            }
+        }
+        .padding(18)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(T.surface)
+        )
+        .tempaShadowSm()
+        .padding(.horizontal, 20)
+        .padding(.bottom, 20)
+    }
+
+    private func receiptRow(_ icon: String, _ text: Text) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(T.secondaryDeep)
+                .frame(width: 22, height: 22)
+            text
+                .font(.custom(T.fontBody, size: 14).weight(.medium))
+                .foregroundColor(T.text)
+                .lineSpacing(2)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    /// True once any task exists that onboarding didn't seed.
+    private func refreshOwnTaskFlag() {
+        let req = NSFetchRequest<TaskBlock>(entityName: "TaskBlock")
+        req.predicate = NSPredicate(format: "notes == nil OR NOT (notes BEGINSWITH %@)", DayBuilder.autoNote)
+        req.fetchLimit = 1
+        hasOwnTask = ((try? viewContext.count(for: req)) ?? 0) > 0
     }
 
     // MARK: - Greeting
@@ -488,18 +619,27 @@ struct TodayView: View {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             #endif
         } label: {
-            Image(systemName: "plus")
-                .font(.system(size: 24, weight: .bold))
-                .foregroundColor(.white)
-                // Quarter-turn into a "×" while the add sheet is up.
-                .rotationEffect(.degrees(showingAddTask ? 45 : 0))
-                .animation(.spring(response: 0.35, dampingFraction: 0.6), value: showingAddTask)
-                .frame(width: 60, height: 60)
-                .background(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(T.primary)
-                )
-                .shadow(color: Color(hex: "#FF7A59").opacity(0.45), radius: 12, x: 0, y: 10)
+            HStack(spacing: 8) {
+                Image(systemName: "plus")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.white)
+                    // Quarter-turn into a "×" while the add sheet is up.
+                    .rotationEffect(.degrees(showingAddTask ? 45 : 0))
+                    .animation(.spring(response: 0.35, dampingFraction: 0.6), value: showingAddTask)
+                if !hasOwnTask {
+                    Text("Add one small thing")
+                        .font(.custom("Nunito-ExtraBold", size: 16))
+                        .foregroundColor(.white)
+                        .padding(.trailing, 6)
+                }
+            }
+            .frame(minWidth: 60, minHeight: 60)
+            .padding(.horizontal, hasOwnTask ? 0 : 14)
+            .background(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(T.primary)
+            )
+            .shadow(color: Color(hex: "#FF7A59").opacity(0.45), radius: 12, x: 0, y: 10)
         }
         .buttonStyle(SpringPressStyle(scale: 0.88))
         .padding(.trailing, 22)

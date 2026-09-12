@@ -244,8 +244,17 @@ final class ClaudeAPIClient: Sendable {
     """
 
     /// Split a spoken brain-dump into several scheduled tasks ("plan my day").
-    func planTasks(from brainDump: String) async throws -> DayPlan {
-        var userContent = "\(Self.dateContextLine())\n\nBrain dump: \(brainDump)"
+    /// `targetDay` pins every task without an explicit day to that date —
+    /// the funnel asks for tomorrow when the day is nearly over.
+    func planTasks(from brainDump: String, targetDay: Date? = nil) async throws -> DayPlan {
+        var userContent = "\(Self.dateContextLine())"
+        if let targetDay {
+            let f = DateFormatter()
+            f.locale = Locale(identifier: "en_US_POSIX")
+            f.dateFormat = "yyyy-MM-dd (EEEE)"
+            userContent += "\nThe user is planning \(f.string(from: targetDay)). Every task without an explicit day belongs to that date."
+        }
+        userContent += "\n\nBrain dump: \(brainDump)"
         if let directive = TaskLanguage.outputDirective(for: brainDump) {
             userContent += "\n\n\(directive)"
         }

@@ -67,6 +67,10 @@ enum TaskNotifications {
                 let tasks = (try? context.fetch(req)) ?? []
                 for task in tasks {
                     guard let id = task.id, let start = task.startTime else { continue }
+                    // The routine seeded from onboarding (breakfast, lunch…)
+                    // is a shape for the day, not five reminders a day. The
+                    // evening "plan tomorrow" block is the one that may nudge.
+                    if task.notes == DayBuilder.autoNote { continue }
                     let fire = start.addingTimeInterval(-leadMinutes)
                     guard fire > Date() else { continue }
 
