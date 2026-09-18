@@ -4,7 +4,6 @@ import Combine
 
 struct TodayView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(SettingsStore.self) private var settings
     @Environment(SubscriptionManager.self) private var subs
 
@@ -14,7 +13,6 @@ struct TodayView: View {
     @State private var now = Date()
     @State private var dayStart = Calendar.current.startOfDay(for: Date())
     @Environment(\.scenePhase) private var scenePhase
-    @State private var breatheScale: CGFloat = 1.0
     @State private var showCompleted = false
     @AppStorage("todayGrouping") private var grouping: TodayGrouping = .none
     @AppStorage("todaySorting") private var sorting: TodaySorting = .time
@@ -62,6 +60,10 @@ struct TodayView: View {
     /// One thing at a time: the block running now; else the next one coming
     /// up; else the earliest one whose time has passed, offered without a
     /// clock ("whenever you're ready") — a day never opens on a bare list.
+    /// The hero is not a banner of its own: it is a ROW of the timeline (the
+    /// first one, unless the user groups their day), in the same time gutter
+    /// and card column as every other row, only taller, tinted, and carrying
+    /// the one Start button on the screen.
     enum HeroMode { case now, next, waiting }
     private var hero: (TaskBlock, HeroMode)? {
         if let current = currentTask { return (current, .now) }
@@ -88,11 +90,6 @@ struct TodayView: View {
                             .transition(.scale(scale: 0.96, anchor: .top).combined(with: .opacity))
                     }
                     dayPulseCard
-                    if let (task, mode) = hero {
-                        heroCard(task, mode: mode)
-                            .padding(.bottom, 8)
-                            .transition(.scale(scale: 0.96, anchor: .top).combined(with: .opacity))
-                    }
                     timelineSection
                 }
                 .padding(.bottom, 140)
@@ -113,13 +110,7 @@ struct TodayView: View {
                 refreshDayWindowIfNeeded()
             }
         }
-        .onAppear {
-            refreshOwnTaskFlag()
-            guard !reduceMotion else { return }
-            withAnimation(.easeInOut(duration: 4).repeatForever(autoreverses: true)) {
-                breatheScale = 1.08
-            }
-        }
+        .onAppear { refreshOwnTaskFlag() }
         .fullScreenCover(isPresented: $showingAddTask, onDismiss: { refreshOwnTaskFlag() }) {
             AddTaskSheet()
         }
@@ -129,159 +120,6 @@ struct TodayView: View {
             router.addTaskRequest = nil   // consume
             showingAddTask = true
         }
-    }
-
-    // MARK: - "Right now" spotlight
-
-    private func heroCard(_ task: TaskBlock, mode: HeroMode) -> some View {
-        let start = task.startTime ?? now
-        let total = TimeInterval(task.durationMinutes) * 60
-        let elapsed = now.timeIntervalSince(start)
-        let pct = min(max(elapsed / total, 0), 1)
-        let remaining = max(0, Int((total - elapsed) / 60))
-        let cc = Cat.named(task.category ?? "work")
-        let endTime = start.addingTimeInterval(total)
-        let minutes = Int(task.durationMinutes)
-
-        return VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                if mode == .now {
-                    PulseDot(size: 8, color: cc.ink, rings: 2, speed: 3)
-                }
-                Group {
-                    switch mode {
-                    case .now: Text("RIGHT NOW")
-                    case .next: Text("UP NEXT")
-                    case .waiting: Text("WHENEVER YOU'RE READY")
-                    }
-                }
-                .font(.custom(T.fontHeader, size: 11).weight(.heavy))
-                .tracking(2)
-                .foregroundColor(cc.ink)
-            }
-            .padding(.top, 18)
-
-            ZStack(alignment: .topTrailing) {
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 10) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(T.surface)
-                                .frame(width: 50, height: 50)
-                            Image(systemName: task.iconName ?? "circle")
-                                .font(.system(size: 23, weight: .medium))
-                                .foregroundColor(cc.ink)
-                        }
-                        .tempaShadowSm()
-
-                        Text(catDisplayName(task.category ?? "work"))
-                            .font(.custom(T.fontHeader, size: 12).weight(.bold))
-                            .tracking(1)
-                            .foregroundColor(cc.ink)
-                            .textCase(.uppercase)
-                    }
-
-                    Text(task.title ?? String(localized: "Current task", bundle: .appLanguage))
-                        .font(.custom(T.fontHeader, size: 26).weight(.heavy))
-                        .tracking(-0.5)
-                        .foregroundColor(T.text)
-                        .lineSpacing(2)
-                        .padding(.top, 20)
-
-                    HStack(spacing: 14) {
-                        if mode == .now {
-                            ZStack {
-                                Circle()
-                                    .stroke(Color.white.opacity(0.5), lineWidth: 5)
-                                Circle()
-                                    .trim(from: 0, to: pct)
-                                    .stroke(cc.ink, style: StrokeStyle(lineWidth: 5, lineCap: .round))
-                                    .rotationEffect(.degrees(-90))
-                                Text("\(Int(pct * 100))%")
-                                    .font(.custom(T.fontHeader, size: 13).weight(.heavy))
-                                    .foregroundColor(cc.ink)
-                            }
-                            .frame(width: 50, height: 50)
-                        }
-
-                        VStack(alignment: .leading, spacing: 2) {
-                            Group {
-                                switch mode {
-                                case .now:
-                                    if remaining >= 60 && remaining % 60 != 0 {
-                                        Text("\(remaining / 60) h \(remaining % 60) min left")
-                                    } else if remaining >= 60 {
-                                        Text("\(remaining / 60) h left")
-                                    } else {
-                                        Text("\(remaining) min left")
-                                    }
-                                case .next, .waiting:
-                                    Text("\(minutes) min")
-                                }
-                            }
-                            .font(.custom(T.fontHeader, size: 13).weight(.bold))
-                            .foregroundColor(cc.ink.opacity(0.7))
-                            Group {
-                                switch mode {
-                                case .now:
-                                    Text("Ends at \(endTime.formatted(.dateTime.hour().minute().locale(AppLanguage.current.locale)))")
-                                case .next:
-                                    Text("Starts at \(start.formatted(.dateTime.hour().minute().locale(AppLanguage.current.locale)))")
-                                case .waiting:
-                                    Text("No clock on this one.")
-                                }
-                            }
-                            .font(.custom(T.fontHeader, size: 18).weight(.heavy))
-                            .tracking(-0.2)
-                            .foregroundColor(T.text)
-                        }
-                    }
-                    .padding(.top, 18)
-                }
-                .padding(20)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                Circle()
-                    .stroke(cc.solid.opacity(0.4), lineWidth: 2)
-                    .frame(width: 200, height: 200)
-                    .scaleEffect(reduceMotion ? 1 : breatheScale)
-                    .offset(x: 60, y: -60)
-
-                Circle()
-                    .fill(cc.solid.opacity(0.18))
-                    .frame(width: 150, height: 150)
-                    .offset(x: 34, y: -30)
-            }
-            .frame(minHeight: 230)
-            .background(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(cc.bg)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-
-            HStack(spacing: 10) {
-                // One tap → the hourglass is already running, sized to THIS
-                // block. The Focus tab clamps to 5–60 min, so say what it
-                // will actually set.
-                TempaButton(label: "Start · \(max(5, min(60, minutes))) min", variant: .primary, size: .md) {
-                    AnalyticsService.shared.track(.taskStarted, properties: ["source": "hero"])
-                    AppRouter.shared.focusRequest = FocusRequest(
-                        category: task.category ?? "work",
-                        minutes: minutes,
-                        title: task.title ?? ""
-                    )
-                    AppRouter.shared.selectedTab = .focus
-                }
-                .frame(maxWidth: .infinity)
-                TempaButton(label: "Done", variant: .ghost, size: .md) {
-                    toggleCompletion(task)
-                }
-                .frame(maxWidth: .infinity)
-            }
-            // The labelled "+" pill is wide — keep the hero's buttons clear of it.
-            .padding(.bottom, hasOwnTask ? 0 : 64)
-        }
-        .padding(.horizontal, 20)
     }
 
     // MARK: - First-day receipt
@@ -475,21 +313,73 @@ struct TodayView: View {
         .padding(.top, 4)
     }
 
+    /// What the ungrouped feed is made of. ONE ForEach over these keeps a
+    /// row's identity wherever it lands — promoted to hero, or slipping past
+    /// its time — so an open edit sheet never jumps to another task or
+    /// closes under the user's fingers.
+    private enum FeedItem: Identifiable {
+        case task(TaskBlock, HeroMode?)
+        case wheneverHeader(Int)
+        var id: AnyHashable {
+            switch self {
+            case .task(let task, _): return task.objectID
+            case .wheneverHeader: return "whenever-header"
+            }
+        }
+    }
+
+    /// Hero first, always. Sorted by time, the rest stays a real timeline:
+    /// what's still ahead in clock order, then the blocks whose time has
+    /// passed, gathered under "whenever you're ready" — below, not on top,
+    /// so an unticked breakfast is neither the first thing on the screen nor
+    /// a 08:00 sitting under a 14:00. Any other sort is the user's own order.
+    private func feedItems() -> [FeedItem] {
+        let pinned = hero
+        let rest = activeTasks.filter { $0 != pinned?.0 }
+        var items: [FeedItem] = []
+        if let (task, mode) = pinned { items.append(.task(task, mode)) }
+        guard sorting == .time, let mode = pinned?.1, mode != .waiting else {
+            // .waiting: everything left is past its time and the hero is the
+            // earliest of it — its own label already says "whenever".
+            return items + sortTasks(rest).map { .task($0, nil) }
+        }
+        let passed = rest.filter { task in
+            guard let start = task.startTime else { return false }
+            return start.addingTimeInterval(TimeInterval(task.durationMinutes) * 60) <= now
+        }
+        let ahead = rest.filter { !passed.contains($0) }
+        items += sortTasks(ahead).map { .task($0, nil) }
+        if !passed.isEmpty {
+            items.append(.wheneverHeader(passed.count))
+            items += sortTasks(passed).map { .task($0, nil) }
+        }
+        return items
+    }
+
     @ViewBuilder
     private var activeContent: some View {
         if grouping == .none {
-            let list = sortTasks(activeTasks)
-            ForEach(list) { task in
-                TimelineRow(task: task, now: now, isLast: task == list.last) {
-                    toggleCompletion(task)
+            ForEach(feedItems()) { item in
+                switch item {
+                case .task(let task, let mode):
+                    TimelineRow(task: task, now: now, isLast: false, hero: mode) {
+                        toggleCompletion(task)
+                    }
+                    .transition(rowTransition)
+                case .wheneverHeader(let count):
+                    groupHeader(String(localized: "WHENEVER YOU'RE READY", bundle: .appLanguage), count)
+                        .transition(.opacity)
                 }
-                .transition(rowTransition)
             }
         } else {
+            // Grouped is the user's own arrangement: the hero is lit where
+            // their grouping puts it, not pulled out of its group.
+            let pinned = hero
             ForEach(groupedActive()) { group in
                 groupHeader(group.title, group.tasks.count)
                 ForEach(group.tasks) { task in
-                    TimelineRow(task: task, now: now, isLast: task == group.tasks.last) {
+                    TimelineRow(task: task, now: now, isLast: task == group.tasks.last,
+                                hero: task == pinned?.0 ? pinned?.1 : nil) {
                         toggleCompletion(task)
                     }
                     .transition(rowTransition)
@@ -744,6 +634,9 @@ struct TimelineRow: View {
     @Environment(\.managedObjectContext) private var viewContext
     let now: Date
     let isLast: Bool
+    /// Non-nil for the ONE row that opens the day: same gutter, same card
+    /// column, same check circle — taller, tinted, labelled, with Start.
+    var hero: TodayView.HeroMode? = nil
     let onTap: () -> Void
     @State private var showEdit = false
     @State private var showMove = false
@@ -764,6 +657,9 @@ struct TimelineRow: View {
         return CGFloat(min(max(now.timeIntervalSince(s) / total, 0), 1))
     }
     private var cc: CatColors { Cat.named(task.category ?? "work") }
+    private var isHero: Bool { hero != nil }
+    /// The running block and the hero share one look: tinted, inked, lifted.
+    private var isLit: Bool { isNow || isHero }
     private var remaining: Int {
         guard isNow, let s = task.startTime else { return 0 }
         let total = TimeInterval(task.durationMinutes) * 60
@@ -772,15 +668,22 @@ struct TimelineRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
-            // Time label
-            Text(task.startTime?.formatted(.dateTime.hour().minute()) ?? "")
+            // Time label. "Whenever you're ready" has no clock on purpose — a
+            // start time that's hours gone would read as a reproach.
+            Text(hero == .waiting ? "" : (task.startTime?.formatted(.dateTime.hour().minute()) ?? ""))
                 .font(.custom(T.fontHeader, size: 13).weight(.bold))
-                .foregroundColor(isDone ? T.textTer : T.textSec)
+                .foregroundColor(isDone ? T.textTer : (isHero ? cc.ink : T.textSec))
                 .frame(width: 50, alignment: .trailing)
                 .padding(.top, 12)
 
             // Card
             ZStack(alignment: .leading) {
+              VStack(alignment: .leading, spacing: 0) {
+                if let hero {
+                    heroEyebrow(hero)
+                        .padding(.bottom, 10)
+                        .padding(.trailing, 10)
+                }
                 HStack(spacing: 12) {
                     // Tapping the card body opens the actions menu.
                     Menu {
@@ -789,7 +692,7 @@ struct TimelineRow: View {
                         HStack(spacing: 12) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(isNow ? T.surface : cc.bg)
+                                    .fill(isLit ? T.surface : cc.bg)
                                     .frame(width: 40, height: 40)
                                 if isGeneratingSteps {
                                     ProgressView().tint(cc.ink)
@@ -802,15 +705,20 @@ struct TimelineRow: View {
 
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(task.title ?? String(localized: "Untitled", bundle: .appLanguage))
-                                    .font(.custom(T.fontHeader, size: 15).weight(.bold))
+                                    .font(.custom(T.fontHeader, size: isHero ? 20 : 15).weight(isHero ? .heavy : .bold))
+                                    .tracking(isHero ? -0.3 : 0)
+                                    // The hero's column is narrow for 20pt: shrink a
+                                    // long word a little before ever breaking it.
+                                    .lineLimit(isHero ? 3 : nil)
+                                    .minimumScaleFactor(isHero ? 0.8 : 1)
                                     .foregroundColor(isDone ? T.textTer : T.text)
                                     .strikethrough(isDone, color: T.textTer)
                                     .multilineTextAlignment(.leading)
 
                                 HStack(spacing: 6) {
                                     Text(formatDuration(task.durationMinutes))
-                                        .font(.custom(T.fontBody, size: 12).weight(.medium))
-                                        .foregroundColor(T.textSec)
+                                        .font(.custom(T.fontBody, size: isHero ? 13 : 12).weight(.medium))
+                                        .foregroundColor(isHero ? cc.ink : T.textSec)
                                     if isNow {
                                         Circle()
                                             .fill(T.textTer)
@@ -864,14 +772,27 @@ struct TimelineRow: View {
                     .buttonStyle(SpringPressStyle(scale: 0.85))
                     .accessibilityLabel(isDone ? "Mark not done" : "Mark done")
                 }
-                .padding(.vertical, 14)
-                .padding(.leading, 14)
-                .padding(.trailing, 4)
+                if isHero {
+                    // One tap → the hourglass is already running, sized to
+                    // THIS block. The Focus tab clamps to 5–60 min, so the
+                    // label says what it will actually set. Full width: one
+                    // button can't be misaligned, and long words just fit.
+                    TempaButton(label: "Start · \(max(5, min(60, Int(task.durationMinutes)))) min",
+                                variant: .primary, size: .md, fullWidth: true) {
+                        startTask(source: "hero", haptic: false)   // the button has its own
+                    }
+                    .padding(.top, 12)
+                    .padding(.trailing, 10)   // the card's trailing inset is 4 (for the 44pt check target)
+                }
+              }
+              .padding(.vertical, 14)
+              .padding(.leading, 14)
+              .padding(.trailing, 4)
             }
             .background(
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .fill(isNow ? cc.bg : T.surface)
+                        .fill(isLit ? cc.bg : T.surface)
                     // "Now" progress fill — lives here so it's clipped to the card and never bleeds past the corners.
                     if isNow {
                         GeometryReader { geo in
@@ -882,15 +803,15 @@ struct TimelineRow: View {
                     }
                     // Slim category accent on the left edge — replaces the old rail dots.
                     Rectangle()
-                        .fill(isDone ? Color(lightHex: "#D8D2C5", darkHex: "#3A322B") : (isNow ? cc.ink : cc.solid))
+                        .fill(isDone ? Color(lightHex: "#D8D2C5", darkHex: "#3A322B") : (isLit ? cc.ink : cc.solid))
                         .frame(width: 4)
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
             )
             .shadow(
-                color: isNow ? cc.bg : Color(red: 40/255, green: 30/255, blue: 20/255).opacity(0.05),
-                radius: isNow ? 9 : 4,
-                x: 0, y: isNow ? 6 : 2
+                color: isLit ? cc.bg : Color(red: 40/255, green: 30/255, blue: 20/255).opacity(0.05),
+                radius: isLit ? 9 : 4,
+                x: 0, y: isLit ? 6 : 2
             )
             .opacity(isDone ? 0.7 : 1)
             .padding(.bottom, 12)
@@ -908,11 +829,33 @@ struct TimelineRow: View {
         }
     }
 
+    // MARK: - Hero label
+
+    private func heroEyebrow(_ mode: TodayView.HeroMode) -> some View {
+        HStack(spacing: 8) {
+            if mode == .now {
+                PulseDot(size: 8, color: cc.ink, rings: 2, speed: 3)
+            }
+            Group {
+                switch mode {
+                case .now: Text("RIGHT NOW")
+                case .next: Text("UP NEXT")
+                case .waiting: Text("WHENEVER YOU'RE READY")
+                }
+            }
+            .font(.custom(T.fontHeader, size: 11).weight(.heavy))
+            .tracking(2)
+            .foregroundColor(cc.ink)
+            .lineLimit(2)
+            .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
     // MARK: - Task actions menu
 
     @ViewBuilder
     private var taskMenu: some View {
-        Button { startTask() } label: { Label("Start task", systemImage: "play.circle") }
+        Button { startTask(source: "task_row") } label: { Label("Start task", systemImage: "play.circle") }
         Button {
             if subs.isPro { generateSteps() } else { showProPaywall = true }
         } label: { Label("Generate steps", systemImage: "wand.and.stars") }
@@ -931,8 +874,8 @@ struct TimelineRow: View {
         }
     }
 
-    private func startTask() {
-        AnalyticsService.shared.track(.taskStarted, properties: ["source": "task_row"])
+    private func startTask(source: String, haptic: Bool = true) {
+        AnalyticsService.shared.track(.taskStarted, properties: ["source": source])
         AppRouter.shared.focusRequest = FocusRequest(
             category: task.category ?? "work",
             minutes: Int(task.durationMinutes),
@@ -940,7 +883,7 @@ struct TimelineRow: View {
         )
         AppRouter.shared.selectedTab = .focus
         #if os(iOS)
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        if haptic { UIImpactFeedbackGenerator(style: .medium).impactOccurred() }
         #endif
     }
 

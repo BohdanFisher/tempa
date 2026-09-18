@@ -99,13 +99,27 @@ enum DayBuilder {
                 let start = w.addingTimeInterval(delta)
                 guard start > now else { continue }
                 drafts.append(Draft(
-                    title: String(localized: String.LocalizationValue(key), bundle: .appLanguage),
+                    title: routineTitle(key),
                     category: cat, icon: icon, start: start, minutes: minutes,
                     group: groups[g], notes: note
                 ))
             }
         }
         return drafts.sorted { $0.start < $1.start }
+    }
+
+    /// Literal keys on purpose: a key built at runtime is invisible to
+    /// Xcode's string extraction, which then marks the translations stale —
+    /// one "remove stale strings" away from an English-only routine.
+    private static func routineTitle(_ key: String) -> String {
+        switch key {
+        case "Breakfast": return String(localized: "Breakfast", bundle: .appLanguage)
+        case "Lunch": return String(localized: "Lunch", bundle: .appLanguage)
+        case "Dinner": return String(localized: "Dinner", bundle: .appLanguage)
+        case "Recharge break": return String(localized: "Recharge break", bundle: .appLanguage)
+        case "Wind down": return String(localized: "Wind down", bundle: .appLanguage)
+        default: return String(localized: "Tomorrow's plan — 5 minutes", bundle: .appLanguage)
+        }
     }
 
     // MARK: - The user's own tasks
