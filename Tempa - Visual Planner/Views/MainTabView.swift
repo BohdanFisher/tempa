@@ -6,12 +6,12 @@ import StoreKit   // requestReview lives here
 // MARK: - 1. Таби
 
 enum AppTab: Int, CaseIterable {
-    case today = 0, calendar = 1, focus = 2, settings = 3
+    case today = 0, ai = 1, focus = 2, settings = 3
 
     var title: String {
         switch self {
         case .today: String(localized: "Home", bundle: .appLanguage)
-        case .calendar: String(localized: "Calendar", bundle: .appLanguage)
+        case .ai: String(localized: "AI", bundle: .appLanguage)
         case .focus: String(localized: "Focus", bundle: .appLanguage)
         case .settings: String(localized: "Settings", bundle: .appLanguage)
         }
@@ -20,7 +20,7 @@ enum AppTab: Int, CaseIterable {
     var icon: String {
         switch self {
         case .today: "house"
-        case .calendar: "calendar"
+        case .ai: "sparkles"
         case .focus: "flame"
         case .settings: "gearshape"
         }
@@ -29,7 +29,7 @@ enum AppTab: Int, CaseIterable {
     var iconSelected: String {
         switch self {
         case .today: "house.fill"
-        case .calendar: "calendar"
+        case .ai: "sparkles"
         case .focus: "flame.fill"
         case .settings: "gearshape.fill"
         }
@@ -46,6 +46,9 @@ final class AppRouter {
     var focusRequest: FocusRequest?
     /// Set to ask the Today tab to open the add-task sheet (e.g. from Welcome Back).
     var addTaskRequest: UUID?
+    /// The day Home is showing (its week strip can move off today). A task
+    /// created with "+" while Home is in front is planned for that day.
+    var homeDay: Date?
     private init() {}
 }
 
@@ -240,7 +243,7 @@ struct MainTabView: View {
     private func screen(for tab: AppTab) -> some View {
         switch tab {
         case .today:    TodayView()
-        case .calendar: CalendarView()
+        case .ai:       AIView()
         case .focus:    FocusView()
         case .settings: ProfileView()
         }

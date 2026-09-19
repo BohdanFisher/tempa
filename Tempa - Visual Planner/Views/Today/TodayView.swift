@@ -5,43 +5,56 @@ import Combine
 struct TodayView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
-    @FetchRequest private var tasks: FetchedResults<TaskBlock>
+    // Personal planner → small dataset, so everything is fetched once and the
+    // selected day is filtered in memory; the week strip needs the other
+    // days anyway, to mark the ones that have something on them.
+    @FetchRequest(
+        sortDescriptors: [SortDescriptor(\TaskBlock.startTime, order: .forward)],
+        animation: .default
+    ) private var allTasks: FetchedResults<TaskBlock>
+
+    @State private var router = AppRouter.shared
     @State private var now = Date()
-    @State private var dayStart = Calendar.current.startOfDay(for: Date())
+    /// The day on screen. Home opens on today; the week strip moves it.
+    @State private var selectedDate = Calendar.current.startOfDay(for: Date())
+    @State private var todayAnchor = Calendar.current.startOfDay(for: Date())
+    @State private var weekOffset = 0            // 0 == the current week
+    @State private var slideEdge: Edge = .trailing   // which way the day's list slides in
+    @Namespace private var dayNS
     @Environment(\.scenePhase) private var scenePhase
     @State private var showCompleted = false
     @AppStorage("todayGrouping") private var grouping: TodayGrouping = .none
     @AppStorage("todaySorting") private var sorting: TodaySorting = .time
 
     private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+    private let cal = Calendar.current
+    private let weekRange = -26...26             // ±6 months of swipeable weeks
 
-    init() {
-        _tasks = FetchRequest(
-            sortDescriptors: [SortDescriptor(\TaskBlock.startTime, order: .forward)],
-            predicate: Self.dayPredicate(from: Calendar.current.startOfDay(for: Date())),
-            animation: .default
-        )
+    private var isToday: Bool { cal.isDate(selectedDate, inSameDayAs: now) }
+
+    /// The selected day's tasks, in clock order.
+    private var tasks: [TaskBlock] {
+        allTasks.filter { task in
+            guard let start = task.startTime else { return false }
+            return cal.isDate(start, inSameDayAs: selectedDate)
+        }
     }
 
-    private static func dayPredicate(from start: Date) -> NSPredicate {
-        let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
-        return NSPredicate(format: "startTime >= %@ AND startTime < %@", start as NSDate, end as NSDate)
-    }
-
-    /// The fetch window is baked at init — roll it forward once a new day
-    /// starts, or the screen keeps living in yesterday after midnight.
-    private func refreshDayWindowIfNeeded() {
-        let today = Calendar.current.startOfDay(for: now)
-        guard today != dayStart else { return }
-        dayStart = today
-        tasks.nsPredicate = Self.dayPredicate(from: today)
+    /// Midnight: the strip's anchor week and the selected day move together —
+    /// never a strip on the new week with yesterday still selected as "today".
+    private func rollOverIfNeeded() {
+        let today = cal.startOfDay(for: now)
+        guard today != todayAnchor else { return }
+        if cal.isDate(selectedDate, inSameDayAs: todayAnchor) { selectedDate = today }
+        todayAnchor = today
     }
 
     private var completedCount: Int { tasks.filter(\.isCompleted).count }
     private var activeTasks: [TaskBlock] { tasks.filter { !$0.isCompleted } }
     private var doneTasks: [TaskBlock] { tasks.filter(\.isCompleted) }
     private var currentTask: TaskBlock? {
-        tasks.first { t in
+        guard isToday else { return nil }
+        return tasks.first { t in
             guard !t.isCompleted, let s = t.startTime else { return false }
             let e = s.addingTimeInterval(TimeInterval(t.durationMinutes) * 60)
             return now >= s && now < e
@@ -55,20 +68,15 @@ struct TodayView: View {
     /// first one, unless the user groups their day) — same size, same gutter,
     /// same card as every other row, only filled with its category colour.
     /// No label, no button of its own: the founder's call, for a calm grid.
+    /// Only today has one: on any other day nothing is "now" or "next".
     enum HeroMode { case now, next, waiting }
     private var hero: (TaskBlock, HeroMode)? {
+        guard isToday else { return nil }
         if let current = currentTask { return (current, .now) }
         if let next = activeTasks.first(where: { ($0.startTime ?? .distantPast) > now }) { return (next, .next) }
         if let waiting = activeTasks.first(where: { ($0.startTime ?? .distantFuture) <= now }) { return (waiting, .waiting) }
         return nil
     }
-    private var dateString: String {
-        let f = DateFormatter()
-        f.locale = AppLanguage.current.locale
-        f.setLocalizedDateFormatFromTemplate("EEEEMMMd")
-        return f.string(from: now)
-    }
-
     var body: some View {
         ZStack {
             T.bg.ignoresSafeArea()
@@ -76,8 +84,12 @@ struct TodayView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     greetingSection
+                    weekStrip
                     dayPulseCard
+                    // The day's list slides in from the direction you navigated.
                     timelineSection
+                        .id(selectedDate)
+                        .transition(.push(from: slideEdge))
                 }
                 .padding(.bottom, TempaTabBar.contentClearance)
                 .animation(.spring(response: 0.5, dampingFraction: 0.85), value: hero?.0.objectID)
@@ -86,34 +98,181 @@ struct TodayView: View {
         .confettiHost()
         .onReceive(timer) { _ in
             now = Date()
-            refreshDayWindowIfNeeded()
+            rollOverIfNeeded()
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 now = Date()
-                refreshDayWindowIfNeeded()
+                rollOverIfNeeded()
             }
         }
+        .onChange(of: weekOffset) { old, new in
+            // Only react to an actual swipe: if the selected day already lives
+            // in the newly visible week (the "Today" pill just set both), do
+            // nothing. Otherwise keep the same weekday selected, so the list
+            // follows the visible week.
+            let visible = weekDays(offset: new)
+            guard !visible.contains(where: { cal.isDate($0, inSameDayAs: selectedDate) }) else { return }
+            if let shifted = cal.date(byAdding: .weekOfYear, value: new - old, to: selectedDate) {
+                slideEdge = new > old ? .trailing : .leading
+                withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) { selectedDate = cal.startOfDay(for: shifted) }
+            }
+        }
+        // The "+" plans for the day you are looking at. Said again every
+        // time Home comes to the front, so whatever else touched the router
+        // in between, the day on screen is the day that counts.
+        .onChange(of: selectedDate, initial: true) { _, day in
+            router.homeDay = day
+        }
+        .onAppear { router.homeDay = selectedDate }
     }
 
-    // MARK: - Greeting
+    // MARK: - Header (month, the day's name, back-to-today)
 
     private var greetingSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack {
-                Text(dateString)
-                    .font(.custom(T.fontHeader, size: 26).weight(.heavy))
-                    .tracking(-0.4)
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(monthTitle.uppercased())
+                    .font(.custom(T.fontHeader, size: 13).weight(.semibold))
+                    .tracking(0.5)
+                    .foregroundColor(T.textSec)
+                Text(selectedTitle)
+                    .font(.custom(T.fontHeader, size: 30).weight(.heavy))
+                    .tracking(-0.6)
                     .foregroundColor(T.text)
-
-                Spacer()
-
-                organizeMenu
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
             }
+
+            Spacer(minLength: 8)
+
+            if !isToday {
+                Button {
+                    slideEdge = selectedDate > now ? .leading : .trailing
+                    withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) {
+                        selectedDate = cal.startOfDay(for: Date())
+                        weekOffset = 0
+                    }
+                    #if os(iOS)
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    #endif
+                } label: {
+                    Text("Today")
+                        .font(.custom(T.fontHeader, size: 13).weight(.bold))
+                        .foregroundColor(T.primary)
+                        .padding(.horizontal, 14)
+                        .frame(height: 44)
+                        .background(Capsule().fill(T.primary.opacity(0.12)))
+                }
+                .buttonStyle(.plain)
+                .transition(.scale(scale: 0.8).combined(with: .opacity))
+            }
+
+            organizeMenu
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
-        .padding(.bottom, 16)
+        .padding(.bottom, 14)
+    }
+
+    // MARK: - Swipeable week strip
+
+    private var weekStrip: some View {
+        let marked = daysWithTasks   // compute once, not per chip
+        return TabView(selection: $weekOffset) {
+            ForEach(weekRange, id: \.self) { offset in
+                HStack(spacing: 6) {
+                    ForEach(weekDays(offset: offset), id: \.self) { day in
+                        dayChip(day, marked: marked)
+                    }
+                }
+                .padding(.horizontal, 20)
+                .frame(maxHeight: .infinity, alignment: .top)
+                .tag(offset)
+            }
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .frame(height: 80)
+    }
+
+    private func dayChip(_ day: Date, marked: Set<Date>) -> some View {
+        let isSelected = cal.isDate(day, inSameDayAs: selectedDate)
+        let isThisToday = cal.isDateInToday(day)
+        let hasTasks = marked.contains(day)
+
+        return Button {
+            slideEdge = day >= selectedDate ? .trailing : .leading
+            withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) { selectedDate = day }
+            #if os(iOS)
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            #endif
+        } label: {
+            VStack(spacing: 3) {
+                Text(weekdayLetter(day))
+                    .font(.custom(T.fontHeader, size: 11).weight(.bold))
+                    .foregroundColor(isSelected ? Color.white.opacity(0.9) : T.textTer)
+                Text("\(cal.component(.day, from: day))")
+                    .font(.custom(T.fontHeader, size: 16).weight(.heavy))
+                    .foregroundColor(isSelected ? .white : (isThisToday ? T.primary : T.text))
+                Circle()
+                    .fill(hasTasks ? (isSelected ? Color.white : T.primary) : Color.clear)
+                    .frame(width: 5, height: 5)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 9)
+            .background {
+                // The coral fill glides from day to day instead of teleporting.
+                if isSelected {
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(T.primary)
+                        .matchedGeometryEffect(id: "daySel", in: dayNS)
+                } else if isThisToday {
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(T.primary.opacity(0.10))
+                }
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var daysWithTasks: Set<Date> {
+        Set(allTasks.compactMap { $0.startTime.map { cal.startOfDay(for: $0) } })
+    }
+
+    private func weekDays(offset: Int) -> [Date] {
+        let base = cal.dateInterval(of: .weekOfYear, for: todayAnchor)?.start ?? todayAnchor
+        let weekStart = cal.date(byAdding: .weekOfYear, value: offset, to: base) ?? base
+        return (0..<7).compactMap { cal.date(byAdding: .day, value: $0, to: weekStart) }
+            .map { cal.startOfDay(for: $0) }
+    }
+
+    private func weekdayLetter(_ day: Date) -> String {
+        let f = DateFormatter()
+        f.locale = AppLanguage.current.locale
+        let symbols = f.veryShortWeekdaySymbols ?? ["S", "M", "T", "W", "T", "F", "S"]
+        return symbols[cal.component(.weekday, from: day) - 1]
+    }
+
+    private var monthTitle: String {
+        let f = DateFormatter()
+        f.locale = AppLanguage.current.locale
+        f.setLocalizedDateFormatFromTemplate("yMMMM")
+        return f.string(from: selectedDate)
+    }
+
+    private var selectedTitle: String {
+        if cal.isDateInToday(selectedDate) { return String(localized: "Today", bundle: .appLanguage) }
+        if cal.isDateInTomorrow(selectedDate) { return String(localized: "Tomorrow", bundle: .appLanguage) }
+        if cal.isDateInYesterday(selectedDate) { return String(localized: "Yesterday", bundle: .appLanguage) }
+        return fullDayTitle
+    }
+
+    private var fullDayTitle: String {
+        let f = DateFormatter()
+        f.locale = AppLanguage.current.locale
+        f.setLocalizedDateFormatFromTemplate("EEEEMMMd")
+        return f.string(from: selectedDate)
     }
 
     private var isOrganizing: Bool { grouping != .none || sorting != .time }
@@ -164,7 +323,9 @@ struct TodayView: View {
             PulseDot(size: 10, color: T.primary, rings: 2, speed: 3)
 
             VStack(alignment: .leading, spacing: 1) {
-                Text("Your tempo today")
+                Group {
+                    if isToday { Text("Your tempo today") } else { Text(verbatim: fullDayTitle) }
+                }
                     .font(.custom(T.fontBody, size: 13).weight(.medium))
                     .foregroundColor(T.textSec)
                 Text("\(completedCount) of \(tasks.count) done · steady pace")
@@ -199,10 +360,10 @@ struct TodayView: View {
     private var timelineSection: some View {
         VStack(spacing: 0) {
             if tasks.isEmpty {
-                emptyTimeline
+                if isToday { emptyTimeline } else { emptyDay }
             } else {
                 if activeTasks.isEmpty {
-                    allDoneCard
+                    if isToday { allDoneCard }
                 } else {
                     activeContent
                 }
@@ -279,7 +440,11 @@ struct TodayView: View {
             // their grouping puts it, not pulled out of its group.
             let pinned = hero
             ForEach(groupedActive()) { group in
-                groupHeader(group.title, group.tasks.count)
+                if let part = group.part {
+                    dayPartHeader(part, group.tasks.count)
+                } else {
+                    groupHeader(group.title, group.tasks.count)
+                }
                 ForEach(group.tasks) { task in
                     TimelineRow(task: task, now: now, isLast: task == group.tasks.last,
                                 isHero: task == pinned?.0) {
@@ -318,6 +483,27 @@ struct TodayView: View {
         .padding(.bottom, 8)
     }
 
+    /// Morning / afternoon / evening, exactly as the calendar drew them: the
+    /// part's own icon in its own colour, the name, the count on the right.
+    private func dayPartHeader(_ part: DayPart, _ count: Int) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: part.icon)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(part.tint)
+            Text(part.label)
+                .font(.custom(T.fontHeader, size: 12).weight(.heavy))
+                .tracking(1.5)
+                .foregroundColor(T.textSec)
+            Spacer()
+            Text("\(count)")
+                .font(.custom(T.fontBody, size: 12).weight(.medium))
+                .foregroundColor(T.textTer)
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 18)
+        .padding(.bottom, 6)
+    }
+
     // MARK: - Done (collapsed) section
 
     private var doneSection: some View {
@@ -332,7 +518,9 @@ struct TodayView: View {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 17))
                         .foregroundColor(T.secondary)
-                    Text("Done today · \(doneTasks.count)")
+                    Group {
+                        if isToday { Text("Done today · \(doneTasks.count)") } else { Text("Done · \(doneTasks.count)") }
+                    }
                         .font(.custom(T.fontHeader, size: 14).weight(.bold))
                         .foregroundColor(T.textSec)
                     Spacer()
@@ -386,6 +574,25 @@ struct TodayView: View {
         .padding(.horizontal, 20)
     }
 
+    /// A day other than today with nothing on it — a fact, not a task.
+    private var emptyDay: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "calendar.badge.plus")
+                .font(.system(size: 34))
+                .foregroundColor(T.textTer)
+            Text("Nothing scheduled")
+                .font(.custom(T.fontHeader, size: 16).weight(.bold))
+                .foregroundColor(T.text)
+            Text("Tap + to plan something for this day.")
+                .font(.custom(T.fontBody, size: 13))
+                .foregroundColor(T.textSec)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 40)
+        .padding(.horizontal, 20)
+    }
+
     private var emptyTimeline: some View {
         VStack(spacing: 16) {
             Image(systemName: "sun.max.fill")
@@ -421,6 +628,12 @@ struct TodayView: View {
         switch grouping {
         case .none:
             return [TaskGroupSection(title: "", tasks: sorted)]
+        case .timeOfDay:
+            // Buckets follow the clock, so inside each one the user's sort applies.
+            return DayPart.allCases.compactMap { part in
+                let items = sorted.filter { DayPart.of($0.startTime ?? selectedDate, cal) == part }
+                return items.isEmpty ? nil : TaskGroupSection(title: part.label, tasks: items, part: part)
+            }
         case .priority:
             return [Int16(3), 2, 1, 0].compactMap { p in
                 let items = sorted.filter { $0.priority == p }
@@ -804,14 +1017,53 @@ struct TaskGroupSection: Identifiable {
     var id: String { title }
     let title: String
     let tasks: [TaskBlock]
+    /// Set for the time-of-day grouping — it has a header of its own.
+    var part: DayPart? = nil
+}
+
+/// The three stretches of a day the list can be split into.
+enum DayPart: Int, CaseIterable, Hashable {
+    case morning, afternoon, evening
+
+    static func of(_ date: Date, _ cal: Calendar) -> DayPart {
+        let h = cal.component(.hour, from: date)
+        if h < 12 { return .morning }
+        if h < 17 { return .afternoon }
+        return .evening
+    }
+
+    var label: String {
+        switch self {
+        case .morning: return String(localized: "MORNING", bundle: .appLanguage)
+        case .afternoon: return String(localized: "AFTERNOON", bundle: .appLanguage)
+        case .evening: return String(localized: "EVENING", bundle: .appLanguage)
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .morning: return "sunrise.fill"
+        case .afternoon: return "sun.max.fill"
+        case .evening: return "moon.stars.fill"
+        }
+    }
+
+    var tint: Color {
+        switch self {
+        case .morning: return Color(hex: "#F0B450")
+        case .afternoon: return T.primary
+        case .evening: return Color(hex: "#8E78D0")
+        }
+    }
 }
 
 enum TodayGrouping: String, CaseIterable {
-    case none, priority, duration, eisenhower
+    case none, timeOfDay, priority, duration, eisenhower
 
     var label: String {
         switch self {
         case .none: return String(localized: "No grouping", bundle: .appLanguage)
+        case .timeOfDay: return String(localized: "By time of day", bundle: .appLanguage)
         case .priority: return String(localized: "By priority", bundle: .appLanguage)
         case .duration: return String(localized: "By duration", bundle: .appLanguage)
         case .eisenhower: return String(localized: "Eisenhower matrix", bundle: .appLanguage)
@@ -820,6 +1072,7 @@ enum TodayGrouping: String, CaseIterable {
     var icon: String {
         switch self {
         case .none: return "rectangle.grid.1x2"
+        case .timeOfDay: return "sun.horizon.fill"
         case .priority: return "flag.fill"
         case .duration: return "clock.fill"
         case .eisenhower: return "square.grid.2x2.fill"

@@ -8,7 +8,7 @@ struct AddTaskSheet: View {
 
     @State private var title = ""
     @State private var selectedCategory = "personal"
-    @State private var startTime = Self.nextRoundedQuarter()
+    @State private var startTime = Self.defaultStart()
     @State private var durationMinutes: Double = 30
     @State private var selectedPriority = 0   // 0 none · 1 low · 2 medium · 3 high
     @State private var breakdownSteps: [MicroStepData] = []
@@ -155,18 +155,14 @@ struct AddTaskSheet: View {
                     Text("AI")
                         .font(.custom(T.fontHeader, size: 11).weight(.heavy))
                         .tracking(0.5)
+                        .textCase(.uppercase)   // the tab uses the same word in sentence case
                 }
                 .foregroundColor(T.primary)
                 .padding(.horizontal, 9)
                 .padding(.vertical, 4)
                 .background(
                     RoundedRectangle(cornerRadius: 9, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [Color(lightHex: "#FFE9E1", darkHex: "#2C1F18"), Color(lightHex: "#D6F0E7", darkHex: "#16302A")],
-                                startPoint: .topLeading, endPoint: .bottomTrailing
-                            )
-                        )
+                        .fill(T.aiTint)
                 )
             }
 
@@ -322,12 +318,7 @@ struct AddTaskSheet: View {
             HStack {
                 HStack(spacing: 8) {
                     RoundedRectangle(cornerRadius: 9, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [Color(lightHex: "#FFE9E1", darkHex: "#2C1F18"), Color(lightHex: "#D6F0E7", darkHex: "#16302A")],
-                                startPoint: .topLeading, endPoint: .bottomTrailing
-                            )
-                        )
+                        .fill(T.aiTint)
                         .frame(width: 28, height: 28)
                         .overlay(
                             Image(systemName: "sparkles")
@@ -503,6 +494,20 @@ struct AddTaskSheet: View {
         }
         .padding(.horizontal, 22)
         .padding(.top, 10)
+    }
+
+    /// The next quarter hour — or, when Home is looking at another day (its
+    /// week strip), nine in the morning of THAT day: "+" plans for the day
+    /// you are looking at.
+    private static func defaultStart() -> Date {
+        let cal = Calendar.current
+        let router = AppRouter.shared
+        guard router.selectedTab == .today, let day = router.homeDay,
+              !cal.isDateInToday(day), day > Date(),
+              let nine = cal.date(bySettingHour: 9, minute: 0, second: 0, of: day) else {
+            return nextRoundedQuarter()
+        }
+        return nine
     }
 
     private static func nextRoundedQuarter() -> Date {

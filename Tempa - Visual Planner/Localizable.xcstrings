@@ -2599,6 +2599,58 @@
         }
       }
     },
+    "A short conversation for a foggy head. It sees your day and names one thing to start with." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein kurzes Gespräch für neblige Tage. Tempa sieht deinen Tag und nennt dir eine Sache zum Anfangen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una conversación corta para cuando tienes la cabeza espesa. Ve tu día y te dice por dónde empezar."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lyhyt keskustelu sumuiseen päähän. Tempa näkee päiväsi ja kertoo yhden asian, josta aloittaa."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une courte conversation quand la tête est dans le brouillard. Tempa voit ta journée et nomme une chose par où commencer."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En kort samtale for en tåkete dag. Tempa ser dagen din og sier én ting du kan begynne med."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een kort gesprek voor als je hoofd vol mist zit. Tempa ziet je dag en noemt één ding om mee te beginnen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma conversa curta para a cabeça nublada. O Tempa vê o seu dia e diz uma coisa para começar."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Коротка розмова, коли в голові туман. Tempa бачить твій день і називає одну річ, з якої почати."
+          }
+        }
+      }
+    },
     "About you · 1 of 3" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3390,7 +3442,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TEKOÄLY"
+            "value" : "Tekoäly"
           }
         },
         "fr" : {
@@ -3403,6 +3455,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "KI"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IA"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI"
           }
         }
       },
@@ -4804,6 +4874,58 @@
         }
       }
     },
+    "Both ways end in a list you check — nothing is added on its own." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beide Wege enden in einer Liste, die du durchgehst — nichts wird von allein hinzugefügt."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los dos caminos terminan en una lista que revisas: nada se añade solo."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Molemmat tiet päättyvät listaan, jonka käyt läpi — mitään ei lisätä itsestään."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les deux chemins finissent par une liste que tu vérifies — rien ne s'ajoute tout seul."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begge veier ender i en liste du går gjennom — ingenting legges til av seg selv."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beide wegen eindigen in een lijst die je nakijkt — er wordt niets vanzelf toegevoegd."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os dois caminhos terminam numa lista que você confere — nada é adicionado sozinho."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обидва шляхи закінчуються списком, який ти переглядаєш — нічого не додається само."
+          }
+        }
+      }
+    },
     "Break it down" : {
       "localizations" : {
         "de" : {
@@ -5373,6 +5495,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "За часом"
+          }
+        }
+      }
+    },
+    "By time of day" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach Tageszeit"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por momento del día"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuorokaudenajan mukaan"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Par moment de la journée"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etter tid på dagen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Op dagdeel"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por período do dia"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "За часом доби"
           }
         }
       }
@@ -13450,6 +13624,58 @@
         }
       }
     },
+    "Let's have a look" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schauen wir mal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vamos a ver"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Katsotaanpa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allons voir"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La oss se"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Even kijken"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vamos ver"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Давай подивимось"
+          }
+        }
+      }
+    },
     "Light" : {
       "localizations" : {
         "de" : {
@@ -18865,6 +19091,58 @@
         }
       }
     },
+    "Say everything that's on your mind. Tempa turns it into tasks and finds them free slots." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprich alles aus, was dir im Kopf herumgeht. Tempa macht Aufgaben daraus und findet freie Zeitfenster."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Di todo lo que tienes en la cabeza. Tempa lo convierte en tareas y les busca huecos libres."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sano ääneen kaikki, mikä on mielessäsi. Tempa tekee siitä tehtäviä ja etsii niille vapaat paikat."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dis tout ce que tu as en tête. Tempa en fait des tâches et leur trouve des créneaux libres."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si alt du har i hodet. Tempa gjør det om til oppgaver og finner ledige luker til dem."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeg alles wat in je hoofd zit. Tempa maakt er taken van en zoekt er vrije plekken bij."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fale tudo o que está na sua cabeça. O Tempa transforma em tarefas e acha horários livres."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проговори все, що в голові. Tempa зробить із цього задачі й знайде для них вільні слоти."
+          }
+        }
+      }
+    },
     "Say everything you need to do…" : {
       "localizations" : {
         "de" : {
@@ -21629,6 +21907,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Тисни +, щоб щось додати,\nабо хай AI розіб'є на кроки."
+          }
+        }
+      }
+    },
+    "Tap + to plan something for this day." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tippe auf +, um etwas für diesen Tag zu planen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca + para planear algo para este día."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Napauta +, niin voit suunnitella jotain tälle päivälle."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touche + pour prévoir quelque chose ce jour-là."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trykk på + for å planlegge noe denne dagen."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tik op + om iets voor deze dag te plannen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque em + para planejar algo para este dia."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тисни +, щоб запланувати щось на цей день."
           }
         }
       }
@@ -24722,6 +25052,58 @@
         }
       }
     },
+    "Two ways in — whichever suits you right now." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwei Wege hinein — je nachdem, was dir gerade liegt."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dos maneras de empezar: la que te venga mejor ahora."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaksi tapaa aloittaa — kumpi vain sopii sinulle juuri nyt."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deux façons d'entrer — celle qui te va le mieux là, maintenant."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To veier inn — den som passer deg akkurat nå."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twee manieren om te beginnen — wat jou nu het beste past."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dois jeitos de começar — o que couber melhor agora."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Двома способами — як тобі зручніше зараз."
+          }
+        }
+      }
+    },
     "Type a reply…" : {
       "localizations" : {
         "de" : {
@@ -27275,6 +27657,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "КОЛИ ЗАХОЧЕШ"
+          }
+        }
+      }
+    },
+    "Where do I start?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wo fange ich an?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Por dónde empiezo?"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mistä aloitan?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je commence par quoi ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvor begynner jeg?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waar begin ik?"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por onde eu começo?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "З чого почати?"
           }
         }
       }

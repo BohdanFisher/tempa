@@ -23,6 +23,12 @@ enum T {
                  Color(lightHex: "#FF7A59", darkHex: "#B5503A")],
         startPoint: .topLeading, endPoint: .bottomTrailing
     )
+    /// The soft "this is the AI part" wash — coral into mint.
+    static let aiTint = LinearGradient(
+        colors: [Color(lightHex: "#FFE9E1", darkHex: "#2C1F18"),
+                 Color(lightHex: "#D6F0E7", darkHex: "#16302A")],
+        startPoint: .topLeading, endPoint: .bottomTrailing
+    )
     static let secondaryFill = LinearGradient(
         colors: [Color(lightHex: "#6BD6C0", darkHex: "#3FA48F"),
                  Color(lightHex: "#4EC8B0", darkHex: "#2F8C79")],
