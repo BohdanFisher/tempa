@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA7B0000000000000000FB03 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000FB02 /* FacebookCore */; };
+		CA7B0000000000000000FB04 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000FB05 /* FacebookCore */; };
 		CA7B0000000000000000PH03 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000PH02 /* PostHog */; };
 		CA7B0000000000000000PH04 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000PH05 /* PostHog */; };
 		CA7B0000000000000000RC03 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000RC02 /* RevenueCat */; };
 		CA7B0000000000000000TT03 /* TikTokBusinessSDK in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000TT02 /* TikTokBusinessSDK */; };
 		CA7B0000000000000000TT04 /* TikTokBusinessSDK in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000TT05 /* TikTokBusinessSDK */; };
-		CA7B0000000000000000FB03 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000FB02 /* FacebookCore */; };
-		CA7B0000000000000000FB04 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = CA7B0000000000000000FB05 /* FacebookCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -354,6 +354,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Tempa - Visual Planner/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Tempa;
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Tempa shows your calendar events on your day and plans your tasks around them. They stay on your iPhone and in your own iCloud.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Tempa needs your microphone to listen when you speak a task.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Tempa uses speech recognition to turn your voice into tasks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -398,6 +399,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Tempa - Visual Planner/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Tempa;
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Tempa shows your calendar events on your day and plans your tasks around them. They stay on your iPhone and in your own iCloud.";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Tempa needs your microphone to listen when you speak a task.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Tempa uses speech recognition to turn your voice into tasks.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -676,6 +678,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CA7B0000000000000000FB01 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 18.1.1;
+			};
+		};
 		CA7B0000000000000000PH01 /* XCRemoteSwiftPackageReference "posthog-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/PostHog/posthog-ios.git";
@@ -700,17 +710,19 @@
 				minimumVersion = 1.7.2;
 			};
 		};
-		CA7B0000000000000000FB01 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/facebook/facebook-ios-sdk.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 18.1.1;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CA7B0000000000000000FB02 /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7B0000000000000000FB01 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		CA7B0000000000000000FB05 /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7B0000000000000000FB01 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
 		CA7B0000000000000000PH02 /* PostHog */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CA7B0000000000000000PH01 /* XCRemoteSwiftPackageReference "posthog-ios" */;
@@ -735,16 +747,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA7B0000000000000000TT01 /* XCRemoteSwiftPackageReference "tiktok-business-ios-sdk" */;
 			productName = TikTokBusinessSDK;
-		};
-		CA7B0000000000000000FB02 /* FacebookCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CA7B0000000000000000FB01 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
-			productName = FacebookCore;
-		};
-		CA7B0000000000000000FB05 /* FacebookCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CA7B0000000000000000FB01 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
-			productName = FacebookCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

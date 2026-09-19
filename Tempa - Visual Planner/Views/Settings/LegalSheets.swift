@@ -78,46 +78,70 @@ private struct LegalSheet: View {
 // MARK: - Privacy Policy
 
 struct PrivacyPolicySheet: View {
+    // Keep in step with website/privacy.html — the same fifteen sections, word
+    // for word. Every claim here is a promise about what the code does: if a
+    // data flow changes (a new SDK, anything new in an AI prompt, anything
+    // about calendars), this text changes in the same commit.
     var body: some View {
-        LegalSheet(title: "Privacy Policy", updated: "July 29, 2026", sections: [
+        LegalSheet(title: "Privacy Policy", updated: "September 19, 2026", sections: [
             LegalSection(
                 heading: "1. The short version",
-                body: "Your plans stay yours. Tempa has no accounts, no ads, no analytics and no servers of its own. Almost everything lives on your device."
+                body: "Your plans stay yours. Tempa has no accounts and no servers of its own that hold your data — your tasks live on your device and in your own iCloud. A few services help the app work: AI planning, subscriptions, anonymous usage statistics and ad measurement. This page says exactly what each of them receives. We never sell your data, and nothing you type is ever used for advertising."
             ),
             LegalSection(
                 heading: "2. What stays on your device",
-                body: "Your tasks, schedule, completions, focus history and stats are stored on your device and synced through your private iCloud (CloudKit). They are encrypted in your Apple account — we cannot read them."
+                body: "Your tasks, schedule, completions, focus history and settings are stored on your device and synced through your private iCloud (CloudKit). They sit in your Apple account, out of our reach — we cannot read them."
             ),
             LegalSection(
                 heading: "3. What is sent to AI",
-                body: "Only the task text you type or speak is sent to Anthropic's API when you use an AI feature (break into steps, plan my day, Ask Tempa) — so it can be turned into a plan. Per Anthropic's API terms, it isn't used to train models. Your schedule, stats and everything else are never sent."
+                body: "When you use an AI feature (break into steps, plan my day, Ask Tempa), the text you typed or spoke is sent to Anthropic's API so it can be turned into a plan. So the plan fits your day, the request can also include the titles and times of your own tasks for the days involved, your wake time, your energy-dip time, and the current date and time zone. Events from your calendars are never included. Per Anthropic's API terms, this data isn't used to train models. Nothing is sent unless you use an AI feature."
             ),
             LegalSection(
                 heading: "4. Voice input",
-                body: "Speech is transcribed by Apple's speech services on your device where available; Tempa only receives the resulting text. Audio is handled under Apple's privacy policy."
+                body: "Speech is turned into text by Apple's speech recognition — on your device where available, otherwise on Apple's servers under Apple's privacy policy. Tempa only receives the resulting text and never stores audio."
             ),
             LegalSection(
-                heading: "5. Notifications",
+                heading: "5. Your calendars",
+                body: "Connecting a calendar is optional. With your permission, Tempa reads events from the calendars set up on your iPhone (iCloud, Google, Outlook and others) and shows them as blocks on your day, so your tasks are planned around them. Tempa only reads: it never adds, changes or deletes anything in your calendar. Imported events are kept like your tasks — on your device and in your own iCloud. They are never sent to us, to the AI, to analytics or to advertisers. Switch it off any time in Settings → Calendar, and the upcoming imported events are removed."
+            ),
+            LegalSection(
+                heading: "6. Google Calendar",
+                body: "If you choose to sign in with Google, Tempa asks for read-only access to your list of calendars and to their events. It uses this only to show your Google Calendar events on your day and to plan your tasks around them, on your device. The data goes straight from Google to your phone — Tempa has no server — and is stored only on your device and in your own iCloud. It is never shared with third parties, never used for advertising, and never used to train AI models. The sign-in token is kept in your iPhone's Keychain. Disconnect in Settings → Calendar and access is revoked and the upcoming imported events are removed; you can also remove Tempa's access at https://myaccount.google.com/permissions. Tempa's use and transfer of information received from Google APIs to any other app will adhere to the Google API Services User Data Policy (https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements."
+            ),
+            LegalSection(
+                heading: "7. Notifications",
                 body: "Reminders and nudges are scheduled locally on your device. They never leave it."
             ),
             LegalSection(
-                heading: "6. Purchases",
-                body: "Subscriptions are processed entirely by Apple. We never see your payment details — only an anonymous receipt that says Pro is active."
+                heading: "8. Purchases",
+                body: "Subscriptions are processed entirely by Apple; we never see your payment details. So we know a subscription is active and can understand our revenue, the purchase record (product, price, dates and an anonymous app identifier — no name, no email) is shared with RevenueCat, our subscription analytics provider. If you installed Tempa from an Apple Search Ads ad, Apple's attribution token is passed along so we know which campaign worked."
             ),
             LegalSection(
-                heading: "7. No tracking",
-                body: "No ad networks, no tracking SDKs, no fingerprinting, no data brokers. We don't build profiles of you."
+                heading: "9. Anonymous usage statistics",
+                body: "To see where the app confuses people, Tempa records anonymous events with PostHog, hosted in the EU: which onboarding screens were viewed, that a task was completed, a focus session started, the paywall shown, a calendar connected. Counters only — never task text, names, calendar contents or anything you type. Events carry a random identifier and basic device information (model, iOS version, app version, language, and an approximate region derived from your IP address). There are no accounts, so they are not tied to your identity."
             ),
             LegalSection(
-                heading: "8. Your control",
-                body: "Delete a task and it's gone from your devices and your iCloud. Delete the app and its data goes with it (iCloud data can also be removed in iOS Settings → iCloud). There's no account to close because there's no account."
+                heading: "10. Ad measurement",
+                body: "We advertise Tempa on TikTok, Meta (Facebook and Instagram) and Apple Search Ads. So those campaigns can be measured, the TikTok and Meta SDKs inside the app report a few standard events — install, app open, onboarding finished, paywall viewed, trial started, and a purchase with its value — along with the device information those SDKs collect (such as device model, iOS version, IP address and Apple's SKAdNetwork attribution data). Tempa never shows Apple's tracking prompt, so these SDKs don't receive your advertising identifier (IDFA). Nothing you type, no task and no calendar data is ever shared with them."
             ),
             LegalSection(
-                heading: "9. Changes",
+                heading: "11. This website",
+                body: "tempa-planner.app uses Google Analytics to count visits and taps on the download button. It sets cookies and sees your IP address and browser details. It has no connection to what you do inside the app."
+            ),
+            LegalSection(
+                heading: "12. Your control",
+                body: "Delete a task and it's gone from your devices and your iCloud. Delete the app and its data goes with it (iCloud data can also be removed in iOS Settings → iCloud). Calendars can be switched off in Settings → Calendar or in iOS Settings → Privacy & Security → Calendars. There's no account to close because there's no account. To ask what statistics may be linked to your device, or to have them deleted, email us at support@tempa-planner.app."
+            ),
+            LegalSection(
+                heading: "13. Children",
+                body: "Tempa is not meant for children under 13, and we do not knowingly collect their data."
+            ),
+            LegalSection(
+                heading: "14. Changes",
                 body: "If this policy changes in a meaningful way, the app will say so. Continued use after changes means you accept the updated policy."
             ),
             LegalSection(
-                heading: "10. Contact",
+                heading: "15. Contact",
                 body: "Questions about this policy? Email us at support@tempa-planner.app."
             ),
         ])

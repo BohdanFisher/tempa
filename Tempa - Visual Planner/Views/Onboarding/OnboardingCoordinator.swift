@@ -26,7 +26,7 @@ final class OnboardingState {
     var notificationsGranted = false
     var showPaywall = false
 
-    let totalSteps = 19
+    let totalSteps = 20
 
     func next() {
         if currentStep < totalSteps - 1 { currentStep += 1 }
@@ -111,9 +111,9 @@ struct OnboardingFlow: View {
     /// Funnel step names for analytics — index-aligned with screenForStep.
     private static let stepNames = [
         "welcome", "problem", "solution", "name", "quiz_self", "quiz_pain",
-        "hours_lost", "math", "mirror", "micro_yes", "wake_time", "ai_demo",
-        "building", "summary", "forgiveness", "social_proof", "notifications",
-        "commitment", "trial_gift",
+        "hours_lost", "math", "mirror", "micro_yes", "wake_time", "calendar_sync",
+        "ai_demo", "building", "summary", "forgiveness", "social_proof",
+        "notifications", "commitment", "trial_gift",
     ]
     private static func stepName(_ i: Int) -> String {
         stepNames.indices.contains(i) ? stepNames[i] : "step_\(i)"
@@ -121,10 +121,15 @@ struct OnboardingFlow: View {
 
     /// Three acts (the funnel is a story): Introduction 0–8 builds the problem
     /// and lets the user tell us — and themselves — why they're here; Climax
-    /// 9–13 has them DO the core thing, set their own rhythm, watch the app
-    /// build on it and see the result; Conclusion 14–18 mirrors it all back
+    /// 9–14 has them DO the core thing, set their own rhythm, watch the app
+    /// build on it and see the result; Conclusion 15–19 mirrors it all back
     /// and walks into the paywall.
-    /// (Wake time comes BEFORE the day plan: the plan is laid out from it.
+    /// (Wake time and the calendar come BEFORE the day plan: the plan is laid
+    /// out from the first and around the second — connect a calendar and the
+    /// very next screen shows your real meetings with your tasks fitted
+    /// between them. That is also why the calendar ask sits here and not by
+    /// the notifications ask: permission is requested where it pays off on
+    /// the next tap, and the two system prompts stay five screens apart.
     /// "ai_demo" is the analytics name of the plan screen — kept so the
     /// PostHog funnel keeps its history. "Building" sits right after the
     /// inputs it claims to build on, and the summary is the reveal.)
@@ -142,15 +147,16 @@ struct OnboardingFlow: View {
         case 8: OnbMirrorView(state: state)
         case 9: OnbMicroYesView(state: state)
         case 10: Onb5PersonalView(state: state)
-        case 11: OnbDayPlanView(state: state)
-        case 12: Onb9BuildingView(state: state, settings: settings)
-        case 13: OnbSummaryView(state: state)
-        case 14: Onb7ForgiveView(state: state)
-        case 15: Onb6SocialView(state: state)
-        case 16: Onb8NotifsView(state: state)
+        case 11: OnbCalendarView(state: state)
+        case 12: OnbDayPlanView(state: state)
+        case 13: Onb9BuildingView(state: state, settings: settings)
+        case 14: OnbSummaryView(state: state)
+        case 15: Onb7ForgiveView(state: state)
+        case 16: Onb6SocialView(state: state)
+        case 17: Onb8NotifsView(state: state)
         // The active "yes" sits right before the offer, where it still counts.
-        case 17: OnbCommitView(state: state)
-        case 18: OnbTrialGiftView(state: state)
+        case 18: OnbCommitView(state: state)
+        case 19: OnbTrialGiftView(state: state)
         default: EmptyView()
         }
     }
@@ -162,12 +168,8 @@ struct OnboardingFlow: View {
 /// the paywall until a purchase completes — on EITHER paywall (the funnel's
 /// cover, or the root one after a kill-and-relaunch). The feed itself is
 /// only written on purchase, so a run that never pays leaves no tasks.
-/// Stashed even when the plan screen was skipped: the routine built from
-/// the wake time and energy dip is part of the first day too.
 enum FirstDayStash {
     private static let key = "pendingFirstDay"
-    /// Home shows the one-time "set up from your answers" card while true.
-    static let receiptKey = "showFirstDayReceipt"
 
     static func stash(_ plan: FirstDayPlan) {
         guard let data = try? JSONEncoder().encode(plan) else { return }
@@ -190,10 +192,15 @@ enum FirstDayStash {
         // haven't even seen yet).
         ReviewPrompt.isWritingDemoPlan = true
         defer { ReviewPrompt.isWritingDemoPlan = false }
-        let drafts = DayBuilder.build(plan: plan, wake: settings.wakeTime,
-                                      dip: settings.energyDipTime, now: Date())
+        // The calendar lands first, so the user's own tasks are laid out
+        // around their real meetings — the same day the funnel previewed.
+        CalendarSync.shared.sync(into: context)
+        let now = Date()
+        let day = DayBuilder.targetDay(now: now, wake: settings.wakeTime)
+        let horizon = Calendar.current.date(byAdding: .day, value: 8, to: day) ?? day
+        let drafts = DayBuilder.build(plan: plan, wake: settings.wakeTime, dip: settings.energyDipTime,
+                                      now: now, around: SlotFinder.busy(from: now, to: horizon, context: context))
         DayBuilder.write(drafts, into: context)
-        UserDefaults.standard.set(true, forKey: receiptKey)
     }
 }
 

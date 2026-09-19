@@ -393,9 +393,16 @@ struct AddTaskAskAIView: View {
         if tasks.isEmpty {
             lines.append("Nothing is scheduled for today yet.")
         } else {
-            let done = tasks.filter(\.isCompleted).count
-            lines.append("Today's board — \(tasks.count) task(s), \(done) already done:")
-            for task in tasks {
+            // Nothing that came from a calendar is part of the board — not
+            // its title, not its time. The app fits whatever is proposed
+            // around those blocks on the phone.
+            let own = tasks.filter { !$0.isFromCalendar }
+            let done = own.filter(\.isCompleted).count
+            lines.append("Today's board — \(own.count) task(s), \(done) already done:")
+            if own.count != tasks.count {
+                lines.append("(The user also has calendar events today that you can't see. Don't guess at them; the app places anything you propose around them.)")
+            }
+            for task in own {
                 let time = task.startTime.map { clock.string(from: $0) } ?? "--:--"
                 let title = task.title ?? "(untitled)"
                 var line = "- \(time) (\(task.durationMinutes) min) \(title)"

@@ -55,6 +55,14 @@ final class SubscriptionManager {
 
     init() {
         transactionListener = startTransactionListener()
+        #if DEBUG
+        // "-sim-pro YES": open as a subscriber. For looking at the main
+        // screens from the command line (simctl), where no StoreKit
+        // configuration is attached and the sandbox store asks for an Apple
+        // ID. Pair with "-funnelCompletedOnce YES" to skip the owner funnel
+        // for that one launch — both live in the argument domain only.
+        if UserDefaults.standard.bool(forKey: "sim-pro") { simulatePurchase() }
+        #endif
         // Entitlements must not queue behind the product-fetch retry loop —
         // a paying subscriber shouldn't open the app as "free" for 2 seconds.
         Task { [self] in

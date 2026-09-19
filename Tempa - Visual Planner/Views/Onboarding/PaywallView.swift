@@ -317,8 +317,7 @@ struct PaywallView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 56)
-                    .background(Capsule().fill(ctaGradient))
-                    .shadow(color: coral.opacity(0.35), radius: 14, x: 0, y: 6)
+                    .background(Capsule().fill(T.primaryFill))
                 }
                 .buttonStyle(SpringPressStyle(scale: 0.97))
                 .disabled(isPurchasing)
@@ -461,22 +460,13 @@ struct PaywallView: View {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .frame(height: 56)
-            .background(Capsule().fill(ctaGradient))
-            .shadow(color: coral.opacity(0.35), radius: 14, x: 0, y: 6)
+            .background(Capsule().fill(T.primaryFill))
             .opacity(storeUnreachable ? 0.5 : 1)
         }
         .buttonStyle(SpringPressStyle(scale: 0.97))
         // No product → no payment sheet; a live button would only count
         // phantom checkouts against a dead store.
         .disabled(isPurchasing || storeUnreachable)
-    }
-
-    private var ctaGradient: LinearGradient {
-        LinearGradient(
-            colors: [Color(lightHex: "#FF9273", darkHex: "#D06A4B"),
-                     Color(lightHex: "#FF7A59", darkHex: "#B5503A")],
-            startPoint: .topLeading, endPoint: .bottomTrailing
-        )
     }
 
     /// The exact deal, in one quiet line above the button — always for the

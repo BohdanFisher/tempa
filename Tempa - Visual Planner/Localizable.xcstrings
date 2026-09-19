@@ -219,6 +219,7 @@
       }
     },
     "%@ done · %@ planned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -271,6 +272,7 @@
       }
     },
     "%@ free" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -480,6 +482,7 @@
       }
     },
     "%@ left" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -532,6 +535,7 @@
       }
     },
     "%@ planned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -740,6 +744,7 @@
       }
     },
     "%@, your day is set up from your answers." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2754,6 +2759,7 @@
       }
     },
     "Active" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3158,6 +3164,7 @@
       }
     },
     "Add one small thing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3871,7 +3878,112 @@
         }
       }
     },
+    "Already keep a calendar?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Führst du schon einen Kalender?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Ya llevas un calendario?"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onko sinulla jo kalenteri?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu tiens déjà un calendrier ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Har du allerede en kalender?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd je al een agenda bij?"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Já usa um calendário?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уже ведеш календар?"
+          }
+        }
+      }
+    },
+    "Always in step" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Immer im Takt"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siempre al día"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aina ajan tasalla"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toujours à jour"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alltid i takt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altijd bij"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sempre em dia"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завжди в такт"
+          }
+        }
+      }
+    },
     "Anchors your day battery" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4027,6 +4139,110 @@
         }
       }
     },
+    "Apple, Google, Outlook" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook"
+          }
+        }
+      }
+    },
+    "Apple, Google, Outlook — whatever is on this iPhone" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook — alles, was auf diesem iPhone ist"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook: lo que haya en este iPhone"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook — kaikki, mitä tässä iPhonessa on"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook — tout ce qui est sur cet iPhone"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook — alt som finnes på denne iPhonen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook — alles wat op deze iPhone staat"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook — o que estiver neste iPhone"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple, Google, Outlook — усе, що є на цьому iPhone"
+          }
+        }
+      }
+    },
     "Apps that didn't stick: this one forgives the days you disappear." : {
       "localizations" : {
         "de" : {
@@ -4080,6 +4296,7 @@
       }
     },
     "As you complete tasks, you'll see when in the week you shine." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4236,6 +4453,7 @@
       }
     },
     "Best day: %lld tasks · %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4288,6 +4506,7 @@
       }
     },
     "Best streak: %lld days" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4376,6 +4595,7 @@
       }
     },
     "Best streak: 1 day" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4689,6 +4909,7 @@
       }
     },
     "Breakfast" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4788,6 +5009,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Розбиваю на кроки..."
+          }
+        }
+      }
+    },
+    "Bring it in. Meetings and appointments land on your day as blocks — and Tempa plans around them, never on top." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hol ihn rein. Meetings und Termine landen als Blöcke in deinem Tag — und Tempa plant um sie herum, nie darüber."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tráelo aquí. Reuniones y citas aparecen en tu día como bloques, y Tempa planifica a su alrededor, nunca encima."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuo se mukaan. Kokoukset ja tapaamiset asettuvat päivääsi lohkoina — ja Tempa suunnittelee niiden ympärille, ei koskaan päälle."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importe-le. Réunions et rendez-vous arrivent dans ta journée sous forme de blocs — et Tempa planifie autour, jamais par-dessus."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta den med. Møter og avtaler lander som blokker i dagen din — og Tempa planlegger rundt dem, aldri oppå."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haal hem erbij. Meetings en afspraken komen als blokken in je dag — en Tempa plant eromheen, nooit eroverheen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traga para cá. Reuniões e compromissos entram no seu dia como blocos — e o Tempa planeja em volta deles, nunca por cima."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підтягни його сюди. Зустрічі й записи стануть блоками у твоєму дні — а Tempa планує навколо них, а не поверх."
           }
         }
       }
@@ -5152,6 +5425,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Календар"
+          }
+        }
+      }
+    },
+    "Calendar event" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalendertermin"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evento del calendario"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalenteritapahtuma"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Événement du calendrier"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalenderhendelse"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agenda-afspraak"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evento do calendário"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подія з календаря"
           }
         }
       }
@@ -5521,6 +5846,7 @@
       }
     },
     "Change" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -5781,6 +6107,550 @@
         }
       }
     },
+    "Connect" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbinden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhdistä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecter"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koble til"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koppelen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підключити"
+          }
+        }
+      }
+    },
+    "Connect Apple Calendar" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Kalender verbinden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar Calendario de Apple"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhdistä Applen Kalenteri"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecter Calendrier Apple"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koble til Apple Kalender"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Agenda koppelen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar o Calendário da Apple"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підключити Apple Календар"
+          }
+        }
+      }
+    },
+    "Connect Google Calendar" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Kalender verbinden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar Google Calendar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhdistä Google-kalenteri"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecter Google Agenda"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koble til Google Kalender"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Agenda koppelen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar o Google Agenda"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підключити Google Календар"
+          }
+        }
+      }
+    },
+    "Connect my calendar" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meinen Kalender verbinden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar mi calendario"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhdistä kalenterini"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecter mon calendrier"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koble til kalenderen min"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mijn agenda koppelen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar meu calendário"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підключити мій календар"
+          }
+        }
+      }
+    },
+    "Connected" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbunden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhdistetty"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecté"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilkoblet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gekoppeld"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підключено"
+          }
+        }
+      }
+    },
+    "Connected — %lld events in the next 7 days. They're on your days already." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbunden — %lld Termine in den nächsten 7 Tagen. Sie stehen schon in deinen Tagen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado: %lld eventos en los próximos 7 días. Ya están en tus días."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhdistetty — %lld tapahtumaa seuraavan 7 päivän aikana. Ne ovat jo päivissäsi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecté — %lld événements dans les 7 prochains jours. Ils sont déjà dans tes journées."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koblet til — %lld hendelser de neste 7 dagene. De ligger allerede i dagene dine."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gekoppeld — %lld afspraken in de komende 7 dagen. Ze staan al in je dagen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado — %lld eventos nos próximos 7 dias. Eles já estão nos seus dias."
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Підключено — %lld події на найближчі 7 днів. Вони вже у твоїх днях."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Підключено — %lld подій на найближчі 7 днів. Вони вже у твоїх днях."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Підключено — %lld подія на найближчі 7 днів. Вони вже у твоїх днях."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Підключено — %lld подій на найближчі 7 днів. Вони вже у твоїх днях."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Connected — 1 event in the next 7 days. It's on your day already." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbunden — 1 Termin in den nächsten 7 Tagen. Er steht schon in deinem Tag."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado: 1 evento en los próximos 7 días. Ya está en tu día."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhdistetty — 1 tapahtuma seuraavan 7 päivän aikana. Se on jo päivässäsi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecté — 1 événement dans les 7 prochains jours. Il est déjà dans ta journée."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koblet til — 1 hendelse de neste 7 dagene. Den ligger allerede i dagen din."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gekoppeld — 1 afspraak in de komende 7 dagen. Hij staat al in je dag."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado — 1 evento nos próximos 7 dias. Ele já está no seu dia."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підключено — 1 подія на найближчі 7 днів. Вона вже у твоєму дні."
+          }
+        }
+      }
+    },
+    "Connected. Nothing in the next 7 days yet." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbunden. In den nächsten 7 Tagen steht noch nichts an."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado. Aún no hay nada en los próximos 7 días."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhdistetty. Seuraavalle 7 päivälle ei ole vielä mitään."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecté. Rien dans les 7 prochains jours pour l'instant."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koblet til. Ingenting de neste 7 dagene ennå."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gekoppeld. De komende 7 dagen staat er nog niets."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado. Ainda não há nada nos próximos 7 dias."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підключено. На найближчі 7 днів поки нічого немає."
+          }
+        }
+      }
+    },
+    "Connected. Your events will show up on your days in a moment." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbunden. Deine Termine tauchen gleich in deinen Tagen auf."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado. Tus eventos aparecerán en tus días en un momento."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhdistetty. Tapahtumasi ilmestyvät päiviisi hetken kuluttua."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecté. Tes événements vont apparaître dans tes journées d'un instant à l'autre."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koblet til. Hendelsene dine dukker opp i dagene dine om et øyeblikk."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gekoppeld. Je afspraken verschijnen zo in je dagen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado. Seus eventos aparecem nos seus dias em instantes."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підключено. Твої події за мить з'являться у твоїх днях."
+          }
+        }
+      }
+    },
+    "Connecting to Google…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbinde mit Google …"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectando con Google…"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhdistetään Googleen…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connexion à Google…"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kobler til Google …"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbinden met Google…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectando ao Google…"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підключаємо Google…"
+          }
+        }
+      }
+    },
     "Continue" : {
       "localizations" : {
         "de" : {
@@ -5985,6 +6855,110 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Заминка та розтяжка"
+          }
+        }
+      }
+    },
+    "Couldn't reach Google just now. Try again in a moment." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google ist gerade nicht erreichbar. Versuch es gleich noch mal."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora mismo no se pudo conectar con Google. Inténtalo de nuevo en un momento."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Googleen ei juuri nyt saatu yhteyttä. Yritä hetken kuluttua uudelleen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de joindre Google pour l'instant. Réessaie dans un instant."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fikk ikke kontakt med Google akkurat nå. Prøv igjen om et øyeblikk."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google was net niet bereikbaar. Probeer het zo nog eens."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível falar com o Google agora. Tente de novo em instantes."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зараз не вдалося зв'язатися з Google. Спробуй ще раз за мить."
+          }
+        }
+      }
+    },
+    "Couldn't reach Google just now. You can connect it later in Settings." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google ist gerade nicht erreichbar. Du kannst es später in den Einstellungen verbinden."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora mismo no se pudo conectar con Google. Puedes hacerlo más tarde en Ajustes."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Googleen ei juuri nyt saatu yhteyttä. Voit yhdistää sen myöhemmin Asetuksissa."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de joindre Google pour l'instant. Tu pourras le connecter plus tard dans les Réglages."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fikk ikke kontakt med Google akkurat nå. Du kan koble til senere i Innstillinger."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google was net niet bereikbaar. Je kunt het later koppelen via Instellingen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível falar com o Google agora. Você pode conectar depois em Ajustes."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зараз не вдалося зв'язатися з Google. Підключити можна пізніше в Налаштуваннях."
           }
         }
       }
@@ -6251,6 +7225,7 @@
       }
     },
     "Current task" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -6721,6 +7696,7 @@
       }
     },
     "DAY BATTERY" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -6773,6 +7749,7 @@
       }
     },
     "day in a row" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -6825,6 +7802,7 @@
       }
     },
     "days in a row" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7034,6 +8012,7 @@
       }
     },
     "Dinner" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7081,6 +8060,110 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вечеря"
+          }
+        }
+      }
+    },
+    "Disconnect" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trennen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Katkaise yhteys"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déconnecter"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koble fra"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ontkoppelen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відключити"
+          }
+        }
+      }
+    },
+    "Disconnect Google Calendar?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Kalender trennen?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Desconectar Google Calendar?"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Katkaistaanko Google-kalenterin yhteys?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déconnecter Google Agenda ?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koble fra Google Kalender?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Agenda ontkoppelen?"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconectar o Google Agenda?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відключити Google Календар?"
           }
         }
       }
@@ -7138,6 +8221,7 @@
       }
     },
     "done" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7346,6 +8430,7 @@
       }
     },
     "done vs planned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -7919,6 +9004,7 @@
       }
     },
     "Energy dip · %@ — that block stays light" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -8123,6 +9209,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ВЕЧІР"
+          }
+        }
+      }
+    },
+    "Every calendar that's set up on this iPhone — one tap, no sign-in." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeder Kalender, der auf diesem iPhone eingerichtet ist — ein Fingertipp, keine Anmeldung."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los calendarios configurados en este iPhone: un toque, sin iniciar sesión."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaikki tämän iPhonen kalenterit — yksi napautus, ei kirjautumista."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les calendriers configurés sur cet iPhone — un seul geste, sans identifiants."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle kalendere som er satt opp på denne iPhonen — ett trykk, ingen innlogging."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elke agenda die op deze iPhone staat — één tik, niet inloggen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos os calendários configurados neste iPhone — um toque, sem login."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усі календарі, що є на цьому iPhone — один дотик, без входу в акаунт."
           }
         }
       }
@@ -8911,6 +10049,7 @@
       }
     },
     "FOCUS TIME" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -8963,6 +10102,7 @@
       }
     },
     "focused this month" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -9015,6 +10155,7 @@
       }
     },
     "focused this week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -9067,6 +10208,7 @@
       }
     },
     "focused today" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -9119,6 +10261,7 @@
       }
     },
     "follow-through" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -9223,6 +10366,7 @@
       }
     },
     "Free plan" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -9275,6 +10419,7 @@
       }
     },
     "Free until %@ · nothing is charged before then · cancel any time in Settings" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -9639,7 +10784,112 @@
         }
       }
     },
+    "Google Calendar" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Kalender"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Calendar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google-kalenteri"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Agenda"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Kalender"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Agenda"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Agenda"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Календар"
+          }
+        }
+      }
+    },
+    "Google Calendar isn't connected yet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Kalender ist noch nicht verbunden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Calendar aún no está conectado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google-kalenteria ei ole vielä yhdistetty"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Agenda n'est pas encore connecté"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Kalender er ikke koblet til ennå"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Agenda is nog niet gekoppeld"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Google Agenda ainda não está conectado"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Календар ще не підключено"
+          }
+        }
+      }
+    },
     "Got it" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -11311,6 +12561,58 @@
         }
       }
     },
+    "iPhone calendars" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone-Kalender"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendarios del iPhone"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhonen kalenterit"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendriers de l'iPhone"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone-kalendere"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone-agenda's"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendários do iPhone"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Календарі з iPhone"
+          }
+        }
+      }
+    },
     "It doesn't have to be this way." : {
       "localizations" : {
         "de" : {
@@ -11411,6 +12713,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Нарешті планер, який не бісить і не тримає в напрузі."
+          }
+        }
+      }
+    },
+    "Its upcoming events will leave your days. Nothing changes in Google." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seine kommenden Termine verschwinden aus deinen Tagen. In Google ändert sich nichts."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sus próximos eventos saldrán de tus días. En Google no cambia nada."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sen tulevat tapahtumat poistuvat päivistäsi. Googlessa mikään ei muutu."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ses événements à venir quitteront tes journées. Rien ne change dans Google."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De kommende hendelsene forsvinner fra dagene dine. Ingenting endres i Google."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De komende afspraken verdwijnen uit je dagen. In Google verandert er niets."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os próximos eventos saem dos seus dias. Nada muda no Google."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Його найближчі події зникнуть із твоїх днів. У самому Google нічого не зміниться."
           }
         }
       }
@@ -11678,6 +13032,7 @@
       }
     },
     "LAST 4 WEEKS" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -12512,6 +13867,7 @@
       }
     },
     "Lunch" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -12824,6 +14180,7 @@
       }
     },
     "Me" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -12876,6 +14233,7 @@
       }
     },
     "Meals, a breather and five minutes to plan tomorrow are already on your day. Move or delete any of them." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -13136,6 +14494,7 @@
       }
     },
     "Month" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -13240,6 +14599,7 @@
       }
     },
     "More planned than the day has left — be gentle with yourself, maybe move something to tomorrow." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -13391,6 +14751,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Перенести"
+          }
+        }
+      }
+    },
+    "Move a meeting in your calendar and it moves here too." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verschiebst du ein Meeting im Kalender, wandert es auch hier mit."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mueve una reunión en tu calendario y aquí se mueve también."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siirrä kokousta kalenterissa, niin se siirtyy täälläkin."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déplace une réunion dans ton calendrier, elle bouge ici aussi."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytter du et møte i kalenderen, flytter det seg her også."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verplaats je een meeting in je agenda, dan schuift hij hier mee."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mude uma reunião no calendário e ela muda aqui também."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пересунеш зустріч у календарі — вона пересунеться й тут."
           }
         }
       }
@@ -13709,6 +15121,7 @@
       }
     },
     "No clock on this one." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -13813,6 +15226,7 @@
       }
     },
     "No focus sessions in this period — the timer's there whenever you're ready." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -14333,6 +15747,58 @@
         }
       }
     },
+    "Not now" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht jetzt"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ahora no"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei nyt"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas maintenant"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikke nå"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet nu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agora não"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не зараз"
+          }
+        }
+      }
+    },
     "Not quite" : {
       "localizations" : {
         "de" : {
@@ -14438,6 +15904,7 @@
       }
     },
     "Nothing here yet for this period — your days will show up here." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -14646,6 +16113,7 @@
       }
     },
     "of %lld planned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -14698,6 +16166,7 @@
       }
     },
     "of your day left" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -14884,6 +16353,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "У важкий день скільки часу з’їдає відкладання справ?"
+          }
+        }
+      }
+    },
+    "On Google's page, the calendar box has to stay ticked — without it Tempa can't show your events. Try again whenever you like." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf der Google-Seite muss das Kalender-Häkchen gesetzt bleiben — ohne es kann Tempa deine Termine nicht anzeigen. Versuch es einfach noch mal, wann du magst."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En la página de Google, la casilla del calendario tiene que quedar marcada: sin ella Tempa no puede mostrar tus eventos. Inténtalo de nuevo cuando quieras."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Googlen sivulla kalenterin valintaruudun pitää jäädä valituksi — ilman sitä Tempa ei voi näyttää tapahtumiasi. Kokeile uudelleen milloin haluat."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sur la page de Google, la case du calendrier doit rester cochée — sans elle, Tempa ne peut pas afficher tes événements. Réessaie quand tu veux."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "På Googles side må kalenderboksen stå avkrysset — uten den kan ikke Tempa vise hendelsene dine. Prøv igjen når du vil."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Op de pagina van Google moet het vakje voor de agenda aangevinkt blijven — zonder dat kan Tempa je afspraken niet tonen. Probeer het opnieuw wanneer je wilt."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na página do Google, a caixa do calendário precisa ficar marcada — sem ela o Tempa não consegue mostrar seus eventos. Tente de novo quando quiser."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На сторінці Google галочка біля календаря має лишитися ввімкненою — без неї Tempa не зможе показати твої події. Спробуй ще раз, коли захочеш."
           }
         }
       }
@@ -15882,6 +17403,58 @@
         }
       }
     },
+    "Pick the ones that belong on your day" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle die aus, die in deinen Tag gehören"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige los que van en tu día"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valitse ne, jotka kuuluvat päivääsi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisis ceux qui ont leur place dans ta journée"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velg de som hører hjemme i dagen din"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kies welke in je dag thuishoren"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha os que fazem parte do seu dia"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обери ті, яким місце у твоєму дні"
+          }
+        }
+      }
+    },
     "Plan something small" : {
       "localizations" : {
         "de" : {
@@ -15935,6 +17508,7 @@
       }
     },
     "planned" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -15987,6 +17561,7 @@
       }
     },
     "PLANNED VS DONE" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -16664,6 +18239,7 @@
       }
     },
     "Recharge break" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -18021,6 +19597,58 @@
         }
       }
     },
+    "Sign in to show your Google calendars" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melde dich an, um deine Google-Kalender zu sehen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicia sesión para ver tus calendarios de Google"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kirjaudu, niin Google-kalenterisi näkyvät"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecte-toi pour afficher tes agendas Google"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logg inn for å vise Google-kalenderne dine"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log in om je Google-agenda's te tonen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entre para mostrar suas agendas do Google"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увійди, щоб показувати свої календарі Google"
+          }
+        }
+      }
+    },
     "Skip" : {
       "localizations" : {
         "de" : {
@@ -18804,6 +20432,7 @@
       }
     },
     "Start · %lld min" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -19326,6 +20955,7 @@
       }
     },
     "Starts at %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -19482,6 +21112,58 @@
         }
       }
     },
+    "Stays yours" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bleibt deins"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sigue siendo tuyo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pysyy sinun"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ça reste à toi"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forblir ditt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blijft van jou"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua sendo seu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Лишається твоїм"
+          }
+        }
+      }
+    },
     "Still here for you" : {
       "localizations" : {
         "de" : {
@@ -19535,6 +21217,7 @@
       }
     },
     "STREAK" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -20159,6 +21842,7 @@
       }
     },
     "task time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -20579,6 +22263,7 @@
       }
     },
     "Tempa Plus" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -21941,6 +23626,7 @@
       }
     },
     "this month" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -21993,6 +23679,7 @@
       }
     },
     "this week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -22305,6 +23992,7 @@
       }
     },
     "today" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -22669,6 +24357,7 @@
       }
     },
     "Tomorrow's plan — 5 minutes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -23138,6 +24827,7 @@
       }
     },
     "Unlock AI planning & breakdowns" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -23347,6 +25037,7 @@
       }
     },
     "UP NEXT" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -23451,6 +25142,7 @@
       }
     },
     "Upgrade" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -23550,6 +25242,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Використати це"
+          }
+        }
+      }
+    },
+    "Using Google Calendar? Add your Google account to this iPhone — in Settings, under the Calendar accounts — and it shows up here by itself." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du nutzt Google Kalender? Füge dein Google-Konto auf diesem iPhone hinzu — in den Einstellungen bei den Kalender-Accounts — dann taucht er hier von selbst auf."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Usas Google Calendar? Añade tu cuenta de Google a este iPhone (en Ajustes, en las cuentas del Calendario) y aparecerá aquí solo."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytätkö Google-kalenteria? Lisää Google-tilisi tähän iPhoneen — Asetuksissa, Kalenterin tileissä — niin se ilmestyy tänne itsestään."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu utilises Google Agenda ? Ajoute ton compte Google à cet iPhone — dans Réglages, du côté des comptes du Calendrier — et il apparaîtra ici tout seul."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruker du Google Kalender? Legg til Google-kontoen din på denne iPhonen — i Innstillinger, under kontoene til Kalender — så dukker den opp her av seg selv."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruik je Google Agenda? Voeg je Google-account toe aan deze iPhone — in Instellingen, bij de accounts van Agenda — dan verschijnt hij hier vanzelf."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa o Google Agenda? Adicione sua conta Google a este iPhone — em Ajustes, nas contas do Calendário — e ele aparece aqui sozinho."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Користуєшся Google Календарем? Додай свій акаунт Google на цей iPhone — у Параметрах, в облікових записах Календаря — і він з'явиться тут сам."
           }
         }
       }
@@ -23712,6 +25456,7 @@
       }
     },
     "Wake time · %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -24285,6 +26030,7 @@
       }
     },
     "Week" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -25534,6 +27280,7 @@
       }
     },
     "WHERE YOUR TIME GOES" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -25585,7 +27332,60 @@
         }
       }
     },
+    "Which calendars" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welche Kalender"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qué calendarios"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mitkä kalenterit"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quels calendriers"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvilke kalendere"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welke agenda's"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quais calendários"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Які календарі"
+          }
+        }
+      }
+    },
     "Wind down" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -26823,6 +28623,7 @@
       }
     },
     "You're at your best on %@s around %@–%@." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -27242,7 +29043,60 @@
         }
       }
     },
+    "Your day is laid out from here" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von hier aus wird dein Tag geplant"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu día se organiza a partir de aquí"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Päiväsi rakentuu tästä eteenpäin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta journée s'organise à partir d'ici"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dagen din legges opp herfra"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je dag wordt vanaf hier ingedeeld"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seu dia é organizado a partir daqui"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звідси вибудовується твій день"
+          }
+        }
+      }
+    },
     "Your day is set up from your answers." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -27290,6 +29144,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Твій день зібрано з твоїх відповідей."
+          }
+        }
+      }
+    },
+    "Your events live on your phone and in your own iCloud — never sent to us, to AI or to ads." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Termine liegen auf deinem iPhone und in deiner eigenen iCloud — sie gehen nie an uns, an die KI oder an Werbung."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus eventos viven en tu iPhone y en tu propio iCloud: nunca se envían a nosotros, a la IA ni a la publicidad."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tapahtumasi ovat puhelimessasi ja omassa iCloudissasi — niitä ei lähetetä meille, tekoälylle eikä mainontaan."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tes événements restent sur ton iPhone et dans ton propre iCloud — jamais envoyés à nous, à l'IA ou à la pub."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hendelsene dine ligger på telefonen og i din egen iCloud — de sendes aldri til oss, til KI eller til annonser."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je afspraken staan op je telefoon en in je eigen iCloud — nooit naar ons, naar AI of naar advertenties gestuurd."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seus eventos ficam no seu iPhone e no seu próprio iCloud — nunca são enviados para nós, para a IA nem para anúncios."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Твої події живуть на телефоні й у твоєму власному iCloud — і ніколи не йдуть ні до нас, ні до AI, ні в рекламу."
           }
         }
       }
@@ -27451,6 +29357,7 @@
       }
     },
     "YOUR GOLDEN HOURS" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

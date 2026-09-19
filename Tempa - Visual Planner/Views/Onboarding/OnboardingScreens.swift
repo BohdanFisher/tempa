@@ -1025,15 +1025,27 @@ struct OnbDayPlanView: View {
         focused = false
         let now = Date()
         let day = DayBuilder.targetDay(now: now, wake: state.wakeTime)
+        // Connected a calendar one screen ago → the day is laid out around
+        // their real meetings, and the preview shows both.
+        let sync = CalendarSync.shared
+        let calendar = sync.isActive ? sync.drafts(on: day) : []
+        let weekEnd = Calendar.current.date(byAdding: .day, value: 8, to: day) ?? day
+        let busy = sync.isActive ? sync.busy(from: now, to: weekEnd) : []
         do {
-            let result = try await apiClient.planTasks(from: text, targetDay: plansTomorrow ? day : nil)
+            let result = try await apiClient.planTasks(
+                from: text, targetDay: plansTomorrow ? day : nil,
+                // Nothing from the calendar goes to the model — not even
+                // "this hour is taken". The layout below plans around it.
+                dayContext: ClaudeAPIClient.dayContext(busy: [], days: [day], wake: state.wakeTime,
+                                                       dip: state.energyDipTime))
             plan = result.tasks
             usedFallback = plan.isEmpty
         } catch {
             usedFallback = true
         }
         if usedFallback { plan = FallbackDayPlan.generate(from: text) }
-        preview = DayBuilder.preview(plan, wake: state.wakeTime, dip: state.energyDipTime, now: now)
+        preview = DayBuilder.preview(plan, wake: state.wakeTime, dip: state.energyDipTime, now: now,
+                                     calendar: calendar, busy: busy)
         isLoading = false
         withAnimation(.easeInOut(duration: 0.3)) {
             showResult = true
@@ -1080,6 +1092,299 @@ struct PlanPreviewRow: View {
                 .fill(T.surface)
         )
         .tempaShadowSm()
+        // What came from the calendar sits a step back: it's the frame, the
+        // user's own tasks are the picture.
+        .opacity(draft.isFromCalendar ? 0.72 : 1)
+    }
+}
+
+// MARK: - Screen: Calendar (the day is planned AROUND what's already fixed)
+
+/// One permission, every calendar: EventKit reads whatever accounts live on
+/// the iPhone — iCloud, Google, Outlook. Asked here, right before the day
+/// plan, because this is where it pays off on the very next tap: their
+/// meetings appear on the laid-out day with their tasks fitted between them.
+/// Saying no costs nothing — no guilt, no second ask, straight on.
+struct OnbCalendarView: View {
+    let state: OnboardingState
+
+    private enum GoogleTrouble { case unreachable, notGranted }
+
+    @State private var connectedEvents: Int?      // non-nil once anything is connected
+    /// Connected, but Google hasn't answered with the events yet — "nothing
+    /// in the next 7 days" would be a guess, so it isn't said.
+    @State private var eventsPending = false
+    @State private var isAsking = false
+    @State private var connectingGoogle = false
+    @State private var appleDenied = false
+    @State private var googleTrouble: GoogleTrouble?
+    @State private var sync = CalendarSync.shared
+    @State private var google = GoogleCalendar.shared
+
+    /// Google gets its own button only while the option is switched on
+    /// (see GoogleCalendarConfig) and the account isn't connected yet.
+    private var offersGoogle: Bool { google.isAvailable && !google.isConnected }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                Text("Already keep a calendar?")
+                    .font(.custom("Nunito-ExtraBold", size: 28).weight(.heavy))
+                    .tracking(-0.56)
+                    .foregroundColor(T.text)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text("Bring it in. Meetings and appointments land on your day as blocks — and Tempa plans around them, never on top.")
+                    .font(.custom("Inter-Medium", size: 15).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 22)
+            .padding(.top, 32)
+
+            VStack(alignment: .leading, spacing: 16) {
+                factRow(icon: "calendar", cat: "work",
+                        title: "Apple, Google, Outlook",
+                        text: "Every calendar that's set up on this iPhone — one tap, no sign-in.")
+                factRow(icon: "lock.fill", cat: "health",
+                        title: "Stays yours",
+                        text: "Your events live on your phone and in your own iCloud — never sent to us, to AI or to ads.")
+                factRow(icon: "arrow.triangle.2.circlepath", cat: "routine",
+                        title: "Always in step",
+                        text: "Move a meeting in your calendar and it moves here too.")
+            }
+            .padding(18)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(RoundedRectangle(cornerRadius: 22, style: .continuous).fill(T.surface))
+            .tempaShadowSm()
+            .padding(.horizontal, 22)
+            .padding(.top, 24)
+
+            if let connectedEvents {
+                connectedNote(connectedEvents)
+                    .padding(.horizontal, 22)
+                    .padding(.top, 14)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+            if let googleTrouble {
+                Group {
+                    switch googleTrouble {
+                    case .unreachable:
+                        Text("Couldn't reach Google just now. You can connect it later in Settings.")
+                    case .notGranted:
+                        Text("On Google's page, the calendar box has to stay ticked — without it Tempa can't show your events. Try again whenever you like.")
+                    }
+                }
+                    .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 26)
+                    .padding(.top, 12)
+                    .transition(.opacity)
+            }
+
+            Spacer()
+
+            VStack(spacing: 10) {
+                if connectedEvents == nil {
+                    // After a "no" iOS won't ask again — the button would be a dead end.
+                    if !appleDenied {
+                        // One door when Google isn't offered — then it needs no name.
+                        TempaButton(label: offersGoogle ? "Connect Apple Calendar" : "Connect my calendar",
+                                    variant: .primary, size: .lg, fullWidth: true) {
+                            connectApple()
+                        }
+                    }
+                    if offersGoogle { googleButton(primary: appleDenied) }
+                } else {
+                    // The door still closed stays on offer — some people keep
+                    // work in one and life in the other.
+                    if !sync.appleActive && !appleDenied {
+                        TempaButton(label: "Connect Apple Calendar", variant: .ghost, size: .lg, fullWidth: true) {
+                            connectApple()
+                        }
+                    }
+                    if offersGoogle { googleButton(primary: false) }
+                    TempaButton(label: "Continue", variant: .primary, size: .lg, fullWidth: true, showArrow: true) {
+                        state.next()
+                    }
+                }
+            }
+            .padding(.horizontal, 22)
+            .disabled(isAsking)
+
+            if connectedEvents == nil {
+                Button {
+                    #if os(iOS)
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    #endif
+                    report("skipped", provider: "none")
+                    state.next()
+                } label: {
+                    Text("Not now")
+                        .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
+                        .foregroundColor(T.textSec)
+                }
+                .disabled(isAsking)
+                .padding(.top, 12)
+                .padding(.bottom, 34)
+            } else {
+                Spacer().frame(height: 50)
+            }
+        }
+        .onAppear {
+            // Came back a screen, or access was granted on an earlier run.
+            appleDenied = sync.isDenied
+            if sync.isActive { connectedEvents = sync.upcomingCount() }
+        }
+    }
+
+    @ViewBuilder
+    private func googleButton(primary: Bool) -> some View {
+        if connectingGoogle {
+            // Signed in; the first fetch takes a few seconds — say so.
+            HStack(spacing: 10) {
+                ProgressView().tint(T.textSec)
+                Text("Connecting to Google…")
+                    .font(.custom("Nunito-ExtraBold", size: 15).weight(.bold))
+                    .foregroundColor(T.textSec)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 56)
+        } else {
+            TempaButton(label: "Connect Google Calendar", variant: primary ? .primary : .ghost,
+                        size: .lg, fullWidth: true) {
+                connectGoogle()
+            }
+        }
+    }
+
+    private func connectApple() {
+        isAsking = true
+        Task {
+            let granted = await sync.requestAccess()
+            isAsking = false
+            guard granted else {
+                // A "no" is an answer, not a problem to talk them out of —
+                // move on, unless the Google door is still open on this screen.
+                report("denied", provider: "apple")
+                withAnimation { appleDenied = true }
+                if connectedEvents == nil && !offersGoogle { state.next() }
+                return
+            }
+            sync.appleEnabled = true
+            showConnected(provider: "apple", eventsKnown: true)
+        }
+    }
+
+    private func connectGoogle() {
+        isAsking = true
+        withAnimation { googleTrouble = nil }
+        Task {
+            defer { isAsking = false; connectingGoogle = false }
+            do {
+                try await google.connect()
+                withAnimation { connectingGoogle = true }
+                let fetched = await sync.refreshGoogle()
+                showConnected(provider: "google", eventsKnown: fetched)
+            } catch GoogleCalendarError.cancelled {
+                // Closed the sheet: they're still on this screen, nothing to say.
+                report("skipped", provider: "google")
+            } catch GoogleCalendarError.calendarNotGranted {
+                report("not_granted", provider: "google")
+                withAnimation { googleTrouble = .notGranted }
+            } catch {
+                report("failed", provider: "google")
+                withAnimation { googleTrouble = .unreachable }
+            }
+        }
+    }
+
+    private func showConnected(provider: String, eventsKnown: Bool) {
+        let events = sync.upcomingCount()
+        report("connected", provider: provider, events: events)
+        #if os(iOS)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        #endif
+        withAnimation(.spring(response: 0.45, dampingFraction: 0.85)) {
+            connectedEvents = events
+            // Counted zero without having heard from Google ≠ an empty calendar.
+            eventsPending = !eventsKnown && events == 0
+        }
+    }
+
+    /// Counts only — what is IN a calendar is never an analytics property.
+    private func report(_ outcome: String, provider: String, events: Int = 0) {
+        AnalyticsService.shared.track(.calendarSyncResult, properties: [
+            "source": "onboarding", "provider": provider, "outcome": outcome,
+            "events_7d": events, "calendars": sync.calendars().count,
+        ])
+    }
+
+    private func connectedNote(_ events: Int) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 20))
+                .foregroundColor(Cat.health.ink)
+            VStack(alignment: .leading, spacing: 6) {
+                Group {
+                    if eventsPending {
+                        Text("Connected. Your events will show up on your days in a moment.")
+                    } else if events == 0 {
+                        Text("Connected. Nothing in the next 7 days yet.")
+                    } else if events == 1 {
+                        Text("Connected — 1 event in the next 7 days. It's on your day already.")
+                    } else {
+                        Text("Connected — \(events) events in the next 7 days. They're on your days already.")
+                    }
+                }
+                .font(.custom("Nunito-ExtraBold", size: 14).weight(.bold))
+                .foregroundColor(T.text)
+                .lineSpacing(3)
+                .fixedSize(horizontal: false, vertical: true)
+
+                if events == 0 && !eventsPending && !google.isConnected && !google.isAvailable {
+                    // The usual reason for an empty calendar here: a Google
+                    // account that lives in the Google app but not on the
+                    // iPhone. (With the Google button on offer, that button
+                    // is the answer — no need for a detour through Settings.)
+                    Text("Using Google Calendar? Add your Google account to this iPhone — in Settings, under the Calendar accounts — and it shows up here by itself.")
+                        .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                        .foregroundColor(T.textSec)
+                        .lineSpacing(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(Cat.health.bg))
+    }
+
+    private func factRow(icon: String, cat: String, title: LocalizedStringKey, text: LocalizedStringKey) -> some View {
+        let cc = Cat.named(cat)
+        return HStack(alignment: .top, spacing: 14) {
+            Image(systemName: icon)
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundColor(cc.ink)
+                .frame(width: 40, height: 40)
+                .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(cc.bg))
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.custom("Nunito-ExtraBold", size: 15).weight(.bold))
+                    .foregroundColor(T.text)
+                Text(text)
+                    .font(.custom("Inter-Medium", size: 13).weight(.medium))
+                    .foregroundColor(T.textSec)
+                    .lineSpacing(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
     }
 }
 
@@ -2012,9 +2317,8 @@ struct OnbTrialGiftView: View {
                     .fill(Cat.personal.bg)
                     .frame(width: 132, height: 132)
                 Circle()
-                    .fill(T.primary)
+                    .fill(T.primaryFill)
                     .frame(width: 96, height: 96)
-                    .shadow(color: T.primary.opacity(0.35), radius: 14, x: 0, y: 8)
                 Image(systemName: "gift.fill")
                     .font(.system(size: 40, weight: .semibold))
                     .foregroundColor(.white)

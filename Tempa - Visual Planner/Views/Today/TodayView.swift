@@ -4,23 +4,14 @@ import Combine
 
 struct TodayView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @Environment(SettingsStore.self) private var settings
-    @Environment(SubscriptionManager.self) private var subs
 
     @FetchRequest private var tasks: FetchedResults<TaskBlock>
-    @State private var router = AppRouter.shared
-    @State private var showingAddTask = false
     @State private var now = Date()
     @State private var dayStart = Calendar.current.startOfDay(for: Date())
     @Environment(\.scenePhase) private var scenePhase
     @State private var showCompleted = false
     @AppStorage("todayGrouping") private var grouping: TodayGrouping = .none
     @AppStorage("todaySorting") private var sorting: TodaySorting = .time
-    /// The one-time "set up from your answers" card after the first purchase.
-    @AppStorage(FirstDayStash.receiptKey) private var showFirstDayReceipt = false
-    /// Until the user has added a task of their own, the "+" wears a label —
-    /// the door people didn't notice gets a name.
-    @State private var hasOwnTask = true
 
     private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 
@@ -79,25 +70,18 @@ struct TodayView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
+        ZStack {
             T.bg.ignoresSafeArea()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     greetingSection
-                    if showFirstDayReceipt {
-                        firstDayReceipt
-                            .transition(.scale(scale: 0.96, anchor: .top).combined(with: .opacity))
-                    }
                     dayPulseCard
                     timelineSection
                 }
-                .padding(.bottom, 140)
+                .padding(.bottom, TempaTabBar.contentClearance)
                 .animation(.spring(response: 0.5, dampingFraction: 0.85), value: hero?.0.objectID)
-                .animation(.spring(response: 0.5, dampingFraction: 0.85), value: showFirstDayReceipt)
             }
-
-            fab
         }
         .confettiHost()
         .onReceive(timer) { _ in
@@ -110,87 +94,6 @@ struct TodayView: View {
                 refreshDayWindowIfNeeded()
             }
         }
-        .onAppear { refreshOwnTaskFlag() }
-        .fullScreenCover(isPresented: $showingAddTask, onDismiss: { refreshOwnTaskFlag() }) {
-            AddTaskSheet()
-        }
-        .onChange(of: router.addTaskRequest) { _, req in
-            // e.g. Welcome Back's "Plan something small" → open the add-task sheet.
-            guard req != nil else { return }
-            router.addTaskRequest = nil   // consume
-            showingAddTask = true
-        }
-    }
-
-    // MARK: - First-day receipt
-
-    /// Shown once, right after the first purchase: the "Creating your calm
-    /// day…" checklist from the funnel, now with the real values behind it
-    /// — and the trial's end date said plainly, so nobody cancels out of
-    /// fear of forgetting.
-    private var firstDayReceipt: some View {
-        let name = UserDefaults.standard.string(forKey: "userName")?.trimmingCharacters(in: .whitespaces) ?? ""
-        let time = Date.FormatStyle(date: .omitted, time: .shortened).locale(AppLanguage.current.locale)
-        let day = Date.FormatStyle(date: .abbreviated, time: .omitted).locale(AppLanguage.current.locale)
-        return VStack(alignment: .leading, spacing: 14) {
-            Group {
-                if name.isEmpty {
-                    Text("Your day is set up from your answers.")
-                } else {
-                    Text("\(name), your day is set up from your answers.")
-                }
-            }
-            .font(.custom(T.fontHeader, size: 18).weight(.heavy))
-            .tracking(-0.3)
-            .foregroundColor(T.text)
-            .lineSpacing(2)
-
-            VStack(alignment: .leading, spacing: 10) {
-                receiptRow("sunrise.fill", Text("Wake time · \(settings.wakeTime.formatted(time))"))
-                if let dip = settings.energyDipTime {
-                    receiptRow("leaf.fill", Text("Energy dip · \(dip.formatted(time)) — that block stays light"))
-                }
-                receiptRow("checklist", Text("Meals, a breather and five minutes to plan tomorrow are already on your day. Move or delete any of them."))
-                if let ends = subs.trialEndsAt {
-                    receiptRow("lock.open.fill", Text("Free until \(ends.formatted(day)) · nothing is charged before then · cancel any time in Settings"))
-                }
-            }
-
-            TempaButton(label: "Got it", variant: .ghost, size: .sm) {
-                showFirstDayReceipt = false
-            }
-        }
-        .padding(18)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(T.surface)
-        )
-        .tempaShadowSm()
-        .padding(.horizontal, 20)
-        .padding(.bottom, 20)
-    }
-
-    private func receiptRow(_ icon: String, _ text: Text) -> some View {
-        HStack(alignment: .top, spacing: 10) {
-            Image(systemName: icon)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(T.secondaryDeep)
-                .frame(width: 22, height: 22)
-            text
-                .font(.custom(T.fontBody, size: 14).weight(.medium))
-                .foregroundColor(T.text)
-                .lineSpacing(2)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-    }
-
-    /// True once any task exists that onboarding didn't seed.
-    private func refreshOwnTaskFlag() {
-        let req = NSFetchRequest<TaskBlock>(entityName: "TaskBlock")
-        req.predicate = NSPredicate(format: "notes == nil OR NOT (notes BEGINSWITH %@)", DayBuilder.autoNote)
-        req.fetchLimit = 1
-        hasOwnTask = ((try? viewContext.count(for: req)) ?? 0) > 0
     }
 
     // MARK: - Greeting
@@ -498,42 +401,6 @@ struct TodayView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 60)
-    }
-
-    // MARK: - FAB
-
-    private var fab: some View {
-        Button {
-            showingAddTask = true
-            #if os(iOS)
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            #endif
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "plus")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(.white)
-                    // Quarter-turn into a "×" while the add sheet is up.
-                    .rotationEffect(.degrees(showingAddTask ? 45 : 0))
-                    .animation(.spring(response: 0.35, dampingFraction: 0.6), value: showingAddTask)
-                if !hasOwnTask {
-                    Text("Add one small thing")
-                        .font(.custom("Nunito-ExtraBold", size: 16))
-                        .foregroundColor(.white)
-                        .padding(.trailing, 6)
-                }
-            }
-            .frame(minWidth: 60, minHeight: 60)
-            .padding(.horizontal, hasOwnTask ? 0 : 14)
-            .background(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(T.primary)
-            )
-            .shadow(color: Color(hex: "#FF7A59").opacity(0.45), radius: 12, x: 0, y: 10)
-        }
-        .buttonStyle(SpringPressStyle(scale: 0.88))
-        .padding(.trailing, 22)
-        .padding(.bottom, 20)
     }
 
     // MARK: - Sorting & grouping
@@ -851,7 +718,9 @@ struct TimelineRow: View {
         copy.priority = task.priority
         copy.startTime = task.startTime
         copy.durationMinutes = task.durationMinutes
-        copy.notes = task.notes
+        // A copy of a calendar block is the user's own task from here on —
+        // with the mirror's tag it would be "a duplicate" and get cleaned up.
+        copy.notes = task.isFromCalendar ? nil : task.notes
         copy.isCompleted = false
         copy.createdAt = Date()
         withAnimation { try? viewContext.save() }

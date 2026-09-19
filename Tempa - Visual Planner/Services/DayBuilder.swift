@@ -12,14 +12,15 @@ struct FirstDayPlan: Codable {
     var stashedAt: Date
 }
 
-/// Turns onboarding answers into a day the user can see on Home the second
-/// they've paid — the way Structured seeds a day, but from THEIR answers:
-/// the things they typed, laid out from now (or from tomorrow's wake time),
-/// around the routine every day has anyway (breakfast, lunch, a light block
-/// at their energy dip, dinner, five minutes to plan tomorrow, winding down).
+/// Turns what the user typed in the funnel into a day they can see on Home
+/// the second they've paid: THEIR things, laid out from now (or from
+/// tomorrow's wake time) around whatever their calendar already holds.
 ///
-/// Everything here is a plain TaskBlock the user can move, edit or delete;
-/// routines carry `notes == "tempa:auto"` so reminders leave them alone.
+/// Nothing is invented for them — no breakfast, no lunch, no "wind down".
+/// People eat when they eat; a planner that schedules their meals is a
+/// planner they have to clean up before they can use it.
+///
+/// Everything here is a plain TaskBlock the user can move, edit or delete.
 enum DayBuilder {
     struct Draft: Identifiable {
         let id = UUID()
@@ -28,20 +29,21 @@ enum DayBuilder {
         var icon: String
         var start: Date
         var minutes: Int
-        /// Shared by every instance of one routine / repeating task.
+        /// Shared by every instance of one repeating task.
         var group: UUID?
-        /// "tempa:auto" for the seeded routine, "tempa:auto:plan" for the
-        /// evening "plan tomorrow" block (that one may remind), nil for the
-        /// user's own tasks.
+        /// The calendar marker for a block mirrored from the phone's
+        /// calendar (preview only — the mirror itself writes those), nil
+        /// for the user's own tasks.
         var notes: String?
+
+        var isFromCalendar: Bool { notes?.hasPrefix(CalendarSync.notePrefix) == true }
     }
 
+    /// Tag of the routine blocks (meals, breaks…) that earlier versions
+    /// seeded on their own. Nothing writes it any more; it is kept so the
+    /// leftovers can be found and cleared.
     static let autoNote = "tempa:auto"
-    static let autoPlanNote = "tempa:auto:plan"
-    /// How many days of routine to seed. A week is enough to feel like a
-    /// rhythm and short enough not to become a pile.
-    static let routineDays = 7
-    /// A day is 16 waking hours, the same window the Me tab's battery uses.
+    /// A day is 16 waking hours.
     static let wakingSeconds: TimeInterval = 16 * 3600
 
     // MARK: - Which day
@@ -69,143 +71,108 @@ enum DayBuilder {
             : today
     }
 
-    // MARK: - Routine
-
-    /// The blocks every day has, anchored to the user's own wake time and
-    /// energy dip, for `days` days starting at `firstDay`. Blocks already in
-    /// the past (a plan typed at 15:00 needs no breakfast) are left out.
-    static func routine(firstDay: Date, days: Int, wake: Date, dip: Date?, now: Date) -> [Draft] {
-        let cal = Calendar.current
-        let groups = (0..<6).map { _ in UUID() }
-        var drafts: [Draft] = []
-        for offset in 0..<days {
-            guard let day = cal.date(byAdding: .day, value: offset, to: firstDay) else { continue }
-            let w = wakeInstant(on: day, wake: wake)
-            var blocks: [(Int, String, String, String, TimeInterval, Int, String)] = [
-                // (group, title key, category, icon, offset from wake, minutes, notes)
-                (0, "Breakfast", "routine", "cup.and.saucer", 15 * 60, 20, autoNote),
-                (1, "Lunch", "routine", "fork.knife", 5 * 3600, 40, autoNote),
-                (3, "Dinner", "routine", "fork.knife", 11.5 * 3600, 45, autoNote),
-                (4, "Tomorrow's plan — 5 minutes", "personal", "mic.fill", 14 * 3600, 5, autoPlanNote),
-                (5, "Wind down", "rest", "bed.double", 15 * 3600, 30, autoNote),
-            ]
-            if let dip {
-                let hm = cal.dateComponents([.hour, .minute], from: dip)
-                let dipInstant = cal.date(bySettingHour: hm.hour ?? 15, minute: hm.minute ?? 0,
-                                          second: 0, of: cal.startOfDay(for: day)) ?? w
-                blocks.append((2, "Recharge break", "rest", "leaf", dipInstant.timeIntervalSince(w), 15, autoNote))
-            }
-            for (g, key, cat, icon, delta, minutes, note) in blocks {
-                let start = w.addingTimeInterval(delta)
-                guard start > now else { continue }
-                drafts.append(Draft(
-                    title: routineTitle(key),
-                    category: cat, icon: icon, start: start, minutes: minutes,
-                    group: groups[g], notes: note
-                ))
-            }
-        }
-        return drafts.sorted { $0.start < $1.start }
-    }
-
-    /// Literal keys on purpose: a key built at runtime is invisible to
-    /// Xcode's string extraction, which then marks the translations stale —
-    /// one "remove stale strings" away from an English-only routine.
-    private static func routineTitle(_ key: String) -> String {
-        switch key {
-        case "Breakfast": return String(localized: "Breakfast", bundle: .appLanguage)
-        case "Lunch": return String(localized: "Lunch", bundle: .appLanguage)
-        case "Dinner": return String(localized: "Dinner", bundle: .appLanguage)
-        case "Recharge break": return String(localized: "Recharge break", bundle: .appLanguage)
-        case "Wind down": return String(localized: "Wind down", bundle: .appLanguage)
-        default: return String(localized: "Tomorrow's plan — 5 minutes", bundle: .appLanguage)
-        }
-    }
-
     // MARK: - The user's own tasks
 
     /// Lays the typed tasks out on `targetDay`: anything with a time keeps
     /// it (a time already gone today is treated as "no time"), everything
-    /// else flows from now — or from an hour after tomorrow's wake — into
-    /// the gaps between the routine blocks, ten minutes apart, never on top
-    /// of each other. Repeats ("3 times a day", "for a week") expand like
-    /// the day planner does, capped at a week.
+    /// else goes where SlotFinder says — the part of the day that suits it,
+    /// in a gap between what's already `busy`, never on top of each other.
+    /// Repeats ("3 times a day", "for a week") expand like the day planner
+    /// does, capped at a week.
     static func place(_ planned: [PlannedTask], on targetDay: Date, wake: Date, dip: Date?,
-                      now: Date, around fixed: [Draft]) -> [Draft] {
+                      now: Date, around busy: [DateInterval]) -> [Draft] {
         let cal = Calendar.current
         let isToday = cal.isDate(targetDay, inSameDayAs: now)
-        let wakeT = wakeInstant(on: targetDay, wake: wake)
-        let dayEnd = wakeT.addingTimeInterval(wakingSeconds - 30 * 60)
-        var occupied: [(Date, Date)] = fixed.map { ($0.start, $0.start.addingTimeInterval(TimeInterval($0.minutes) * 60)) }
-        var cursor = isToday
-            ? max(roundUp(now.addingTimeInterval(10 * 60)), wakeT.addingTimeInterval(15 * 60))
-            : wakeT.addingTimeInterval(60 * 60)
+        let rhythm = SlotFinder.Rhythm(wake: wake, dip: dip)
+        var occupied = busy
         var drafts: [Draft] = []
 
-        func free(_ s: Date, _ minutes: Int) -> Bool {
-            let e = s.addingTimeInterval(TimeInterval(minutes) * 60)
-            return !occupied.contains { $0.0 < e && $0.1 > s }
+        struct Item {
+            let title: String, minutes: Int, category: String, icon: String
+            let repeatDays: Int, group: UUID?
+            let task: PlannedTask
+            /// Clock times the user SAID, still ahead on the target day.
+            let said: [(Date, Bool)]   // (instant, exact?)
         }
-        func firstFree(from: Date, minutes: Int) -> Date {
-            var s = from
-            while s < dayEnd {
-                if free(s, minutes) { return s }
-                s = s.addingTimeInterval(5 * 60)
-            }
-            return from   // the day is full — stack at the cursor rather than lose it
-        }
-
-        for task in planned {
+        let items: [Item] = planned.compactMap { task -> Item? in
             let title = task.title.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !title.isEmpty else { continue }
+            guard !title.isEmpty else { return nil }
             let minutes = min(max(task.durationMinutes ?? 30, 5), 240)
             let category = Cat.all.contains { $0.0 == (task.category ?? "") } ? task.category! : "personal"
             let icon = (task.icon?.isEmpty == false && task.icon != "null") ? task.icon! : Cat.icon(for: category)
             let repeatDays = min(max(task.repeatDays ?? 1, 1), 7)
             let group = repeatDays > 1 || (task.times?.count ?? 0) > 1 ? UUID() : nil
 
-            // Which clock times on the target day?
             var clocks: [(Int, Int)] = (task.times ?? []).compactMap(parseHM)
             if clocks.isEmpty, task.hasTime == true, let t = parseHM(task.time ?? "") { clocks = [t] }
+            let exact = task.precise == true || clocks.count > 1
+            let said: [(Date, Bool)] = clocks.compactMap { h, m -> (Date, Bool)? in
+                guard let at = cal.date(bySettingHour: h, minute: m, second: 0, of: targetDay) else { return nil }
+                return isToday && at < now ? nil : (at, exact)   // that moment is gone — find it a place instead
+            }
+            return Item(title: title, minutes: minutes, category: category, icon: icon,
+                        repeatDays: repeatDays, group: group, task: task, said: said)
+        }
+
+        // Exact times are appointments: they take their place FIRST, so that
+        // nothing placed by us — even a task said earlier — lands on them.
+        for item in items {
+            for (at, exact) in item.said where exact {
+                occupied.append(DateInterval(start: at, duration: TimeInterval(item.minutes) * 60))
+            }
+        }
+
+        for item in items {
+            let taken = SlotFinder.projecting(occupied, onto: targetDay, repeatDays: item.repeatDays)
             var starts: [Date] = []
-            for (h, m) in clocks {
-                guard let at = cal.date(bySettingHour: h, minute: m, second: 0, of: targetDay) else { continue }
-                if isToday && at < now { continue }   // that moment is gone — flow it instead
-                starts.append(at)
+            for (at, exact) in item.said {
+                if exact {
+                    starts.append(at)
+                } else {
+                    // "After work" is an anchor, not an appointment: slide to
+                    // the nearest gap.
+                    let s = SlotFinder.nearestFree(to: at, minutes: item.minutes, now: now, busy: taken)
+                    occupied.append(DateInterval(start: s, duration: TimeInterval(item.minutes) * 60))
+                    starts.append(s)
+                }
             }
             if starts.isEmpty {
-                let s = firstFree(from: cursor, minutes: minutes)
+                let s = SlotFinder.place(item.task.slotRequest(minutes: item.minutes), on: targetDay, now: now,
+                                         rhythm: rhythm, busy: taken)
+                occupied.append(DateInterval(start: s, duration: TimeInterval(item.minutes) * 60))
                 starts = [s]
-                cursor = s.addingTimeInterval(TimeInterval(minutes + 10) * 60)
             }
             for s in starts {
-                occupied.append((s, s.addingTimeInterval(TimeInterval(minutes) * 60)))
-                for d in 0..<repeatDays {
+                for d in 0..<item.repeatDays {
                     guard let day = cal.date(byAdding: .day, value: d, to: s) else { continue }
-                    drafts.append(Draft(title: title, category: category, icon: icon,
-                                        start: day, minutes: minutes, group: group, notes: nil))
+                    drafts.append(Draft(title: item.title, category: item.category, icon: item.icon,
+                                        start: day, minutes: item.minutes, group: item.group, notes: nil))
                 }
             }
         }
         return drafts.sorted { $0.start < $1.start }
     }
 
-    /// The full first day (or week): routine plus the user's tasks.
-    static func build(plan: FirstDayPlan?, wake: Date, dip: Date?, now: Date) -> [Draft] {
-        let day = targetDay(now: now, wake: wake)
-        let routineDrafts = routine(firstDay: day, days: routineDays, wake: wake, dip: dip, now: now)
-        let own = place(plan?.tasks ?? [], on: day, wake: wake, dip: dip, now: now,
-                        around: routineDrafts.filter { Calendar.current.isDate($0.start, inSameDayAs: day) })
-        return (routineDrafts + own).sorted { $0.start < $1.start }
+    /// The first day: the user's tasks, around what is already taken.
+    static func build(plan: FirstDayPlan?, wake: Date, dip: Date?, now: Date,
+                      around busy: [DateInterval]) -> [Draft] {
+        place(plan?.tasks ?? [], on: targetDay(now: now, wake: wake), wake: wake, dip: dip,
+              now: now, around: busy)
     }
 
-    /// What the funnel screen shows: the user's tasks with their times on
-    /// the target day, exactly as they will land on Home.
-    static func preview(_ planned: [PlannedTask], wake: Date, dip: Date?, now: Date) -> [Draft] {
+    /// What the funnel screen shows: the target day exactly as it will land
+    /// on Home — the calendar's blocks (when connected) and the user's tasks
+    /// laid out around them.
+    /// `busy` is what the calendars hold for the coming week (a repeating
+    /// task has to fit every one of its days); `calendar` is the target
+    /// day's events, shown alongside.
+    static func preview(_ planned: [PlannedTask], wake: Date, dip: Date?, now: Date,
+                        calendar: [Draft], busy: [DateInterval]) -> [Draft] {
         let day = targetDay(now: now, wake: wake)
-        let routineDrafts = routine(firstDay: day, days: 1, wake: wake, dip: dip, now: now)
-        return place(planned, on: day, wake: wake, dip: dip, now: now, around: routineDrafts)
+        let ahead = calendar.filter { $0.start.addingTimeInterval(TimeInterval($0.minutes) * 60) > now }
+        let own = place(planned, on: day, wake: wake, dip: dip, now: now, around: busy)
             .filter { Calendar.current.isDate($0.start, inSameDayAs: day) }
+        return (ahead + own).sorted { $0.start < $1.start }
     }
 
     // MARK: - Writing
@@ -223,6 +190,22 @@ enum DayBuilder {
             task.parentTaskId = d.group
             task.notes = d.notes
         }
+        try? context.save()
+    }
+
+    /// One-time cleanup for installs that were seeded with a week of routine
+    /// (breakfast, lunch, dinner, breaks) by an earlier version: whatever of
+    /// it is still unticked goes. Ticked ones stay — that is the user's
+    /// history, not our template.
+    static func removeSeededRoutine(from context: NSManagedObjectContext) {
+        let doneKey = "didRemoveSeededRoutine"
+        guard !UserDefaults.standard.bool(forKey: doneKey) else { return }
+        UserDefaults.standard.set(true, forKey: doneKey)
+        let req = NSFetchRequest<TaskBlock>(entityName: "TaskBlock")
+        req.predicate = NSPredicate(format: "isCompleted == NO AND notes BEGINSWITH %@", autoNote)
+        let leftovers = (try? context.fetch(req)) ?? []
+        guard !leftovers.isEmpty else { return }
+        leftovers.forEach(context.delete)
         try? context.save()
     }
 

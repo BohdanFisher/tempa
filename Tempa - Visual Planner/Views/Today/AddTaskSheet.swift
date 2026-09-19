@@ -215,13 +215,7 @@ struct AddTaskSheet: View {
             .frame(height: 50)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(lightHex: "#FF9273", darkHex: "#D06A4B"),
-                                     Color(lightHex: "#FF7A59", darkHex: "#B5503A")],
-                            startPoint: .topLeading, endPoint: .bottomTrailing
-                        )
-                    )
+                    .fill(T.primaryFill)
             )
         }
         .buttonStyle(SpringPressStyle(scale: 0.96))

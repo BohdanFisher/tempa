@@ -40,8 +40,12 @@ struct TempaApp: App {
         let context = PersistenceController.shared.container.viewContext
         _settingsStore = State(initialValue: SettingsStore(context: context))
 
+        // Earlier versions seeded a week of meals and breaks; whatever of it
+        // is still unticked goes, once.
+        DayBuilder.removeSeededRoutine(from: context)
         TaskNotifications.startObserving(context)
         ReviewPrompt.shared.startObserving(context)
+        CalendarSync.shared.start(context)
         AppLanguage.current.apply()   // keep the AppleLanguages override in sync
 
         #if DEBUG
@@ -61,6 +65,9 @@ struct TempaApp: App {
         // user's first AI request doesn't also pay the fetch round-trip.
         // No-op when the Keychain already holds one; failures self-heal on use.
         Task { _ = try? await ClaudeAPIClient().ensureAPIKey() }
+        // Is the Google Calendar option switched on? (A record in the same
+        // CloudKit public database — see GoogleCalendarConfig.)
+        Task { await GoogleCalendarConfig.refreshFromCloud() }
         AnalyticsService.configure()
     }
 
@@ -79,6 +86,10 @@ struct TempaApp: App {
                 .onChange(of: scenePhase) { _, phase in
                     if phase == .active {
                         Task { await subscriptionManager.updatePurchasedProducts() }
+                        // Whatever changed in the calendar while we were away.
+                        if settingsStore.onboardingCompleted {
+                            Task { await CalendarSync.shared.refresh(into: persistenceController.container.viewContext) }
+                        }
                     }
                 }
         }

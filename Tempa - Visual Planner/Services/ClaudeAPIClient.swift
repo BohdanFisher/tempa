@@ -61,6 +61,11 @@ struct PlannedTask: Codable, Sendable {
     let time: String?      // "HH:mm" 24h
     let times: [String]?   // several "HH:mm" per day, for things repeated daily (e.g. meds)
     let repeatDays: Int?   // repeat over N consecutive days from `date`
+    // For a task the user gave NO time: how the model would place it. `var`
+    // with defaults so plans stashed before these existed still decode.
+    var effort: String? = nil          // "low" | "medium" | "high" — how much focus it takes
+    var bestTime: String? = nil        // "morning" | "afternoon" | "evening" | "any"
+    var suggestedTime: String? = nil   // "HH:mm" in a gap of the user's day
 }
 
 struct DayPlan: Codable, Sendable {
@@ -217,15 +222,38 @@ final class ClaudeAPIClient: Sendable {
     - "category": exactly one of: work, personal, health, routine, social, rest.
     - "durationMinutes": a sensible estimate, 15–120.
     - "icon": one SF Symbol that fits the task, chosen ONLY from this list: \(ClaudeAPIClient.iconVocabulary).
-    - "hasTime": true if a time or day was said for THIS task (including vague ones like \
-    "after lunch", "tonight", in any language). false if no time hint for it.
-    - "date": "yyyy-MM-dd" (today if a time but no day was given), else null.
+    - "hasTime": true if a TIME OF DAY was said for THIS task (including vague ones like \
+    "after lunch", "tonight", in any language). false if no time of day was said — also \
+    when only a DAY was named ("tomorrow", "on Friday").
+    - "date": "yyyy-MM-dd" — the day that was named; today if a time but no day was given; \
+    null if neither. A task with a day but no time of day keeps its "date" and gets PLACED \
+    on that day (next section).
     - "time": 24-hour "HH:mm" — your concrete time. Contextual defaults, any language: \
     morning/вранці/morgens/le matin 08:00, noon/в обід/mittags/à midi 12:00, afternoon/після \
     обіду/nachmittags/l'après-midi 14:00, after work/після роботи/nach der Arbeit 18:00, \
     evening/ввечері/abends/le soir 19:00, before bed/перед сном/vor dem Schlafengehen 22:00.
     - "precise": true only when an exact clock time was said ("at 3pm", "о 15:00", "um 9 Uhr").
-    If a task has no time hint, set hasTime=false and date/time null — the app places it in order.
+    If a task has no time of day, set hasTime=false and time null — and PLACE it (next section).
+
+    PLACEMENT — for every task WITHOUT a time of day (hasTime=false), whether or not a day \
+    was named. The user message lists the ranges of \
+    their day that are ALREADY TAKEN, when they wake, and when their energy dips. Read them, \
+    then fill three more fields:
+    - "effort": "high" (needs real focus or willpower: deep work, writing, studying, taxes, a \
+    dreaded call, anything they've likely been avoiding), "medium", or "low" (quick, mechanical \
+    or pleasant: a short errand, tidying, a message, a walk).
+    - "bestTime": "morning" | "afternoon" | "evening" | "any" — the part of THEIR day that suits \
+    the task. Heavy focus work → morning, while the head is fresh, and never inside the energy \
+    dip. Low-effort things → afternoon, the dip is a good home for them. Winding down, chores \
+    at home, social calls to friends → evening. Things that depend on the outside world go when \
+    that world is open: a bank, a clinic, an office → working hours; shops → daytime or after \
+    work. "any" when it truly doesn't matter.
+    - "suggestedTime": 24-hour "HH:mm" on the task's day — a start that (1) lies inside that \
+    part of the day, (2) is later than the current time if the day is today, (3) does NOT \
+    overlap any taken range, leaving about 10 minutes of air around it, and (4) does not overlap \
+    the other tasks of this same brain dump. If that part of the day is full, move to the \
+    nearest part that has room. The app double-checks the slot, so give your best pick.
+    Leave all three null for tasks that DO have a time of day (hasTime=true).
 
     RECURRENCE — for things that repeat (very common for meds/habits):
     - SEVERAL TIMES A DAY ("twice a day", "3 рази на день", "dreimal täglich", \
@@ -240,13 +268,16 @@ final class ClaudeAPIClient: Sendable {
     per occurrence. Keep "title" clean of the count/frequency words ("Take the antibiotic").
 
     Keep the user's spoken order. Output STRICT JSON only, no markdown fences:
-    { "tasks": [ { "title": "Take vitamin D", "category": "health", "durationMinutes": 5, "icon": "pills", "hasTime": true, "precise": false, "date": "2026-06-09", "time": "08:00", "times": ["08:00","14:00","20:00"], "repeatDays": 10 } ] }
+    { "tasks": [ { "title": "Take vitamin D", "category": "health", "durationMinutes": 5, "icon": "pills", "hasTime": true, "precise": false, "date": "2026-06-09", "time": "08:00", "times": ["08:00","14:00","20:00"], "repeatDays": 10, "effort": null, "bestTime": null, "suggestedTime": null }, { "title": "Write the quarterly report", "category": "work", "durationMinutes": 90, "icon": "doc.text", "hasTime": false, "precise": false, "date": null, "time": null, "times": null, "repeatDays": 1, "effort": "high", "bestTime": "morning", "suggestedTime": "10:15" } ] }
     """
 
     /// Split a spoken brain-dump into several scheduled tasks ("plan my day").
     /// `targetDay` pins every task without an explicit day to that date —
     /// the funnel asks for tomorrow when the day is nearly over.
-    func planTasks(from brainDump: String, targetDay: Date? = nil) async throws -> DayPlan {
+    /// `dayContext` is what the model needs to place untimed tasks: the
+    /// taken ranges (times only — never what the blocks are), the wake time
+    /// and the energy dip. See `ClaudeAPIClient.dayContext`.
+    func planTasks(from brainDump: String, targetDay: Date? = nil, dayContext: String? = nil) async throws -> DayPlan {
         var userContent = "\(Self.dateContextLine())"
         if let targetDay {
             let f = DateFormatter()
@@ -254,13 +285,18 @@ final class ClaudeAPIClient: Sendable {
             f.dateFormat = "yyyy-MM-dd (EEEE)"
             userContent += "\nThe user is planning \(f.string(from: targetDay)). Every task without an explicit day belongs to that date."
         }
+        if let dayContext, !dayContext.isEmpty {
+            userContent += "\n\n\(dayContext)"
+        }
         userContent += "\n\nBrain dump: \(brainDump)"
         if let directive = TaskLanguage.outputDirective(for: brainDump) {
             userContent += "\n\n\(directive)"
         }
         let body: [String: Any] = [
             "model": model,
-            "max_tokens": 1500,
+            // Each task carries placement fields now; a long brain dump
+            // must not be cut off mid-JSON.
+            "max_tokens": 4000,
             "system": [
                 ["type": "text", "text": planSystemPrompt, "cache_control": ["type": "ephemeral"]]
             ],
@@ -540,6 +576,21 @@ final class ClaudeAPIClient: Sendable {
             }
         }
         return out
+    }
+
+    /// The user's day as the planner prompt reads it: which ranges are taken
+    /// on each of `days`, when they wake, when their energy dips.
+    static func dayContext(busy: [DateInterval], days: [Date], wake: Date, dip: Date?) -> String {
+        let clock = DateFormatter()
+        clock.locale = Locale(identifier: "en_US_POSIX")
+        clock.dateFormat = "HH:mm"
+        var lines = ["ALREADY TAKEN (do not place anything on top of these):",
+                     SlotFinder.describe(busy, days: days),
+                     "The user wakes at \(clock.string(from: wake)); their day runs about 16 hours from there."]
+        if let dip {
+            lines.append("Their energy dips around \(clock.string(from: dip)) for an hour or so — keep that stretch light.")
+        }
+        return lines.joined(separator: "\n")
     }
 
     /// "Current local datetime: 2026-06-08 14:30 (Monday), timezone Europe/Kyiv."

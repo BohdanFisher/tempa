@@ -40,7 +40,7 @@ struct CalendarView: View {
                         .id(selectedDate)
                         .transition(.push(from: slideEdge))
                 }
-                .padding(.bottom, 140)
+                .padding(.bottom, TempaTabBar.contentClearance)
             }
         }
         .confettiHost()

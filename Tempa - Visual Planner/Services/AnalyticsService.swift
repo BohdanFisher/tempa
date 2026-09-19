@@ -4,6 +4,11 @@ import PostHog
 enum AnalyticsEvent: String {
     case onboardingScreenView = "onboarding_screen_view"
     case onboardingCompleted = "onboarding_completed"
+    /// The calendar ask, answered. "source" (onboarding | settings),
+    /// "provider" (apple | google), "outcome" (connected | denied | skipped |
+    /// not_granted | failed | disconnected) and counts — never anything that
+    /// is IN a calendar.
+    case calendarSyncResult = "calendar_sync_result"
     case paywallShown = "paywall_shown"
     case paywallProductSelected = "paywall_product_selected"
     case paywallCTATapped = "paywall_cta_tapped"

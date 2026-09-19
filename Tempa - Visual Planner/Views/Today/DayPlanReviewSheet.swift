@@ -21,6 +21,7 @@ struct PlanRow: Identifiable {
 struct DayPlanReviewSheet: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(SettingsStore.self) private var settings
 
     let dump: String
     let onAdded: () -> Void
@@ -229,10 +230,24 @@ struct DayPlanReviewSheet: View {
         AnalyticsService.shared.track(.taskBreakdownRequested, properties: ["source": "voice_day_plan"])
         isLoading = true
         errorMessage = nil
+        // What's already on the next few days — the model places around it,
+        // and buildRows holds it to that.
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: Date())
+        // As far ahead as a row can be dated or repeated (repeats cap at 30 days).
+        let horizon = cal.date(byAdding: .day, value: 45, to: today) ?? today
+        let busy = SlotFinder.busy(from: Date(), to: horizon, context: viewContext)
+        // The model hears about the user's OWN tasks only. What came from a
+        // calendar stays on the phone; buildRows still plans around it.
+        let dayContext = ClaudeAPIClient.dayContext(
+            busy: SlotFinder.busy(from: Date(), to: horizon, context: viewContext, includeCalendar: false),
+            days: (0..<3).compactMap { cal.date(byAdding: .day, value: $0, to: today) },
+            wake: settings.wakeTime, dip: settings.energyDipTime
+        )
         for attempt in 0..<2 {
             do {
-                let plan = try await apiClient.planTasks(from: dump)
-                let built = buildRows(from: plan)
+                let plan = try await apiClient.planTasks(from: dump, dayContext: dayContext)
+                let built = buildRows(from: plan, busy: busy)
                 if built.isEmpty {
                     errorMessage = "Couldn't pick out any tasks. Want to try saying it again?"
                 } else {
@@ -254,10 +269,48 @@ struct DayPlanReviewSheet: View {
         isLoading = false
     }
 
-    private func buildRows(from plan: DayPlan) -> [PlanRow] {
+    /// Every row gets a start nothing else is sitting on. A time the user
+    /// SAID exactly is kept to the minute; "this evening" slides to the
+    /// nearest gap; a task with no time goes where it fits — the model's
+    /// read of how heavy it is and which part of the day suits it, checked
+    /// against what's really taken (their tasks, their calendar, and the
+    /// rows placed before it).
+    private func buildRows(from plan: DayPlan, busy: [DateInterval]) -> [PlanRow] {
         let cal = Calendar.current
-        var cursor = nextHalfHour()
-        var futureDayCursors: [Date: Date] = [:]   // per-day cursor for date-only tasks
+        let now = Date()
+        let rhythm = SlotFinder.Rhythm(wake: settings.wakeTime, dip: settings.energyDipTime)
+        var occupied = busy
+
+        /// The instants a row claims on its first day.
+        func claim(_ times: [DateComponents], on day: Date, minutes: Int) {
+            for comp in times {
+                if let at = cal.date(bySettingHour: comp.hour ?? 9, minute: comp.minute ?? 0, second: 0,
+                                     of: cal.startOfDay(for: day)) {
+                    occupied.append(DateInterval(start: at, duration: TimeInterval(minutes) * 60))
+                }
+            }
+        }
+        func exactTimes(_ t: PlannedTask) -> (Date, [DateComponents])? {
+            let said = (t.times ?? []).compactMap(parseHM)
+            if let first = said.first,
+               let s = cal.date(bySettingHour: first.hour ?? 9, minute: first.minute ?? 0, second: 0, of: parseDay(t.date)) {
+                return (s, said)   // "08:00, 14:00 and 20:00" — said times, kept as said
+            }
+            if t.hasTime == true, t.precise == true,
+               let concrete = ScheduleResolver.concreteStart(date: t.date, time: t.time) {
+                return (concrete, [cal.dateComponents([.hour, .minute], from: concrete)])
+            }
+            return nil
+        }
+
+        // Exact times are appointments: they take their place FIRST, so that
+        // nothing placed by us — even a task said earlier — lands on them.
+        for t in plan.tasks {
+            if let (start, times) = exactTimes(t) {
+                claim(times, on: start, minutes: min(max(t.durationMinutes ?? 30, 5), 240))
+            }
+        }
+
         var result: [PlanRow] = []
         for t in plan.tasks {
             let dur = min(max(t.durationMinutes ?? 30, 5), 240)
@@ -266,31 +319,27 @@ struct DayPlanReviewSheet: View {
             let days = max(1, min(t.repeatDays ?? 1, 30))          // cap at 30 days
             let baseDay = parseDay(t.date)
 
-            // Resolve the per-day times.
-            var times: [DateComponents] = (t.times ?? []).compactMap(parseHM)
             let start: Date
-            if let first = times.first,
-               let s = cal.date(bySettingHour: first.hour ?? 9, minute: first.minute ?? 0, second: 0, of: baseDay) {
-                start = s
-            } else if t.hasTime == true, let concrete = ScheduleResolver.concreteStart(date: t.date, time: t.time) {
-                start = concrete
-                times = [cal.dateComponents([.hour, .minute], from: concrete)]
-                cursor = max(cursor, concrete.addingTimeInterval(TimeInterval(dur) * 60))
-            } else if baseDay != cal.startOfDay(for: Date()),
-                      let nine = cal.date(bySettingHour: 9, minute: 0, second: 0, of: baseDay) {
-                // A date without a usable time keeps its DAY — from 09:00 on,
-                // back-to-back per day, never a pile of overlapping blocks.
-                let dayStart = futureDayCursors[baseDay] ?? nine
-                start = dayStart
-                times = [cal.dateComponents([.hour, .minute], from: dayStart)]
-                futureDayCursors[baseDay] = dayStart.addingTimeInterval(TimeInterval(dur) * 60)
+            var times: [DateComponents]
+            if let (exactStart, exact) = exactTimes(t) {
+                (start, times) = (exactStart, exact)
             } else {
-                start = cursor
-                times = [cal.dateComponents([.hour, .minute], from: cursor)]
-                cursor = cursor.addingTimeInterval(TimeInterval(dur) * 60)
+                // A repeating row needs a time that is free on each of its days.
+                let taken = SlotFinder.projecting(occupied, onto: baseDay, repeatDays: days)
+                if t.hasTime == true, let anchor = ScheduleResolver.concreteStart(date: t.date, time: t.time) {
+                    // "This evening": as near to the anchor as the day allows.
+                    start = SlotFinder.nearestFree(to: anchor, minutes: dur, now: now, busy: taken)
+                } else {
+                    // No time said (a day, at most) — find it a place.
+                    start = SlotFinder.place(t.slotRequest(minutes: dur), on: baseDay, now: now,
+                                             rhythm: rhythm, busy: taken)
+                }
+                times = [cal.dateComponents([.hour, .minute], from: start)]
+                claim(times, on: start, minutes: dur)
             }
+            times.sort { ($0.hour ?? 0) * 60 + ($0.minute ?? 0) < ($1.hour ?? 0) * 60 + ($1.minute ?? 0) }
             result.append(PlanRow(title: t.title, start: start, durationMinutes: dur,
-                                  category: cat, icon: icon, dailyTimes: times.sorted { ($0.hour ?? 0) * 60 + ($0.minute ?? 0) < ($1.hour ?? 0) * 60 + ($1.minute ?? 0) }, repeatDays: days))
+                                  category: cat, icon: icon, dailyTimes: times, repeatDays: days))
         }
         return result.sorted { $0.start < $1.start }
     }
@@ -385,14 +434,6 @@ struct DayPlanReviewSheet: View {
 
     private func durationText(_ m: Int) -> String {
         m >= 60 ? (m % 60 == 0 ? "\(m / 60)h" : "\(m / 60)h \(m % 60)m") : "\(m)m"
-    }
-
-    private func nextHalfHour() -> Date {
-        let cal = Calendar.current
-        let now = Date()
-        let m = cal.component(.minute, from: now)
-        let addMin = (m < 30 ? 30 : 60) - m
-        return cal.date(byAdding: .minute, value: addMin, to: now) ?? now
     }
 }
 

@@ -83,6 +83,9 @@ struct PersistenceController: Sendable {
         ["nudgesEnabled", "trialReminderWanted", "appLanguage",
          "tempa_last_app_open", "tempa_welcome_back_last_shown",
          "focus_session_snapshot", "todayGrouping", "todaySorting"].forEach { d.removeObject(forKey: $0) }
+        // The calendar mirror's memory too — or it would "remember" every
+        // wiped block as one the user had deleted and never bring it back.
+        CalendarSync.allDefaultsKeys.forEach { d.removeObject(forKey: $0) }
         print("[Tempa] DEBUG wipe: all local data deleted, tombstones will sync to CloudKit")
     }
     #endif

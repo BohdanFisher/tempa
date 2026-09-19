@@ -15,6 +15,20 @@ enum T {
     static let secondary = Color(hex: "#4EC8B0")
     static let secondaryDeep = Color(hex: "#2FA993")
 
+    /// The one fill every filled button wears — the "Speak it" look: a soft
+    /// diagonal of the brand colour, flat on the page. No coloured glow
+    /// underneath, anywhere: a button is lit by its fill, not by a halo.
+    static let primaryFill = LinearGradient(
+        colors: [Color(lightHex: "#FF9273", darkHex: "#D06A4B"),
+                 Color(lightHex: "#FF7A59", darkHex: "#B5503A")],
+        startPoint: .topLeading, endPoint: .bottomTrailing
+    )
+    static let secondaryFill = LinearGradient(
+        colors: [Color(lightHex: "#6BD6C0", darkHex: "#3FA48F"),
+                 Color(lightHex: "#4EC8B0", darkHex: "#2F8C79")],
+        startPoint: .topLeading, endPoint: .bottomTrailing
+    )
+
     // Text — adaptive (dark ink on light, warm off-white on dark).
     static let text = Color(lightHex: "#2A2A33", darkHex: "#F3EEE7")
     static let textSec = Color(lightHex: "#8A8A99", darkHex: "#A89F96")
@@ -120,14 +134,6 @@ extension View {
 
     func tempaShadowLg() -> some View {
         self.shadow(color: Color.tempaShadowTint.opacity(0.08), radius: 20, x: 0, y: 16)
-    }
-
-    func primaryButtonShadow() -> some View {
-        self.shadow(color: Color(hex: "#FF7A59").opacity(0.32), radius: 8, x: 0, y: 6)
-    }
-
-    func secondaryButtonShadow() -> some View {
-        self.shadow(color: Color(hex: "#4EC8B0").opacity(0.28), radius: 8, x: 0, y: 6)
     }
 }
 
@@ -242,13 +248,13 @@ struct TempaButton: View {
         switch size { case .lg: 16; case .md: 14; case .sm: 10 }
     }
 
-    private var bgColor: Color {
+    private var fill: AnyShapeStyle {
         switch variant {
-        case .primary: T.primary
-        case .secondary: T.secondary
-        case .ghost: .clear
-        case .soft: Color(hex: "#FFE9E1")
-        case .dark: T.text
+        case .primary: AnyShapeStyle(T.primaryFill)
+        case .secondary: AnyShapeStyle(T.secondaryFill)
+        case .ghost: AnyShapeStyle(Color.clear)
+        case .soft: AnyShapeStyle(Color(hex: "#FFE9E1"))
+        case .dark: AnyShapeStyle(T.text)
         }
     }
     private var fgColor: Color {
@@ -284,8 +290,8 @@ struct TempaButton: View {
             .frame(height: height)
             .frame(maxWidth: fullWidth ? .infinity : nil)
             .padding(.horizontal, hPad)
-            .background(bgColor)
-            .clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+            .background(RoundedRectangle(cornerRadius: radius, style: .continuous).fill(fill))
+            .contentShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
             .overlay {
                 if variant == .ghost {
                     RoundedRectangle(cornerRadius: radius, style: .continuous)
@@ -294,23 +300,6 @@ struct TempaButton: View {
             }
         }
         .buttonStyle(.plain)
-        .modifier(ButtonShadow(variant: variant))
-    }
-}
-
-private struct ButtonShadow: ViewModifier {
-    let variant: TempaButton.Variant
-    func body(content: Content) -> some View {
-        switch variant {
-        case .primary:
-            content.shadow(color: Color(hex: "#FF7A59").opacity(0.32), radius: 8, x: 0, y: 6)
-        case .secondary:
-            content.shadow(color: Color(hex: "#4EC8B0").opacity(0.28), radius: 8, x: 0, y: 6)
-        case .dark:
-            content.shadow(color: Color(hex: "#2A2A33").opacity(0.18), radius: 8, x: 0, y: 6)
-        default:
-            content
-        }
     }
 }
 

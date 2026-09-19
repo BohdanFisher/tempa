@@ -66,6 +66,12 @@ struct FocusView: View {
 
     // Design-spec constants
     private let SIZE: CGFloat = 340
+    /// On a short phone (SE) the dial gives way, so the pause and "+1 min"
+    /// controls under it don't end up beneath the tab bar.
+    private var dialScale: CGFloat {
+        let height = UIScreen.main.bounds.height
+        return height < 740 ? max(0.72, (height - 380) / SIZE) : 1
+    }
     private let rRing: CGFloat = 122
     private let ringW: CGFloat = 42
     private let rNumber: CGFloat = 165
@@ -173,6 +179,8 @@ struct FocusView: View {
                     .frame(width: SIZE, height: SIZE)
                     .allowsHitTesting(false)
                 }
+                .scaleEffect(dialScale)
+                .frame(height: SIZE * dialScale)
 
                 if isActive {
                     activeControls
@@ -182,7 +190,9 @@ struct FocusView: View {
                 }
 
                 Spacer()
-                Spacer().frame(height: 20)
+                // Keeps the session controls clear of the tab bar (the
+                // system one insets the screen by itself).
+                Spacer().frame(height: max(20, TempaTabBar.contentClearance - 28))
             }
         }
         .onReceive(clock) { _ in tickClock() }
@@ -401,9 +411,8 @@ struct FocusView: View {
             .frame(height: 60)
             .padding(.horizontal, 44)
             .background(
-                Capsule().fill(T.primary)
+                Capsule().fill(T.primaryFill)
             )
-            .shadow(color: Color(hex: "#FF7A59").opacity(0.4), radius: 14, x: 0, y: 10)
         }
         .buttonStyle(.plain)
     }

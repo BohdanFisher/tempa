@@ -65,12 +65,13 @@ enum TaskNotifications {
                     Date() as NSDate
                 )
                 let tasks = (try? context.fetch(req)) ?? []
+                let ringsOnItsOwn = CalendarSync.ownAlarmKeys()
                 for task in tasks {
                     guard let id = task.id, let start = task.startTime else { continue }
-                    // The routine seeded from onboarding (breakfast, lunch…)
-                    // is a shape for the day, not five reminders a day. The
-                    // evening "plan tomorrow" block is the one that may nudge.
-                    if task.notes == DayBuilder.autoNote { continue }
+                    // A meeting mirrored from the calendar that already has
+                    // its own alert doesn't need a second one from us.
+                    if let notes = task.notes, notes.hasPrefix(CalendarSync.notePrefix),
+                       ringsOnItsOwn.contains(String(notes.dropFirst(CalendarSync.notePrefix.count))) { continue }
                     let fire = start.addingTimeInterval(-leadMinutes)
                     guard fire > Date() else { continue }
 

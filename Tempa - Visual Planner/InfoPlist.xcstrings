@@ -1,0 +1,210 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tempa"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tempa - Visual Planner"
+          }
+        }
+      }
+    },
+    "NSCalendarsFullAccessUsageDescription" : {
+      "comment" : "Privacy - usage description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa zeigt deine Kalendertermine in deinem Tag und plant deine Aufgaben um sie herum. Sie bleiben auf deinem iPhone und in deiner eigenen iCloud."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa shows your calendar events on your day and plans your tasks around them. They stay on your iPhone and in your own iCloud."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa muestra los eventos de tu calendario en tu día y organiza tus tareas a su alrededor. Se quedan en tu iPhone y en tu propio iCloud."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa näyttää kalenteritapahtumasi päivässäsi ja suunnittelee tehtäväsi niiden ympärille. Ne pysyvät iPhonessasi ja omassa iCloudissasi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa affiche les événements de ton calendrier dans ta journée et planifie tes tâches autour. Ils restent sur ton iPhone et dans ton propre iCloud."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa viser kalenderhendelsene dine i dagen din og planlegger oppgavene rundt dem. De blir på iPhonen din og i din egen iCloud."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa toont je agenda-afspraken in je dag en plant je taken eromheen. Ze blijven op je iPhone en in je eigen iCloud."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Tempa mostra os eventos do seu calendário no seu dia e planeja suas tarefas em volta deles. Eles ficam no seu iPhone e no seu próprio iCloud."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa показує події з календаря у твоєму дні й планує задачі навколо них. Вони лишаються на твоєму iPhone й у твоєму власному iCloud."
+          }
+        }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "comment" : "Privacy - usage description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa braucht dein Mikrofon, um zuzuhören, wenn du eine Aufgabe einsprichst."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa needs your microphone to listen when you speak a task."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa necesita tu micrófono para escucharte cuando dictas una tarea."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa tarvitsee mikrofonia kuunnellakseen, kun sanelet tehtävän."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa a besoin de ton micro pour t'écouter quand tu dictes une tâche."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa trenger mikrofonen for å lytte når du snakker inn en oppgave."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa heeft je microfoon nodig om te luisteren wanneer je een taak inspreekt."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Tempa precisa do microfone para ouvir quando você dita uma tarefa."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa потрібен мікрофон, щоб слухати, коли ти надиктовуєш задачу."
+          }
+        }
+      }
+    },
+    "NSSpeechRecognitionUsageDescription" : {
+      "comment" : "Privacy - usage description",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa nutzt Spracherkennung, um aus deiner Stimme Aufgaben zu machen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa uses speech recognition to turn your voice into tasks."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa usa el reconocimiento de voz para convertir lo que dices en tareas."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa käyttää puheentunnistusta muuttaakseen puheesi tehtäviksi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa utilise la reconnaissance vocale pour transformer ta voix en tâches."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa bruker talegjenkjenning for å gjøre stemmen din om til oppgaver."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa gebruikt spraakherkenning om je stem om te zetten in taken."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Tempa usa o reconhecimento de fala para transformar sua voz em tarefas."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempa використовує розпізнавання мовлення, щоб перетворити твій голос на задачі."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.1"
+}

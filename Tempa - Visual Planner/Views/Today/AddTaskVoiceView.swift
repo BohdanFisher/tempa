@@ -163,9 +163,8 @@ struct AddTaskVoiceView: View {
                     .scaleEffect(isListening ? breatheScale : 1)
 
                 Circle()
-                    .fill(buttonFilled ? T.primary : T.surface)
+                    .fill(buttonFilled ? AnyShapeStyle(T.primaryFill) : AnyShapeStyle(T.surface))
                     .frame(width: 92, height: 92)
-                    .shadow(color: Color(hex: "#FF7A59").opacity(buttonFilled ? 0.4 : 0), radius: 15, x: 0, y: 12)
 
                 Image(systemName: buttonIcon)
                     .font(.system(size: 34, weight: .semibold))
