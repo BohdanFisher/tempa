@@ -3,14 +3,29 @@ import Speech
 import AVFoundation
 import Observation
 
-struct AddTaskVoiceView: View {
-    @Environment(\.dismiss) private var dismiss
+/// The recorder itself, with two homes.
+///
+/// `.cover` is the way it has always worked: presented full-screen from the
+/// New task sheet, with a close button, and listening from the moment it
+/// appears — the user got here by tapping "Speak it", so they are ready.
+///
+/// `.tab` is the AI screen. No chrome, and it does NOT open the microphone
+/// on its own: arriving at a tab is not the same as asking to be recorded.
+/// The mic starts on the first tap, and stops the moment the tab is left.
+struct VoiceCaptureView<Footer: View>: View {
+    enum Home { case tab, cover }
+
+    var home: Home = .cover
+    var onConfirm: (String) -> Void
+    var onClose: () -> Void = {}
+    @ViewBuilder var footer: () -> Footer
+
     @State private var transcribedText = ""
     @State private var isListening = false
     @State private var errorMessage: String?
     @State private var breatheScale: CGFloat = 1.0
     @State private var recognizer = SpeechRecognizer()
-    var onConfirm: (String) -> Void = { _ in }
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         ZStack {
@@ -20,8 +35,10 @@ struct AddTaskVoiceView: View {
             ).ignoresSafeArea()
 
             VStack(spacing: 0) {
-                topBar
-                    .padding(.top, 8)
+                if home == .cover {
+                    topBar
+                        .padding(.top, 8)
+                }
 
                 VStack(alignment: .leading, spacing: 0) {
                     Text("I HEARD")
@@ -61,26 +78,33 @@ struct AddTaskVoiceView: View {
                         .padding(.bottom, 24)
 
                     controlRow
-                        .padding(.bottom, 32)
+                        .padding(.bottom, home == .cover ? 32 : 26)
 
                     Text(helperText)
                         .font(.custom(T.fontHeader, size: 14).weight(.semibold))
                         .foregroundColor(T.textSec)
                         .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.center)
-                        .padding(.bottom, 50)
+                        .padding(.bottom, home == .cover ? 50 : 22)
+
+                    footer()
                 }
                 .padding(.horizontal, 24)
-                .padding(.top, 40)
+                .padding(.top, home == .cover ? 40 : 24)
             }
         }
         .onAppear {
             recognizer.setLocale(AppLanguage.current.speechLocale)
             startBreathing()
-            startListening()
+            if home == .cover { startListening() }
         }
         .onDisappear {
             recognizer.stop()
+        }
+        // Leaving the app must free the microphone too — a tab keeps its
+        // view alive, so onDisappear alone isn't enough here.
+        .onChange(of: scenePhase) { _, phase in
+            if phase != .active { recognizer.stop() }
         }
         .onChange(of: recognizer.transcript) {
             transcribedText = recognizer.transcript
@@ -102,7 +126,7 @@ struct AddTaskVoiceView: View {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 #endif
                 recognizer.stop()
-                dismiss()
+                onClose()
             } label: {
                 Image(systemName: "xmark")
                     .font(.system(size: 16, weight: .semibold))
@@ -140,7 +164,7 @@ struct AddTaskVoiceView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 120)
+            .frame(height: home == .cover ? 120 : 104)
         }
     }
 
@@ -195,8 +219,12 @@ struct AddTaskVoiceView: View {
         #endif
         if !transcribedText.isEmpty {
             recognizer.stop()
-            onConfirm(transcribedText)
-            dismiss()
+            let text = transcribedText
+            // The tab stays where it is, so it needs a clean sheet for the
+            // next dump; the cover is about to go away either way.
+            transcribedText = ""
+            recognizer.reset()
+            onConfirm(text)
         } else if isListening {
             recognizer.stop()          // nothing captured yet → just pause
         } else {
@@ -212,6 +240,27 @@ struct AddTaskVoiceView: View {
     private func startBreathing() {
         withAnimation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true)) {
             breatheScale = 1.08
+        }
+    }
+}
+
+extension VoiceCaptureView where Footer == EmptyView {
+    init(home: Home = .cover, onConfirm: @escaping (String) -> Void, onClose: @escaping () -> Void = {}) {
+        self.init(home: home, onConfirm: onConfirm, onClose: onClose) { EmptyView() }
+    }
+}
+
+/// The recorder as the New task sheet has always presented it.
+struct AddTaskVoiceView: View {
+    @Environment(\.dismiss) private var dismiss
+    var onConfirm: (String) -> Void = { _ in }
+
+    var body: some View {
+        VoiceCaptureView(home: .cover) { text in
+            onConfirm(text)
+            dismiss()
+        } onClose: {
+            dismiss()
         }
     }
 }
@@ -274,6 +323,13 @@ final class SpeechRecognizer {
                 }
             }
         }
+    }
+
+    /// Clears what was heard, so the next dump starts from silence. (The
+    /// tab keeps this recognizer alive between dumps; a cover is thrown away.)
+    func reset() {
+        transcript = ""
+        error = nil
     }
 
     func stop() {
