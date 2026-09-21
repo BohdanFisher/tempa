@@ -250,21 +250,6 @@ extension VoiceCaptureView where Footer == EmptyView {
     }
 }
 
-/// The recorder as the New task sheet has always presented it.
-struct AddTaskVoiceView: View {
-    @Environment(\.dismiss) private var dismiss
-    var onConfirm: (String) -> Void = { _ in }
-
-    var body: some View {
-        VoiceCaptureView(home: .cover) { text in
-            onConfirm(text)
-            dismiss()
-        } onClose: {
-            dismiss()
-        }
-    }
-}
-
 // MARK: - Speech Recognizer
 
 @MainActor @Observable
@@ -421,5 +406,5 @@ final class SpeechRecognizer {
 }
 
 #Preview {
-    AddTaskVoiceView()
+    VoiceCaptureView(home: .tab) { _ in }
 }

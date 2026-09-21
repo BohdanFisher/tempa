@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - Shared task-form vocabulary
 // One system used by both "New task" (create) and "Edit task".
-// Create adds the AI/voice actions on top; everything else is identical.
+// Create adds the AI breakdown on top; everything else is identical.
 
 /// Small uppercase section header, e.g. "CATEGORY".
 struct TaskFieldLabel: View {
@@ -18,22 +18,34 @@ struct TaskFieldLabel: View {
 
 // MARK: - Category
 
+/// One row, six equal cells — the same shape, height and "filled when
+/// picked" grammar as the priority row under it. Six names don't fit in a
+/// row, so the cells carry the category's icon (the one a new task gets)
+/// in its colour, and the picked name sits on the right of the header, the
+/// way "30 min" sits next to DURATION.
 struct CategorySection: View {
     @Binding var category: String
-    private let cols = [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            TaskFieldLabel("CATEGORY")
-            LazyVGrid(columns: cols, spacing: 8) {
+            HStack {
+                TaskFieldLabel("CATEGORY")
+                Spacer()
+                Text(catDisplayName(category))
+                    .font(.custom(T.fontHeader, size: 14).weight(.bold))
+                    .foregroundColor(Cat.named(category).ink)
+                    .contentTransition(.opacity)
+            }
+            HStack(spacing: 8) {
                 ForEach(Cat.all, id: \.0) { name, colors in
-                    chip(name, colors)
+                    cell(name, colors)
                 }
             }
         }
+        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: category)
     }
 
-    private func chip(_ name: String, _ colors: CatColors) -> some View {
+    private func cell(_ name: String, _ colors: CatColors) -> some View {
         let picked = category == name
         return Button {
             category = name
@@ -41,18 +53,21 @@ struct CategorySection: View {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
             #endif
         } label: {
-            HStack(spacing: 6) {
-                Circle().fill(colors.solid).frame(width: 10, height: 10)
-                Text(catDisplayName(name))
-                    .font(.custom(T.fontHeader, size: 13).weight(.bold))
-                    .foregroundColor(picked ? colors.ink : T.text)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 10)
-            .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(picked ? colors.bg : T.surface))
-            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(picked ? colors.ink : .clear, lineWidth: 1.5))
+            // Picked wears the category the way it looks everywhere else in
+            // the app — its soft tint, its deep ink — rather than a solid
+            // fill: a white icon on yellow or mint can't be read.
+            Image(systemName: Cat.icon(for: name))
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(picked ? colors.ink : colors.solid)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
+                .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(picked ? colors.bg : T.surface))
+                .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(picked ? colors.ink : colors.solid.opacity(0.35), lineWidth: 1.5))
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(catDisplayName(name))
+        .accessibilityAddTraits(picked ? .isSelected : [])
     }
 }
 

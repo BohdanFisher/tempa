@@ -2600,6 +2600,7 @@
       }
     },
     "A short conversation for a foggy head. It sees your day and names one thing to start with." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3584,6 +3585,7 @@
       }
     },
     "All" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -4875,6 +4877,7 @@
       }
     },
     "Both ways end in a list you check — nothing is added on its own." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -11220,6 +11223,7 @@
       }
     },
     "Grouped" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -13625,6 +13629,7 @@
       }
     },
     "Let's have a look" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -19092,6 +19097,7 @@
       }
     },
     "Say everything that's on your mind. Tempa turns it into tasks and finds them free slots." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -21548,6 +21554,7 @@
       }
     },
     "Swipe to another week, or add a task from Today." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -25053,6 +25060,7 @@
       }
     },
     "Two ways in — whichever suits you right now." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -27662,6 +27670,7 @@
       }
     },
     "Where do I start?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

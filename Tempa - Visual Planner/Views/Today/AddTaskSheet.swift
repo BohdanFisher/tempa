@@ -14,11 +14,6 @@ struct AddTaskSheet: View {
     @State private var breakdownSteps: [MicroStepData] = []
     @State private var isThinking = false
     @State private var usedFallbackPlan = false
-    @State private var showVoice = false
-    @State private var showAskAI = false
-    @State private var dumpText = ""
-    @State private var showDayPlan = false
-    @State private var pendingPlan = false
     @State private var titleShake: CGFloat = 0   // gentle "needs a title" nudge
     @State private var showProPaywall = false    // AI features are Pro
     @FocusState private var titleFocused: Bool
@@ -65,36 +60,6 @@ struct AddTaskSheet: View {
         .fullScreenCover(isPresented: $showProPaywall) {
             PaywallView(allowDismiss: true) {}
         }
-        .fullScreenCover(isPresented: $showVoice) {
-            // Voice is a brain-dump → split into several scheduled tasks ("plan my day").
-            AddTaskVoiceView { text in
-                dumpText = text
-                pendingPlan = true
-            }
-        }
-        .onChange(of: showVoice) { _, shown in
-            // Present the day-plan once the voice sheet has fully dismissed.
-            if !shown && pendingPlan {
-                pendingPlan = false
-                showDayPlan = true
-            }
-        }
-        .fullScreenCover(isPresented: $showDayPlan) {
-            DayPlanReviewSheet(dump: dumpText) { dismiss() }
-        }
-        .fullScreenCover(isPresented: $showAskAI) {
-            // Ask Tempa's confirmed task → same plan flow as voice, so it actually schedules.
-            AddTaskAskAIView { text in
-                dumpText = text
-                pendingPlan = true
-            }
-        }
-        .onChange(of: showAskAI) { _, shown in
-            if !shown && pendingPlan {
-                pendingPlan = false
-                showDayPlan = true
-            }
-        }
         .onChange(of: selectedCategory) { _, new in
             // Re-tint any already-generated steps so changing the type is reflected live.
             breakdownSteps = breakdownSteps.map {
@@ -137,7 +102,9 @@ struct AddTaskSheet: View {
         .padding(.bottom, 12)
     }
 
-    // MARK: - Title card (with the create-only AI input methods)
+    // MARK: - Title card
+    // Speaking a whole day and asking Tempa live on the AI tab; this sheet
+    // is for the one task you already have in mind.
 
     private var inputCard: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -176,15 +143,6 @@ struct AddTaskSheet: View {
                 .submitLabel(.done)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .modifier(GentleShake(animatableData: titleShake))
-
-            Divider()
-                .padding(.top, 8)
-
-            HStack(spacing: 8) {
-                speakItHero
-                aiInputButton(icon: "sparkles", label: "Ask Tempa") { requirePro { showAskAI = true } }
-            }
-            .padding(.top, 6)
         }
         .padding(18)
         .background(
@@ -192,48 +150,6 @@ struct AddTaskSheet: View {
                 .fill(T.surface)
         )
         .tempaShadowSm()
-    }
-
-    /// Voice input — coral, simple, unmistakable. Same geometry as Ask Tempa.
-    private var speakItHero: some View {
-        Button {
-            #if os(iOS)
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            #endif
-            requirePro { showVoice = true }
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "mic.fill").font(.system(size: 13, weight: .semibold))
-                Text("Speak it").font(.custom(T.fontHeader, size: 13).weight(.bold))
-            }
-            .foregroundColor(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
-            .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(T.primaryFill)
-            )
-        }
-        .buttonStyle(SpringPressStyle(scale: 0.96))
-    }
-
-    private func aiInputButton(icon: String, label: LocalizedStringKey, action: @escaping () -> Void) -> some View {
-        Button {
-            #if os(iOS)
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-            #endif
-            action()
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: icon).font(.system(size: 13, weight: .medium))
-                Text(label).font(.custom(T.fontHeader, size: 13).weight(.bold))
-            }
-            .foregroundColor(T.text)
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
-            .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(T.bgWarm))
-        }
-        .buttonStyle(.plain)
     }
 
     // MARK: - Primary actions (create-only: add + AI breakdown into steps)
