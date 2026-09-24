@@ -166,7 +166,7 @@ struct MainTabView: View {
                     }
                 }
             }
-            Tab(value: TabSlot.add, role: .search) {
+            Tab(value: TabSlot.add, role: Self.addSlotRole) {
                 T.bg.ignoresSafeArea()
             } label: {
                 Label {
@@ -193,6 +193,19 @@ struct MainTabView: View {
             }
             .ignoresSafeArea()
         }
+    }
+
+    /// The role that gets the separate round slot. iOS 26 gives it to the
+    /// Search tab; iOS 27 calls the slot "prominent" and only lends it to
+    /// a Search tab that opens a search field — ours would end up inside
+    /// the capsule as a fifth item, under the "+". (The `.prominent` role
+    /// exists only in the iOS 27 SDK, hence the compiler check.)
+    @available(iOS 26.0, *)
+    private static var addSlotRole: TabRole {
+        #if compiler(>=6.4)
+        if #available(iOS 27.0, *) { return .prominent }
+        #endif
+        return .search
     }
 
     /// The system bar's measures on iPhone (iOS 26) — a 62 pt capsule, 21 pt
