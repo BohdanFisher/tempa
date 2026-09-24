@@ -94,7 +94,7 @@ enum Cat {
     /// Default icon for a category, chosen from the app's existing task icon
     /// vocabulary (ClaudeAPIClient.iconVocabulary) — used when a task is created
     /// by hand, where there's no AI to pick a fitting icon.
-    static func icon(for category: String) -> String {
+    nonisolated static func icon(for category: String) -> String {
         switch category {
         case "work": return "laptopcomputer"
         case "personal": return "bag"

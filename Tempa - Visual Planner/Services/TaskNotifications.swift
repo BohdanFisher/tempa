@@ -76,7 +76,8 @@ enum TaskNotifications {
                     guard fire > Date() else { continue }
 
                     let content = UNMutableNotificationContent()
-                    content.title = task.title ?? String(localized: "Upcoming task", bundle: .appLanguage)
+                    content.title = reminderTitle(task.title ?? String(localized: "Upcoming task", bundle: .appLanguage),
+                                                  icon: task.iconName, category: task.category)
                     content.body = String(localized: "Starts in 10 minutes.", bundle: .appLanguage)
                     content.sound = .default
 
@@ -87,6 +88,43 @@ enum TaskNotifications {
                 }
             }
         }
+    }
+
+    /// The reminder's title leads with the emoji twin of the icon on the
+    /// task's card, so the lock screen says what's coming before a word of it
+    /// is read — 💊 is the pills, 📞 the call. Worked out here, not stored:
+    /// the icon already syncs, so a changed icon or category re-words the
+    /// next reminder by itself. A title that already opens with an emoji of
+    /// the user's own keeps just that one.
+    nonisolated static func reminderTitle(_ title: String, icon: String?, category: String?) -> String {
+        guard let emoji = emoji(icon: icon, category: category), !opensWithEmoji(title) else { return title }
+        return "\(emoji) \(title)"
+    }
+
+    /// The card's icon as an emoji. The "circle" placeholder, or an icon off
+    /// the list, falls back to the category's own icon.
+    nonisolated static func emoji(icon: String?, category: String?) -> String? {
+        if let icon, let emoji = emojiByIcon[icon] { return emoji }
+        guard let category else { return nil }
+        return emojiByIcon[Cat.icon(for: category)]
+    }
+
+    /// Every icon a task can wear: the AI's vocabulary
+    /// (ClaudeAPIClient.iconVocabulary), the calendar mirror's and the
+    /// starter hints'.
+    nonisolated static let emojiByIcon: [String: String] = [
+        "trash": "🗑️", "sparkles": "✨", "drop": "💧", "fork.knife": "🍴",
+        "bed.double": "🛏️", "shower": "🚿", "bag": "🛍️", "doc.text": "📝",
+        "envelope": "✉️", "phone": "📞", "laptopcomputer": "💻", "figure.walk": "🚶",
+        "cart": "🛒", "pills": "💊", "book": "📖", "alarm": "⏰",
+        "hammer": "🔨", "paintbrush": "🖌️", "leaf": "🌿",
+        "calendar": "📅", "hand.tap": "👆", "mic": "🎙️",
+    ]
+
+    /// An emoji by default (🎂), or made one by what follows it (✉️, 1️⃣).
+    nonisolated private static func opensWithEmoji(_ text: String) -> Bool {
+        guard let scalars = text.first?.unicodeScalars, let lead = scalars.first else { return false }
+        return lead.properties.isEmojiPresentation || (lead.properties.isEmoji && scalars.count > 1)
     }
 }
 
